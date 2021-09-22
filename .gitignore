@@ -1,0 +1,17 @@
+/src/main/resources/web/
+
+target/
+node_modules/
+
+*~
+.project
+.classpath
+.settings
+.shell_history
+.DS_Store
+
+npm-debug.log
+npm-debug.log.*
+stats*.json
+
+commit-message.txt

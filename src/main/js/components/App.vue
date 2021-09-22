@@ -37,4 +37,16 @@
       sans-serif;
   --main-font-size: 14px;
 }
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;   /* avoid window bounce when scrolling reaches top/bottom */
+  font-family: var(--main-font-family);
+  font-size:   var(--main-font-size);
+}
 </style>

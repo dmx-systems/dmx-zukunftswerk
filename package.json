@@ -1,12 +1,12 @@
 {
-  "name": "dmx-webclient-template",
+  "name": "dmx-zukunftswerk",
   "version": "1.0.0",
-  "description": "A starter project for developing a DMX webclient",
+  "description": "The Zukunftswerk collaboration platform",
   "author": "Jörg Richter <jri@dmx.berlin>",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dmx-systems/dmx-webclient-template.git"
+    "url": "https://github.com/dmx-systems/dmx-zukunftswerk.git"
   },
   "scripts": {
     "build": "webpack -p --hide-modules",

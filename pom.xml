@@ -4,9 +4,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>DMX Webclient Template</name>
-    <groupId>com.example</groupId>
-    <artifactId>dmx-webclient-template</artifactId>
+    <name>DMX Zukunftswerk</name>
+    <groupId>systems.dmx</groupId>
+    <artifactId>dmx-zukunftswerk</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="webclient">
-    <h1>Hello DMX Webclient!</h1>
+    <h1>Zukunftswerk collaboration platform</h1>
   </div>
 </template>
 

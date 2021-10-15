@@ -1,0 +1,48 @@
+# 1) Initiates build for every "master" or "tags" push
+maven-build:
+  stage: build
+  script:
+    - mvn clean install
+  artifacts:
+    paths:
+      - target/*.jar
+    name: ${CI_PROJECT_NAME}-${CI_COMMIT_SHORT_SHA}
+  cache:
+    paths:
+      - node_modules/
+  only:
+    - master
+    - tags
+
+# 2) Copies build to both, download/ci/ and dmx-dev-container
+copy-to-ci:
+  stage: deploy
+  script:
+    - CIDIR='/var/www/download.dmx.systems/ci'
+    - DESTDIR="${CIDIR}/${CI_PROJECT_NAME}"
+    - JARFILE="$(basename $(ls target/*.jar | tail -n1))"
+    - NUNC="$(date +%F)"
+    - DESTJARFILE="$(basename ${JARFILE} .jar)_${NUNC}_${CI_PIPELINE_ID}.jar"
+    - if [ ! -d  ${DESTDIR} ]; then mkdir ${DESTDIR}; fi
+    - cp target/${JARFILE} ${DESTDIR}/${DESTJARFILE}
+    - ln -sf  ${DESTDIR}/${DESTJARFILE} ${DESTDIR}/${CI_PROJECT_NAME}-latest.jar
+    - docker exec dmx-dev-container sh -c "rm -f /usr/share/dmx/bundle-deploy/${CI_PROJECT_NAME}-*.jar"
+    - docker cp ${DESTDIR}/${DESTJARFILE} dmx-dev-container:/usr/share/dmx/bundle-deploy/
+  dependencies:
+    - maven-build
+  only:
+    - master
+
+# 3) Copies tagged (release) builds to download/plugins/
+copy-to-release:
+  stage: deploy
+  script:
+    - RELEASEDIR='/var/www/download.dmx.systems/plugins'
+    - DESTDIR="${RELEASEDIR}/${CI_PROJECT_NAME}"
+    - JARFILE="$(basename $(ls target/*.jar | tail -n1))"
+    - if [ ! -d  ${DESTDIR} ]; then mkdir ${DESTDIR}; fi
+    - cp target/${JARFILE} ${DESTDIR}/
+  dependencies:
+    - maven-build
+  only:
+    - tags

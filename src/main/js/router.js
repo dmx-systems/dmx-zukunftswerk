@@ -6,7 +6,7 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Webclient from './components/Webclient'
+import Webclient from './components/zw-webclient'
 import store from './store'
 import dmx from 'dmx-api'
 

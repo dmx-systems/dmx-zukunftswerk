@@ -10,6 +10,9 @@ const state = {
 }
 
 const actions = {
+  setLang (_, lang) {
+    state.lang = lang
+  }
 }
 
 const getters = {

@@ -1,5 +1,5 @@
 <template>
-  <div class="webclient">
+  <div class="zw-webclient">
     <zw-header></zw-header>
     <zw-workspace></zw-workspace>
   </div>
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style>
-.webclient {
+.zw-webclient {
   display: flex;
   flex-direction: column;
   height: 100%;

@@ -10,7 +10,10 @@ import './element-ui'
 // The dmx-webclient component relies on the "typeCache" store module as registered by dmx.init(). ### TODO: still true?
 const dmxReady = dmx.init({store})
 
-// 2) Create Vue root instance
+// 2) Global component registrations
+Vue.component('lang-string', require('./components/lang-string').default)
+
+// 3) Create Vue root instance
 // Instantiates router-view and dmx-webclient components.
 const root = new Vue({
   el: '#app',
@@ -19,7 +22,7 @@ const root = new Vue({
   render: h => h(App)
 })
 
-// 3) Initial navigation
+// 4) Initial navigation
 // Initial navigation must take place *after* the webclient plugins are loaded.
 // The "workspaces" store module is registered by the Workspaces plugin.
 Promise.all([

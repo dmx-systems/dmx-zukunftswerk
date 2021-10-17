@@ -23,6 +23,11 @@ module.exports = (env = {}) => {
           loader: 'vue-loader'
         },
         {
+          test: /\.js$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/
+        },
+        {
           test: /\.css$/,
           loader: [env.dev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader']
         },

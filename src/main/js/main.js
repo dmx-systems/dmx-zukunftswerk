@@ -3,6 +3,7 @@ import App from './components/App'
 import dmx from 'dmx-api'
 import store from './store'
 import router from './router'
+import './element-ui'
 
 // 1) Init dmx library
 // The dmx library must be inited *before* the dmx-webclient component is instantiated.

@@ -23,6 +23,7 @@
                 <excludes>
                     <exclude>index.html</exclude>
                     <exclude>favicon.png</exclude>
+                    <exclude>grid.png</exclude>
                 </excludes>
             </resource>
         </resources>

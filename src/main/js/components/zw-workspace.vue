@@ -11,5 +11,6 @@ export default {
 <style>
 .zw-workspace {
   flex-grow: 1;
+  background-image: url("../../resources/grid.png");
 }
 </style>

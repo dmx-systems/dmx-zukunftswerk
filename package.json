@@ -14,7 +14,7 @@
     "stats": "webpack -p --json > stats.json && webpack-bundle-analyzer stats.json modules/dmx-webclient/src/main/resources/web"
   },
   "dependencies": {
-    "dmx-api": "2.1.0",
+    "dmx-api": "https://github.com/dmx-systems/dmx-api.git",
     "element-ui": "2.13.2",
     "vue": "2.6.11",
     "vue-router": "3.0.7",

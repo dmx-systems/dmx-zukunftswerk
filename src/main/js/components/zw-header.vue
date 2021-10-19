@@ -1,7 +1,8 @@
 <template>
   <div class="zw-header">
     <div class="workspace">
-      <lang-string>header.shared_workspace</lang-string>: <span class="name">{{workspaceName}}</span>
+      <lang-string>header.shared_workspace</lang-string>:
+      <span class="name">{{workspaceName}}</span>
     </div>
     <div>
       <el-button type="text" @click="setLang('de')">DE</el-button>

@@ -1,5 +1,5 @@
 <template>
-  <span class="lang-string">{{langString}}</span>
+  <span class="zw-string">{{langString}}</span>
 </template>
 
 <script>

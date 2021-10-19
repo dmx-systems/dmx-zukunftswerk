@@ -1,7 +1,7 @@
 <template>
   <div class="zw-header">
     <div class="workspace">
-      <lang-string>header.shared_workspace</lang-string>:
+      <zw-string>header.shared_workspace</zw-string>:
       <span class="name">{{workspaceName}}</span>
     </div>
     <div>
@@ -40,7 +40,7 @@ export default {
   align-items: baseline;
   color: white;
   background-color: rgb(63, 65, 104);
-  padding: 8px;
+  padding: 0px 8px;
 }
 
 .zw-header .workspace {

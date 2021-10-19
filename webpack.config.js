@@ -66,7 +66,7 @@ module.exports = (env = {}) => {
 
   if (env.dev) {
     webpackConfig.devServer = {
-      port: 8082,
+      port: 8084,
       proxy: {'/': 'http://localhost:8080'},
       noInfo: true,
       open: true

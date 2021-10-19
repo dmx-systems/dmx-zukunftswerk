@@ -5,6 +5,7 @@ import dmx from 'dmx-api'
 Vue.use(Vuex)
 
 const state = {
+  workspace: undefined,       // the workspace (topic) the current topicmap belongs to
   lang: 'de',
   langStrings: require('./lang-strings').default
 }

@@ -17,6 +17,11 @@ const router = new VueRouter({
     {
       path: '/',
       component: Webclient
+    },
+    {
+      path: '/:topicmapId',
+      name: 'topicmap',
+      component: Webclient
     }
   ]
 })
@@ -60,9 +65,35 @@ function registerRouteWatcher () {
  * Pushes the initial route if a redirect is needed.
  */
 function initialNavigation (route) {
+  //
   registerRouteWatcher()
   //
-  // ...
+  const topicmapId = id(route.params.topicmapId)
+  //
+  // topicmap validity check
+  let p             // a promise resolved once validity check is complete
+  if (topicmapId) {
+    // console.log(`Checking workspace of topicmap ${topicmapId}`)
+    // Note: get-assigned-workspace responses are not cached by the browser.
+    // In contrast get-topic responses *are* cached by the browser.
+    // Doing get-assigned-workspace first avoids working with stale data.
+    p = getAssignedWorkspace(topicmapId).then(workspace => {
+      console.log('workspace', workspace)
+      store.state.workspace = workspace     // valid only if topicmapId is defined after validity check
+      // console.log(`Retrieving topic ${topicmapId}`)
+      return dmx.rpc.getTopic(topicmapId)
+    }).then(topic => {
+      // console.log('Topic retrieved', topic)
+      if (topic.typeUri !== 'dmx.topicmaps.topicmap') {
+        throw Error(`${topicmapId} is not a topicmap (but a ${topic.typeUri})`)
+      }
+    }).catch(error => {
+      console.warn(`Topicmap ${topicmapId} check failed`, error)
+      topicmapId = undefined
+    })
+  } else {
+    p = Promise.resolve()
+  }
 }
 
 /**
@@ -70,4 +101,26 @@ function initialNavigation (route) {
  */
 function navigate (to, from) {
   // ...
+}
+
+const getAssignedWorkspace = dmx.rpc.getAssignedWorkspace
+
+/**
+ * Converts the given value into Number.
+ *
+ * @return  the number, or undefined if `undefined` or `null` is given.
+ *          Never returns `null`.
+ *
+ * @throws  if the given value is not one of Number/String/undefined/null.
+ */
+function id (v) {
+  // Note: Number(undefined) is NaN, and NaN != NaN is true!
+  // Note: dmx.utils.getCookie may return null, and Number(null) is 0 (and typeof null is 'object')
+  if (typeof v === 'number') {
+    return v
+  } else if (typeof v === 'string') {
+    return Number(v)
+  } else if (v !== undefined && v !== null) {
+    throw Error(`id() expects one of [number|string|undefined|null], got ${v}`)
+  }
 }

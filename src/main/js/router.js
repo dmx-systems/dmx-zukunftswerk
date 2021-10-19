@@ -69,30 +69,28 @@ function initialNavigation (route) {
   registerRouteWatcher()
   //
   const topicmapId = id(route.params.topicmapId)
+  let _workspace
   //
   // topicmap validity check
-  let p             // a promise resolved once validity check is complete
   if (topicmapId) {
     // console.log(`Checking workspace of topicmap ${topicmapId}`)
     // Note: get-assigned-workspace responses are not cached by the browser.
     // In contrast get-topic responses *are* cached by the browser.
     // Doing get-assigned-workspace first avoids working with stale data.
-    p = getAssignedWorkspace(topicmapId).then(workspace => {
-      console.log('workspace', workspace)
-      store.state.workspace = workspace     // valid only if topicmapId is defined after validity check
-      // console.log(`Retrieving topic ${topicmapId}`)
+    getAssignedWorkspace(topicmapId).then(workspace => {
+      _workspace = workspace
       return dmx.rpc.getTopic(topicmapId)
     }).then(topic => {
-      // console.log('Topic retrieved', topic)
       if (topic.typeUri !== 'dmx.topicmaps.topicmap') {
         throw Error(`${topicmapId} is not a topicmap (but a ${topic.typeUri})`)
       }
+      return dmx.rpc.getTopicmap(topic.id, true)      // includeChildren=true
+    }).then(topicmap => {
+      store.state.topicmap = topicmap
+      store.state.workspace = _workspace
     }).catch(error => {
       console.warn(`Topicmap ${topicmapId} check failed`, error)
-      topicmapId = undefined
     })
-  } else {
-    p = Promise.resolve()
   }
 }
 

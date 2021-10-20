@@ -17,7 +17,6 @@ maven-build:
 # 2) Copies build to both, download/ci/ and dmx-dev-container
 copy-to-ci:
   stage: deploy
-  trigger: dmx-projects/zukunftswerk
   script:
     - CIDIR='/var/www/download.dmx.systems/ci'
     - DESTDIR="${CIDIR}/${CI_PROJECT_NAME}"
@@ -47,3 +46,9 @@ copy-to-release:
     - maven-build
   only:
     - tags
+
+
+# 4) Deploys plugin for testing
+deploy-to-test:
+  stage: test
+  trigger: dmx-projects/zukunftswerk

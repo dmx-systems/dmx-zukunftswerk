@@ -1,12 +1,20 @@
 <template>
-  <div class="zw-note" v-html="html" :style="style"></div>
+  <div v-if="infoMode" class="zw-note" v-html="html" :style="style"></div>
+  <div v-else class="zw-note" :style="style">
+    <textarea rows="8" cols="30"></textarea><br>
+    <el-button type="primary" @click="save">Save</el-button>
+  </div>
 </template>
 
 <script>
 export default {
 
   props: {
-    topic: Object
+    topic: Object,
+    mode: {               // 'info'/'form'
+      type: String,
+      default: 'info'
+    }
   },
 
   computed: {
@@ -22,6 +30,16 @@ export default {
         top:  `${pos.y}px`,
         left: `${pos.x}px`,
       }
+    },
+
+    infoMode () {
+      return this.mode === 'info'
+    }
+  },
+
+  methods: {
+    save () {
+      this.$store.dispatch('removeTopic', this.topic)
     }
   }
 }

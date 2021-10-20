@@ -47,8 +47,7 @@ copy-to-release:
   only:
     - tags
 
-
-# 4) Deploys plugin for testing
-deploy-to-test:
-  stage: test
+# 4) Trigger another project
+trigger-project:
+  stage: deploy
   trigger: dmx-projects/zukunftswerk

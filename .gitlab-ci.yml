@@ -47,7 +47,7 @@ copy-to-release:
   only:
     - tags
 
-# 4) Trigger another project
+# 4) Triggers another project
 trigger-project:
   stage: deploy
   trigger: dmx-projects/zukunftswerk

@@ -53,7 +53,9 @@ export default {
         },
         viewProps: {
           'dmx.topicmaps.x': 100,
-          'dmx.topicmaps.y': 100
+          'dmx.topicmaps.y': 100,
+          'dmx.topicmaps.visibility': true,
+          'dmx.topicmaps.pinned': false
         }
       }))
     }

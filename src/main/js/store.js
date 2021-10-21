@@ -18,12 +18,18 @@ const actions = {
     state.newTopics.push(topic)
   },
 
-  removeTopic (_, topic) {
-    const i = state.newTopics.indexOf(topic)
-    if (i === -1) {
-      throw Error()
-    }
-    state.newTopics.splice(i, 1)
+  /**
+   * @param   topic   a dmx.ViewTopic
+   */
+  createTopic (_, topic) {
+    dmx.rpc.createTopic(topic).then(_topic => {
+      dmx.rpc.addTopicToTopicmap(state.topicmap.id, _topic.id, topic.viewProps)
+      store.dispatch('_processDirectives', _topic.directives)
+      const viewTopic = _topic.newViewTopic(topic.viewProps)
+      viewTopic.children = _topic.children      // ### TODO, see comment in newViewTopic()
+      state.topicmap.addTopic(viewTopic)
+    })
+    removeTopic(topic)
   },
 
   setLang (_, lang) {
@@ -31,13 +37,19 @@ const actions = {
   }
 }
 
-const getters = {
-}
-
 const store = new Vuex.Store({
   state,
-  actions,
-  getters
+  actions
 })
 
 export default store
+
+// state helper
+
+function removeTopic (topic) {
+  const i = state.newTopics.indexOf(topic)
+  if (i === -1) {
+    throw Error('removeTopic')
+  }
+  state.newTopics.splice(i, 1)
+}

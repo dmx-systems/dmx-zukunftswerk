@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {Button, Dropdown, DropdownMenu, DropdownItem} from 'element-ui'
+import {Button, Dropdown, DropdownMenu, DropdownItem, Loading} from 'element-ui'
 import locale from 'element-ui/lib/locale'
 
 // set locale
@@ -10,3 +10,5 @@ Vue.use(Button)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+
+Vue.use(Loading.directive)

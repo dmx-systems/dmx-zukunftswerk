@@ -1,7 +1,7 @@
 <template>
   <div v-if="infoMode" class="zw-note" v-html="html" :style="style"></div>
   <div v-else class="zw-note" :style="style">
-    <quill v-model="topic.children['dmx.notes.text'].value"></quill>
+    <quill v-model="topic.children['dmx.notes.text'].value" :options="quillOptions"></quill>
     <el-button type="primary" @click="save">Save</el-button>
   </div>
 </template>
@@ -36,6 +36,10 @@ export default {
 
     infoMode () {
       return this.mode === 'info'
+    },
+
+    quillOptions () {
+      return this.$store.state.quillOptions
     }
   },
 

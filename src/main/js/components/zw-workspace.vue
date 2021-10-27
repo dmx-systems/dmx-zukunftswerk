@@ -8,8 +8,12 @@
         <el-dropdown-item><zw-string>add.textfield</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <component v-for="topic in topics" :is="topic.typeUri" :key="topic.id" :topic="topic"></component>
-    <component v-for="topic in newTopics" :is="topic.typeUri" :key="topic.id" :topic="topic" mode="form"></component>
+    <vue-drag-resize v-for="topic in topics" :x="topic.pos.x" :y="topic.pos.y" :key="topic.id">
+      <component :is="topic.typeUri" :topic="topic"></component>
+    </vue-drag-resize>
+    <vue-drag-resize v-for="topic in newTopics" :x="topic.pos.x" :y="topic.pos.y" :key="topic.id">
+      <component :is="topic.typeUri" :topic="topic" mode="form"></component>
+    </vue-drag-resize>
   </div>
 </template>
 
@@ -62,7 +66,8 @@ export default {
   },
 
   components: {
-    'dmx.notes.note': require('./zw-note').default
+    'dmx.notes.note': require('./zw-note').default,
+    'vue-drag-resize': require('vue-drag-resize').default
   }
 }
 </script>

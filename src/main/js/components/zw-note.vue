@@ -1,7 +1,7 @@
 <template>
-  <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="html" :style="style"></div>
-  <div v-else class="zw-note dmx-html-field form" :style="style">
-    <quill v-model="text.value" :options="quillOptions"></quill>
+  <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="html"></div>
+  <div v-else class="zw-note dmx-html-field form">
+    <quill v-model="text.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
     <el-button type="primary" @click="save">Save</el-button>
   </div>
 </template>
@@ -29,14 +29,6 @@ export default {
       return this.text && this.text.value
     },
 
-    style () {
-      const pos = this.topic.getPosition()
-      return {
-        top:  `${pos.y}px`,
-        left: `${pos.x}px`,
-      }
-    },
-
     infoMode () {
       return this.mode === 'info'
     },
@@ -47,6 +39,11 @@ export default {
   },
 
   methods: {
+
+    focus () {
+      this.$refs.quill.focus()
+    },
+
     save () {
       this.$store.dispatch('createTopic', this.topic)
     }
@@ -63,7 +60,6 @@ export default {
 
 <style>
 .zw-note {
-  position: absolute;
   min-width: 120px;
   max-width: 420px;
   padding: 8px;

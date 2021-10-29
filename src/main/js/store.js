@@ -5,30 +5,29 @@ import dmx from 'dmx-api'
 Vue.use(Vuex)
 
 const state = {
-  workspace: undefined,       // the workspace the current topicmap belongs to (dmx.Topic)
   topicmap: undefined,        // the topicmap displayed on workspace canvas (dmx.Topicmap)
+  workspace: undefined,       // the workspace the topicmap belongs to (dmx.Topic)
+  isWritable: undefined,      // true if the workspace is writable (Boolean)
   newTopics: [],              // topics being created, not yet saved (array of dmx.ViewTopic)
-
+  //
   lang: 'de',                 // UI language ('de'/'fr')
   langStrings: require('./lang-strings').default,
-
-  quillOptions: {
-    theme: 'bubble',
-    modules: {
-      toolbar: {
-        container: [
-          ['bold', 'italic', 'code'],
-          ['blockquote', 'code-block'],
-          [{list: 'ordered'}, {list: 'bullet'}],
-          [{header: [1, 2, 3, false]}],
-          ['link', 'image', 'video']
-        ]
-      }
-    }
-  }
+  //
+  quillOptions: require('./quill-options').default
 }
 
 const actions = {
+
+  setTopicmap (_, topicmap) {
+    state.topicmap = topicmap
+  },
+
+  setWorkspace (_, workspace) {
+    state.workspace = workspace
+    workspace.isWritable().then(isWritable => {
+      state.isWritable = isWritable
+    })
+  },
 
   newTopic (_, topic) {
     state.newTopics.push(topic)

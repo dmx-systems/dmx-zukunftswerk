@@ -86,8 +86,8 @@ function initialNavigation (route) {
       }
       return dmx.rpc.getTopicmap(topic.id, true)      // includeChildren=true
     }).then(topicmap => {
-      store.state.topicmap = topicmap
-      store.state.workspace = _workspace
+      store.dispatch('setTopicmap', topicmap)
+      store.dispatch('setWorkspace', _workspace)
     }).catch(error => {
       console.warn(`Topicmap ${topicmapId} check failed`, error)
     })

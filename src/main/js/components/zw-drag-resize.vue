@@ -10,6 +10,7 @@ import dmx from 'dmx-api'
 export default {
 
   mounted () {
+    // once mounted we set actual width; 'auto' would prohibit manual resize
     this.w = this.$el.clientWidth
     this.$refs.detail.$el.style['min-width'] = 'unset'
     this.$refs.detail.$el.style['max-width'] = 'unset'
@@ -25,7 +26,7 @@ export default {
 
   data () {
     return {
-      w: 'auto'
+      w: 'auto'     // let the child component's style determine the initial width
     }
   },
 

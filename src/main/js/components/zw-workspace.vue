@@ -8,10 +8,10 @@
         <el-dropdown-item><zw-string>add.textfield</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <vue-drag-resize v-for="topic in topics" :x="topic.pos.x" :y="topic.pos.y" :key="topic.id">
+    <vue-drag-resize v-for="topic in topics" :x="topic.pos.x" :y="topic.pos.y" h="auto" :sticks="['mr', 'ml']" :key="topic.id">
       <component :is="topic.typeUri" :topic="topic"></component>
     </vue-drag-resize>
-    <vue-drag-resize v-for="topic in newTopics" :x="topic.pos.x" :y="topic.pos.y" :key="topic.id">
+    <vue-drag-resize v-for="topic in newTopics" :x="topic.pos.x" :y="topic.pos.y" h="auto" :sticks="['mr', 'ml']" :key="topic.id">
       <component :is="topic.typeUri" :topic="topic" mode="form"></component>
     </vue-drag-resize>
   </div>

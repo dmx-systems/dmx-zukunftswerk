@@ -1,5 +1,5 @@
 <template>
-  <vue-drag-resize :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']">
+  <vue-drag-resize :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']" @dragstop="setPos">
     <component :is="topic.typeUri" :topic="topic" ref="detail"></component>
   </vue-drag-resize>
 </template>
@@ -17,7 +17,10 @@ export default {
   },
 
   props: {
-    topic: dmx.ViewTopic,     // the topic to render (dmx.ViewTopic)
+    topic: {
+      type: dmx.ViewTopic,     // the topic to render (dmx.ViewTopic)
+      required: true
+    },
     mode: {                   // 'info'/'form'
       type: String,
       default: 'info'
@@ -27,6 +30,25 @@ export default {
   data () {
     return {
       w: 'auto'     // let the child component's style determine the initial width
+    }
+  },
+
+  computed: {
+
+    topicmap () {
+      return this.$store.state.topicmap
+    },
+
+    isWritable () {
+      return this.$store.state.isWritable
+    }
+  },
+
+  methods: {
+    setPos (e) {
+      if (this.topic.id >= 0 && this.isWritable) {
+        dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, {x: e.left, y: e.top})
+      }
     }
   },
 

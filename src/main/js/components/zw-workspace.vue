@@ -8,7 +8,7 @@
         <el-dropdown-item><zw-string>add.textfield</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <zw-drag-resize v-for="topic in topics" :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>
+    <zw-drag-resize v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>
     <zw-drag-resize v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-drag-resize>
   </div>
 </template>

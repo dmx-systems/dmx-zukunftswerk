@@ -12,7 +12,10 @@ import dmx from 'dmx-api'
 export default {
 
   props: {
-    topic: dmx.ViewTopic,     // the Note topic (dmx.ViewTopic)
+    topic: {
+      type: dmx.ViewTopic,    // the Note topic (dmx.ViewTopic)
+      required: true
+    },
     mode: {                   // 'info'/'form'
       type: String,
       default: 'info'

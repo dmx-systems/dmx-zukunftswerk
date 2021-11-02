@@ -1,6 +1,6 @@
 <template>
   <vue-drag-resize :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']" @dragstop="setPos">
-    <component :is="topic.typeUri" :topic="topic" ref="detail"></component>
+    <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail"></component>
   </vue-drag-resize>
 </template>
 
@@ -18,7 +18,7 @@ export default {
 
   props: {
     topic: {
-      type: dmx.ViewTopic,     // the topic to render (dmx.ViewTopic)
+      type: dmx.ViewTopic,    // the topic to render (dmx.ViewTopic)
       required: true
     },
     mode: {                   // 'info'/'form'

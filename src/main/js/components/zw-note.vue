@@ -68,4 +68,8 @@ export default {
   padding: 8px;
   background-color: rgb(255, 250, 109);
 }
+
+.zw-note.form {
+  min-width: 240px;
+}
 </style>

@@ -46,8 +46,10 @@ export default {
 
   methods: {
     setPos (e) {
+      const pos = {x: e.left, y: e.top}
+      this.topic.setPosition(pos)                                           // update client state
       if (this.topic.id >= 0 && this.isWritable) {
-        dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, {x: e.left, y: e.top})
+        dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state
       }
     }
   },

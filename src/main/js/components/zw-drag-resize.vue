@@ -1,5 +1,6 @@
 <template>
-  <vue-drag-resize :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']" @dragstop="setPos">
+  <vue-drag-resize :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']" @dragstop="setPos"
+      @resizestop="setSize">
     <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail"></component>
   </vue-drag-resize>
 </template>
@@ -11,7 +12,9 @@ export default {
 
   mounted () {
     // once mounted we set actual width; 'auto' would prohibit manual resize
-    this.w = this.$el.clientWidth
+    if (this.w === 'auto') {
+      this.w = this.$el.clientWidth
+    }
     this.$refs.detail.$el.style['min-width'] = 'unset'
     this.$refs.detail.$el.style['max-width'] = 'unset'
   },
@@ -28,8 +31,9 @@ export default {
   },
 
   data () {
+    const width = this.topic.viewProps['dmx.topicmaps.width']
     return {
-      w: 'auto'     // let the child component's style determine the initial width
+      w: width || 'auto'      // if width is unknown let the child component's style determine the initial width
     }
   },
 
@@ -45,11 +49,21 @@ export default {
   },
 
   methods: {
+
     setPos (e) {
       const pos = {x: e.left, y: e.top}
       this.topic.setPosition(pos)                                           // update client state
       if (this.topic.id >= 0 && this.isWritable) {
         dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state
+      }
+    },
+
+    setSize (e) {
+      if (this.topic.id >= 0 && this.isWritable) {
+        dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
+          'dmx.topicmaps.width': e.width,
+          'dmx.topicmaps.height': e.height
+        })
       }
     }
   },

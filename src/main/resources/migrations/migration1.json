@@ -1,0 +1,66 @@
+[
+  {
+    "assoc_types": [
+      {
+        "value":       "de",
+        "uri":         "zukunftswerk.de",
+        "dataTypeUri": "dmx.core.text"
+      },
+      {
+        "value":       "fr",
+        "uri":         "zukunftswerk.fr",
+        "dataTypeUri": "dmx.core.text"
+      }
+    ]
+  },
+  {
+    "topic_types": [
+      {
+        "value":       "Dokument Name (de)",
+        "uri":         "zukunftswerk.document_name.de",
+        "dataTypeUri": "dmx.core.text"
+      },
+      {
+        "value":       "Nom du document (fr)",
+        "uri":         "zukunftswerk.document_name.fr",
+        "dataTypeUri": "dmx.core.text"
+      },
+      {
+        "value":       "Document",
+        "uri":         "zukunftswerk.document",
+        "dataTypeUri": "dmx.core.entity",
+        "compDefs": [
+          {
+            "childTypeUri":        "zukunftswerk.document_name.de",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          },
+          {
+            "childTypeUri":        "zukunftswerk.document_name.fr",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          },
+          {
+            "childTypeUri":        "dmx.files.file",
+            "childCardinalityUri": "dmx.core.one",
+            "customAssocTypeUri":  "zukunftswerk.de"
+          },
+          {
+            "childTypeUri":        "dmx.files.file",
+            "childCardinalityUri": "dmx.core.one",
+            "customAssocTypeUri":  "zukunftswerk.fr"
+          }
+        ],
+        "viewConfigTopics": [
+          {
+            "typeUri": "dmx.webclient.view_config",
+            "children": {
+              "dmx.webclient.add_to_create_menu": true,
+              "dmx.webclient.icon": "\uf016"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

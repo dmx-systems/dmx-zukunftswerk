@@ -70,6 +70,7 @@ export default {
 
   components: {
     'dmx.notes.note': require('./zw-note').default,
+    'zukunftswerk.document': require('./zw-document').default,
     'vue-drag-resize': require('vue-drag-resize').default
   }
 }

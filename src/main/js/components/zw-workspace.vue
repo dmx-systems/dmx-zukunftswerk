@@ -36,7 +36,8 @@ export default {
   methods: {
 
     canvasFilter (topic) {
-      return topic.typeUri === 'dmx.notes.note'
+      return topic.typeUri === 'dmx.notes.note' ||
+             topic.typeUri === 'zukunftswerk.document'
     },
 
     handle (command) {

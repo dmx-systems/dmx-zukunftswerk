@@ -1,6 +1,6 @@
 <template>
   <div class="zw-document">
-    Document
+    {{docName}}
     <pre v-if="isText">{{text}}</pre>
     <img v-if="isImage" :src="fileUrl" @load="update">
     <audio v-if="isAudio" :src="fileUrl" controls></audio>
@@ -38,14 +38,42 @@ export default {
       return this.$store.state.lang
     },
 
+    docLang () {
+      const files = this.files
+      if (files.de && files.fr) {
+        return this.lang
+      } else if (files.de) {
+        return 'de'
+      } else if (files.fr) {
+        return 'fr'
+      }
+    },
+
+    docName () {
+      if (this.docLang) {
+        const name = this.topic.children['zukunftswerk.document_name.' + this.docLang]
+        return name && name.value
+      }
+    },
+
+    files () {
+      return {
+        de: this.getFile('de'),
+        fr: this.getFile('fr')
+      }
+    },
+
+    file () {
+      return this.docLang && this.files[this.docLang]
+    },
+
     path () {
-      return this.val(this.getPath)
+      return this.file && this.file.children['dmx.files.path'].value
     },
 
     mediaType () {
-      const file = this.val(this.getFile)
-      if (file) {
-        const mediaType = file.children['dmx.files.media_type']
+      if (this.file) {
+        const mediaType = this.file.children['dmx.files.media_type']
         return mediaType && mediaType.value
       }
     },
@@ -98,25 +126,6 @@ export default {
 
     getFile (lang) {
       return this.topic.children['dmx.files.file#zukunftswerk.' + lang]
-    },
-
-    getPath (lang) {
-      const file = this.getFile(lang)
-      return file && file.children['dmx.files.path'].value
-    },
-
-    val (func) {
-      const val = {
-        de: func('de'),
-        fr: func('fr')
-      }
-      if (val.de && val.fr) {
-        return val[this.lang]
-      } else if (val.de) {
-        return val.de
-      } else if (val.fr) {
-        return val.fr
-      }
     }
   }
 }

@@ -8,6 +8,7 @@ const state = {
   topicmap: undefined,        // the topicmap displayed on workspace canvas (dmx.Topicmap)
   workspace: undefined,       // the workspace the topicmap belongs to (dmx.Topic)
   isWritable: undefined,      // true if the workspace is writable (Boolean)
+  topic: undefined,           // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],              // topics being created, not yet saved (array of dmx.ViewTopic)
   //
   lang: 'de',                 // UI language ('de'/'fr')
@@ -23,10 +24,14 @@ const actions = {
   },
 
   setWorkspace (_, workspace) {
-    state.workspace = workspace
     workspace.isWritable().then(isWritable => {
+      state.workspace = workspace
       state.isWritable = isWritable
     })
+  },
+
+  setTopic (_, topic) {
+    state.topic = topic
   },
 
   newTopic (_, topic) {

@@ -1,6 +1,6 @@
 <template>
-  <vue-drag-resize :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']" @dragstop="setPos"
-      @resizestop="setSize">
+  <vue-drag-resize :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']"
+      @clicked="select" @dragstop="setPos" @resizestop="setSize">
     <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail"></component>
   </vue-drag-resize>
 </template>
@@ -20,10 +20,12 @@ export default {
   },
 
   props: {
+
     topic: {
       type: dmx.ViewTopic,    // the topic to render (dmx.ViewTopic)
       required: true
     },
+
     mode: {                   // 'info'/'form'
       type: String,
       default: 'info'
@@ -45,10 +47,22 @@ export default {
 
     isWritable () {
       return this.$store.state.isWritable
+    },
+
+    selectedTopic () {
+      return this.$store.state.topic
+    },
+
+    isActive () {
+      return this.selectedTopic && this.selectedTopic.id === this.topic.id
     }
   },
 
   methods: {
+
+    select (e) {
+      this.$store.dispatch('setTopic', this.topic)
+    },
 
     setPos (e) {
       const pos = {x: e.left, y: e.top}

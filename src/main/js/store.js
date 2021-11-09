@@ -5,15 +5,15 @@ import dmx from 'dmx-api'
 Vue.use(Vuex)
 
 const state = {
-  topicmap: undefined,        // the topicmap displayed on workspace canvas (dmx.Topicmap)
-  workspace: undefined,       // the workspace the topicmap belongs to (dmx.Topic)
-  isWritable: undefined,      // true if the workspace is writable (Boolean)
-  topic: undefined,           // the selected topic (dmx.ViewTopic), undefined if nothing is selected
-  newTopics: [],              // topics being created, not yet saved (array of dmx.ViewTopic)
-  //
-  lang: 'de',                 // UI language ('de'/'fr')
+  topicmap: undefined,          // the topicmap displayed on workspace canvas (dmx.Topicmap)
+  workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
+  isWritable: undefined,        // true if the workspace is writable (Boolean)
+  topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
+  newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
+  discussionMode: undefined,    // type of open discussion panel: 'document'/'workspace' (String), undefined
+                                // if no panel is open
+  lang: 'de',                   // UI language ('de'/'fr')
   langStrings: require('./lang-strings').default,
-  //
   quillOptions: require('./quill-options').default
 }
 
@@ -50,6 +50,10 @@ const actions = {
       state.topicmap.addTopic(viewTopic)
     })
     removeTopic(topic)
+  },
+
+  setDiscussionMode (_, mode) {
+    state.discussionMode = mode
   },
 
   setLang (_, lang) {

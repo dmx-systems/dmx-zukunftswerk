@@ -15,7 +15,7 @@ import dmx from 'dmx-api'
 export default {
 
   created () {
-    console.log('zw-document', this.path)
+    // console.log('zw-document', this.path)
     this.initText()
   },
 

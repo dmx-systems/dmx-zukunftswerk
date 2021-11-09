@@ -1,5 +1,8 @@
 <template>
   <div class="zw-document">
+    <div class="discussion-button">
+      <el-button type="text" icon="el-icon-chat-round" @click="openDiscussion"></el-button>
+    </div>
     {{docName}}
     <pre v-if="isText">{{text}}</pre>
     <img v-if="isImage" :src="fileUrl" @load="update">
@@ -103,12 +106,6 @@ export default {
     }
   },
 
-  watch: {
-    topic () {
-      this.initText()
-    }
-  },
-
   methods: {
 
     update() {
@@ -126,6 +123,10 @@ export default {
 
     getFile (lang) {
       return this.topic.children['dmx.files.file#zukunftswerk.' + lang]
+    },
+
+    openDiscussion () {
+      this.$store.dispatch('setDiscussionMode', 'document')
     }
   }
 }
@@ -137,6 +138,21 @@ export default {
   max-width: 420px;
   padding: 8px;
   background-color: rgb(230, 230, 230);
+}
+
+.zw-document .discussion-button {
+  position: absolute;
+  top: 0;
+  right: -28px;
+  padding: 4px;
+  background-color: rgb(193, 216, 235);
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.zw-document .discussion-button .el-button {
+  font-size: 18px;
+  padding: 0;
 }
 
 .zw-document > pre {

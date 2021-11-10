@@ -146,8 +146,8 @@ export default {
   right: -28px;
   padding: 4px;
   background-color: rgb(193, 216, 235);
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
 }
 
 .zw-document .discussion-button .el-button {

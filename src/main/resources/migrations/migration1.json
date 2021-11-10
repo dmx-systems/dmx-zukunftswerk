@@ -15,6 +15,7 @@
   },
   {
     "topic_types": [
+      // Document
       {
         "value":       "Dokument Name (de)",
         "uri":         "zukunftswerk.document_name.de",
@@ -57,6 +58,42 @@
             "children": {
               "dmx.webclient.add_to_create_menu": true,
               "dmx.webclient.icon": "\uf016"
+            }
+          }
+        ]
+      },
+      // Comment
+      {
+        "value":       "Kommentar (de)",
+        "uri":         "zukunftswerk.comment.de",
+        "dataTypeUri": "dmx.core.html"
+      },
+      {
+        "value":       "Commentaire (fr)",
+        "uri":         "zukunftswerk.comment.fr",
+        "dataTypeUri": "dmx.core.html"
+      },
+      {
+        "value":       "Comment",
+        "uri":         "zukunftswerk.comment",
+        "dataTypeUri": "dmx.core.entity",
+        "compDefs": [
+          {
+            "childTypeUri":        "zukunftswerk.comment.de",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          },
+          {
+            "childTypeUri":        "zukunftswerk.comment.fr",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          }
+        ],
+        "viewConfigTopics": [
+          {
+            "typeUri": "dmx.webclient.view_config",
+            "children": {
+              "dmx.webclient.icon": "\uf075"
             }
           }
         ]

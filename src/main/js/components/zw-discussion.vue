@@ -1,9 +1,20 @@
 <template>
-  <div class="zw-discussion">
+  <div class="zw-discussion" :style="style">
     <el-button v-if="isClosed" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
     <template v-else>
       <div v-if="document">Document discussion</div>
       <div v-if="workspace">Workspace discussion</div>
+      <div class="new-comment dmx-html-field">
+        <div>
+          <div>de</div>
+          <quill v-model="newComment.de" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        </div>
+        <div>
+          <div>fr</div>
+          <quill v-model="newComment.fr" :options="quillOptions"></quill>
+        </div>
+      </div>
+      <el-button type="primary" @click="save">Save</el-button>
       <el-button size="medium" @click="close">Close</el-button>
     </template>
   </div>
@@ -11,6 +22,12 @@
 
 <script>
 export default {
+
+  data () {
+    return {
+      newComment: {de: '', fr: ''}
+    }
+  },
 
   computed: {
 
@@ -28,6 +45,14 @@ export default {
 
     workspace () {
       return this.discussionMode === 'workspace'
+    },
+
+    quillOptions () {
+      return this.$store.state.quillOptions
+    },
+
+    style () {
+      return this.isClosed ? {} : {'flex-basis': '30%'}
     }
   },
 
@@ -39,7 +64,22 @@ export default {
 
     close () {
       this.$store.dispatch('setDiscussionMode', undefined)
+    },
+
+    save () {
+      // TODO
+    },
+
+    focus () {
+      this.$refs.quill.focus()
     }
+  },
+
+  components: {
+    quill: () => ({
+      component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
+      loading: require('./zw-spinner')
+    })
   }
 }
 </script>
@@ -52,5 +92,13 @@ export default {
 
 .zw-discussion .open-button {
   font-size: 24px;
+}
+
+.zw-discussion .new-comment {
+  display: flex;
+}
+
+.zw-discussion .new-comment > div {
+  flex-basis: 50%;
 }
 </style>

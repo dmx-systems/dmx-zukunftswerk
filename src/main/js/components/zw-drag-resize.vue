@@ -74,10 +74,13 @@ export default {
 
     setSize (e) {
       if (this.topic.id >= 0 && this.isWritable) {
-        dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
-          'dmx.topicmaps.width': e.width,
-          'dmx.topicmaps.height': e.height
-        })
+        console.log(e.width, e.height)
+        if (!isNaN(e.width)) {
+          dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
+            'dmx.topicmaps.width': e.width,
+            'dmx.topicmaps.height': e.height
+          })
+        }
       }
     }
   },

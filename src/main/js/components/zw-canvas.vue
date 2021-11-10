@@ -3,9 +3,8 @@
     <el-dropdown @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="newNote"><zw-string>add.note</zw-string></el-dropdown-item>
-        <el-dropdown-item><zw-string>add.document</zw-string></el-dropdown-item>
-        <el-dropdown-item><zw-string>add.textfield</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newNote"><zw-string>new.note</zw-string></el-dropdown-item>
+        <el-dropdown-item><zw-string>new.textfield</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <zw-drag-resize v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>

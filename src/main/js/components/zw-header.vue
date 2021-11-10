@@ -39,8 +39,9 @@ export default {
   display: flex;
   align-items: baseline;
   color: white;
-  background-color: rgb(63, 65, 104);
   padding: 0px 8px;
+  background-color: rgb(63, 65, 104);
+  z-index: 1;
 }
 
 .zw-header .workspace {

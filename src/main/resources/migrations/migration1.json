@@ -2,6 +2,11 @@
   {
     "assoc_types": [
       {
+        "value":       "Original Language",
+        "uri":         "zukunftswerk.original_language",
+        "dataTypeUri": "dmx.core.text"
+      },
+      {
         "value":       "de",
         "uri":         "zukunftswerk.de",
         "dataTypeUri": "dmx.core.text"
@@ -62,6 +67,12 @@
           }
         ]
       },
+      // Language
+      {
+        "value":       "Language",
+        "uri":         "zukunftswerk.language",
+        "dataTypeUri": "dmx.core.text"
+      },
       // Comment
       {
         "value":       "Kommentar (de)",
@@ -87,16 +98,42 @@
             "childTypeUri":        "zukunftswerk.comment.fr",
             "childCardinalityUri": "dmx.core.one",
             "includeInLabel":      true
+          },
+          {
+            "childTypeUri":        "zukunftswerk.language",
+            "childCardinalityUri": "dmx.core.one",
+            "customAssocTypeUri":  "zukunftswerk.original_language",
+            "viewConfigTopics": [
+              {
+                "typeUri": "dmx.webclient.view_config",
+                "children": {
+                  "dmx.webclient.widget": "ref_uri:dmx.webclient.select",
+                  "dmx.webclient.clearable": true
+                }
+              }
+            ]
           }
         ],
         "viewConfigTopics": [
           {
             "typeUri": "dmx.webclient.view_config",
             "children": {
-              "dmx.webclient.icon": "\uf075"
+              "dmx.webclient.icon": "\uf075",
+              "dmx.webclient.add_to_create_menu": true
             }
           }
         ]
+      }
+    ],
+    "topics": [
+      // Languages
+      {
+        "value":   "de",
+        "typeUri": "zukunftswerk.language"
+      },
+      {
+        "value":   "fr",
+        "typeUri": "zukunftswerk.language"
       }
     ]
   }

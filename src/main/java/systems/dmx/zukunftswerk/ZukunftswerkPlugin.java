@@ -1,7 +1,9 @@
 package systems.dmx.zukunftswerk;
 
+import static systems.dmx.core.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
+import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
 import systems.dmx.core.service.Transactional;
@@ -38,7 +40,13 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public void addComment(TopicModel comment, @PathParam("targetTopicId") long targetTopicId) {
         try {
-            // TODO
+            comment.setTypeUri(COMMENT);    // not required to be set by client
+            Topic commentTopic = dmx.createTopic(comment);
+            dmx.createAssoc(mf.newAssocModel(
+                COMPOSITION,
+                mf.newTopicPlayerModel(targetTopicId, PARENT),
+                mf.newTopicPlayerModel(commentTopic.getId(), CHILD)
+            ));
         } catch (Exception e) {
             throw new RuntimeException("Adding comment to topic " + targetTopicId + " failed, comment=" + comment, e);
         }

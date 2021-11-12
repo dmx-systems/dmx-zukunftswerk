@@ -1,8 +1,7 @@
 <template>
   <div class="zw-comment">
-    Comment
-    {{de}}
-    {{fr}}
+    <div v-html="de"></div>
+    <div v-html="fr"></div>
   </div>
 </template>
 
@@ -32,5 +31,12 @@ export default {
 
 <style>
 .zw-comment {
+  display: flex;
+  column-gap: 12px;
+}
+
+.zw-comment > div {
+  flex-basis: 50%;
+  background-color: white;
 }
 </style>

@@ -7,6 +7,7 @@
       <!-- Comments -->
       <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
       <!-- New Comment -->
+      New comment:
       <div class="new-comment">
         <div>
           <div>de</div>
@@ -112,6 +113,7 @@ export default {
 
 <style>
 .zw-discussion {
+  overflow: auto;
   padding: 0 6px;
   background-color: rgb(182, 216, 202);
   z-index: 1;
@@ -119,6 +121,10 @@ export default {
 
 .zw-discussion .open-button {
   font-size: 24px;
+}
+
+.zw-discussion .zw-comment {
+  margin-top: 12px;
 }
 
 .zw-discussion .new-comment {

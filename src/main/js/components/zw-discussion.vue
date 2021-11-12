@@ -2,8 +2,11 @@
   <div class="zw-discussion" :style="style">
     <el-button v-if="isClosed" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
     <template v-else>
-      <div v-if="document">Document discussion</div>
-      <div v-if="workspace">Workspace discussion</div>
+      <div v-if="documentMode">Document discussion</div>
+      <div v-if="workspaceMode">Workspace discussion</div>
+      <!-- Comments -->
+      <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
+      <!-- New Comment -->
       <div class="new-comment">
         <div>
           <div>de</div>
@@ -39,16 +42,24 @@ export default {
       return this.$store.state.discussionMode
     },
 
+    discussion () {
+      return this.$store.state.discussion
+    },
+
     isClosed () {
       return !this.discussionMode
     },
 
-    document () {
+    documentMode () {
       return this.discussionMode === 'document'
     },
 
-    workspace () {
+    workspaceMode () {
       return this.discussionMode === 'workspace'
+    },
+
+    targetId () {
+      return this.$store.getters.targetId
     },
 
     quillOptions () {
@@ -71,7 +82,17 @@ export default {
     },
 
     save () {
-      // TODO
+      this.$store.dispatch('addComment', {
+        comment: {
+          children: {
+            'zukunftswerk.comment.de': this.newComment.de,
+            'zukunftswerk.comment.fr': this.newComment.fr
+          }
+        },
+        targetTopicId: this.targetId
+      })
+      this.newComment.de = ''     // FIXME
+      this.newComment.fr = ''     // FIXME
     },
 
     focus () {
@@ -80,6 +101,7 @@ export default {
   },
 
   components: {
+    'zw-comment': require('./zw-comment').default,
     quill: () => ({
       component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
       loading: require('./zw-spinner')

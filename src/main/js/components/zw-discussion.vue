@@ -12,13 +12,13 @@
         <div>
           <div>de</div>
           <div class="dmx-html-field">
-            <quill v-model="newComment.de" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+            <quill v-model="newComment.de" :options="quillOptions" ref="newCommentDe" @quill-ready="focus"></quill>
           </div>
         </div>
         <div>
           <div>fr</div>
           <div class="dmx-html-field">
-            <quill v-model="newComment.fr" :options="quillOptions"></quill>
+            <quill v-model="newComment.fr" :options="quillOptions" ref="newCommentFr"></quill>
           </div>
         </div>
       </div>
@@ -92,12 +92,15 @@ export default {
         },
         targetTopicId: this.targetId
       })
-      this.newComment.de = ''     // FIXME
-      this.newComment.fr = ''     // FIXME
+      this.newComment.de = ''
+      this.newComment.fr = ''
+      this.$refs.newCommentDe.setHTML('')     // why does binding not work here?
+      this.$refs.newCommentFr.setHTML('')     // why does binding not work here?
+      this.focus()
     },
 
     focus () {
-      this.$refs.quill.focus()
+      this.$refs.newCommentDe.focus()
     }
   },
 

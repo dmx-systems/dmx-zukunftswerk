@@ -2,28 +2,17 @@
   <div class="zw-discussion" :style="style">
     <el-button v-if="isClosed" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
     <template v-else>
-      <div v-if="documentMode">Document discussion</div>
-      <div v-if="workspaceMode">Workspace discussion</div>
+      <el-button class="close-button" type="text" icon="el-icon-circle-close" @click="close"></el-button>
+      <h4 v-if="documentMode">Document discussion</h4>
+      <h4 v-if="workspaceMode">Workspace discussion</h4>
       <!-- Comments -->
       <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
       <!-- New Comment -->
-      New comment:
-      <div class="new-comment">
-        <div>
-          <div>de</div>
-          <div class="dmx-html-field">
-            <quill v-model="newComment.de" :options="quillOptions" ref="newCommentDe" @quill-ready="focus"></quill>
-          </div>
-        </div>
-        <div>
-          <div>fr</div>
-          <div class="dmx-html-field">
-            <quill v-model="newComment.fr" :options="quillOptions" ref="newCommentFr"></quill>
-          </div>
-        </div>
+      <div class="new-comment dmx-html-field">
+        New comment
+        <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
       </div>
-      <el-button type="primary" @click="save">Save</el-button>
-      <el-button size="medium" @click="close">Close</el-button>
+      <el-button class="save-button" type="primary" @click="save">Save</el-button>
     </template>
   </div>
 </template>
@@ -33,7 +22,7 @@ export default {
 
   data () {
     return {
-      newComment: {de: '', fr: ''}
+      newComment: ''
     }
   },
 
@@ -84,23 +73,16 @@ export default {
 
     save () {
       this.$store.dispatch('addComment', {
-        comment: {
-          children: {
-            'zukunftswerk.comment.de': this.newComment.de,
-            'zukunftswerk.comment.fr': this.newComment.fr
-          }
-        },
+        comment: this.newComment,
         targetTopicId: this.targetId
       })
-      this.newComment.de = ''
-      this.newComment.fr = ''
-      this.$refs.newCommentDe.setHTML('')     // why does binding not work here?
-      this.$refs.newCommentFr.setHTML('')     // why does binding not work here?
+      this.newComment = ''
+      this.$refs.newComment.setHTML('')     // why does binding not work here?
       this.focus()
     },
 
     focus () {
-      this.$refs.newCommentDe.focus()
+      this.$refs.newComment.focus()
     }
   },
 
@@ -116,6 +98,7 @@ export default {
 
 <style>
 .zw-discussion {
+  position: relative;
   overflow: auto;
   padding: 0 6px;
   background-color: rgb(182, 216, 202);
@@ -126,16 +109,23 @@ export default {
   font-size: 24px;
 }
 
+.zw-discussion .close-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 0;
+  font-size: 24px;
+}
+
+.zw-discussion .save-button {
+  margin-top: 6px;
+}
+
 .zw-discussion .zw-comment {
   margin-top: 12px;
 }
 
 .zw-discussion .new-comment {
-  display: flex;
-  column-gap: 12px;
-}
-
-.zw-discussion .new-comment > div {
-  flex-basis: 50%;
+  margin-top: 24px;
 }
 </style>

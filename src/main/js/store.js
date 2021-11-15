@@ -55,7 +55,11 @@ const actions = {
   },
 
   addComment (_, {comment, targetTopicId}) {
-    http.post(`/zukunftswerk/comment/${targetTopicId}`, comment).then(response => {
+    http.post(`/zukunftswerk/comment/${targetTopicId}`, comment, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    }).then(response => {
       state.discussion.push(response.data)
     })
   },

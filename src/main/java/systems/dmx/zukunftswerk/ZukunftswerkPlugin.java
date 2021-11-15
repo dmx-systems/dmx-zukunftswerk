@@ -7,8 +7,11 @@ import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
+import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.util.DMXUtils;
+import systems.dmx.deepl.DeepLService;
+import systems.dmx.deepl.Translation;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -25,17 +28,19 @@ import java.util.logging.Logger;
 
 
 @Path("/zukunftswerk")
-@Consumes("application/json")
 @Produces("application/json")
 public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
+    @Inject
+    private DeepLService deepls;
+
     private Logger logger = Logger.getLogger(getClass().getName());
 
     // -------------------------------------------------------------------------------------------------- Public Methods
 
-    // *** ZukunftswerkService ***
+    // ZukunftswerkService
 
     @GET
     @Path("/discussion/{targetTopicId}")
@@ -48,12 +53,32 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     @POST
     @Path("/comment/{targetTopicId}")
+    @Consumes("text/plain")
     @Transactional
     @Override
-    public Topic addComment(TopicModel comment, @PathParam("targetTopicId") long targetTopicId) {
+    public Topic addComment(String comment, @PathParam("targetTopicId") long targetTopicId) {
         try {
-            comment.setTypeUri(COMMENT);    // not required to be set by client
-            Topic commentTopic = dmx.createTopic(comment);
+            // EN acts as dummy language, not used in this application.
+            // This translation's sole purpose is detection of the comment's original language
+            Translation translation = deepls.translate(comment, "EN").get(0);
+            String origLang = translation.detectedSourceLang.toLowerCase();
+            logger.info("origLang=\"" + origLang + "\"");
+            String targetLang;
+            if (origLang.equals("de")) {
+                targetLang = "fr";
+            } else if (origLang.equals("fr")) {
+                targetLang = "de";
+            } else {
+                throw new RuntimeException("Unsupported original language: \"" + origLang + "\" (detected)");
+            }
+            // translate comment
+            String translatedComment = deepls.translate(comment, targetLang).get(0).text;
+            //
+            Topic commentTopic = dmx.createTopic(mf.newTopicModel(COMMENT, mf.newChildTopicsModel()
+                .set("zukunftswerk.comment.de", origLang.equals("de") ? comment : translatedComment)
+                .set("zukunftswerk.comment.fr", origLang.equals("fr") ? comment : translatedComment)
+                .set("zukunftswerk.language#zukunftswerk.original_language", origLang)
+            ));
             dmx.createAssoc(mf.newAssocModel(
                 COMPOSITION,
                 mf.newTopicPlayerModel(targetTopicId, PARENT),

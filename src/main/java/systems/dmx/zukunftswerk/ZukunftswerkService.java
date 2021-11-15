@@ -12,5 +12,5 @@ public interface ZukunftswerkService {
 
     List<RelatedTopic> getDiscussion(long targetTopicId);
 
-    Topic addComment(TopicModel comment, long targetTopicId);
+    Topic addComment(String comment, long targetTopicId);
 }

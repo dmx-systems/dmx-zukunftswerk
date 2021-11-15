@@ -16,6 +16,14 @@
         <version>5.2.1</version>
     </parent>
 
+    <dependencies>
+        <dependency>
+            <groupId>systems.dmx</groupId>
+            <artifactId>dmx-deepl</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <resources>
             <resource>

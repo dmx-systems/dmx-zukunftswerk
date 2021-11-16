@@ -55,7 +55,7 @@ const actions = {
   },
 
   addComment (_, {comment, targetTopicId}) {
-    http.post(`/zukunftswerk/comment/${targetTopicId}`, comment, {
+    return http.post(`/zukunftswerk/comment/${targetTopicId}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
       }

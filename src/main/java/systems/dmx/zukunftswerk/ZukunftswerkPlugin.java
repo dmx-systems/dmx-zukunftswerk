@@ -75,8 +75,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             String translatedComment = deepls.translate(comment, targetLang).get(0).text;
             //
             Topic commentTopic = dmx.createTopic(mf.newTopicModel(COMMENT, mf.newChildTopicsModel()
-                .set("zukunftswerk.comment.de", origLang.equals("de") ? comment : translatedComment)
-                .set("zukunftswerk.comment.fr", origLang.equals("fr") ? comment : translatedComment)
+                .set("zukunftswerk.comment." + origLang, comment)
+                .set("zukunftswerk.comment." + targetLang, translatedComment)
                 .set("zukunftswerk.language#zukunftswerk.original_language", origLang)
             ));
             dmx.createAssoc(mf.newAssocModel(

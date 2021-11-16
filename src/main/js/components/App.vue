@@ -54,6 +54,11 @@ body {
   font-size:   var(--main-font-size);
 }
 
+/* Element UI Overrides */
+.el-loading-mask {
+  background-color: rgba(255, 255, 255, .7) !important;       /* alpha was 0.9 */
+}
+
 /* HTML fields */
 
 .dmx-html-field {

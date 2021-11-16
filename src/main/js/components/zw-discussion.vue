@@ -8,11 +8,11 @@
       <!-- Comments -->
       <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
       <!-- New Comment -->
-      <div class="new-comment dmx-html-field">
+      <div class="new-comment dmx-html-field" v-loading="submitting">
         New comment
         <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
+        <el-button class="save-button" type="primary" @click="save">Save</el-button>
       </div>
-      <el-button class="save-button" type="primary" @click="save">Save</el-button>
     </template>
   </div>
 </template>
@@ -22,7 +22,8 @@ export default {
 
   data () {
     return {
-      newComment: ''
+      newComment: '',         // the new comment entered by the user
+      submitting: false       // true while submitting new comment
     }
   },
 
@@ -57,7 +58,7 @@ export default {
     },
 
     style () {
-      return this.isClosed ? {} : {'flex-basis': '30%'}
+      return this.isClosed ? {} : {'flex-basis': '35%'}
     }
   },
 
@@ -72,13 +73,16 @@ export default {
     },
 
     save () {
+      this.submitting = true
       this.$store.dispatch('addComment', {
         comment: this.newComment,
         targetTopicId: this.targetId
+      }).then(() => {
+        this.newComment = ''
+        this.$refs.newComment.setHTML('')     // why does binding not work here?
+        this.focus()
+        this.submitting = false
       })
-      this.newComment = ''
-      this.$refs.newComment.setHTML('')     // why does binding not work here?
-      this.focus()
     },
 
     focus () {

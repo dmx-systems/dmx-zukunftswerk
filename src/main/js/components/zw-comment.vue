@@ -62,6 +62,7 @@ export default {
 
 .zw-comment .columns > div {
   flex-basis: 50%;
+  padding: 0 6px;
   background-color: white;
 }
 </style>

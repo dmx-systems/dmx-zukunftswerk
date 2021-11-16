@@ -2,7 +2,9 @@
   <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="html"></div>
   <div v-else class="zw-note dmx-html-field form">
     <quill v-model="text.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
-    <el-button type="primary" @click="save">Save</el-button>
+    <el-button class="save-button" type="primary" size="medium" @click="save">
+      <zw-string>global.save</zw-string>
+    </el-button>
   </div>
 </template>
 
@@ -65,11 +67,15 @@ export default {
 .zw-note {
   min-width: 120px;
   max-width: 420px;
-  padding: 8px;
+  padding: 10px;
   background-color: rgb(255, 250, 109);
 }
 
 .zw-note.form {
   min-width: 240px;
+}
+
+.zw-note .save-button {
+  margin-top: 6px;
 }
 </style>

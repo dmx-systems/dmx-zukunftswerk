@@ -3,19 +3,21 @@
     <el-button v-if="isClosed" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-circle-close" @click="close"></el-button>
-      <h4 v-if="documentMode">Document discussion</h4>
-      <h4 v-if="workspaceMode">Workspace discussion</h4>
+      <h4 v-if="documentMode"><zw-string>discussion.document</zw-string></h4>
+      <h4 v-if="workspaceMode"><zw-string>discussion.workspace</zw-string></h4>
       <!-- Comments -->
       <div class="comments">
         <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
       </div>
       <!-- New Comment -->
       <div class="new-comment" v-loading="submitting">
-        New comment
+        <zw-string>discussion.new_comment</zw-string>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
-        <el-button class="save-button" type="primary" @click="save">Save</el-button>
+        <el-button class="save-button" type="primary" size="medium" @click="save">
+          <zw-string>global.save</zw-string>
+        </el-button>
       </div>
     </template>
   </div>
@@ -62,7 +64,12 @@ export default {
     },
 
     style () {
-      return this.isClosed ? {} : {'flex-basis': '35%'}
+      return this.isClosed ? {
+        padding: '6px'
+      } : {
+        padding: '10px 0 10px 10px',
+        'flex-basis': '35%'
+      }
     }
   },
 
@@ -109,19 +116,19 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 0 6px;
   background-color: rgb(182, 216, 202);
   z-index: 1;
 }
 
 .zw-discussion .open-button {
+  padding: 0;
   font-size: 24px;
 }
 
 .zw-discussion .close-button {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 5px;
+  right: 5px;
   padding: 0;
   font-size: 24px;
 }

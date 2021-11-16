@@ -3,6 +3,14 @@ export default {
   'header.shared_workspace.fr': 'Espace de travail commun',
   'new.note.de': 'Notiz',
   'new.note.fr': 'Note',
-  'new.textfield.de': 'Textfeld',
-  'new.textfield.fr': 'Description',
+  'new.label.de': 'Beschrifung',
+  'new.label.fr': 'Étiquetage',
+  'discussion.document.de': 'Diskussion zum Dokument',
+  'discussion.document.fr': 'Discussion sur le document',
+  'discussion.workspace.de': 'Allgemeine Diskussion',
+  'discussion.workspace.fr': 'Discussion générale',
+  'discussion.new_comment.de': 'Neuer Kommentar',
+  'discussion.new_comment.fr': 'Nouveau commentaire',
+  'global.save.de': 'OK',
+  'global.save.fr': 'OK'
 }

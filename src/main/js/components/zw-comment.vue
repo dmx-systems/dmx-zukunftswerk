@@ -1,7 +1,10 @@
 <template>
   <div class="zw-comment">
-    <div v-html="this[origLang]"></div>
-    <div v-html="this[translatedLang]"></div>
+    <div class="label">{{date}}</div>
+    <div class="columns">
+      <div v-html="this[origLang]"></div>
+      <div v-html="this[translatedLang]"></div>
+    </div>
   </div>
 </template>
 
@@ -9,6 +12,10 @@
 // import dmx from 'dmx-api'
 
 export default {
+
+  created () {
+    // console.log(this.comment)
+  },
 
   props: {
     comment: Object
@@ -34,18 +41,26 @@ export default {
       } else if (this.origLang === 'fr') {
         return 'de'
       }
+    },
+
+    created () {
+      return this.comment.children['dmx.timestamps.created'].value
+    },
+
+    date () {
+      return new Date(this.created).toLocaleString()
     }
   }
 }
 </script>
 
 <style>
-.zw-comment {
+.zw-comment .columns {
   display: flex;
   column-gap: 12px;
 }
 
-.zw-comment > div {
+.zw-comment .columns > div {
   flex-basis: 50%;
   background-color: white;
 }

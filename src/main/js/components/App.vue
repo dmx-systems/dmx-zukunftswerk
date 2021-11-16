@@ -36,6 +36,8 @@
   --main-font-family: -apple-system, system-ui, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue,
       sans-serif;
   --main-font-size: 14px;
+  --label-font-size: 12px;
+  --label-color: #909399;   /* matches --color-text-secondary in element-ui/packages/theme-chalk/src/common/var.scss */
   --line-height: 1.5;
   --paragraph-spacing: 0.5em;
   --highlight-color: #409eff;                 /* matches --color-primary */
@@ -52,6 +54,13 @@ body {
   overflow: hidden;   /* avoid window bounce when scrolling reaches top/bottom */
   font-family: var(--main-font-family);
   font-size:   var(--main-font-size);
+}
+
+/* Reusable classes */
+
+.label {
+  font-size: var(--label-font-size) !important;
+  color:     var(--label-color) !important;
 }
 
 /* Element UI Overrides */

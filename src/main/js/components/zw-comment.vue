@@ -1,7 +1,7 @@
 <template>
   <div class="zw-comment">
-    <div v-html="de"></div>
-    <div v-html="fr"></div>
+    <div v-html="this[origLang]"></div>
+    <div v-html="this[translatedLang]"></div>
   </div>
 </template>
 
@@ -17,13 +17,23 @@ export default {
   computed: {
 
     de () {
-      const de = this.comment.children['zukunftswerk.comment.de']
-      return de ? de.value : 'n/a'
+      return this.comment.children['zukunftswerk.comment.de'].value
     },
 
     fr () {
-      const fr = this.comment.children['zukunftswerk.comment.fr']
-      return fr ? fr.value : 'n/a'
+      return this.comment.children['zukunftswerk.comment.fr'].value
+    },
+
+    origLang () {
+      return this.comment.children['zukunftswerk.language#zukunftswerk.original_language'].value
+    },
+
+    translatedLang () {
+      if (this.origLang === 'de') {
+        return 'fr'
+      } else if (this.origLang === 'fr') {
+        return 'de'
+      }
     }
   }
 }

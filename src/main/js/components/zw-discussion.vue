@@ -26,7 +26,7 @@ export default {
 
   data () {
     return {
-      newComment: '',         // the new comment entered by the user
+      newComment: '',         // new comment entered by the user
       submitting: false       // true while submitting new comment
     }
   },

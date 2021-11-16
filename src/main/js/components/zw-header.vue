@@ -39,7 +39,7 @@ export default {
   display: flex;
   align-items: baseline;
   color: white;
-  padding: 0px 8px;
+  padding: 8px;
   background-color: rgb(63, 65, 104);
   z-index: 1;
 }
@@ -51,5 +51,9 @@ export default {
 .zw-header .workspace .name {
   font-weight: bold;
   font-style: italic;
+}
+
+.zw-header .el-button {
+  padding: 0;
 }
 </style>

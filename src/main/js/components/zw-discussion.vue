@@ -6,11 +6,15 @@
       <h4 v-if="documentMode">Document discussion</h4>
       <h4 v-if="workspaceMode">Workspace discussion</h4>
       <!-- Comments -->
-      <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
+      <div class="comments">
+        <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
+      </div>
       <!-- New Comment -->
-      <div class="new-comment dmx-html-field" v-loading="submitting">
+      <div class="new-comment" v-loading="submitting">
         New comment
-        <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
+        <div class="dmx-html-field">
+          <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
+        </div>
         <el-button class="save-button" type="primary" @click="save">Save</el-button>
       </div>
     </template>
@@ -102,8 +106,9 @@ export default {
 
 <style>
 .zw-discussion {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  overflow: auto;
   padding: 0 6px;
   background-color: rgb(182, 216, 202);
   z-index: 1;
@@ -123,6 +128,10 @@ export default {
 
 .zw-discussion .save-button {
   margin-top: 6px;
+}
+
+.zw-discussion .comments {
+  overflow: auto;
 }
 
 .zw-discussion .zw-comment {

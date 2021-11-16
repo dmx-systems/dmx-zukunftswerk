@@ -27,6 +27,6 @@ export default {
 
 .zw-webclient .content-area {
   display: flex;
-  height: 100%;
+  height: 95%;    /* FIXME: actually 100% minus header height */
 }
 </style>

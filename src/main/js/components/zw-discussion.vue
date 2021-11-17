@@ -11,7 +11,9 @@
       </div>
       <!-- New Comment -->
       <div class="new-comment" v-loading="submitting">
-        <zw-string>discussion.new_comment</zw-string>
+        <div class="field-label">
+          <zw-string>discussion.new_comment</zw-string>
+        </div>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
@@ -48,10 +50,12 @@ export default {
     },
 
     documentMode () {
+      // console.log('documentMode', this.discussionMode === 'document')
       return this.discussionMode === 'document'
     },
 
     workspaceMode () {
+      // console.log('workspaceMode', this.discussionMode === 'workspace')
       return this.discussionMode === 'workspace'
     },
 

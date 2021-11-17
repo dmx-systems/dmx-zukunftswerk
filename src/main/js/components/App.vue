@@ -63,6 +63,12 @@ body {
   color:     var(--label-color) !important;
 }
 
+.field-label {
+  font-size: var(--label-font-size) !important;
+  color:     var(--label-color) !important;
+  margin-bottom: 2px !important;
+}
+
 /* Element UI Overrides */
 .el-loading-mask {
   background-color: rgba(255, 255, 255, .7) !important;       /* alpha was 0.9 */

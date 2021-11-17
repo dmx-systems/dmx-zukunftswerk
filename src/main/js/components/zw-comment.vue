@@ -1,6 +1,6 @@
 <template>
   <div class="zw-comment">
-    <div class="label">{{date}}</div>
+    <div class="field-label">{{date}}</div>
     <div class="columns">
       <div v-html="this[origLang]"></div>
       <div v-html="this[translatedLang]"></div>

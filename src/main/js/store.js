@@ -70,6 +70,11 @@ const actions = {
 
   setLang (_, lang) {
     state.lang = lang
+  },
+
+  getFileContent (_, repoPath) {
+    return http.get('/filerepo/' + encodeURIComponent(repoPath))
+      .then(response => response.data)
   }
 }
 

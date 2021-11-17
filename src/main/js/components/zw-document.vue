@@ -106,6 +106,12 @@ export default {
     }
   },
 
+  watch: {
+    file () {
+      this.initText()
+    }
+  },
+
   methods: {
 
     update() {
@@ -136,7 +142,7 @@ export default {
 .zw-document {
   min-width: 120px;
   max-width: 420px;
-  padding: 8px;
+  padding: 12px;
   background-color: rgb(230, 230, 230);
 }
 

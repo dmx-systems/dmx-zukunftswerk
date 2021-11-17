@@ -5,6 +5,8 @@ export default {
   'new.note.fr': 'Note',
   'new.label.de': 'Beschrifung',
   'new.label.fr': 'Étiquetage',
+  'note.new_note.de': 'Neue Notiz',
+  'note.new_note.fr': 'Nouveau note',
   'discussion.document.de': 'Diskussion zum Dokument',
   'discussion.document.fr': 'Discussion sur le document',
   'discussion.workspace.de': 'Allgemeine Diskussion',

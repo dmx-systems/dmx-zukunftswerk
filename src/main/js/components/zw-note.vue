@@ -1,6 +1,9 @@
 <template>
   <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="html"></div>
   <div v-else class="zw-note dmx-html-field form">
+    <div class="field-label">
+      <zw-string>note.new_note</zw-string>
+    </div>
     <quill v-model="text.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>global.save</zw-string>

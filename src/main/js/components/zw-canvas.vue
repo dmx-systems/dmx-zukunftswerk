@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-workspace">
+  <div class="zw-canvas" @mousedown="mousedown" @mouseup="mouseup">
     <el-dropdown @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -7,8 +7,10 @@
         <el-dropdown-item><zw-string>new.label</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <zw-drag-resize v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>
-    <zw-drag-resize v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-drag-resize>
+    <div class="items" :style="style">
+      <zw-drag-resize v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>
+      <zw-drag-resize v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-drag-resize>
+    </div>
   </div>
 </template>
 
@@ -16,6 +18,13 @@
 import dmx from 'dmx-api'
 
 export default {
+
+  data () {
+    return {
+      pan: {x: 0, y: 0},      // canvas pan
+      startPos: undefined     // mouse position on canvas drag start
+    }
+  },
 
   computed: {
 
@@ -29,6 +38,12 @@ export default {
 
     newTopics () {
       return this.$store.state.newTopics
+    },
+
+    style () {
+      return {
+        'transform': `translate(${this.pan.x}px, ${this.pan.y}px)`
+      }
     }
   },
 
@@ -58,6 +73,25 @@ export default {
           'dmx.topicmaps.pinned': false
         }
       }))
+    },
+
+    mousedown (e) {
+      this.$el.addEventListener('mousemove', this.mousemove)
+      this.startPos = {
+        x: e.clientX,
+        y: e.clientY
+      }
+    },
+
+    mousemove (e) {
+      this.pan.x += e.clientX - this.startPos.x
+      this.pan.y += e.clientY - this.startPos.y
+      this.startPos.x = e.clientX
+      this.startPos.y = e.clientY
+    },
+
+    mouseup () {
+      this.$el.removeEventListener('mousemove', this.mousemove)
     }
   },
 
@@ -68,14 +102,18 @@ export default {
 </script>
 
 <style>
-.zw-workspace {
+.zw-canvas {
   flex-grow: 1;
   background-image: url("../../resources/grid.png");
 }
 
-.zw-workspace .add-button {
+.zw-canvas .add-button {
   padding: 0;
   margin: 8px;
   font-size: 24px;
+}
+
+.zw-canvas .items {
+  height: 100%;
 }
 </style>

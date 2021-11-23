@@ -127,6 +127,44 @@
             }
           }
         ]
+      },
+      // Note
+      {
+        "value":       "Notiz (de)",
+        "uri":         "zukunftswerk.note.de",
+        "dataTypeUri": "dmx.core.html"
+      },
+      {
+        "value":       "Note (fr)",
+        "uri":         "zukunftswerk.note.fr",
+        "dataTypeUri": "dmx.core.html"
+      },
+      {
+        "value":       "Note",
+        "uri":         "zukunftswerk.note",
+        "dataTypeUri": "dmx.core.entity",
+        "compDefs": [
+          {
+            "childTypeUri":        "zukunftswerk.note.de",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          },
+          {
+            "childTypeUri":        "zukunftswerk.note.fr",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          }
+
+        ],
+        "viewConfigTopics": [
+          {
+            "typeUri": "dmx.webclient.view_config",
+            "children": {
+              "dmx.webclient.icon": "\uf249",
+              "dmx.webclient.add_to_create_menu": true
+            }
+          }
+        ]
       }
     ],
     "topics": [

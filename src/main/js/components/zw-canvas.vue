@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       pan: {x: 0, y: 0},      // canvas pan
-      startPos: undefined     // mouse position on canvas drag start
+      dragPos: undefined     // mouse position on canvas drag start
     }
   },
 
@@ -50,8 +50,8 @@ export default {
   methods: {
 
     canvasFilter (topic) {
-      return topic.typeUri === 'dmx.notes.note' ||
-             topic.typeUri === 'zukunftswerk.document'
+      return topic.typeUri === 'zukunftswerk.document' ||
+             topic.typeUri === 'zukunftswerk.note'
     },
 
     handle (command) {
@@ -77,17 +77,17 @@ export default {
 
     mousedown (e) {
       this.$el.addEventListener('mousemove', this.mousemove)
-      this.startPos = {
+      this.dragPos = {
         x: e.clientX,
         y: e.clientY
       }
     },
 
     mousemove (e) {
-      this.pan.x += e.clientX - this.startPos.x
-      this.pan.y += e.clientY - this.startPos.y
-      this.startPos.x = e.clientX
-      this.startPos.y = e.clientY
+      this.pan.x += e.clientX - this.dragPos.x
+      this.pan.y += e.clientY - this.dragPos.y
+      this.dragPos.x = e.clientX
+      this.dragPos.y = e.clientY
     },
 
     mouseup () {

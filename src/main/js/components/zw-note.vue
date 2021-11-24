@@ -1,5 +1,5 @@
 <template>
-  <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="html"></div>
+  <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="noteHtml"></div>
   <div v-else class="zw-note dmx-html-field form">
     <div class="field-label">
       <zw-string>note.new_note</zw-string>
@@ -29,12 +29,34 @@ export default {
 
   computed: {
 
-    text () {
-      return this.topic.children['dmx.notes.text']
+    de () {
+      return this.html('de')
     },
 
-    html () {
-      return this.text && this.text.value
+    fr () {
+      return this.html('fr')
+    },
+
+    lang () {
+      return this.$store.state.lang
+    },
+
+    noteLang () {
+      if (this.de && this.fr) {
+        return this.lang
+      } else if (this.de) {
+        return 'de'
+      } else if (this.fr) {
+        return 'fr'
+      }
+    },
+
+    noteHtml () {
+      if (this.noteLang) {
+        const html = this.topic.children['zukunftswerk.note.' + this.noteLang]
+        // console.log(html && html.value)
+        return html && html.value
+      }
     },
 
     infoMode () {
@@ -47,6 +69,13 @@ export default {
   },
 
   methods: {
+
+    html (lang) {
+      const html = this.topic.children['zukunftswerk.note.' + lang].value
+      if (html !== '<p><br></p>') {
+        return html
+      }
+    },
 
     focus () {
       this.$refs.quill.focus()

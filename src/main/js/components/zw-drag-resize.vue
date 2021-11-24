@@ -86,8 +86,8 @@ export default {
   },
 
   components: {
-    'dmx.notes.note': require('./zw-note').default,
     'zukunftswerk.document': require('./zw-document').default,
+    'zukunftswerk.note': require('./zw-note').default,
     'vue-drag-resize': require('vue-drag-resize').default
   }
 }

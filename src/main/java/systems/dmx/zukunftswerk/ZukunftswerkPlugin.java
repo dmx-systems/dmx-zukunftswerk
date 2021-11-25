@@ -7,6 +7,7 @@ import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
+import systems.dmx.core.service.DirectivesResponse;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.util.DMXUtils;
@@ -52,33 +53,26 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @POST
+    @Path("/note")
+    @Consumes("text/plain")
+    @Transactional
+    @Override
+    public DirectivesResponse createNote(String note) {
+        try {
+            return new DirectivesResponse(createBilingualTopic(NOTE, note));
+        } catch (Exception e) {
+            throw new RuntimeException("Creating note failed, text=" + note, e);
+        }
+    }
+
+    @POST
     @Path("/comment/{targetTopicId}")
     @Consumes("text/plain")
     @Transactional
     @Override
     public Topic addComment(String comment, @PathParam("targetTopicId") long targetTopicId) {
         try {
-            // EN acts as dummy language, not used in this application.
-            // This translation's sole purpose is detection of the comment's original language
-            Translation translation = deepls.translate(comment, "EN").get(0);
-            String origLang = translation.detectedSourceLang.toLowerCase();
-            logger.info("origLang=\"" + origLang + "\"");
-            String targetLang;
-            if (origLang.equals("de")) {
-                targetLang = "fr";
-            } else if (origLang.equals("fr")) {
-                targetLang = "de";
-            } else {
-                throw new RuntimeException("Unsupported original language: \"" + origLang + "\" (detected)");
-            }
-            // translate comment
-            String translatedComment = deepls.translate(comment, targetLang).get(0).text;
-            //
-            Topic commentTopic = dmx.createTopic(mf.newTopicModel(COMMENT, mf.newChildTopicsModel()
-                .set("zukunftswerk.comment." + origLang, comment)
-                .set("zukunftswerk.comment." + targetLang, translatedComment)
-                .set("zukunftswerk.language#zukunftswerk.original_language", origLang)
-            ));
+            Topic commentTopic = createBilingualTopic(COMMENT, comment);
             dmx.createAssoc(mf.newAssocModel(
                 COMPOSITION,
                 mf.newTopicPlayerModel(targetTopicId, PARENT),
@@ -88,5 +82,31 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         } catch (Exception e) {
             throw new RuntimeException("Adding comment to topic " + targetTopicId + " failed, comment=" + comment, e);
         }
+    }
+
+    // ------------------------------------------------------------------------------------------------- Private Methods
+
+    private Topic createBilingualTopic(String topicTypeUri, String text) {
+        // EN acts as dummy language, not used in this application.
+        // This translation's sole purpose is detection of the comment's original language
+        Translation translation = deepls.translate(text, "EN").get(0);
+        String origLang = translation.detectedSourceLang.toLowerCase();
+        logger.info("origLang=\"" + origLang + "\"");
+        String targetLang;
+        if (origLang.equals("de")) {
+            targetLang = "fr";
+        } else if (origLang.equals("fr")) {
+            targetLang = "de";
+        } else {
+            throw new RuntimeException("Unsupported original language: \"" + origLang + "\" (detected)");
+        }
+        // translate comment
+        String translatedComment = deepls.translate(text, targetLang).get(0).text;
+        //
+        return dmx.createTopic(mf.newTopicModel(topicTypeUri, mf.newChildTopicsModel()
+            .set(topicTypeUri + "." + origLang, text)
+            .set(topicTypeUri + "." + targetLang, translatedComment)
+            .set("zukunftswerk.language#zukunftswerk.original_language", origLang)
+        ));
     }
 }

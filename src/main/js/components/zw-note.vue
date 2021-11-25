@@ -4,7 +4,7 @@
     <div class="field-label">
       <zw-string>note.new_note</zw-string>
     </div>
-    <quill v-model="text.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+    <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>global.save</zw-string>
     </el-button>
@@ -82,7 +82,7 @@ export default {
     },
 
     save () {
-      this.$store.dispatch('createTopic', this.topic)
+      this.$store.dispatch('createNote', this.topic)
     }
   },
 

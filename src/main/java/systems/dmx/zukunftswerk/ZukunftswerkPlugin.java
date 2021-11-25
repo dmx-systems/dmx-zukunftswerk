@@ -7,7 +7,6 @@ import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
-import systems.dmx.core.service.DirectivesResponse;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.util.DMXUtils;
@@ -57,9 +56,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Consumes("text/plain")
     @Transactional
     @Override
-    public DirectivesResponse createNote(String note) {
+    public Topic createNote(String note) {
         try {
-            return new DirectivesResponse(createBilingualTopic(NOTE, note));
+            return createBilingualTopic(NOTE, note);
         } catch (Exception e) {
             throw new RuntimeException("Creating note failed, text=" + note, e);
         }

@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       pan: {x: 0, y: 0},      // canvas pan
-      dragPos: undefined     // mouse position on canvas drag start
+      dragPos: undefined      // mouse position on canvas drag start
     }
   },
 
@@ -60,12 +60,8 @@ export default {
 
     newNote () {
       this.$store.dispatch('newTopic', new dmx.ViewTopic({
-        typeUri: 'dmx.notes.note',
-        children: {
-          'dmx.notes.text': {
-            value: ''
-          }
-        },
+        typeUri: 'zukunftswerk.note',
+        value: '',      // used as intermediate model while create
         viewProps: {
           'dmx.topicmaps.x': 100,
           'dmx.topicmaps.y': 100,

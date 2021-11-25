@@ -43,13 +43,19 @@ const actions = {
   /**
    * @param   topic   a dmx.ViewTopic
    */
-  createTopic (_, topic) {
-    dmx.rpc.createTopic(topic).then(_topic => {
+  createNote (_, topic) {
+    http.post('/zukunftswerk/note', topic.value, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    })
+    .then(response => response.data)
+    .then(_topic => {
       dmx.rpc.addTopicToTopicmap(state.topicmap.id, _topic.id, topic.viewProps)
-      store.dispatch('_processDirectives', _topic.directives)
-      const viewTopic = _topic.newViewTopic(topic.viewProps)
-      viewTopic.children = _topic.children      // ### TODO, see comment in newViewTopic()
-      state.topicmap.addTopic(viewTopic)
+      topic.id       = _topic.id
+      topic.value    = _topic.value
+      topic.children = _topic.children
+      state.topicmap.addTopic(topic)
     })
     removeTopic(topic)
   },

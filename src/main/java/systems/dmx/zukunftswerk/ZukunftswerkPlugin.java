@@ -69,7 +69,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Consumes("text/plain")
     @Transactional
     @Override
-    public Topic addComment(String comment, @PathParam("targetTopicId") long targetTopicId) {
+    public Topic createComment(String comment, @PathParam("targetTopicId") long targetTopicId) {
         try {
             Topic commentTopic = createBilingualTopic(COMMENT, comment);
             dmx.createAssoc(mf.newAssocModel(

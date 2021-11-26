@@ -132,7 +132,7 @@ export default {
     },
 
     openDiscussion () {
-      this.$store.dispatch('setDiscussionMode', 'document')
+      this.$store.dispatch('setPanelVisibility', true)
     }
   }
 }

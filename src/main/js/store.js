@@ -11,9 +11,8 @@ const state = {
   isWritable: undefined,        // true if the workspace is writable (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
-  discussionMode: undefined,    // type of open discussion panel: 'document'/'workspace' (String), undefined
-                                // if no panel is open
-  discussion: [],               // the discussion displayed in the discussion panel (array of dmx.RelatedTopic)
+  panelVisibility: false,       // discussion panel visibility (Boolean)
+  discussion: undefined,        // the discussion displayed in the discussion panel (array of dmx.RelatedTopic)
   lang: 'de',                   // UI language ('de'/'fr')
   langStrings:  require('./lang-strings').default,
   quillOptions: require('./quill-options').default
@@ -60,8 +59,8 @@ const actions = {
     })
   },
 
-  addComment (_, {comment, targetTopicId}) {
-    return http.post(`/zukunftswerk/comment/${targetTopicId}`, comment, {
+  createComment (_, comment) {
+    return http.post(`/zukunftswerk/comment/${state.workspace.id}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
       }
@@ -70,8 +69,13 @@ const actions = {
     })
   },
 
-  setDiscussionMode (_, mode) {
-    state.discussionMode = mode
+  setPanelVisibility (_, visibility) {
+    state.panelVisibility = visibility
+    if (visibility && !state.discussion) {
+      http.get(`/zukunftswerk/discussion/${state.workspace.id}`).then(response => {
+        state.discussion = response.data
+      })
+    }
   },
 
   setLang (_, lang) {
@@ -84,28 +88,9 @@ const actions = {
   }
 }
 
-const getters = {
-  targetId: state => {
-    if (state.discussionMode === 'document') {
-      return state.topic.id
-    } else if (state.discussionMode === 'workspace') {
-      return state.workspace.id
-    }
-  }
-}
-
 const store = new Vuex.Store({
   state,
-  actions,
-  getters
-})
-
-store.watch(state => state.discussionMode, mode => {
-  if (mode) {
-    http.get(`/zukunftswerk/discussion/${store.getters.targetId}`).then(response => {
-      state.discussion = response.data
-    })
-  }
+  actions
 })
 
 export default store

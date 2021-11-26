@@ -13,5 +13,5 @@ public interface ZukunftswerkService {
 
     Topic createNote(String note);
 
-    Topic addComment(String comment, long targetTopicId);
+    Topic createComment(String comment, long targetTopicId);
 }

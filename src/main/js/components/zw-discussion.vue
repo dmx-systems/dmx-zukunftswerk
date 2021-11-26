@@ -1,10 +1,9 @@
 <template>
   <div class="zw-discussion" :style="style">
-    <el-button v-if="isClosed" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
+    <el-button v-if="!isOpen" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-circle-close" @click="close"></el-button>
-      <h4 v-if="documentMode"><zw-string>discussion.document</zw-string></h4>
-      <h4 v-if="workspaceMode"><zw-string>discussion.workspace</zw-string></h4>
+      <h4><zw-string>discussion.heading</zw-string></h4>
       <!-- Comments -->
       <div class="comments">
         <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
@@ -37,30 +36,12 @@ export default {
 
   computed: {
 
-    discussionMode () {
-      return this.$store.state.discussionMode
+    isOpen () {
+      return this.$store.state.panelVisibility
     },
 
     discussion () {
       return this.$store.state.discussion
-    },
-
-    isClosed () {
-      return !this.discussionMode
-    },
-
-    documentMode () {
-      // console.log('documentMode', this.discussionMode === 'document')
-      return this.discussionMode === 'document'
-    },
-
-    workspaceMode () {
-      // console.log('workspaceMode', this.discussionMode === 'workspace')
-      return this.discussionMode === 'workspace'
-    },
-
-    targetId () {
-      return this.$store.getters.targetId
     },
 
     quillOptions () {
@@ -68,11 +49,11 @@ export default {
     },
 
     style () {
-      return this.isClosed ? {
-        padding: '6px'
-      } : {
+      return this.isOpen ? {
         padding: '10px 0 10px 10px',
         'flex-basis': '35%'
+      } : {
+        padding: '6px'
       }
     }
   },
@@ -80,19 +61,16 @@ export default {
   methods: {
 
     open () {
-      this.$store.dispatch('setDiscussionMode', 'workspace')
+      this.$store.dispatch('setPanelVisibility', true)
     },
 
     close () {
-      this.$store.dispatch('setDiscussionMode', undefined)
+      this.$store.dispatch('setPanelVisibility', false)
     },
 
     save () {
       this.submitting = true
-      this.$store.dispatch('addComment', {
-        comment: this.newComment,
-        targetTopicId: this.targetId
-      }).then(() => {
+      this.$store.dispatch('createComment', this.newComment).then(() => {
         this.newComment = ''
         this.$refs.newComment.setHTML('')     // why does binding not work here?
         this.focus()

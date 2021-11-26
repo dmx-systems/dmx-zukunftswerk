@@ -1,6 +1,6 @@
 <template>
   <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="noteHtml"></div>
-  <div v-else class="zw-note dmx-html-field form">
+  <div v-else class="zw-note dmx-html-field form" v-loading="saving">
     <div class="field-label">
       <zw-string>note.new_note</zw-string>
     </div>
@@ -15,6 +15,12 @@
 import dmx from 'dmx-api'
 
 export default {
+
+  data () {
+    return {
+      saving: false           // true while note is saved
+    }
+  },
 
   props: {
     topic: {
@@ -82,7 +88,10 @@ export default {
     },
 
     save () {
-      this.$store.dispatch('createNote', this.topic)
+      this.saving = true
+      this.$store.dispatch('createNote', this.topic).then(() => {
+        this.saving = false
+      })
     }
   },
 

@@ -44,7 +44,7 @@ const actions = {
    * @param   topic   a dmx.ViewTopic
    */
   createNote (_, topic) {
-    http.post('/zukunftswerk/note', topic.value, {
+    return http.post('/zukunftswerk/note', topic.value, {
       headers: {
         'Content-Type': 'text/plain'
       }
@@ -56,8 +56,8 @@ const actions = {
       topic.value    = _topic.value
       topic.children = _topic.children
       state.topicmap.addTopic(topic)
+      removeTopic(topic)
     })
-    removeTopic(topic)
   },
 
   addComment (_, {comment, targetTopicId}) {

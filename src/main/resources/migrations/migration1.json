@@ -112,6 +112,14 @@
                 }
               }
             ]
+          },
+          {
+            "childTypeUri":        "zukunftswerk.comment",
+            "childCardinalityUri": "dmx.core.one"
+          },
+          {
+            "childTypeUri":        "zukunftswerk.document",
+            "childCardinalityUri": "dmx.core.one"
           }
         ],
         "viewConfigTopics": [

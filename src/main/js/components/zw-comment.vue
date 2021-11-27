@@ -5,6 +5,11 @@
       <div v-html="this[origLang]"></div>
       <div v-html="this[translatedLang]"></div>
     </div>
+    <div class="button-panel">
+      <el-button type="text">Reply</el-button>
+      <el-button type="text">Edit</el-button>
+      <el-button type="text">Delete</el-button>
+    </div>
   </div>
 </template>
 
@@ -64,5 +69,18 @@ export default {
   flex-basis: 50%;
   padding: 0 6px;
   background-color: white;
+}
+
+.zw-comment .button-panel {
+  text-align: right;
+  visibility: hidden;
+}
+
+.zw-comment:hover .button-panel {
+  visibility: visible;
+}
+
+.zw-comment .button-panel .el-button {
+  padding: 0;
 }
 </style>

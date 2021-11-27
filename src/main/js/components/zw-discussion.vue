@@ -110,7 +110,7 @@ export default {
 .zw-discussion .close-button {
   position: absolute;
   top: 5px;
-  right: 5px;
+  right: 4px;
   padding: 0;
   font-size: 24px;
 }
@@ -123,11 +123,7 @@ export default {
   overflow: auto;
 }
 
-.zw-discussion .zw-comment {
-  margin-top: 12px;
-}
-
 .zw-discussion .new-comment {
-  margin-top: 24px;
+  margin-top: 16px;
 }
 </style>

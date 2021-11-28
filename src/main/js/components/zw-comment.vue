@@ -1,16 +1,13 @@
 <template>
   <div class="zw-comment">
     <div class="field-label">{{date}}</div>
-    <el-button class="comment-ref-button" v-if="commentRef" type="text">
-      <span class="fa fa-comment"></span>
-      <zw-truncate :html="commentRef[lang]"></zw-truncate>
-    </el-button>
+    <zw-comment-ref :comment="refComment"></zw-comment-ref>
     <div class="columns">
       <div v-html="this[origLang]"></div>
       <div v-html="this[translatedLang]"></div>
     </div>
     <div class="button-panel">
-      <el-button type="text">Reply</el-button>
+      <el-button type="text" @click="reply">Reply</el-button>
       <el-button type="text">Edit</el-button>
       <el-button type="text">Delete</el-button>
     </div>
@@ -27,7 +24,10 @@ export default {
   },
 
   props: {
-    comment: Object
+    comment: {
+      type: Object,     // the Comment topic to render (plain Object, not a dmx.Topic)
+      required: true
+    }
   },
 
   computed: {
@@ -52,14 +52,8 @@ export default {
       }
     },
 
-    commentRef () {
-      const commentRef = this.comment.children['zukunftswerk.comment']
-      if (commentRef) {
-        return {
-          de: commentRef.children['zukunftswerk.comment.de'].value,
-          fr: commentRef.children['zukunftswerk.comment.fr'].value
-        }
-      }
+    refComment () {
+      return this.comment.children['zukunftswerk.comment']
     },
 
     lang () {
@@ -73,18 +67,19 @@ export default {
     date () {
       return new Date(this.created).toLocaleString()
     }
+  },
+
+  methods: {
+    reply () {
+      this.$emit('reply', this.comment)
+    }
   }
 }
 </script>
 
 <style>
-.zw-comment {
-  background-color: white;
-}
-
-.zw-comment .comment-ref-button {
-  white-space: unset;     /* Element UI default is "nowrap" */
-  text-align: unset;      /* Element UI default is "center" */
+.zw-comment .zw-comment-ref {
+  margin-bottom: 6px;
 }
 
 .zw-comment .columns {
@@ -95,6 +90,7 @@ export default {
 .zw-comment .columns > div {
   flex-basis: 50%;
   padding: 0 6px;
+  background-color: white;
 }
 
 .zw-comment .button-panel {

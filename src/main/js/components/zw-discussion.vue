@@ -6,13 +6,14 @@
       <h4><zw-string>discussion.heading</zw-string></h4>
       <!-- Comments -->
       <div class="comments">
-        <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id"></zw-comment>
+        <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id" @reply="reply"></zw-comment>
       </div>
       <!-- New Comment -->
       <div class="new-comment" v-loading="submitting">
         <div class="field-label">
           <zw-string>discussion.new_comment</zw-string>
         </div>
+        <zw-comment-ref :comment="refComment"></zw-comment-ref>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
@@ -29,8 +30,9 @@ export default {
 
   data () {
     return {
-      newComment: '',         // new comment entered by the user
-      submitting: false       // true while submitting new comment
+      newComment: '',             // new comment entered by the user
+      refComment: undefined,      // comment the new comment relates to (a Comment topic, plain object)
+      submitting: false           // true while submitting new comment
     }
   },
 
@@ -78,6 +80,10 @@ export default {
       })
     },
 
+    reply (comment) {
+      this.refComment = comment
+    },
+
     focus () {
       this.$refs.newComment.focus()
     }
@@ -121,11 +127,11 @@ export default {
   overflow: auto;
 }
 
-.zw-discussion .comments .zw-comment + .zw-comment {
+.zw-discussion .new-comment {
   margin-top: 18px;
 }
 
-.zw-discussion .new-comment {
-  margin-top: 18px;
+.zw-discussion .new-comment .zw-comment-ref {
+  margin-bottom: 6px;
 }
 </style>

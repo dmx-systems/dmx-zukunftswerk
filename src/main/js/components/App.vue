@@ -66,7 +66,7 @@ body {
 .field-label {
   font-size: var(--label-font-size) !important;
   color:     var(--label-color) !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 3px !important;
 }
 
 /* Element UI Overrides */
@@ -75,7 +75,7 @@ body {
 }
 
 .el-loading-mask {
-  background-color: rgba(255, 255, 255, .7) !important;       /* alpha was 0.9 */
+  background-color: rgba(255, 255, 255, .7) !important;       /* Element UI default alpha is 0.9 */
 }
 
 /* HTML fields */

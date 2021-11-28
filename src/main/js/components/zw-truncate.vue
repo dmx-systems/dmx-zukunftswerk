@@ -4,7 +4,7 @@
 </template>
 
 <script>
-const LIMIT = 70
+const LIMIT = 150
 
 export default {
 

@@ -1,6 +1,10 @@
 <template>
   <div class="zw-comment">
     <div class="field-label">{{date}}</div>
+    <el-button v-if="commentRef" type="text">
+      <span class="fa fa-comment"></span>
+      <zw-truncate :html="commentRef[lang]"></zw-truncate>
+    </el-button>
     <div class="columns">
       <div v-html="this[origLang]"></div>
       <div v-html="this[translatedLang]"></div>
@@ -46,6 +50,20 @@ export default {
       } else if (this.origLang === 'fr') {
         return 'de'
       }
+    },
+
+    commentRef () {
+      const commentRef = this.comment.children['zukunftswerk.comment']
+      if (commentRef) {
+        return {
+          de: commentRef.children['zukunftswerk.comment.de'].value,
+          fr: commentRef.children['zukunftswerk.comment.fr'].value
+        }
+      }
+    },
+
+    lang () {
+      return this.$store.state.lang
     },
 
     created () {

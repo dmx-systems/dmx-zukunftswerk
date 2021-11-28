@@ -11,7 +11,8 @@ import './element-ui'
 const dmxReady = dmx.init({store})
 
 // 2) Global component registrations
-Vue.component('zw-string', require('./components/zw-string').default)
+Vue.component('zw-string',   require('./components/zw-string').default)
+Vue.component('zw-truncate', require('./components/zw-truncate').default)
 
 // 3) Create Vue root instance
 // Instantiates router-view and dmx-webclient components.

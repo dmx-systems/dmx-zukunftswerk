@@ -158,7 +158,6 @@ export default {
 
 .zw-document .discussion-button .el-button {
   font-size: 18px;
-  padding: 0;
 }
 
 .zw-document > pre {

@@ -104,7 +104,6 @@ export default {
 }
 
 .zw-canvas .add-button {
-  padding: 0;
   margin: 8px;
   font-size: 24px;
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="zw-comment">
     <div class="field-label">{{date}}</div>
-    <el-button v-if="commentRef" type="text">
+    <el-button class="comment-ref-button" v-if="commentRef" type="text">
       <span class="fa fa-comment"></span>
       <zw-truncate :html="commentRef[lang]"></zw-truncate>
     </el-button>
@@ -78,6 +78,15 @@ export default {
 </script>
 
 <style>
+.zw-comment {
+  background-color: white;
+}
+
+.zw-comment .comment-ref-button {
+  white-space: unset;     /* Element UI default is "nowrap" */
+  text-align: unset;      /* Element UI default is "center" */
+}
+
 .zw-comment .columns {
   display: flex;
   column-gap: 12px;
@@ -86,7 +95,6 @@ export default {
 .zw-comment .columns > div {
   flex-basis: 50%;
   padding: 0 6px;
-  background-color: white;
 }
 
 .zw-comment .button-panel {
@@ -96,9 +104,5 @@ export default {
 
 .zw-comment:hover .button-panel {
   visibility: visible;
-}
-
-.zw-comment .button-panel .el-button {
-  padding: 0;
 }
 </style>

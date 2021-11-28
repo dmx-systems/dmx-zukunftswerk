@@ -70,6 +70,10 @@ body {
 }
 
 /* Element UI Overrides */
+.el-button--text {
+  padding: 0 !important;
+}
+
 .el-loading-mask {
   background-color: rgba(255, 255, 255, .7) !important;       /* alpha was 0.9 */
 }

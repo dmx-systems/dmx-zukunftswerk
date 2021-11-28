@@ -52,8 +52,4 @@ export default {
   font-weight: bold;
   font-style: italic;
 }
-
-.zw-header .el-button {
-  padding: 0;
-}
 </style>

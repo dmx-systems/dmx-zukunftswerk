@@ -53,7 +53,7 @@ export default {
         padding: '10px 0 10px 10px',
         'flex-basis': '35%'
       } : {
-        padding: '6px'
+        padding: '5px'
       }
     }
   },
@@ -103,7 +103,6 @@ export default {
 }
 
 .zw-discussion .open-button {
-  padding: 0;
   font-size: 24px;
 }
 
@@ -111,7 +110,6 @@ export default {
   position: absolute;
   top: 5px;
   right: 4px;
-  padding: 0;
   font-size: 24px;
 }
 
@@ -123,7 +121,11 @@ export default {
   overflow: auto;
 }
 
+.zw-discussion .comments .zw-comment + .zw-comment {
+  margin-top: 18px;
+}
+
 .zw-discussion .new-comment {
-  margin-top: 16px;
+  margin-top: 18px;
 }
 </style>

@@ -23,8 +23,8 @@ export default {
   },
 
   props: {
-    topic: {
-      type: dmx.ViewTopic,    // the Document topic (dmx.ViewTopic)
+    topic: {        // the Document topic (dmx.ViewTopic)
+      type: dmx.ViewTopic,
       required: true
     }
   },

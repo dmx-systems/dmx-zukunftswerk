@@ -59,10 +59,16 @@ const actions = {
     })
   },
 
-  createComment (_, comment) {
+  /**
+   * @param   refTopicId    optional: a Comment ID or a Document ID
+   */
+  createComment (_, {comment, refTopicId}) {
     return http.post(`/zukunftswerk/comment/${state.workspace.id}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
+      },
+      params: {
+        refTopicId: refTopicId
       }
     }).then(response => {
       state.discussion.push(response.data)

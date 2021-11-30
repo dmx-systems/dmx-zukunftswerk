@@ -46,10 +46,6 @@ export default {
       return this.$store.state.discussion
     },
 
-    quillOptions () {
-      return this.$store.state.quillOptions
-    },
-
     style () {
       return this.isOpen ? {
         padding: '10px 0 10px 10px',
@@ -57,6 +53,18 @@ export default {
       } : {
         padding: '5px'
       }
+    },
+
+    refTopicId () {
+      return this.refComment && this.refComment.id
+    },
+
+    refDocument () {
+      return this.$store.state.refDocument
+    },
+
+    quillOptions () {
+      return this.$store.state.quillOptions
     }
   },
 
@@ -72,8 +80,12 @@ export default {
 
     save () {
       this.submitting = true
-      this.$store.dispatch('createComment', this.newComment).then(() => {
+      this.$store.dispatch('createComment', {
+        comment: this.newComment,
+        refTopicId: this.refTopicId
+      }).then(() => {
         this.newComment = ''
+        this.refComment = undefined
         this.$refs.newComment.setHTML('')     // why does binding not work here?
         this.focus()
         this.submitting = false

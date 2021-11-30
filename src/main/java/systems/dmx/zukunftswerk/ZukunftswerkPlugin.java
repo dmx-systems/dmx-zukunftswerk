@@ -43,11 +43,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ZukunftswerkService
 
     @GET
-    @Path("/discussion/{targetTopicId}")
+    @Path("/discussion/{workspaceId}")
     @Override
-    public List<RelatedTopic> getDiscussion(@PathParam("targetTopicId") long targetTopicId) {
+    public List<RelatedTopic> getDiscussion(@PathParam("workspaceId") long workspaceId) {
         return DMXUtils.loadChildTopics(
-            dmx.getTopic(targetTopicId).getRelatedTopics(COMPOSITION, PARENT, CHILD, COMMENT)
+            dmx.getTopic(workspaceId).getRelatedTopics(COMPOSITION, PARENT, CHILD, COMMENT)
         );
     }
 
@@ -58,34 +58,42 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public Topic createNote(String note) {
         try {
-            return createBilingualTopic(NOTE, note);
+            return dmx.createTopic(createBilingualTopicModel(NOTE, note));
         } catch (Exception e) {
             throw new RuntimeException("Creating note failed, text=" + note, e);
         }
     }
 
     @POST
-    @Path("/comment/{targetTopicId}")
+    @Path("/comment/{workspaceId}")
     @Consumes("text/plain")
     @Transactional
     @Override
-    public Topic createComment(String comment, @PathParam("targetTopicId") long targetTopicId) {
+    public Topic createComment(String comment, @PathParam("workspaceId") long workspaceId,
+                                               @QueryParam("refTopicId") long refTopicId) {
         try {
-            Topic commentTopic = createBilingualTopic(COMMENT, comment);
+            TopicModel commentModel = createBilingualTopicModel(COMMENT, comment);
+            // add comment ref
+            if (refTopicId != 0) {
+                commentModel.getChildTopics().setRef(COMMENT, refTopicId);
+            }
+            //
+            Topic commentTopic = dmx.createTopic(commentModel);
+            // associate comment to workspace
             dmx.createAssoc(mf.newAssocModel(
                 COMPOSITION,
-                mf.newTopicPlayerModel(targetTopicId, PARENT),
+                mf.newTopicPlayerModel(workspaceId, PARENT),
                 mf.newTopicPlayerModel(commentTopic.getId(), CHILD)
             ));
             return commentTopic;
         } catch (Exception e) {
-            throw new RuntimeException("Adding comment to topic " + targetTopicId + " failed, comment=" + comment, e);
+            throw new RuntimeException("Adding comment to workspace " + workspaceId + " failed, comment=" + comment, e);
         }
     }
 
     // ------------------------------------------------------------------------------------------------- Private Methods
 
-    private Topic createBilingualTopic(String topicTypeUri, String text) {
+    private TopicModel createBilingualTopicModel(String topicTypeUri, String text) {
         // EN acts as dummy language, not used in this application.
         // This translation's sole purpose is detection of the comment's original language
         Translation translation = deepls.translate(text, "EN").get(0);
@@ -102,10 +110,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         // translate comment
         String translatedComment = deepls.translate(text, targetLang).get(0).text;
         //
-        return dmx.createTopic(mf.newTopicModel(topicTypeUri, mf.newChildTopicsModel()
+        return mf.newTopicModel(topicTypeUri, mf.newChildTopicsModel()
             .set(topicTypeUri + "." + origLang, text)
             .set(topicTypeUri + "." + targetLang, translatedComment)
             .set("zukunftswerk.language#zukunftswerk.original_language", origLang)
-        ));
+        );
     }
 }

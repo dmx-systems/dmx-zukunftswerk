@@ -12,7 +12,8 @@ const state = {
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
   panelVisibility: false,       // discussion panel visibility (Boolean)
-  discussion: undefined,        // the discussion displayed in the discussion panel (array of dmx.RelatedTopic)
+  discussion: undefined,        // the comments displayed in the discussion panel (array of dmx.RelatedTopic)
+  refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   lang: 'de',                   // UI language ('de'/'fr')
   langStrings:  require('./lang-strings').default,
   quillOptions: require('./quill-options').default
@@ -72,7 +73,13 @@ const actions = {
       }
     }).then(response => {
       state.discussion.push(response.data)
+      state.refDocument = undefined
     })
+  },
+
+  newDocumentComment ({dispatch}, document) {
+    state.refDocument = document
+    dispatch('setPanelVisibility', true)
   },
 
   setPanelVisibility (_, visibility) {

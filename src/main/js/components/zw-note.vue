@@ -6,7 +6,7 @@
     </div>
     <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
     <el-button class="save-button" type="primary" size="medium" @click="save">
-      <zw-string>global.save</zw-string>
+      <zw-string>global.submit</zw-string>
     </el-button>
   </div>
 </template>

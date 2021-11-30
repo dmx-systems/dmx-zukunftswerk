@@ -14,11 +14,12 @@
           <zw-string>discussion.new_comment</zw-string>
         </div>
         <zw-comment-ref :comment="refComment"></zw-comment-ref>
+        <zw-document-ref :document="refDocument"></zw-document-ref>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
-        <el-button class="save-button" type="primary" size="medium" @click="save">
-          <zw-string>global.save</zw-string>
+        <el-button class="submit-button" type="primary" size="medium" @click="submit">
+          <zw-string>global.submit</zw-string>
         </el-button>
       </div>
     </template>
@@ -56,7 +57,11 @@ export default {
     },
 
     refTopicId () {
-      return this.refComment && this.refComment.id
+      if (this.refComment) {
+        return this.refComment.id
+      } else if (this.refDocument) {
+        return this.refDocument.id
+      }
     },
 
     refDocument () {
@@ -78,17 +83,17 @@ export default {
       this.$store.dispatch('setPanelVisibility', false)
     },
 
-    save () {
+    submit () {
       this.submitting = true
       this.$store.dispatch('createComment', {
         comment: this.newComment,
         refTopicId: this.refTopicId
       }).then(() => {
         this.newComment = ''
-        this.refComment = undefined
         this.$refs.newComment.setHTML('')     // why does binding not work here?
-        this.focus()
+        this.refComment = undefined
         this.submitting = false
+        this.focus()
       })
     },
 
@@ -131,7 +136,7 @@ export default {
   font-size: 24px;
 }
 
-.zw-discussion .save-button {
+.zw-discussion .submit-button {
   margin-top: 6px;
 }
 
@@ -143,7 +148,8 @@ export default {
   margin-top: 18px;
 }
 
-.zw-discussion .new-comment .zw-comment-ref {
+.zw-discussion .new-comment .zw-comment-ref,
+.zw-discussion .new-comment .zw-document-ref {
   margin-bottom: 6px;
 }
 </style>

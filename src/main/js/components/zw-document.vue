@@ -1,7 +1,7 @@
 <template>
   <div class="zw-document">
     <div class="discussion-button">
-      <el-button type="text" icon="el-icon-chat-round" @click="openDiscussion"></el-button>
+      <el-button type="text" icon="el-icon-chat-round" @click="newComment"></el-button>
     </div>
     {{docName}}
     <pre v-if="isText">{{text}}</pre>
@@ -131,8 +131,8 @@ export default {
       return this.topic.children['dmx.files.file#zukunftswerk.' + lang]
     },
 
-    openDiscussion () {
-      this.$store.dispatch('setPanelVisibility', true)
+    newComment () {
+      this.$store.dispatch('newDocumentComment', this.topic)
     }
   }
 }

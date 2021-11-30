@@ -73,9 +73,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                                                @QueryParam("refTopicId") long refTopicId) {
         try {
             TopicModel commentModel = createBilingualTopicModel(COMMENT, comment);
-            // add comment ref
+            // add comment/document ref
             if (refTopicId != 0) {
-                commentModel.getChildTopics().setRef(COMMENT, refTopicId);
+                String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
+                commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
             }
             //
             Topic commentTopic = dmx.createTopic(commentModel);

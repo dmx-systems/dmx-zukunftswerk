@@ -2,6 +2,7 @@
   <div class="zw-comment">
     <div class="field-label">{{date}}</div>
     <zw-comment-ref :comment="refComment"></zw-comment-ref>
+    <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
       <div v-html="this[origLang]"></div>
       <div v-html="this[translatedLang]"></div>
@@ -56,6 +57,10 @@ export default {
       return this.comment.children['zukunftswerk.comment']
     },
 
+    refDocument () {
+      return this.comment.children['zukunftswerk.document']
+    },
+
     lang () {
       return this.$store.state.lang
     },
@@ -78,7 +83,8 @@ export default {
 </script>
 
 <style>
-.zw-comment .zw-comment-ref {
+.zw-comment .zw-comment-ref,
+.zw-comment .zw-document-ref {
   margin-bottom: 6px;
 }
 

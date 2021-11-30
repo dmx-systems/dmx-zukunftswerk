@@ -11,6 +11,6 @@ export default {
   'discussion.heading.fr': 'Discussion',
   'discussion.new_comment.de': 'Neuer Kommentar',
   'discussion.new_comment.fr': 'Nouveau commentaire',
-  'global.save.de': 'OK',
-  'global.save.fr': 'OK'
+  'global.submit.de': 'OK',
+  'global.submit.fr': 'OK'
 }

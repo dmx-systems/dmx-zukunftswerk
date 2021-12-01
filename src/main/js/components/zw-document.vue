@@ -132,7 +132,7 @@ export default {
     },
 
     newComment () {
-      this.$store.dispatch('newDocumentComment', this.topic)
+      this.$store.dispatch('setRefDocument', this.topic)
     }
   }
 }

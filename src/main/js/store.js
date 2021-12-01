@@ -77,7 +77,7 @@ const actions = {
     })
   },
 
-  newDocumentComment ({dispatch}, document) {
+  setRefDocument ({dispatch}, document) {
     state.refDocument = document
     dispatch('setPanelVisibility', true)
   },
@@ -85,9 +85,7 @@ const actions = {
   setPanelVisibility (_, visibility) {
     state.panelVisibility = visibility
     if (visibility && !state.discussion) {
-      http.get(`/zukunftswerk/discussion/${state.workspace.id}`).then(response => {
-        state.discussion = response.data
-      })
+      fetchDiscussion()
     }
   },
 
@@ -109,6 +107,14 @@ const store = new Vuex.Store({
 export default store
 
 // state helper
+
+function fetchDiscussion () {
+  http.get(`/zukunftswerk/discussion/${state.workspace.id}`).then(response => {
+    state.discussion = response.data.sort(
+      (c1, c2) => c1.children['dmx.timestamps.created'].value - c2.children['dmx.timestamps.created'].value
+    )
+  })
+}
 
 function removeTopic (topic) {
   const i = state.newTopics.indexOf(topic)

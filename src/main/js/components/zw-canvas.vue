@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-canvas" @mousedown="mousedown" @mouseup="mouseup">
+  <div class="zw-canvas" :style="style" @mousedown="mousedown" @mouseup="mouseup">
     <el-dropdown @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -7,7 +7,7 @@
         <el-dropdown-item><zw-string>new.label</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <div class="items" :style="style">
+    <div class="items" :style="itemsStyle">
       <zw-drag-resize v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>
       <zw-drag-resize v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-drag-resize>
     </div>
@@ -21,7 +21,7 @@ export default {
 
   data () {
     return {
-      pan: {x: 0, y: 0},      // canvas pan
+      pan: {x: 0, y: 0},      // canvas pan (in pixel)
       dragPos: undefined      // mouse position on canvas drag start
     }
   },
@@ -42,7 +42,20 @@ export default {
 
     style () {
       return {
+        'background-position': `${this.bgPos.x}px ${this.bgPos.y}px`
+      }
+    },
+
+    itemsStyle () {
+      return {
         'transform': `translate(${this.pan.x}px, ${this.pan.y}px)`
+      }
+    },
+
+    bgPos () {
+      return  {
+        x: this.pan.x % 20,     // 20x20 = size of grid.png
+        y: this.pan.y % 20
       }
     }
   },

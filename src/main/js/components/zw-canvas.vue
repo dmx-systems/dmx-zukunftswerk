@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-canvas" :style="style" @mousedown="mousedown" @mouseup="mouseup">
+  <div class="zw-canvas" :style="style" @mousedown="mousedown" @mouseup="mouseup" @wheel="wheel">
     <el-dropdown @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -7,7 +7,7 @@
         <el-dropdown-item><zw-string>new.label</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <div class="items" :style="itemsStyle">
+    <div class="content-layer" :style="contentLayerStyle">
       <zw-drag-resize v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>
       <zw-drag-resize v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-drag-resize>
     </div>
@@ -21,8 +21,9 @@ export default {
 
   data () {
     return {
-      pan: {x: 0, y: 0},      // canvas pan (in pixel)
-      dragPos: undefined      // mouse position on canvas drag start
+      pan: {x: 0, y: 0},      // content layer pan (in pixel)
+      zoom: 1,                // content layer zoom
+      dragPos: undefined      // temporary mouse pos while canvas drag
     }
   },
 
@@ -46,9 +47,9 @@ export default {
       }
     },
 
-    itemsStyle () {
+    contentLayerStyle () {
       return {
-        'transform': `translate(${this.pan.x}px, ${this.pan.y}px)`
+        'transform': `translate(${this.pan.x}px, ${this.pan.y}px) scale(${this.zoom})`
       }
     },
 
@@ -93,7 +94,7 @@ export default {
     },
 
     mousemove (e) {
-      this.pan.x += e.clientX - this.dragPos.x
+      this.pan.x += e.clientX - this.dragPos.x    // TODO: update sever state?
       this.pan.y += e.clientY - this.dragPos.y
       this.dragPos.x = e.clientX
       this.dragPos.y = e.clientY
@@ -101,6 +102,11 @@ export default {
 
     mouseup () {
       this.$el.removeEventListener('mousemove', this.mousemove)
+    },
+
+    wheel (e) {
+      this.zoom -= .003 * e.deltaY
+      this.zoom = Math.min(Math.max(.5, this.zoom), 2)
     }
   },
 
@@ -119,9 +125,5 @@ export default {
 .zw-canvas .add-button {
   margin: 8px;
   font-size: 24px;
-}
-
-.zw-canvas .items {
-  height: 100%;
 }
 </style>

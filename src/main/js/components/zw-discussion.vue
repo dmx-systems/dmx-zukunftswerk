@@ -50,9 +50,10 @@ export default {
     style () {
       return this.isOpen ? {
         padding: '10px 0 10px 10px',
-        'flex-basis': '35%'
+        'flex-grow': 1
       } : {
-        padding: '5px'
+        padding: '5px',
+        width: 'auto'
       }
     },
 

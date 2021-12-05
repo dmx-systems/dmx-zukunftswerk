@@ -94,7 +94,7 @@ export default {
     },
 
     mousemove (e) {
-      this.pan.x += e.clientX - this.dragPos.x    // TODO: update sever state?
+      this.pan.x += e.clientX - this.dragPos.x
       this.pan.y += e.clientY - this.dragPos.y
       this.dragPos.x = e.clientX
       this.dragPos.y = e.clientY
@@ -102,6 +102,7 @@ export default {
 
     mouseup () {
       this.$el.removeEventListener('mousemove', this.mousemove)
+      // TODO: update sever state?
     },
 
     wheel (e) {

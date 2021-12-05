@@ -3,6 +3,7 @@
     <zw-header></zw-header>
     <div class="content-area">
       <zw-canvas></zw-canvas>
+      <zw-resizer></zw-resizer>
       <zw-discussion></zw-discussion>
     </div>
   </div>
@@ -13,7 +14,8 @@ export default {
   components: {
     'zw-header':     require('./zw-header').default,
     'zw-canvas':     require('./zw-canvas').default,
-    'zw-discussion': require('./zw-discussion').default
+    'zw-discussion': require('./zw-discussion').default,
+    'zw-resizer':    require('./zw-resizer').default
   }
 }
 </script>

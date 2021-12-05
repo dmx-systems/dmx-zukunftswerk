@@ -12,6 +12,7 @@ const state = {
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
   panelVisibility: false,       // discussion panel visibility (Boolean)
+  panelX: 0.65 * window.innerWidth,    // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in the discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   lang: 'de',                   // UI language ('de'/'fr')
@@ -87,6 +88,10 @@ const actions = {
     if (visibility && !state.discussion) {
       fetchDiscussion()
     }
+  },
+
+  setPanelX (_, x) {
+    state.panelX = x
   },
 
   setLang (_, lang) {

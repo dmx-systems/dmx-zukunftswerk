@@ -16,7 +16,9 @@ export default {
     //
     window.addEventListener('resize', e => {
       // read state from view
-      this.$store.dispatch('setPanelX', document.querySelector('.zw-canvas').clientWidth)
+      if (this.visible) {
+        this.$store.dispatch('setPanelX', document.querySelector('.zw-canvas').clientWidth)
+      }
     })
   },
 
@@ -67,7 +69,7 @@ export default {
       const paneLWidth = this.left
       const paneRWidth = container.clientWidth - paneLWidth
       paneL.style.width = `${paneLWidth}px`
-      paneR.style.width = `${paneRWidth - 10}px`     // 10px = zw-discussion left padding
+      paneR.style.width = `${paneRWidth}px`
     }
   }
 }
@@ -75,11 +77,11 @@ export default {
 
 <style>
 .zw-resizer {
-  z-index: 2;
   position: absolute;
   width: 16px;
   height: 100%;
-  margin-left: -8px;   /* -width / 2 */
+  margin-left: -8px;    /* -width / 2 */
+  z-index: 2;           /* make it appear before discussion panel */
   cursor: col-resize;
   /* background-color: rgba(255, 0, 0, .3); */
 }

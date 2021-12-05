@@ -88,9 +88,6 @@ const actions = {
 
   setPanelVisibility (_, visibility) {
     state.panelVisibility = visibility
-    if (visibility && !state.discussion) {
-      fetchDiscussion()
-    }
   },
 
   setPanelX (_, x) {

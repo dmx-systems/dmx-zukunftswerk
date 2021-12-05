@@ -15,11 +15,15 @@ export default {
     })
     //
     window.addEventListener('resize', e => {
-      // read state from view
       if (this.visible) {
+        // read state from view
         this.$store.dispatch('setPanelX', document.querySelector('.zw-canvas').clientWidth)
       }
     })
+  },
+
+  mounted () {
+    this.resize()
   },
 
   computed: {
@@ -36,21 +40,20 @@ export default {
   methods: {
 
     onMouseDown ({pageX: initialPageX}) {
-      const self = this
-      const left = self.left
+      const left = this.left
       const {addEventListener, removeEventListener} = window
 
       this.$emit('resizeStart')
 
-      const onMouseMove = function ({pageX}) {
-        self.$store.dispatch('setPanelX', left + pageX - initialPageX)
-        self.resize()
+      const onMouseMove = ({pageX}) => {
+        this.$store.dispatch('setPanelX', left + pageX - initialPageX)
+        this.resize()
       }
 
-      const onMouseUp = function () {
+      const onMouseUp = () => {
         removeEventListener('mousemove', onMouseMove)
         removeEventListener('mouseup',   onMouseUp)
-        self.$emit('resizeStop')
+        this.$emit('resizeStop')
       }
 
       addEventListener('mousemove', onMouseMove)

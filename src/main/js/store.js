@@ -6,15 +6,18 @@ import dmx from 'dmx-api'
 Vue.use(Vuex)
 
 const state = {
+
   topicmap: undefined,          // the topicmap displayed on workspace canvas (dmx.Topicmap)
   workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
   isWritable: undefined,        // true if the workspace is writable (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
-  panelVisibility: false,       // discussion panel visibility (Boolean)
+
+  panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * window.innerWidth,    // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in the discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
+
   lang: 'de',                   // UI language ('de'/'fr')
   langStrings:  require('./lang-strings').default,
   quillOptions: require('./quill-options').default
@@ -30,7 +33,7 @@ const actions = {
     workspace.isWritable().then(isWritable => {
       state.workspace = workspace
       state.isWritable = isWritable
-    })
+    }).then(fetchDiscussion)
   },
 
   setTopic (_, topic) {

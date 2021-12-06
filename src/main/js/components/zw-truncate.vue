@@ -9,14 +9,14 @@ const LIMIT = 150
 export default {
 
   mounted () {
-    let text = this.$refs.html.innerText
-    if (text.length > LIMIT) {
-      const i = text.lastIndexOf(' ', LIMIT)
-      if (i >= 0) {
-        text = text.substring(0, i + 1) + '...'
-      }
+    this.truncate()
+  },
+
+  props: {
+    html: {
+      type: String,
+      required: true
     }
-    this.truncated = text
   },
 
   data () {
@@ -25,10 +25,23 @@ export default {
     }
   },
 
-  props: {
-    html: {
-      type: String,
-      required: true
+  watch: {
+    html () {
+      this.truncated = undefined
+      this.$nextTick(this.truncate)
+    }
+  },
+
+  methods: {
+    truncate () {
+      let text = this.$refs.html.innerText
+      if (text.length > LIMIT) {
+        const i = text.lastIndexOf(' ', LIMIT)
+        if (i >= 0) {
+          text = text.substring(0, i + 1) + '...'
+        }
+      }
+      this.truncated = text
     }
   }
 }

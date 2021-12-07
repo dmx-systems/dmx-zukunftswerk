@@ -12,6 +12,8 @@ const state = {
   isWritable: undefined,        // true if the workspace is writable (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
+  pan: {x: 0, y: 0},            // canvas pan (in pixel)
+  zoom: 1,                      // canvas zoom (Number)
 
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * window.innerWidth,    // x coordinate in pixel (Number)
@@ -79,6 +81,20 @@ const actions = {
       state.discussion.push(response.data)
       state.refDocument = undefined
     })
+  },
+
+  /**
+   * @param   document    a Document topic (plain object)
+   */
+  revealDocument ({dispatch}, document) {
+    const topic = state.topicmap.getTopic(document.id)
+    state.pan.x = - topic.pos.x   // TODO: geometry
+    state.pan.y = - topic.pos.y   // TODO: geometry
+    dispatch('setTopic', topic)
+  },
+
+  setZoom (_, zoom) {
+    state.zoom = zoom
   },
 
   setRefDocument ({dispatch}, document) {

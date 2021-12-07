@@ -1,5 +1,5 @@
 <template>
-  <el-button class="zw-document-ref" v-if="document" type="text">
+  <el-button class="zw-document-ref" v-if="document" type="text" @click="revealDoc">
     <span class="fa fa-file-o"></span>
     <span>{{docName}}</span>
   </el-button>
@@ -11,7 +11,7 @@
 export default {
 
   props: {
-    document: Object     // the Comment to render, optional (plain Object, not a dmx.Topic)
+    document: Object     // the Document to render, optional (plain Object, not a dmx.Topic)
   },
 
   computed: {
@@ -44,13 +44,19 @@ export default {
     lang () {
       return this.$store.state.lang
     }
+  },
+
+  methods: {
+    revealDoc () {
+      this.$store.dispatch('revealDocument', this.document)
+    }
   }
 }
 </script>
 
 <style>
 .zw-document-ref {
-  white-space: unset;     /* Element UI default is "nowrap" */
-  text-align: unset;      /* Element UI default is "center" */
+  white-space: unset;     /* Element UI button default is "nowrap" */
+  text-align: unset;      /* Element UI button default is "center" */
 }
 </style>

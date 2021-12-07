@@ -21,8 +21,6 @@ export default {
 
   data () {
     return {
-      pan: {x: 0, y: 0},      // content layer pan (in pixel)
-      zoom: 1,                // content layer zoom
       dragPos: undefined      // temporary mouse pos while canvas drag
     }
   },
@@ -31,6 +29,19 @@ export default {
 
     topicmap () {
       return this.$store.state.topicmap
+    },
+
+    pan () {
+      return this.$store.state.pan
+    },
+
+    zoom: {
+      get () {
+        return this.$store.state.zoom
+      },
+      set (zoom) {
+        this.$store.dispatch('setZoom', zoom)
+      }
     },
 
     topics () {
@@ -94,8 +105,8 @@ export default {
     },
 
     mousemove (e) {
-      this.pan.x += e.clientX - this.dragPos.x
-      this.pan.y += e.clientY - this.dragPos.y
+      this.pan.x += e.clientX - this.dragPos.x    // TODO: trigger action
+      this.pan.y += e.clientY - this.dragPos.y    // TODO: trigger action
       this.dragPos.x = e.clientX
       this.dragPos.y = e.clientY
     },

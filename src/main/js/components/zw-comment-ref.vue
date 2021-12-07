@@ -1,7 +1,7 @@
 <template>
-  <el-button class="zw-comment-ref" v-if="comment" type="text">
+  <el-button class="zw-comment-ref" v-if="comment" type="text" @click="click">
     <span class="fa fa-comment"></span>
-    <zw-truncate :html="commentHtml[lang]"></zw-truncate>
+    <zw-truncate :html="html[lang]"></zw-truncate>
   </el-button>
 </template>
 
@@ -11,12 +11,12 @@
 export default {
 
   props: {
-    comment: Object     // the Comment to render, optional (plain Object, not a dmx.Topic)
+    comment: Object     // the referred to Comment, optional (plain Object, not a dmx.Topic)
   },
 
   computed: {
 
-    commentHtml () {
+    html () {
       return {
         de: this.comment.children['zukunftswerk.comment.de'].value,
         fr: this.comment.children['zukunftswerk.comment.fr'].value
@@ -29,8 +29,8 @@ export default {
   },
 
   methods: {
-    reply () {
-      this.$emit('reply', this.comment)
+    click () {
+      this.$emit('comment-ref-click', this.comment)
     }
   }
 }

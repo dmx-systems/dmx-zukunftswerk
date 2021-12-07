@@ -1,7 +1,7 @@
 <template>
-  <div class="zw-comment">
+  <div class="zw-comment" :data-id="comment.id">
     <div class="field-label">{{date}}</div>
-    <zw-comment-ref :comment="refComment"></zw-comment-ref>
+    <zw-comment-ref :comment="refComment" @comment-ref-click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
       <div v-html="this[origLang]"></div>
@@ -75,8 +75,13 @@ export default {
   },
 
   methods: {
+
     reply () {
       this.$emit('reply', this.comment)
+    },
+
+    commentRefClick (comment) {
+      this.$emit('comment-ref-click', comment)
     }
   }
 }

@@ -182,6 +182,57 @@
             }
           }
         ]
+      },
+      // Label
+      {
+        "value":       "Beschriftung (de)",
+        "uri":         "zukunftswerk.label.de",
+        "dataTypeUri": "dmx.core.text"
+      },
+      {
+        "value":       "Étiquetage (fr)",
+        "uri":         "zukunftswerk.label.fr",
+        "dataTypeUri": "dmx.core.text"
+      },
+      {
+        "value":       "Label",
+        "uri":         "zukunftswerk.label",
+        "dataTypeUri": "dmx.core.entity",
+        "compDefs": [
+          {
+            "childTypeUri":        "zukunftswerk.label.de",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          },
+          {
+            "childTypeUri":        "zukunftswerk.label.fr",
+            "childCardinalityUri": "dmx.core.one",
+            "includeInLabel":      true
+          },
+          {
+            "childTypeUri":        "zukunftswerk.language",
+            "childCardinalityUri": "dmx.core.one",
+            "customAssocTypeUri":  "zukunftswerk.original_language",
+            "viewConfigTopics": [
+              {
+                "typeUri": "dmx.webclient.view_config",
+                "children": {
+                  "dmx.webclient.widget": "ref_uri:dmx.webclient.select",
+                  "dmx.webclient.clearable": true
+                }
+              }
+            ]
+          }
+        ],
+        "viewConfigTopics": [
+          {
+            "typeUri": "dmx.webclient.view_config",
+            "children": {
+              "dmx.webclient.icon": "\uf1dc",
+              "dmx.webclient.add_to_create_menu": true
+            }
+          }
+        ]
       }
     ],
     "topics": [

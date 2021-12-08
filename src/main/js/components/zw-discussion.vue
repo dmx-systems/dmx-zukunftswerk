@@ -105,7 +105,9 @@ export default {
     },
 
     jump (comment) {
-      document.querySelector(`.zw-discussion .zw-comment[data-id="${comment.id}"]`).scrollIntoView()
+      document.querySelector(`.zw-discussion .zw-comment[data-id="${comment.id}"]`).scrollIntoView({
+        behavior: 'smooth'
+      })
     },
 
     focus () {

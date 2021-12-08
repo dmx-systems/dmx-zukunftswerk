@@ -88,6 +88,7 @@ export default {
   components: {
     'zukunftswerk.document': require('./zw-document').default,
     'zukunftswerk.note': require('./zw-note').default,
+    'zukunftswerk.label': require('./zw-label').default,
     'vue-drag-resize': require('vue-drag-resize').default
   }
 }

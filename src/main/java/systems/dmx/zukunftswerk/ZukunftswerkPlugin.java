@@ -95,9 +95,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ------------------------------------------------------------------------------------------------- Private Methods
 
     private TopicModel createBilingualTopicModel(String topicTypeUri, String text) {
-        // EN acts as dummy language, not used in this application.
+        // "en" acts as dummy language, not used in this application.
         // This translation's sole purpose is detection of the comment's original language
-        Translation translation = deepls.translate(text, "EN").get(0);
+        Translation translation = deepls.translate(text, "en").get(0);
         String origLang = translation.detectedSourceLang.toLowerCase();
         logger.info("origLang=\"" + origLang + "\"");
         String targetLang;

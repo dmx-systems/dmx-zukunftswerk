@@ -77,7 +77,8 @@ export default {
 
     canvasFilter (topic) {
       return topic.typeUri === 'zukunftswerk.document' ||
-             topic.typeUri === 'zukunftswerk.note'
+             topic.typeUri === 'zukunftswerk.note'     ||
+             topic.typeUri === 'zukunftswerk.label'
     },
 
     handle (command) {

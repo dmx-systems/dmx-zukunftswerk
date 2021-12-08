@@ -67,6 +67,26 @@ const actions = {
   },
 
   /**
+   * @param   topic   a dmx.ViewTopic
+   */
+  createLabel (_, topic) {
+    return http.post('/zukunftswerk/label', topic.value, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    })
+    .then(response => response.data)
+    .then(_topic => {
+      dmx.rpc.addTopicToTopicmap(state.topicmap.id, _topic.id, topic.viewProps)
+      topic.id       = _topic.id
+      topic.value    = _topic.value
+      topic.children = _topic.children
+      state.topicmap.addTopic(topic)
+      removeTopic(topic)
+    })
+  },
+
+  /**
    * @param   refTopicId    optional: a Comment ID or a Document ID
    */
   createComment (_, {comment, refTopicId}) {

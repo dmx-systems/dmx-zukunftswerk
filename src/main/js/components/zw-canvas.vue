@@ -5,7 +5,7 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item><zw-string>new.document</zw-string></el-dropdown-item>
         <el-dropdown-item command="newNote"><zw-string>new.note</zw-string></el-dropdown-item>
-        <el-dropdown-item><zw-string>new.label</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newLabel"><zw-string>new.label</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <div class="content-layer" :style="contentLayerStyle">
@@ -88,6 +88,19 @@ export default {
     newNote () {
       this.$store.dispatch('newTopic', new dmx.ViewTopic({
         typeUri: 'zukunftswerk.note',
+        value: '',      // used as intermediate model while create
+        viewProps: {
+          'dmx.topicmaps.x': 100,
+          'dmx.topicmaps.y': 100,
+          'dmx.topicmaps.visibility': true,
+          'dmx.topicmaps.pinned': false
+        }
+      }))
+    },
+
+    newLabel () {
+      this.$store.dispatch('newTopic', new dmx.ViewTopic({
+        typeUri: 'zukunftswerk.label',
         value: '',      // used as intermediate model while create
         viewProps: {
           'dmx.topicmaps.x': 100,

@@ -42,6 +42,8 @@
   --paragraph-spacing: 0.5em;
   --highlight-color: #409eff;                 /* matches --color-primary */
   --highlight-color-2: #66b1ff;               /* matches --color-primary-light-2 */
+  --border-color: #dcdfe6;                    /* matches --border-color-base */
+  --border-color-lighter: #ebeef5;            /* matches --border-color-lighter */
 }
 
 html {

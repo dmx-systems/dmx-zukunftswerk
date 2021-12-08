@@ -9,6 +9,8 @@ export default {
   'new.label.fr': 'Étiquetage',
   'note.new_note.de': 'Neue Notiz',
   'note.new_note.fr': 'Nouveau note',
+  'label.new_label.de': 'Neue Beschriftung',
+  'label.new_label.fr': 'Nouveau étiquetage',
   'discussion.heading.de': 'Diskussion',
   'discussion.heading.fr': 'Discussion',
   'discussion.new_comment.de': 'Neuer Kommentar',

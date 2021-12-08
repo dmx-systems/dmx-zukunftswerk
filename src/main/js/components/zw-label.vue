@@ -1,10 +1,8 @@
 <template>
   <div v-if="infoMode" class="zw-label info">{{label[lang]}}</div>
   <div v-else class="zw-label dmx-html-field form" v-loading="saving">
-    <div class="field-label">
-      <zw-string>note.new_note</zw-string>
-    </div>
-    <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+    <zw-string class="field-label">label.new_label</zw-string>
+    <el-input v-model="topic.value" ref="input"></el-input>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>global.submit</zw-string>
     </el-button>
@@ -15,6 +13,12 @@
 import dmx from 'dmx-api'
 
 export default {
+
+  mounted () {
+    if (this.formMode) {
+      this.$refs.input.focus()
+    }
+  },
 
   data () {
     return {
@@ -48,20 +52,16 @@ export default {
       return this.mode === 'info'
     },
 
-    lang () {
-      return this.$store.state.lang
+    formMode () {
+      return this.mode === 'form'
     },
 
-    quillOptions () {
-      return this.$store.state.quillOptions
+    lang () {
+      return this.$store.state.lang
     }
   },
 
   methods: {
-
-    focus () {
-      this.$refs.quill.focus()
-    },
 
     save () {
       this.saving = true
@@ -69,13 +69,6 @@ export default {
         this.saving = false
       })
     }
-  },
-
-  components: {
-    quill: () => ({
-      component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
-      loading: require('./zw-spinner')
-    })
   }
 }
 </script>
@@ -87,6 +80,12 @@ export default {
 }
 
 .zw-label.form {
+  padding: 10px;
+  border: 1px solid var(--border-color-lighter);
+}
+
+.zw-label .el-input {
+  font-size: 24px;
 }
 
 .zw-label .save-button {

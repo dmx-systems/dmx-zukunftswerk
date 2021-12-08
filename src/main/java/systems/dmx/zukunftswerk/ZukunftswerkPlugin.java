@@ -65,6 +65,19 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @POST
+    @Path("/label")
+    @Consumes("text/plain")
+    @Transactional
+    @Override
+    public Topic createLabel(String label) {
+        try {
+            return dmx.createTopic(createBilingualTopicModel(LABEL, label));
+        } catch (Exception e) {
+            throw new RuntimeException("Creating label failed, text=" + label, e);
+        }
+    }
+
+    @POST
     @Path("/comment/{workspaceId}")
     @Consumes("text/plain")
     @Transactional

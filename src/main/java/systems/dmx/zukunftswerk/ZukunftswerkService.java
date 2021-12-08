@@ -13,5 +13,7 @@ public interface ZukunftswerkService {
 
     Topic createNote(String note);
 
+    Topic createLabel(String label);
+
     Topic createComment(String comment, long workspaceId, long refTopicId);
 }

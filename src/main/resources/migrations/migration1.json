@@ -120,6 +120,10 @@
           {
             "childTypeUri":        "zukunftswerk.document",
             "childCardinalityUri": "dmx.core.one"
+          },
+          {
+            "childTypeUri":        "dmx.files.file",
+            "childCardinalityUri": "dmx.core.many"
           }
         ],
         "viewConfigTopics": [

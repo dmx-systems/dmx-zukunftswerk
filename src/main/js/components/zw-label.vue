@@ -1,6 +1,6 @@
 <template>
   <div v-if="infoMode" class="zw-label info">{{label[lang]}}</div>
-  <div v-else class="zw-label dmx-html-field form" v-loading="saving">
+  <div v-else class="zw-label form" v-loading="saving">
     <zw-string class="field-label">label.new_label</zw-string>
     <el-input v-model="topic.value" ref="input"></el-input>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -29,7 +29,7 @@ export default {
   props: {
 
     topic: {
-      type: dmx.ViewTopic,    // the Label topic (dmx.ViewTopic)
+      type: dmx.ViewTopic,    // the Label topic to render (dmx.ViewTopic)
       required: true
     },
 
@@ -62,7 +62,6 @@ export default {
   },
 
   methods: {
-
     save () {
       this.saving = true
       this.$store.dispatch('createLabel', this.topic).then(() => {

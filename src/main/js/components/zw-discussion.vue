@@ -20,11 +20,15 @@
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
+        <div class="button-panel">
+          <el-button type="text" @click="attach">Attach Files</el-button>
+        </div>
         <el-button class="submit-button" type="primary" size="medium" @click="submit">
           <zw-string>global.submit</zw-string>
         </el-button>
       </div>
     </template>
+    <zw-upload-dialog :visible="uploadDialogVisible" @close="closeUploadDialog"></zw-upload-dialog>
   </div>
 </template>
 
@@ -33,9 +37,10 @@ export default {
 
   data () {
     return {
-      newComment: '',             // new comment entered by the user
-      refComment: undefined,      // comment the new comment relates to (a Comment topic, plain object)
-      submitting: false           // true while submitting new comment
+      newComment: '',                 // new comment being entered by the user
+      refComment: undefined,          // comment the new comment relates to (a Comment topic, plain object)
+      uploadDialogVisible: false,     // upload dialog visibility (for comment attachments)
+      submitting: false               // true while submitting new comment
     }
   },
 
@@ -112,11 +117,20 @@ export default {
 
     focus () {
       this.$refs.newComment.focus()
+    },
+
+    attach () {
+      this.uploadDialogVisible = true
+    },
+
+    closeUploadDialog () {
+      this.uploadDialogVisible = false
     }
   },
 
   components: {
-    'zw-comment': require('./zw-comment').default,
+    'zw-comment':       require('./zw-comment').default,
+    'zw-upload-dialog': require('./zw-upload-dialog').default,
     quill: () => ({
       component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
       loading: require('./zw-spinner')
@@ -161,5 +175,15 @@ export default {
 .zw-discussion .new-comment .zw-comment-ref,
 .zw-discussion .new-comment .zw-document-ref {
   margin-bottom: 6px;
+}
+
+.zw-discussion .new-comment .button-panel {
+  position: absolute;
+  right: 0px;
+  visibility: hidden;
+}
+
+.zw-discussion .new-comment:hover .button-panel {
+  visibility: visible;
 }
 </style>

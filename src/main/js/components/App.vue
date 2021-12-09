@@ -40,8 +40,10 @@
   --label-color: #909399;   /* matches --color-text-secondary in element-ui/packages/theme-chalk/src/common/var.scss */
   --line-height: 1.5;
   --paragraph-spacing: 0.5em;
+  --field-spacing: 1.2em;                     /* vertical spacing between data fields */
   --highlight-color: #409eff;                 /* matches --color-primary */
   --highlight-color-2: #66b1ff;               /* matches --color-primary-light-2 */
+  --color-danger: #f56c6c;                    /* matches --color-danger */
   --border-color: #dcdfe6;                    /* matches --border-color-base */
   --border-color-lighter: #ebeef5;            /* matches --border-color-lighter */
 }

@@ -1,7 +1,9 @@
 <template>
   <div v-if="infoMode" class="zw-label info">{{label[lang]}}</div>
   <div v-else class="zw-label form" v-loading="saving">
-    <zw-string class="field-label">label.new_label</zw-string>
+    <div class="field-label">
+      <zw-string>label.new_label</zw-string>
+    </div>
     <el-input v-model="topic.value" ref="input"></el-input>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>global.submit</zw-string>

@@ -33,7 +33,8 @@ export default {
 
     onSuccess (response, file, fileList) {
       // TODO
-      // this.$store.dispatch('revealRelatedTopic', {relTopic: new dmx.RelatedTopic(response.topic)})
+      console.log(response, file, fileList)
+      this.$emit('attach', response.topic)
       this.$refs.upload.clearFiles()
       this.close()
     },

@@ -38,7 +38,7 @@ export default {
 
 <style>
 .zw-comment-ref {
-  white-space: unset;     /* Element UI default is "nowrap" */
-  text-align: unset;      /* Element UI default is "center" */
+  white-space: unset;     /* Element UI button default is "nowrap" */
+  text-align: unset;      /* Element UI button default is "center" */
 }
 </style>

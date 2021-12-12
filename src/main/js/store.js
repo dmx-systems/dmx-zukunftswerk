@@ -19,6 +19,7 @@ const state = {
   panelX: 0.65 * window.innerWidth,    // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in the discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
+  downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   lang: 'de',                   // UI language ('de'/'fr')
   langStrings:  require('./lang-strings').default,
@@ -114,13 +115,13 @@ const actions = {
     dispatch('setTopic', topic)
   },
 
-  setZoom (_, zoom) {
-    state.zoom = zoom
-  },
-
   setRefDocument ({dispatch}, document) {
     state.refDocument = document
     dispatch('setPanelVisibility', true)
+  },
+
+  setZoom (_, zoom) {
+    state.zoom = zoom
   },
 
   setPanelVisibility (_, visibility) {
@@ -135,8 +136,12 @@ const actions = {
     state.lang = lang
   },
 
+  downloadFile (_, repoPath) {
+    state.downloadUrl = filerepoUrl(repoPath) + '?download'
+  },
+
   getFileContent (_, repoPath) {
-    return http.get('/filerepo/' + encodeURIComponent(repoPath))
+    return http.get(filerepoUrl(repoPath))
       .then(response => response.data)
   }
 }
@@ -164,4 +169,10 @@ function removeTopic (topic) {
     throw Error('removeTopic')
   }
   state.newTopics.splice(i, 1)
+}
+
+// util
+
+function filerepoUrl (repoPath) {
+  return '/filerepo/' + encodeURIComponent(repoPath)
 }

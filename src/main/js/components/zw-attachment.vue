@@ -1,7 +1,7 @@
 <template>
   <el-button class="zw-attachment" type="text" @click="download">
     <span class="fa fa-paperclip"></span>
-    <span>{{path}}</span>
+    <span>{{fileName}}</span>
   </el-button>
 </template>
 
@@ -16,15 +16,19 @@ export default {
   },
 
   computed: {
+
+    fileName () {
+      return this.file.children['dmx.files.file_name'].value
+    },
+
     path () {
-      return this.file.value    // TODO
+      return this.file.children['dmx.files.path'].value
     }
   },
 
   methods: {
     download () {
-      // TODO
-      // this.$emit('comment-ref-click', this.comment)
+      this.$store.dispatch('downloadFile', this.path)
     }
   }
 }

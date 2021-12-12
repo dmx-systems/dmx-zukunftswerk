@@ -2,6 +2,7 @@ package systems.dmx.zukunftswerk;
 
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
+import systems.dmx.core.util.IdList;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface ZukunftswerkService {
 
     Topic createLabel(String label);
 
-    Topic createComment(String comment, long workspaceId, long refTopicId);
+    Topic createComment(String comment, long workspaceId, long refTopicId, IdList fileTopicIds);
 }

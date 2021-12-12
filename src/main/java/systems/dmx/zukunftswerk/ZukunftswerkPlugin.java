@@ -1,6 +1,7 @@
 package systems.dmx.zukunftswerk;
 
 import static systems.dmx.core.Constants.*;
+import static systems.dmx.files.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.core.RelatedTopic;
@@ -10,6 +11,7 @@ import systems.dmx.core.osgi.PluginActivator;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.util.DMXUtils;
+import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
 import systems.dmx.deepl.Translation;
 
@@ -83,13 +85,19 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Transactional
     @Override
     public Topic createComment(String comment, @PathParam("workspaceId") long workspaceId,
-                                               @QueryParam("refTopicId") long refTopicId) {
+                                               @QueryParam("refTopicId") long refTopicId,
+                                               @QueryParam("fileTopicIds") IdList fileTopicIds) {
         try {
             TopicModel commentModel = createBilingualTopicModel(COMMENT, comment);
             // add comment/document ref
             if (refTopicId != 0) {
                 String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
                 commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
+            }
+            if (fileTopicIds != null) {
+                for (long fileTopicId : fileTopicIds) {
+                    commentModel.getChildTopics().addRef(FILE, fileTopicId);
+                }
             }
             //
             Topic commentTopic = dmx.createTopic(commentModel);
@@ -101,7 +109,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             ));
             return commentTopic;
         } catch (Exception e) {
-            throw new RuntimeException("Adding comment to workspace " + workspaceId + " failed, comment=" + comment, e);
+            throw new RuntimeException("Creating comment failed, comment=" + comment + ", workspaceId=" + workspaceId +
+                ", refTopicId=" + refTopicId + ", fileTopicIds=" + fileTopicIds, e);
         }
     }
 

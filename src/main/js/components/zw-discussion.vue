@@ -82,6 +82,10 @@ export default {
       return this.$store.state.refDocument
     },
 
+    fileTopicIds () {
+      return this.attachments.map(file => file.id)
+    },
+
     quillOptions () {
       return this.$store.state.quillOptions
     }
@@ -101,7 +105,8 @@ export default {
       this.submitting = true
       this.$store.dispatch('createComment', {
         comment: this.newComment,
-        refTopicId: this.refTopicId
+        refTopicId: this.refTopicId,
+        fileTopicIds: this.fileTopicIds
       }).then(() => {
         this.newComment = ''
         this.$refs.newComment.setHTML('')     // why does binding not work here?

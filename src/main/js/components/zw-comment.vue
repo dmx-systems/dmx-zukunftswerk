@@ -12,6 +12,11 @@
       <el-button type="text">Edit</el-button>
       <el-button type="text">Delete</el-button>
     </div>
+    <div class="attachments">
+      <div v-for="file in attachments" :key="file.id">
+        <zw-attachment :file="file"></zw-attachment>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -61,6 +66,10 @@ export default {
       return this.comment.children['zukunftswerk.document']
     },
 
+    attachments () {
+      return this.comment.children['dmx.files.file']
+    },
+
     lang () {
       return this.$store.state.lang
     },
@@ -88,9 +97,18 @@ export default {
 </script>
 
 <style>
+
+.zw-comment {
+  position: relative;
+}
+
 .zw-comment .zw-comment-ref,
 .zw-comment .zw-document-ref {
   margin-bottom: 6px;
+}
+
+.zw-comment .zw-attachment {
+  margin-top: 6px;
 }
 
 .zw-comment .columns {
@@ -105,7 +123,8 @@ export default {
 }
 
 .zw-comment .button-panel {
-  text-align: right;
+  position: absolute;
+  right: 0;
   visibility: hidden;
 }
 

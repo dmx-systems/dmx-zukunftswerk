@@ -100,8 +100,10 @@ const actions = {
         fileTopicIds: fileTopicIds.join(',')
       }
     }).then(response => {
-      state.discussion.push(response.data)
+      const comment = response.data
+      state.discussion.push(comment)
       state.refDocument = undefined
+      return comment
     })
   },
 

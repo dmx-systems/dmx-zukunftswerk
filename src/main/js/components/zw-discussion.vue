@@ -108,12 +108,13 @@ export default {
         comment: this.newComment,
         refTopicId: this.refTopicId,
         fileTopicIds: this.fileTopicIds
-      }).then(() => {
+      }).then(comment => {
         this.newComment = ''
         this.$refs.newComment.setHTML('')     // why does binding not work here?
         this.refComment = undefined
         this.attachments = []
         this.submitting = false
+        this.jump(comment)
         this.focus()
       })
     },

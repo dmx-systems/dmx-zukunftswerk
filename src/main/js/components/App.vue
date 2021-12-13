@@ -56,6 +56,7 @@ body {
   height: 100%;
   margin: 0;
   overflow: hidden;   /* avoid window bounce when scrolling reaches top/bottom */
+  position: fixed;    /* avoid body scrolling while scrollIntoView() */
   font-family: var(--main-font-family);
   font-size:   var(--main-font-size);
 }

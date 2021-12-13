@@ -66,7 +66,7 @@ export default {
     },
 
     attachments () {
-      return this.comment.children['dmx.files.file']
+      return this.comment.children['dmx.files.file#zukunftswerk.attachment']
     },
 
     lang () {

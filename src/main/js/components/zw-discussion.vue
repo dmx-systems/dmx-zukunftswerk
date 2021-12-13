@@ -7,7 +7,7 @@
       <!-- Comments -->
       <div class="comments">
         <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id" @reply="reply"
-          @comment-ref-click="jump">
+          @comment-ref-click="jumpTo">
         </zw-comment>
       </div>
       <!-- New Comment -->
@@ -15,7 +15,7 @@
         <div class="field-label">
           <zw-string>discussion.new_comment</zw-string>
         </div>
-        <zw-comment-ref :comment="refComment" @comment-ref-click="jump"></zw-comment-ref>
+        <zw-comment-ref :comment="refComment" @comment-ref-click="jumpTo"></zw-comment-ref>
         <zw-document-ref :document="refDocument"></zw-document-ref>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
@@ -114,7 +114,7 @@ export default {
         this.refComment = undefined
         this.attachments = []
         this.submitting = false
-        this.jump(comment)
+        this.jumpTo(comment)
         this.focus()
       })
     },
@@ -123,7 +123,7 @@ export default {
       this.refComment = comment
     },
 
-    jump (comment) {
+    jumpTo (comment) {
       document.querySelector(`.zw-discussion .zw-comment[data-id="${comment.id}"]`).scrollIntoView({
         behavior: 'smooth'
       })

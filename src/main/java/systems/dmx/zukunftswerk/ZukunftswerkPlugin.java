@@ -62,7 +62,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         try {
             return dmx.createTopic(createBilingualTopicModel(NOTE, note));
         } catch (Exception e) {
-            throw new RuntimeException("Creating note failed, text=" + note, e);
+            throw new RuntimeException("Creating note failed, note=\"" + note + "\"", e);
         }
     }
 
@@ -75,7 +75,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         try {
             return dmx.createTopic(createBilingualTopicModel(LABEL, label));
         } catch (Exception e) {
-            throw new RuntimeException("Creating label failed, text=" + label, e);
+            throw new RuntimeException("Creating label failed, label=\"" + label + "\"", e);
         }
     }
 
@@ -96,7 +96,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             }
             if (fileTopicIds != null) {
                 for (long fileTopicId : fileTopicIds) {
-                    commentModel.getChildTopics().addRef(FILE, fileTopicId);
+                    commentModel.getChildTopics().addRef(FILE + "#" + ATTACHMENT, fileTopicId);
                 }
             }
             //
@@ -109,8 +109,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             ));
             return commentTopic;
         } catch (Exception e) {
-            throw new RuntimeException("Creating comment failed, comment=" + comment + ", workspaceId=" + workspaceId +
-                ", refTopicId=" + refTopicId + ", fileTopicIds=" + fileTopicIds, e);
+            throw new RuntimeException("Creating comment failed, comment=\"" + comment + "\", workspaceId=" +
+                workspaceId + ", refTopicId=" + refTopicId + ", fileTopicIds=" + fileTopicIds, e);
         }
     }
 
@@ -118,7 +118,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     private TopicModel createBilingualTopicModel(String topicTypeUri, String text) {
         // "en" acts as dummy language, not used in this application.
-        // This translation's sole purpose is detection of the comment's original language
+        // This translation's sole purpose is language detection of the original text.
         Translation translation = deepls.translate(text, "en").get(0);
         String origLang = translation.detectedSourceLang.toLowerCase();
         logger.info("origLang=\"" + origLang + "\"");
@@ -136,7 +136,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         return mf.newTopicModel(topicTypeUri, mf.newChildTopicsModel()
             .set(topicTypeUri + "." + origLang, text)
             .set(topicTypeUri + "." + targetLang, translatedComment)
-            .set("zukunftswerk.language#zukunftswerk.original_language", origLang)
+            .set(LANGUAGE + "#" + ORIGINAL_LANGUAGE, origLang)
         );
     }
 }

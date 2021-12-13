@@ -2,6 +2,11 @@
   {
     "assoc_types": [
       {
+        "value":       "Attachment",
+        "uri":         "zukunftswerk.attachment",
+        "dataTypeUri": "dmx.core.text"
+      },
+      {
         "value":       "Original Language",
         "uri":         "zukunftswerk.original_language",
         "dataTypeUri": "dmx.core.text"
@@ -123,7 +128,8 @@
           },
           {
             "childTypeUri":        "dmx.files.file",
-            "childCardinalityUri": "dmx.core.many"
+            "childCardinalityUri": "dmx.core.many",
+            "customAssocTypeUri":  "zukunftswerk.attachment"
           }
         ],
         "viewConfigTopics": [

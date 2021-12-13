@@ -4,8 +4,8 @@
     <zw-comment-ref :comment="refComment" @comment-ref-click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
-      <div v-html="this[origLang]"></div>
-      <div v-html="this[translatedLang]"></div>
+      <div v-html="html[origLang]"></div>
+      <div v-html="html[translatedLang]"></div>
     </div>
     <div class="button-panel">
       <el-button type="text" @click="reply">Reply</el-button>
@@ -14,7 +14,7 @@
     </div>
     <div class="attachments">
       <div v-for="file in attachments" :key="file.id">
-        <zw-attachment :file="file"></zw-attachment>
+        <zw-attachment :file="file" :enabled="true"></zw-attachment>
       </div>
     </div>
   </div>
@@ -38,12 +38,11 @@ export default {
 
   computed: {
 
-    de () {
-      return this.comment.children['zukunftswerk.comment.de'].value
-    },
-
-    fr () {
-      return this.comment.children['zukunftswerk.comment.fr'].value
+    html () {
+      return {
+        de: this.comment.children['zukunftswerk.comment.de'].value,
+        fr: this.comment.children['zukunftswerk.comment.fr'].value
+      }
     },
 
     origLang () {

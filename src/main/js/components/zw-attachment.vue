@@ -1,5 +1,5 @@
 <template>
-  <el-button class="zw-attachment" type="text" @click="download">
+  <el-button class="zw-attachment" type="text" :disabled="!enabled" @click="download">
     <span class="fa fa-paperclip"></span>
     <span>{{fileName}}</span>
   </el-button>
@@ -12,7 +12,8 @@ export default {
     file: {   // the attachment (File topic, plain Object)
       type: Object,
       required: true
-    }
+    },
+    enabled: Boolean
   },
 
   computed: {
@@ -38,5 +39,9 @@ export default {
 .zw-attachment {
   white-space: unset;     /* Element UI button default is "nowrap" */
   text-align: unset;      /* Element UI button default is "center" */
+}
+
+.zw-attachment.is-disabled {
+  color: var(--label-color);
 }
 </style>

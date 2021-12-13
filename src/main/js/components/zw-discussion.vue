@@ -161,6 +161,7 @@ export default {
 .zw-discussion {
   display: flex;
   flex-direction: column;
+  position: relative;
   box-sizing: border-box;
   background-color: rgb(182, 216, 202);
   z-index: 1;

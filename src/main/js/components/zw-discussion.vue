@@ -15,9 +15,9 @@
         <div class="field-label">
           <zw-string>discussion.new_comment</zw-string>
         </div>
-        <zw-comment-ref :comment="refComment" :removable="true" @comment-ref-click="jumpTo" @remove="remove">
+        <zw-comment-ref :comment="refComment" :removable="true" @comment-ref-click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
-        <zw-document-ref :document="refDocument"></zw-document-ref>
+        <zw-document-ref :document="refDocument" :removable="true" @remove="removeDocumentRef"></zw-document-ref>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
@@ -124,8 +124,12 @@ export default {
       this.refComment = comment
     },
 
-    remove () {
+    removeCommentRef () {
       this.refComment = undefined
+    },
+
+    removeDocumentRef () {
+      this.$store.dispatch('setRefDocument', undefined)
     },
 
     jumpTo (comment) {

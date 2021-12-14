@@ -119,7 +119,9 @@ const actions = {
 
   setRefDocument ({dispatch}, document) {
     state.refDocument = document
-    dispatch('setPanelVisibility', true)
+    if (document) {
+      dispatch('setPanelVisibility', true)
+    }
   },
 
   setZoom (_, zoom) {

@@ -1,8 +1,12 @@
 <template>
-  <el-button class="zw-document-ref" v-if="document" type="text" @click="revealDoc">
-    <span class="fa fa-file-o"></span>
-    <span>{{docName}}</span>
-  </el-button>
+  <div class="zw-document-ref" v-if="document">
+    <el-button class="button" type="text" @click="revealDoc">
+      <span class="fa fa-file-o"></span>
+      <span>{{docName}}</span>
+    </el-button>
+    <el-button class="remove-button" v-if="removable" type="text" icon="el-icon-circle-close" @click="remove">
+    </el-button>
+  </div>
 </template>
 
 <script>
@@ -11,7 +15,8 @@
 export default {
 
   props: {
-    document: Object     // the Document to render, optional (plain Object, not a dmx.Topic)
+    document: Object,     // the referred-to Document, optional (plain Object, not a dmx.Topic)
+    removable: Boolean    // if true the remove-button is rendered, optional
   },
 
   computed: {
@@ -47,8 +52,13 @@ export default {
   },
 
   methods: {
+
     revealDoc () {
       this.$store.dispatch('revealDocument', this.document)
+    },
+
+    remove () {
+      this.$emit('remove', this.document)
     }
   }
 }
@@ -56,7 +66,21 @@ export default {
 
 <style>
 .zw-document-ref {
+  position: relative;
+}
+
+.zw-document-ref .button {
   white-space: unset;     /* Element UI button default is "nowrap" */
   text-align: unset;      /* Element UI button default is "center" */
+}
+
+.zw-document-ref .remove-button {
+  position: absolute;
+  top: -3px;
+  font-size: 20px;
+  visibility: hidden;
+}
+.zw-document-ref:hover .remove-button {
+  visibility: visible;
 }
 </style>

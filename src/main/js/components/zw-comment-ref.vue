@@ -1,8 +1,12 @@
 <template>
-  <el-button class="zw-comment-ref" v-if="comment" type="text" @click="click">
-    <span class="fa fa-comment"></span>
-    <zw-truncate :html="html[lang]"></zw-truncate>
-  </el-button>
+  <div class="zw-comment-ref" v-if="comment">
+    <el-button class="button" type="text" @click="click">
+      <span class="fa fa-comment"></span>
+      <zw-truncate :html="html[lang]"></zw-truncate>
+    </el-button>
+    <el-button class="remove-button" v-if="removable" type="text" icon="el-icon-circle-close" @click="remove">
+    </el-button>
+  </div>
 </template>
 
 <script>
@@ -11,7 +15,8 @@
 export default {
 
   props: {
-    comment: Object     // the referred to Comment, optional (plain Object, not a dmx.Topic)
+    comment: Object,      // the referred-to Comment, optional (plain Object, not a dmx.Topic)
+    removable: Boolean    // if true the remove-button is rendered, optional
   },
 
   computed: {
@@ -29,8 +34,13 @@ export default {
   },
 
   methods: {
+
     click () {
       this.$emit('comment-ref-click', this.comment)
+    },
+
+    remove () {
+      this.$emit('remove', this.comment)
     }
   }
 }
@@ -38,7 +48,22 @@ export default {
 
 <style>
 .zw-comment-ref {
+  position: relative;
+}
+
+.zw-comment-ref .button {
   white-space: unset;     /* Element UI button default is "nowrap" */
   text-align: unset;      /* Element UI button default is "center" */
+}
+
+.zw-comment-ref .remove-button {
+  position: absolute;
+  top: -3px;
+  font-size: 20px;
+  visibility: hidden;
+}
+
+.zw-comment-ref:hover .remove-button {
+  visibility: visible;
 }
 </style>

@@ -10,12 +10,13 @@
           @comment-ref-click="jumpTo">
         </zw-comment>
       </div>
-      <!-- New Comment -->
+      <!-- New-Comment Panel -->
       <div class="new-comment" v-loading="submitting">
         <div class="field-label">
           <zw-string>discussion.new_comment</zw-string>
         </div>
-        <zw-comment-ref :comment="refComment" @comment-ref-click="jumpTo"></zw-comment-ref>
+        <zw-comment-ref :comment="refComment" :removable="true" @comment-ref-click="jumpTo" @remove="remove">
+        </zw-comment-ref>
         <zw-document-ref :document="refDocument"></zw-document-ref>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
@@ -121,6 +122,10 @@ export default {
 
     reply (comment) {
       this.refComment = comment
+    },
+
+    remove () {
+      this.refComment = undefined
     },
 
     jumpTo (comment) {

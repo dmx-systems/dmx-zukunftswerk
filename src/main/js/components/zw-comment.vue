@@ -1,7 +1,7 @@
 <template>
   <div class="zw-comment" :data-id="comment.id">
     <div class="field-label">{{date}}</div>
-    <zw-comment-ref :comment="refComment" @comment-ref-click="commentRefClick"></zw-comment-ref>
+    <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
       <div v-html="html[origLang]"></div>

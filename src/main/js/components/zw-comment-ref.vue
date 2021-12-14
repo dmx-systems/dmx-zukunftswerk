@@ -36,7 +36,7 @@ export default {
   methods: {
 
     click () {
-      this.$emit('comment-ref-click', this.comment)
+      this.$emit('click', this.comment)
     },
 
     remove () {

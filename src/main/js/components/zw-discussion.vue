@@ -15,7 +15,7 @@
         <div class="field-label">
           <zw-string>discussion.new_comment</zw-string>
         </div>
-        <zw-comment-ref :comment="refComment" :removable="true" @comment-ref-click="jumpTo" @remove="removeCommentRef">
+        <zw-comment-ref :comment="refComment" :removable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
         <zw-document-ref :document="refDocument" :removable="true" @remove="removeDocumentRef"></zw-document-ref>
         <div class="dmx-html-field">
@@ -26,7 +26,7 @@
         </div>
         <div class="attachments">
           <div v-for="file in attachments" :key="file.id">
-            <zw-attachment :file="file"></zw-attachment>
+            <zw-attachment :file="file" :removable="true" @remove="removeAttachment"></zw-attachment>
           </div>
         </div>
         <el-button class="submit-button" type="primary" size="medium" @click="submit">
@@ -124,6 +124,14 @@ export default {
       this.refComment = comment
     },
 
+    jumpTo (comment) {
+      // Note: Safari ignores scrollIntoView() arg
+      document.querySelector(`.zw-discussion .zw-comment[data-id="${comment.id}"]`).scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'      // avoids body scroll
+      })
+    },
+
     removeCommentRef () {
       this.refComment = undefined
     },
@@ -132,11 +140,12 @@ export default {
       this.$store.dispatch('setRefDocument', undefined)
     },
 
-    jumpTo (comment) {
-      document.querySelector(`.zw-discussion .zw-comment[data-id="${comment.id}"]`).scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
-      })
+    removeAttachment (file) {
+      this.attachments = this.attachments.filter(f => f.id !== file.id)
+    },
+
+    attach (file) {
+      this.attachments.push(file)
     },
 
     focus () {
@@ -149,10 +158,6 @@ export default {
 
     closeUploadDialog () {
       this.uploadDialogVisible = false
-    },
-
-    attach (file) {
-      this.attachments.push(file)
     }
   },
 

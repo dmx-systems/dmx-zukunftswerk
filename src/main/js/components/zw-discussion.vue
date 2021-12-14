@@ -134,7 +134,8 @@ export default {
 
     jumpTo (comment) {
       document.querySelector(`.zw-discussion .zw-comment[data-id="${comment.id}"]`).scrollIntoView({
-        behavior: 'smooth'
+        behavior: 'smooth',
+        block: 'end'
       })
     },
 

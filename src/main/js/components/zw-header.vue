@@ -2,7 +2,7 @@
   <div class="zw-header">
     <div class="workspace">
       <zw-string>header.shared_workspace</zw-string>:
-      <span class="name">{{workspaceName}}</span>
+      <span class="name" v-if="workspaceName">{{workspaceName[lang]}}</span>
     </div>
     <div>
       <el-button type="text" @click="setLang('de')">DE</el-button>
@@ -22,7 +22,15 @@ export default {
     },
 
     workspaceName () {
-      return this.workspace && this.workspace.value
+      if (this.workspace)
+        return {
+          de: this.workspace.children['dmx.workspaces.workspace_name#zukunftswerk.de'].value,
+          fr: this.workspace.children['dmx.workspaces.workspace_name#zukunftswerk.fr'].value
+        }
+    },
+
+    lang () {
+      return this.$store.state.lang
     }
   },
 

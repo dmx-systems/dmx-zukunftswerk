@@ -1,6 +1,10 @@
 <template>
-  <el-dialog custom-class="zw-upload-dialog" :visible="visible" :modal="false" @open="clearError" @close="close">
-    <el-upload drag :action="action" :on-success="onSuccess" :on-error="onError" ref="upload"></el-upload>
+  <el-dialog custom-class="zw-upload-dialog" :visible="visible" :modal="false" width="400px"
+      @open="clearError" @close="close">
+    <el-upload drag :action="action" :on-success="onSuccess" :on-error="onError" ref="upload">
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
+    </el-upload>
     <div class="error">{{error}}</div>
   </el-dialog>
 </template>

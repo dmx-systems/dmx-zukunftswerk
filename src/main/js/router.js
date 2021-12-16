@@ -77,7 +77,7 @@ function initialNavigation (route) {
     // Note: get-assigned-workspace responses are not cached by the browser.
     // In contrast get-topic responses *are* cached by the browser.
     // Doing get-assigned-workspace first avoids working with stale data.
-    getAssignedWorkspace(topicmapId).then(workspace => {
+    getAssignedWorkspace(topicmapId, true).then(workspace => {
       _workspace = workspace
       return dmx.rpc.getTopic(topicmapId)
     }).then(topic => {

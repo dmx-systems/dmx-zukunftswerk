@@ -5,7 +5,7 @@ export default {
   'new.document.fr': 'Document',
   'new.note.de': 'Notiz',
   'new.note.fr': 'Note',
-  'new.label.de': 'Beschrifung',
+  'new.label.de': 'Beschriftung',
   'new.label.fr': 'Étiquetage',
   'note.new_note.de': 'Neue Notiz',
   'note.new_note.fr': 'Nouveau note',

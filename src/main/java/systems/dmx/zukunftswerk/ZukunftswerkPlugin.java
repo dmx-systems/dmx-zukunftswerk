@@ -4,6 +4,7 @@ import static systems.dmx.core.Constants.*;
 import static systems.dmx.files.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
+import systems.dmx.accesscontrol.AccessControlService;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
@@ -14,6 +15,7 @@ import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
 import systems.dmx.deepl.Translation;
+import systems.dmx.workspaces.WorkspacesService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -35,8 +37,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
-    @Inject
-    private DeepLService deepls;
+    @Inject private DeepLService deepls;
+    @Inject private WorkspacesService ws;           // needed by migration 2
+    @Inject private AccessControlService acs;       // needed by migration 2
 
     private Logger logger = Logger.getLogger(getClass().getName());
 

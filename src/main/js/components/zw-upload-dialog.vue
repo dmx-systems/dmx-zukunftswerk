@@ -37,7 +37,6 @@ export default {
 
     onSuccess (response, file, fileList) {
       // TODO
-      console.log(response, file, fileList)
       this.$emit('attach', response.topic)
       this.$refs.upload.clearFiles()
       this.close()

@@ -125,6 +125,7 @@ export default {
   position: absolute;
   right: 0;
   visibility: hidden;
+  z-index: 1;   /* place button panel _before_ attachments */
 }
 
 .zw-comment:hover .button-panel {

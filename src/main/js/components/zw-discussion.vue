@@ -223,6 +223,7 @@ export default {
   position: absolute;
   right: 0;
   visibility: hidden;
+  z-index: 1;   /* place button panel _before_ attachments */
 }
 
 .zw-discussion .new-comment:hover .button-panel {

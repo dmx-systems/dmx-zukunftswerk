@@ -3,9 +3,9 @@
     <el-dropdown @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item><zw-string>new.document</zw-string></el-dropdown-item>
-        <el-dropdown-item command="newNote"><zw-string>new.note</zw-string></el-dropdown-item>
-        <el-dropdown-item command="newLabel"><zw-string>new.label</zw-string></el-dropdown-item>
+        <el-dropdown-item><zw-string>item.document</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newNote"><zw-string>item.note</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newLabel"><zw-string>item.label</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <div class="content-layer" :style="contentLayerStyle">

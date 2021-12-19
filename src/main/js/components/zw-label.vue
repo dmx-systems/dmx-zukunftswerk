@@ -6,7 +6,7 @@
     </div>
     <el-input v-model="topic.value" ref="input"></el-input>
     <el-button class="save-button" type="primary" size="medium" @click="save">
-      <zw-string>global.submit</zw-string>
+      <zw-string>button.submit</zw-string>
     </el-button>
   </div>
 </template>

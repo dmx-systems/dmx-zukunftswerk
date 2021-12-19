@@ -3,7 +3,7 @@
     <el-button v-if="!isOpen" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-circle-close" @click="close"></el-button>
-      <h4><zw-string>discussion.heading</zw-string></h4>
+      <h4><zw-string>label.discussion</zw-string></h4>
       <!-- Comments -->
       <div class="comments">
         <zw-comment v-for="comment in discussion" :comment="comment" :key="comment.id" @reply="reply"
@@ -13,7 +13,7 @@
       <!-- New-Comment Panel -->
       <div class="new-comment" v-loading="submitting">
         <div class="field-label">
-          <zw-string>discussion.new_comment</zw-string>
+          <zw-string>label.new_comment</zw-string>
         </div>
         <zw-comment-ref :comment="refComment" :removable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
@@ -30,7 +30,7 @@
           </div>
         </div>
         <el-button class="submit-button" type="primary" size="medium" @click="submit">
-          <zw-string>global.submit</zw-string>
+          <zw-string>button.submit</zw-string>
         </el-button>
       </div>
     </template>

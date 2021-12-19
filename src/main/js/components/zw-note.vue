@@ -2,11 +2,11 @@
   <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="noteHtml"></div>
   <div v-else class="zw-note dmx-html-field form" v-loading="saving">
     <div class="field-label">
-      <zw-string>note.new_note</zw-string>
+      <zw-string>label.new_note</zw-string>
     </div>
     <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
     <el-button class="save-button" type="primary" size="medium" @click="save">
-      <zw-string>global.submit</zw-string>
+      <zw-string>button.submit</zw-string>
     </el-button>
   </div>
 </template>

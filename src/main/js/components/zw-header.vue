@@ -1,7 +1,7 @@
 <template>
   <div class="zw-header">
     <div class="workspace">
-      <zw-string>header.shared_workspace</zw-string>:
+      <zw-string>label.shared_workspace</zw-string>:
       <span class="name" v-if="workspaceName">{{workspaceName[lang]}}</span>
     </div>
     <div>

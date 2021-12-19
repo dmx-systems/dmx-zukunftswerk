@@ -14,7 +14,7 @@ export default {
   'label.new_comment.de': 'Neuer Kommentar',
   'label.new_comment.fr': 'Nouveau commentaire',
   'label.new_note.de': 'Neue Notiz',
-  'label.new_note.fr': 'Nouveau note',
+  'label.new_note.fr': 'Nouvelle note',
   'label.new_label.de': 'Neue Beschriftung',
   'label.new_label.fr': 'Nouveau étiquetage',
 

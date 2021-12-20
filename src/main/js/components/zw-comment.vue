@@ -8,9 +8,9 @@
       <div v-html="html[translatedLang]"></div>
     </div>
     <div class="button-panel">
-      <el-button type="text" @click="reply">Reply</el-button>
-      <el-button type="text">Edit</el-button>
-      <el-button type="text">Delete</el-button>
+      <el-button type="text" @click="reply"><zw-string>button.reply</zw-string></el-button>
+      <el-button type="text"><zw-string>button.edit</zw-string></el-button>
+      <el-button type="text"><zw-string>button.delete</zw-string></el-button>
     </div>
     <div class="attachments">
       <div v-for="file in attachments" :key="file.id">

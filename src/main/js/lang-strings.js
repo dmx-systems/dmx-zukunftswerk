@@ -19,5 +19,13 @@ export default {
   'label.new_label.fr': 'Nouveau étiquetage',
 
   'button.submit.de': 'OK',
-  'button.submit.fr': 'OK'
+  'button.submit.fr': 'OK',
+  'button.reply.de': 'Antworten',
+  'button.reply.fr': 'Réponse',
+  'button.edit.de': 'Editieren',
+  'button.edit.fr': 'Éditer',
+  'button.delete.de': 'Löschen',
+  'button.delete.fr': 'Supprimer',
+  'button.attach_files.de': 'Dateien anhängen',
+  'button.attach_files.fr': 'Joindre des fichiers'
 }

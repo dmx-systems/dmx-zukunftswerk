@@ -22,7 +22,7 @@
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
         <div class="button-panel">
-          <el-button type="text" @click="openUploadDialog">Attach Files</el-button>
+          <el-button type="text" @click="openUploadDialog"><zw-string>button.attach_files</zw-string></el-button>
         </div>
         <div class="attachments">
           <div v-for="file in attachments" :key="file.id">

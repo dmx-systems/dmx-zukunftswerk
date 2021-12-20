@@ -120,8 +120,8 @@ export default {
     },
 
     mousemove (e) {
-      this.pan.x += e.clientX - this.dragPos.x    // TODO: trigger action
-      this.pan.y += e.clientY - this.dragPos.y    // TODO: trigger action
+      this.pan.x += e.clientX - this.dragPos.x    // TODO: dispatch action
+      this.pan.y += e.clientY - this.dragPos.y    // TODO: dispatch action
       this.dragPos.x = e.clientX
       this.dragPos.y = e.clientY
     },

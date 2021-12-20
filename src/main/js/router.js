@@ -98,7 +98,7 @@ function initialNavigation (route) {
  * Adapts app state when route changes.
  */
 function navigate (to, from) {
-  // ...
+  // TODO
 }
 
 const getAssignedWorkspace = dmx.rpc.getAssignedWorkspace

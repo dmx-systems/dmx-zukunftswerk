@@ -49,14 +49,14 @@ export default {
         return 'de'
       } else if (files.fr) {
         return 'fr'
+      } else {
+        return this.lang
       }
     },
 
     docName () {
-      if (this.docLang) {
-        const name = this.topic.children['zukunftswerk.document_name.' + this.docLang]
-        return name && name.value
-      }
+      const name = this.topic.children['zukunftswerk.document_name.' + this.docLang]
+      return name && name.value
     },
 
     files () {
@@ -67,7 +67,7 @@ export default {
     },
 
     file () {
-      return this.docLang && this.files[this.docLang]
+      return this.files[this.docLang]
     },
 
     path () {

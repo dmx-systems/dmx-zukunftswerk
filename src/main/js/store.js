@@ -30,6 +30,11 @@ const actions = {
 
   setTopicmap (_, topicmap) {
     state.topicmap = topicmap
+    state.pan = {
+      x: topicmap.panX,
+      y: topicmap.panY
+    }
+    state.zoom = topicmap.zoom
   },
 
   setWorkspace (_, workspace) {

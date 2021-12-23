@@ -5,9 +5,9 @@
       <span class="name" v-if="workspaceName">{{workspaceName[lang]}}</span>
     </div>
     <div>
-      <el-button type="text" @click="setLang('de')">DE</el-button>
+      <el-button type="text" :style="style('de')" @click="setLang('de')">DE</el-button>
       <span>|</span>
-      <el-button type="text" @click="setLang('fr')">FR</el-button>
+      <el-button type="text" :style="style('fr')" @click="setLang('fr')">FR</el-button>
     </div>
   </div>
 </template>
@@ -22,11 +22,12 @@ export default {
     },
 
     workspaceName () {
-      if (this.workspace)
+      if (this.workspace) {
         return {
           de: this.workspace.children['dmx.workspaces.workspace_name#zukunftswerk.de'].value,
           fr: this.workspace.children['dmx.workspaces.workspace_name#zukunftswerk.fr'].value
         }
+      }
     },
 
     lang () {
@@ -35,6 +36,15 @@ export default {
   },
 
   methods: {
+
+    style (lang) {
+      if (this.lang === lang) {
+        return {
+          'text-decoration': 'underline'
+        }
+      }
+    },
+
     setLang (lang) {
       this.$store.dispatch('setLang', lang)
     }

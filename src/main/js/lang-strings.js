@@ -22,7 +22,7 @@ export default {
   'button.submit.fr': 'OK',
   'button.reply.de': 'Antworten',
   'button.reply.fr': 'Réponse',
-  'button.edit.de': 'Editieren',
+  'button.edit.de': 'Ändern',
   'button.edit.fr': 'Éditer',
   'button.delete.de': 'Löschen',
   'button.delete.fr': 'Supprimer',

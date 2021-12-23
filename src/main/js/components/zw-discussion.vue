@@ -126,10 +126,20 @@ export default {
 
     jumpTo (comment) {
       // Note: Safari ignores scrollIntoView() arg
-      document.querySelector(`.zw-discussion .zw-comment[data-id="${comment.id}"]`).scrollIntoView({
+      const commentSelector = `.zw-discussion .zw-comment[data-id="${comment.id}"]`
+      document.querySelector(commentSelector).scrollIntoView({
         behavior: 'smooth',
         block: 'nearest'      // avoids body scroll
       })
+      const texts = document.querySelectorAll(`${commentSelector} .columns > div`)
+      texts.forEach(text => {
+        text.classList.add('glow')
+      })
+      setTimeout(() => {
+        texts.forEach(text => {
+          text.classList.remove('glow')
+        })
+      }, 3000)    // corresponds to CSS variable "--glow-duration" in App.vue
     },
 
     removeCommentRef () {

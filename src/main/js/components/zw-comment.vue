@@ -121,6 +121,10 @@ export default {
   background-color: white;
 }
 
+.zw-comment .columns > div.glow {
+  animation: glow var(--glow-duration);
+}
+
 .zw-comment .button-panel {
   position: absolute;
   right: 0;
@@ -130,5 +134,14 @@ export default {
 
 .zw-comment:hover .button-panel {
   visibility: visible;
+}
+
+@keyframes glow {
+  0% {
+    background-color: var(--highlight-color);
+  },
+  100% {
+    background-color: white;
+  }
 }
 </style>

@@ -83,6 +83,14 @@ body {
   background-color: rgba(255, 255, 255, .7) !important;       /* Element UI default alpha is 0.9 */
 }
 
+.el-notification__content {
+  text-align: unset !important;
+}
+
+.el-notification__content p {
+  margin-top: 1em !important;
+}
+
 /* HTML fields */
 
 .dmx-html-field {

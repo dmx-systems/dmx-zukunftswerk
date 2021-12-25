@@ -3,10 +3,11 @@ import dmx from 'dmx-api'
 import App from './components/App'
 import store from './store'
 import router from './router'
+import onHttpError from './error-handler'
 import './element-ui'
 
 // 1) Init dmx library
-dmx.init({store})
+dmx.init({store, onHttpError})
 
 // 2) Global component registrations
 Vue.component('zw-string',       require('./components/zw-string').default)

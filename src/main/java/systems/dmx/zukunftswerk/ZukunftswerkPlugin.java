@@ -112,8 +112,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             ));
             return commentTopic;
         } catch (Exception e) {
-            throw new RuntimeException("Creating comment failed, comment=\"" + comment + "\", workspaceId=" +
-                workspaceId + ", refTopicId=" + refTopicId + ", fileTopicIds=" + fileTopicIds, e);
+            throw new RuntimeException("Creating comment failed, workspaceId=" + workspaceId + ", refTopicId=" +
+                refTopicId + ", fileTopicIds=" + fileTopicIds, e);
         }
     }
 

@@ -114,8 +114,11 @@ export default {
         this.$refs.newComment.setHTML('')     // why does binding not work here?
         this.refComment = undefined
         this.attachments = []
-        this.submitting = false
         this.jumpTo(comment)
+      }).catch(() => {
+        // silence browser console
+      }).finally(() => {
+        this.submitting = false
         this.focus()
       })
     },

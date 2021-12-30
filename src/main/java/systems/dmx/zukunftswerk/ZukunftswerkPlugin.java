@@ -41,9 +41,18 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Inject private WorkspacesService ws;           // needed by migration 2
     @Inject private AccessControlService acs;       // needed by migration 2
 
+    private Messenger me;
+
     private Logger logger = Logger.getLogger(getClass().getName());
 
     // -------------------------------------------------------------------------------------------------- Public Methods
+
+    // Hooks
+
+    @Override
+    public void init() {
+        me = new Messenger(dmx.getWebSocketService());
+    }
 
     // ZukunftswerkService
 

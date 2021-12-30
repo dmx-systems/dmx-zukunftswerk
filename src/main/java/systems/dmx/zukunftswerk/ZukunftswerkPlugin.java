@@ -5,10 +5,10 @@ import static systems.dmx.files.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.accesscontrol.AccessControlService;
-import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
+import systems.dmx.core.service.Cookies;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.util.DMXUtils;
@@ -48,11 +48,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ZukunftswerkService
 
     @GET
-    @Path("/discussion/{workspaceId}")
+    @Path("/discussion")
     @Override
-    public List<RelatedTopic> getDiscussion(@PathParam("workspaceId") long workspaceId) {
+    public List<Topic> getDiscussion() {
         return DMXUtils.loadChildTopics(
-            dmx.getTopic(workspaceId).getRelatedTopics(COMPOSITION, PARENT, CHILD, COMMENT)
+            ws.getAssignedTopics(workspaceId(), COMMENT)
         );
     }
 
@@ -83,12 +83,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @POST
-    @Path("/comment/{workspaceId}")
+    @Path("/comment")
     @Consumes("text/plain")
     @Transactional
     @Override
-    public Topic createComment(String comment, @PathParam("workspaceId") long workspaceId,
-                                               @QueryParam("refTopicId") long refTopicId,
+    public Topic createComment(String comment, @QueryParam("refTopicId") long refTopicId,
                                                @QueryParam("fileTopicIds") IdList fileTopicIds) {
         try {
             TopicModel commentModel = createBilingualTopicModel(COMMENT, comment);
@@ -97,23 +96,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
                 commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
             }
+            // add attachments
             if (fileTopicIds != null) {
                 for (long fileTopicId : fileTopicIds) {
                     commentModel.getChildTopics().addRef(FILE + "#" + ATTACHMENT, fileTopicId);
                 }
             }
             //
-            Topic commentTopic = dmx.createTopic(commentModel);
-            // associate comment to workspace
-            dmx.createAssoc(mf.newAssocModel(
-                COMPOSITION,
-                mf.newTopicPlayerModel(workspaceId, PARENT),
-                mf.newTopicPlayerModel(commentTopic.getId(), CHILD)
-            ));
-            return commentTopic;
+            return dmx.createTopic(commentModel);
         } catch (Exception e) {
-            throw new RuntimeException("Creating comment failed, workspaceId=" + workspaceId + ", refTopicId=" +
-                refTopicId + ", fileTopicIds=" + fileTopicIds, e);
+            throw new RuntimeException("Creating comment failed, refTopicId=" + refTopicId + ", fileTopicIds=" +
+                fileTopicIds, e);
         }
     }
 
@@ -141,5 +134,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             .set(topicTypeUri + "." + targetLang, translatedComment)
             .set(LANGUAGE + "#" + ORIGINAL_LANGUAGE, origLang)
         );
+    }
+
+    private long workspaceId() {
+        return Cookies.get().getLong("dmx_workspace_id");
     }
 }

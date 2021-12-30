@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface ZukunftswerkService {
 
-    List<RelatedTopic> getDiscussion(long workspaceId);
+    List<Topic> getDiscussion();
 
     Topic createNote(String note);
 
     Topic createLabel(String label);
 
-    Topic createComment(String comment, long workspaceId, long refTopicId, IdList fileTopicIds);
+    Topic createComment(String comment, long refTopicId, IdList fileTopicIds);
 }

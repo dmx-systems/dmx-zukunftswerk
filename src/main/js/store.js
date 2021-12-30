@@ -99,7 +99,7 @@ const actions = {
    * @param   refTopicId    optional: a Comment ID or a Document ID
    */
   createComment (_, {comment, refTopicId, fileTopicIds}) {
-    return http.post(`/zukunftswerk/comment/${state.workspace.id}`, comment, {
+    return http.post('/zukunftswerk/comment', comment, {
       headers: {
         'Content-Type': 'text/plain'
       },
@@ -171,7 +171,7 @@ export default store
 // state helper
 
 function fetchDiscussion () {
-  http.get(`/zukunftswerk/discussion/${state.workspace.id}`).then(response => {
+  http.get('/zukunftswerk/discussion').then(response => {
     state.discussion = response.data.sort(
       (c1, c2) => c1.children['dmx.timestamps.created'].value - c2.children['dmx.timestamps.created'].value
     )

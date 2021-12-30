@@ -1,6 +1,5 @@
 package systems.dmx.zukunftswerk;
 
-import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.util.IdList;
 

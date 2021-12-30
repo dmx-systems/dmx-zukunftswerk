@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 import http from 'axios'
 import dmx from 'dmx-api'
 
+window.addEventListener('focus', updateWorkspaceCookie)
+
 Vue.use(Vuex)
 
 const state = {
@@ -41,6 +43,7 @@ const actions = {
     workspace.isWritable().then(isWritable => {
       state.workspace = workspace
       state.isWritable = isWritable
+      updateWorkspaceCookie()
     }).then(fetchDiscussion)
   },
 
@@ -181,6 +184,11 @@ function removeTopic (topic) {
     throw Error('removeTopic')
   }
   state.newTopics.splice(i, 1)
+}
+
+function updateWorkspaceCookie () {
+  // console.log('dmx_workspace_id', state.workspace.id)
+  dmx.utils.setCookie('dmx_workspace_id', state.workspace.id)
 }
 
 // util

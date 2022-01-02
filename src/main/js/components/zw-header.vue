@@ -9,6 +9,7 @@
       <span>|</span>
       <el-button type="text" :style="style('fr')" @click="setLang('fr')">FR</el-button>
     </div>
+    <dmx-login-dialog></dmx-login-dialog>
   </div>
 </template>
 
@@ -48,6 +49,10 @@ export default {
     setLang (lang) {
       this.$store.dispatch('setLang', lang)
     }
+  },
+
+  components: {
+    'dmx-login-dialog': require('dmx-login-dialog').default
   }
 }
 </script>

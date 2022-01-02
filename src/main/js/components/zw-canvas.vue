@@ -86,29 +86,24 @@ export default {
     },
 
     newNote () {
-      this.$store.dispatch('newTopic', new dmx.ViewTopic({
-        typeUri: 'zukunftswerk.note',
-        value: '',      // used as intermediate model while create
-        viewProps: {
-          'dmx.topicmaps.x': 100,
-          'dmx.topicmaps.y': 100,
-          'dmx.topicmaps.visibility': true,
-          'dmx.topicmaps.pinned': false
-        }
-      }))
+      this.$store.dispatch('newTopic', this.newViewTopic('zukunftswerk.note'))
     },
 
     newLabel () {
-      this.$store.dispatch('newTopic', new dmx.ViewTopic({
-        typeUri: 'zukunftswerk.label',
+      this.$store.dispatch('newTopic', this.newViewTopic('zukunftswerk.label'))
+    },
+
+    newViewTopic (typeUri) {
+      return new dmx.ViewTopic({
+        typeUri,
         value: '',      // used as intermediate model while create
         viewProps: {
-          'dmx.topicmaps.x': 100,
-          'dmx.topicmaps.y': 100,
+          'dmx.topicmaps.x': 100 - this.pan.x,
+          'dmx.topicmaps.y': 100 - this.pan.y,
           'dmx.topicmaps.visibility': true,
           'dmx.topicmaps.pinned': false
         }
-      }))
+      })
     },
 
     mousedown (e) {

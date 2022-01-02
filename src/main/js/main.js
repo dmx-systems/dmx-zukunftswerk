@@ -13,7 +13,6 @@ dmx.init({store, onHttpError})
 
 // 2) Open websocket connection
 new DMXWebSocket('systems.dmx.webclient', messageHandler)
-// store.dispatch('_' + message.type, message.args)
 
 // 3) Global component registrations
 Vue.component('zw-string',       require('./components/zw-string').default)

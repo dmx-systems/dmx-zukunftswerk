@@ -115,6 +115,10 @@ const actions = {
     })
   },
 
+  newComment (_, comment) {
+    state.discussion.push(comment)
+  },
+
   /**
    * @param   document    a Document topic (plain object)
    */

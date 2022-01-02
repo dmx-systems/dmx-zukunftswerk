@@ -26,20 +26,19 @@ class Messenger {
 
     // ----------------------------------------------------------------------------------------- Package Private Methods
 
-    /* TODO
-    void addTopicToTopicmap(long topicmapId, ViewTopic topic) {
+    void createComment(long workspaceId, Topic comment) {
         try {
-            sendToReadAllowed(new JSONObject()
-                .put("type", "addTopicToTopicmap")
+            sendToAllButOrigin(new JSONObject()
+                .put("type", "createComment")
                 .put("args", new JSONObject()
-                    .put("topicmapId", topicmapId)
-                    .put("viewTopic", topic.toJSON())
-                ), topic.getId()
+                    .put("workspaceId", workspaceId)
+                    .put("comment", comment.toJSON())
+                )
             );
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Error while sending a \"addTopicToTopicmap\" message:", e);
+            logger.log(Level.WARNING, "Error while sending a \"createComment\" message:", e);
         }
-    } */
+    }
 
     // ------------------------------------------------------------------------------------------------- Private Methods
 

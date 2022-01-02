@@ -15,6 +15,7 @@ import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
 import systems.dmx.deepl.Translation;
+import systems.dmx.timestamps.TimestampsService;
 import systems.dmx.workspaces.WorkspacesService;
 
 import javax.ws.rs.GET;
@@ -38,6 +39,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
     @Inject private DeepLService deepls;
+    @Inject private TimestampsService ts;
     @Inject private WorkspacesService ws;           // needed by migration 2
     @Inject private AccessControlService acs;       // needed by migration 2
 
@@ -112,7 +114,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 }
             }
             //
-            return dmx.createTopic(commentModel);
+            Topic commentTopic = dmx.createTopic(commentModel);
+            ts.enrichWithTimestamps(commentTopic);
+            me.createComment(workspaceId(), commentTopic);
+            return commentTopic;
         } catch (Exception e) {
             throw new RuntimeException("Creating comment failed, refTopicId=" + refTopicId + ", fileTopicIds=" +
                 fileTopicIds, e);

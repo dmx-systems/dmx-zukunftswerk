@@ -1,7 +1,10 @@
+import store from './store'
+
 export default message => {
   switch (message.type) {
-    case 'addTopicToTopicmap':
-      console.log('addTopicToTopicmap')
-    // TODO
+  case 'createComment':
+    if (message.args.workspaceId === store.state.workspace.id) {
+      store.dispatch('newComment', message.args.comment)
+    }
   }
 }

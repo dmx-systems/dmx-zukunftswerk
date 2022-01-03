@@ -1,6 +1,6 @@
 <template>
   <div class="zw-canvas" :style="style" @mousedown="mousedown" @mouseup="mouseup" @wheel="wheel">
-    <el-dropdown @command="handle">
+    <el-dropdown v-if="isTeam" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item><zw-string>item.document</zw-string></el-dropdown-item>
@@ -27,6 +27,10 @@ export default {
   },
 
   computed: {
+
+    isTeam () {
+      return this.$store.state.isTeam
+    },
 
     topicmap () {
       return this.$store.state.topicmap

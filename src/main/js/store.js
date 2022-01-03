@@ -7,13 +7,16 @@ window.addEventListener('focus', updateWorkspaceCookie)
 
 Vue.use(Vuex)
 
+const teamWorkspace = dmx.rpc.getTopicByUri('zukunftswerk.team')
+
 const state = {
 
   username: undefined,          // username of logged in user (String), undefined if not logged in
+  isTeam: false,                // true if the logged in user is a member of the "Team" workspace (Boolean)
 
   topicmap: undefined,          // the topicmap displayed on workspace canvas (dmx.Topicmap)
   workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
-  isWritable: undefined,        // true if the workspace is writable (Boolean)
+  isWritable: false,            // true if the workspace is writable (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
   pan: {x: 0, y: 0},            // canvas pan (in pixel)
@@ -33,15 +36,14 @@ const state = {
 const actions = {
 
   setUsername (_, username) {
-    state.username = username
+    setUsername(username)
   },
 
   logout () {
     DEV && console.log('Logout', state.username)
-    // Note: once logout request is sent we must succeed synchronously. Plugins may perform further
-    // requests in their "loggedOut" handler which may rely on up-to-date login/logout state.
     dmx.rpc.logout().then(() => {
       state.username = undefined
+      state.isTeam = false
     })
   },
 
@@ -189,11 +191,18 @@ export default store
 
 // init state
 
-dmx.rpc.getUsername().then(username => {
-  state.username = username
-})
+dmx.rpc.getUsername().then(setUsername)
 
 // state helper
+
+function setUsername (username) {
+  teamWorkspace
+    .then(workspace => workspace.isWritable())
+    .then(isWritable => {
+      state.username = username
+      state.isTeam = isWritable
+    })
+}
 
 function fetchDiscussion () {
   http.get('/zukunftswerk/discussion').then(response => {

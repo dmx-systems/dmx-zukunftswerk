@@ -9,6 +9,8 @@ Vue.use(Vuex)
 
 const state = {
 
+  username: undefined,          // username of logged in user (String), undefined if not logged in
+
   topicmap: undefined,          // the topicmap displayed on workspace canvas (dmx.Topicmap)
   workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
   isWritable: undefined,        // true if the workspace is writable (Boolean)
@@ -19,7 +21,7 @@ const state = {
 
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * window.innerWidth,    // x coordinate in pixel (Number)
-  discussion: undefined,        // the comments displayed in the discussion panel (array of dmx.RelatedTopic)
+  discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
@@ -29,6 +31,19 @@ const state = {
 }
 
 const actions = {
+
+  setUsername (_, username) {
+    state.username = username
+  },
+
+  logout () {
+    DEV && console.log('Logout', state.username)
+    // Note: once logout request is sent we must succeed synchronously. Plugins may perform further
+    // requests in their "loggedOut" handler which may rely on up-to-date login/logout state.
+    dmx.rpc.logout().then(() => {
+      state.username = undefined
+    })
+  },
 
   setTopicmap (_, topicmap) {
     state.topicmap = topicmap
@@ -171,6 +186,12 @@ const store = new Vuex.Store({
 })
 
 export default store
+
+// init state
+
+dmx.rpc.getUsername().then(username => {
+  state.username = username
+})
 
 // state helper
 

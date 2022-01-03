@@ -9,7 +9,7 @@
       <span>|</span>
       <el-button type="text" :style="style('fr')" @click="setLang('fr')">FR</el-button>
     </div>
-    <dmx-login-dialog></dmx-login-dialog>
+    <zw-login-state></zw-login-state>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
   },
 
   components: {
-    'dmx-login-dialog': require('dmx-login-dialog').default
+    'zw-login-state':  require('./zw-login-state').default
   }
 }
 </script>
@@ -74,5 +74,9 @@ export default {
 .zw-header .workspace .name {
   font-weight: bold;
   font-style: italic;
+}
+
+.zw-header .zw-login-state {
+  margin-left: 16px;
 }
 </style>

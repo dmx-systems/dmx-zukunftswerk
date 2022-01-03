@@ -8,11 +8,12 @@ window.addEventListener('focus', updateWorkspaceCookie)
 Vue.use(Vuex)
 
 const teamWorkspace = dmx.rpc.getTopicByUri('zukunftswerk.team')
+const width = window.innerWidth
 
 const state = {
 
   username: undefined,          // username of logged in user (String), undefined if not logged in
-  isTeam: false,                // true if the logged in user is a member of the "Team" workspace (Boolean)
+  isTeam: false,                // true if the logged in user is member of the "Team" workspace (Boolean)
 
   topicmap: undefined,          // the topicmap displayed on workspace canvas (dmx.Topicmap)
   workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
@@ -23,7 +24,7 @@ const state = {
   zoom: 1,                      // canvas zoom (Number)
 
   panelVisibility: true,        // discussion panel visibility (Boolean)
-  panelX: 0.65 * window.innerWidth,    // x coordinate in pixel (Number)
+  panelX: 0.65 * width,         // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment

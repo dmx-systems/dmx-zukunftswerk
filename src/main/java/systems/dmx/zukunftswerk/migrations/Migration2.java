@@ -42,10 +42,10 @@ public class Migration2 extends Migration {
         //
         // Create "Community" and "Team" workspaces
         acs.setWorkspaceOwner(
-            ws.createWorkspace("Community", "zukunftswerk.community", SharingMode.COLLABORATIVE), ADMIN_USERNAME
+            ws.createWorkspace("Community", "zukunftswerk.community", SharingMode.PUBLIC), ADMIN_USERNAME
         );
         acs.setWorkspaceOwner(
-            ws.createWorkspace("Team", "zukunftswerk.team", SharingMode.COLLABORATIVE), ADMIN_USERNAME
+            ws.createWorkspace("Team", "zukunftswerk.team", SharingMode.PUBLIC), ADMIN_USERNAME
         );
     }
 }

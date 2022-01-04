@@ -11,7 +11,7 @@
         </zw-comment>
       </div>
       <!-- New-Comment Panel -->
-      <div class="new-comment" v-loading="submitting">
+      <div class="new-comment" v-if="isWritable" v-loading="submitting">
         <div class="field-label">
           <zw-string>label.new_comment</zw-string>
         </div>
@@ -53,6 +53,10 @@ export default {
   },
 
   computed: {
+
+    isWritable () {
+      return this.$store.state.isWritable
+    },
 
     isOpen () {
       return this.$store.state.panelVisibility

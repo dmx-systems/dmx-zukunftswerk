@@ -36,8 +36,9 @@ const state = {
 
 const actions = {
 
-  setUsername (_, username) {
+  loggedIn (_, username) {
     setUsername(username)
+    updateIsWritable()
   },
 
   logout () {
@@ -45,6 +46,7 @@ const actions = {
     dmx.rpc.logout().then(() => {
       state.username = undefined
       state.isTeam = false
+      updateIsWritable()
     })
   },
 
@@ -58,11 +60,10 @@ const actions = {
   },
 
   setWorkspace (_, workspace) {
-    workspace.isWritable().then(isWritable => {
-      state.workspace = workspace
-      state.isWritable = isWritable
-      updateWorkspaceCookie()
-    }).then(fetchDiscussion)
+    state.workspace = workspace
+    updateWorkspaceCookie()
+    updateIsWritable()
+    fetchDiscussion()
   },
 
   setTopic (_, topic) {
@@ -205,6 +206,17 @@ function setUsername (username) {
     })
 }
 
+function updateWorkspaceCookie () {
+  // console.log('dmx_workspace_id', state.workspace.id)
+  dmx.utils.setCookie('dmx_workspace_id', state.workspace.id)
+}
+
+function updateIsWritable () {
+  state.workspace.isWritable().then(isWritable => {
+    state.isWritable = isWritable
+  })
+}
+
 function fetchDiscussion () {
   http.get('/zukunftswerk/discussion').then(response => {
     state.discussion = response.data.sort(
@@ -219,11 +231,6 @@ function removeTopic (topic) {
     throw Error('removeTopic')
   }
   state.newTopics.splice(i, 1)
-}
-
-function updateWorkspaceCookie () {
-  // console.log('dmx_workspace_id', state.workspace.id)
-  dmx.utils.setCookie('dmx_workspace_id', state.workspace.id)
 }
 
 // util

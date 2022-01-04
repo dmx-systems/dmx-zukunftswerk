@@ -36,7 +36,7 @@ export default {
   methods: {
 
     loggedIn (username) {
-      this.$store.dispatch('setUsername', username)
+      this.$store.dispatch('loggedIn', username)
     },
 
     handle (command) {

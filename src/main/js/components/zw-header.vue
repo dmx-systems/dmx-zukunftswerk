@@ -77,6 +77,6 @@ export default {
 }
 
 .zw-header .zw-login-state {
-  margin-left: 16px;
+  margin-left: 20px;
 }
 </style>

@@ -11,6 +11,7 @@ import systems.dmx.core.osgi.PluginActivator;
 import systems.dmx.core.service.Cookies;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
+import systems.dmx.core.service.event.PreSendTopic;
 import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
@@ -34,7 +35,7 @@ import java.util.logging.Logger;
 
 @Path("/zukunftswerk")
 @Produces("application/json")
-public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService {
+public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, PreSendTopic {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
@@ -54,6 +55,15 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public void init() {
         me = new Messenger(dmx.getWebSocketService());
+    }
+
+    // Listeners
+
+    @Override
+    public void preSendTopic(Topic topic) {
+        if (topic.getTypeUri().equals(COMMENT)) {
+            acs.enrichWithUserInfo(topic);
+        }
     }
 
     // ZukunftswerkService
@@ -115,6 +125,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             }
             //
             Topic commentTopic = dmx.createTopic(commentModel);
+            acs.enrichWithUserInfo(commentTopic);
             ts.enrichWithTimestamps(commentTopic);
             me.createComment(workspaceId(), commentTopic);
             return commentTopic;

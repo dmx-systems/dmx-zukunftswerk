@@ -1,6 +1,6 @@
 <template>
   <div class="zw-comment" :data-id="comment.id">
-    <div class="field-label">{{date}}</div>
+    <div class="field-label">{{date}} ({{creator}})</div>
     <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
@@ -75,6 +75,10 @@ export default {
 
     created () {
       return this.comment.children['dmx.timestamps.created'].value
+    },
+
+    creator () {
+      return this.comment.children['dmx.accesscontrol.creator'].value
     },
 
     date () {

@@ -81,7 +81,8 @@ export default {
     },
 
     docName () {
-      return this.getDocName(this.docLang)
+      const name = this.getDocNameTopic(this.docLang)
+      return name && name.value
     },
 
     docNameTopics () {
@@ -103,7 +104,7 @@ export default {
     },
 
     path () {
-      return this.getPath(this.file)
+      return this.file && this.file.children['dmx.files.path'].value
     },
 
     mediaType () {
@@ -162,21 +163,12 @@ export default {
       }
     },
 
-    getDocName (lang) {
-      const name = this.getDocNameTopic(lang)
-      return name && name.value
-    },
-
     getDocNameTopic (lang) {
       return this.topic.children['zukunftswerk.document_name.' + lang]
     },
 
     getFile (lang) {
       return this.topic.children['dmx.files.file#zukunftswerk.' + lang]
-    },
-
-    getPath (file) {
-      return file && file.children['dmx.files.path'].value
     },
 
     newComment () {

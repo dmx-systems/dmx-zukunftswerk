@@ -68,7 +68,7 @@ export default {
 
     filteredDiscussion () {
       return this.discussion && this.discussion.filter(
-        comment => !this.refDocument || this.getDocumentId(comment) == this.refDocument.id
+        comment => !this.refDocument || this.getDocumentId(comment) === this.refDocument.id
       )
     },
 

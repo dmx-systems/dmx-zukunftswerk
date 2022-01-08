@@ -20,6 +20,14 @@
         <div class="field-label">Nom du document (fr)</div>
         <el-input v-model="docNameTopics.fr.value"></el-input>
       </div>
+      <div class="field">
+        <div class="field-label">Datei (de)</div>
+        <el-input v-model="pathTopics.de.value"></el-input>
+      </div>
+      <div class="field">
+        <div class="field-label">Fichier (fr)</div>
+        <el-input v-model="pathTopics.fr.value"></el-input>
+      </div>
       <el-button class="save-button" type="primary" size="medium" @click="save">
         <zw-string>button.submit</zw-string>
       </el-button>
@@ -103,8 +111,16 @@ export default {
       return this.files[this.docLang]
     },
 
+    pathTopics () {
+      return {
+        de: this.getPathTopic(this.files.de),
+        fr: this.getPathTopic(this.files.fr)
+      }
+    },
+
     path () {
-      return this.file && this.file.children['dmx.files.path'].value
+      const path = this.getPathTopic(this.file)
+      return path && path.value
     },
 
     mediaType () {
@@ -155,6 +171,11 @@ export default {
 
   methods: {
 
+    update() {
+      // console.log("update")
+      // this.context.updated()   ### TODO
+    },
+
     initText () {
       if (this.isText) {
         this.$store.dispatch('getFileContent', this.path).then(content => {
@@ -169,6 +190,10 @@ export default {
 
     getFile (lang) {
       return this.topic.children['dmx.files.file#zukunftswerk.' + lang]
+    },
+
+    getPathTopic (file) {
+      return file && file.children['dmx.files.path']
     },
 
     newComment () {

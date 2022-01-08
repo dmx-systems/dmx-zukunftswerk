@@ -74,6 +74,10 @@ body {
   margin-bottom: 3px !important;
 }
 
+.field + .field {
+  margin-top: var(--field-spacing);
+}
+
 /* Element UI Overrides */
 .el-button--text {
   padding: 0 !important;

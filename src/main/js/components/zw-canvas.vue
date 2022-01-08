@@ -3,7 +3,7 @@
     <el-dropdown v-if="isTeam" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item><zw-string>item.document</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newDocument"><zw-string>item.document</zw-string></el-dropdown-item>
         <el-dropdown-item command="newNote"><zw-string>item.note</zw-string></el-dropdown-item>
         <el-dropdown-item command="newLabel"><zw-string>item.label</zw-string></el-dropdown-item>
       </el-dropdown-menu>
@@ -89,12 +89,50 @@ export default {
       this[command]()
     },
 
+    newDocument () {
+      this.$store.dispatch('newTopic', this.newDocumentViewTopic())
+    },
+
     newNote () {
       this.$store.dispatch('newTopic', this.newViewTopic('zukunftswerk.note'))
     },
 
     newLabel () {
       this.$store.dispatch('newTopic', this.newViewTopic('zukunftswerk.label'))
+    },
+
+    newDocumentViewTopic () {
+      return new dmx.ViewTopic({
+        typeUri: 'zukunftswerk.document',
+        children: {
+          'zukunftswerk.document_name.de': {
+            value: ''
+          },
+          'zukunftswerk.document_name.fr': {
+            value: ''
+          },
+          'dmx.files.file#zukunftswerk.de': {
+            children: {
+              'dmx.files.path': {
+                value: ''
+              }
+            }
+          },
+          'dmx.files.file#zukunftswerk.fr': {
+            children: {
+              'dmx.files.path': {
+                value: ''
+              }
+            }
+          }
+        },
+        viewProps: {
+          'dmx.topicmaps.x': 100 - this.pan.x,
+          'dmx.topicmaps.y': 100 - this.pan.y,
+          'dmx.topicmaps.visibility': true,
+          'dmx.topicmaps.pinned': false
+        }
+      })
     },
 
     newViewTopic (typeUri) {

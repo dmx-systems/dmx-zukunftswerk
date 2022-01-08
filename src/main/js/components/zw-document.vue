@@ -1,14 +1,29 @@
 <template>
-  <div class="zw-document">
-    <div class="discussion-button">
-      <el-button type="text" icon="el-icon-chat-round" @click="newComment"></el-button>
-    </div>
-    {{docName}}
-    <pre v-if="isText">{{text}}</pre>
-    <img v-if="isImage" :src="fileUrl" @load="update">
-    <audio v-if="isAudio" :src="fileUrl" controls></audio>
-    <video v-if="isVideo" :src="fileUrl" controls @loadeddata="update"></video>
-    <embed v-if="isPDF" :src="fileUrl" :type="mediaType" class="pdf" @load="update"></embed>
+  <div class="zw-document" v-loading="saving">
+    <template v-if="infoMode">
+      <div class="discussion-button">
+        <el-button type="text" icon="el-icon-chat-round" @click="newComment"></el-button>
+      </div>
+      {{docName}}
+      <pre v-if="isText">{{text}}</pre>
+      <img v-if="isImage" :src="fileUrl" @load="update">
+      <audio v-if="isAudio" :src="fileUrl" controls></audio>
+      <video v-if="isVideo" :src="fileUrl" controls @loadeddata="update"></video>
+      <embed v-if="isPDF" :src="fileUrl" :type="mediaType" class="pdf" @load="update"></embed>
+    </template>
+    <template v-else>
+      <div class="field">
+        <div class="field-label">Dokument Name (de)</div>
+        <el-input v-model="docNameTopics.de.value" ref="docName"></el-input>
+      </div>
+      <div class="field">
+        <div class="field-label">Nom du document (fr)</div>
+        <el-input v-model="docNameTopics.fr.value"></el-input>
+      </div>
+      <el-button class="save-button" type="primary" size="medium" @click="save">
+        <zw-string>button.submit</zw-string>
+      </el-button>
+    </template>
   </div>
 </template>
 
@@ -22,16 +37,27 @@ export default {
     this.initText()
   },
 
+  mounted () {
+    if (this.formMode) {
+      this.$refs.docName.focus()
+    }
+  },
+
   props: {
-    topic: {        // the Document topic (dmx.ViewTopic)
+    topic: {                  // the Document topic (dmx.ViewTopic)
       type: dmx.ViewTopic,
       required: true
+    },
+    mode: {                   // 'info'/'form'
+      type: String,
+      default: 'info'
     }
   },
 
   data () {
     return {
-      text: ''
+      text: '',
+      saving: false           // true while document is saved
     }
   },
 
@@ -55,8 +81,14 @@ export default {
     },
 
     docName () {
-      const name = this.topic.children['zukunftswerk.document_name.' + this.docLang]
-      return name && name.value
+      return this.getDocName(this.docLang)
+    },
+
+    docNameTopics () {
+      return {
+        de: this.getDocNameTopic('de'),
+        fr: this.getDocNameTopic('fr')
+      }
     },
 
     files () {
@@ -71,7 +103,7 @@ export default {
     },
 
     path () {
-      return this.file && this.file.children['dmx.files.path'].value
+      return this.getPath(this.file)
     },
 
     mediaType () {
@@ -103,6 +135,14 @@ export default {
 
     isPDF () {
       return this.mediaType === 'application/pdf'
+    },
+
+    infoMode () {
+      return this.mode === 'info'
+    },
+
+    formMode () {
+      return this.mode === 'form'
     }
   },
 
@@ -114,11 +154,6 @@ export default {
 
   methods: {
 
-    update() {
-      // console.log("update")
-      // this.context.updated()   ### TODO
-    },
-
     initText () {
       if (this.isText) {
         this.$store.dispatch('getFileContent', this.path).then(content => {
@@ -127,12 +162,32 @@ export default {
       }
     },
 
+    getDocName (lang) {
+      const name = this.getDocNameTopic(lang)
+      return name && name.value
+    },
+
+    getDocNameTopic (lang) {
+      return this.topic.children['zukunftswerk.document_name.' + lang]
+    },
+
     getFile (lang) {
       return this.topic.children['dmx.files.file#zukunftswerk.' + lang]
     },
 
+    getPath (file) {
+      return file && file.children['dmx.files.path'].value
+    },
+
     newComment () {
       this.$store.dispatch('setRefDocument', this.topic)
+    },
+
+    save () {
+      this.saving = true
+      this.$store.dispatch('createDocument', this.topic).then(() => {
+        this.saving = false
+      })
     }
   }
 }
@@ -172,5 +227,9 @@ export default {
 .zw-document > .pdf {
   width: 100%;
   height: 100vh;
+}
+
+.zw-document .save-button {
+  margin-top: var(--field-spacing);
 }
 </style>

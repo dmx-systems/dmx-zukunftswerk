@@ -77,6 +77,20 @@ const actions = {
   /**
    * @param   topic   a dmx.ViewTopic
    */
+  createDocument (_, topic) {
+    return dmx.rpc.createTopic(topic).then(_topic => {
+      dmx.rpc.addTopicToTopicmap(state.topicmap.id, _topic.id, topic.viewProps)
+      topic.id       = _topic.id
+      topic.value    = _topic.value
+      topic.children = _topic.children
+      state.topicmap.addTopic(topic)
+      removeTopic(topic)
+    })
+  },
+
+  /**
+   * @param   topic   a dmx.ViewTopic
+   */
   createNote (_, topic) {
     return http.post('/zukunftswerk/note', topic.value, {
       headers: {

@@ -23,8 +23,8 @@ export default {
   },
 
   props: {
-    topic: {
-      type: dmx.ViewTopic,    // the Note topic (dmx.ViewTopic)
+    topic: {                  // the Note topic (dmx.ViewTopic)
+      type: dmx.ViewTopic,
       required: true
     },
     mode: {                   // 'info'/'form'

@@ -72,6 +72,13 @@ const actions = {
 
   newTopic (_, topic) {
     state.newTopics.push(topic)
+    //
+    // workaround to prevent body scrolling when new topic ecxeeds viewport
+    document.body.classList.add('fixed')
+    Vue.nextTick(() => {
+      // a fixed body would not adapt to window resize
+      document.body.classList.remove('fixed')
+    })
   },
 
   /**

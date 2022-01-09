@@ -1,5 +1,6 @@
 <template>
-  <div class="zw-canvas" :style="style" @mousedown="mousedown" @mouseup="mouseup" @wheel="wheel">
+  <div class="zw-canvas" :style="style" @mousedown="mousedown" @mouseup="mouseup" @mouseleave="mouseleave"
+      @wheel="wheel">
     <el-dropdown v-if="isTeam" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -22,7 +23,7 @@ export default {
 
   data () {
     return {
-      dragPos: undefined      // temporary mouse pos while canvas drag
+      dragPos: undefined      // temporary mouse pos while canvas drag, undefined when no canvas drag is in progress
     }
   },
 
@@ -165,7 +166,19 @@ export default {
     },
 
     mouseup () {
+      this.stopPanning()
+    },
+
+    mouseleave () {
+      if (this.dragPos) {
+        this.stopPanning()
+      }
+    },
+
+    stopPanning () {
+      console.log('stopPanning')
       this.$el.removeEventListener('mousemove', this.mousemove)
+      this.dragPos = undefined
       this.$emit('panStop')
       // TODO: update sever state?
     },

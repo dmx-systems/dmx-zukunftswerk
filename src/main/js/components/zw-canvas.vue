@@ -154,6 +154,7 @@ export default {
         x: e.clientX,
         y: e.clientY
       }
+      this.$emit('panStart')
     },
 
     mousemove (e) {
@@ -165,6 +166,7 @@ export default {
 
     mouseup () {
       this.$el.removeEventListener('mousemove', this.mousemove)
+      this.$emit('panStop')
       // TODO: update sever state?
     },
 

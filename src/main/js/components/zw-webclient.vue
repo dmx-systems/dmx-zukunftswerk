@@ -1,9 +1,9 @@
 <template>
-  <div class="zw-webclient" :style="{userSelect}">
+  <div class="zw-webclient" :style="style">
     <zw-header></zw-header>
     <div class="content-area">
-      <zw-canvas></zw-canvas>
-      <zw-resizer @resizeStart="resizeStart" @resizeStop="resizeStop"></zw-resizer>
+      <zw-canvas @panStart="dragStart" @panStop="dragStop"></zw-canvas>
+      <zw-resizer @resizeStart="dragStart" @resizeStop="dragStop"></zw-resizer>
       <zw-discussion></zw-discussion>
     </div>
   </div>
@@ -14,24 +14,28 @@ export default {
 
   data() {
     return {
-      isResizing: false
+      isDragging: false
     }
   },
 
   computed: {
-    userSelect() {
-      return this.isResizing ? 'none' : ''
+    style() {
+      if (this.isDragging) {
+        return {
+          'user-select': 'none'
+        }
+      }
     }
   },
 
   methods: {
 
-    resizeStart () {
-      this.isResizing = true
+    dragStart () {
+      this.isDragging = true
     },
 
-    resizeStop () {
-      this.isResizing = false
+    dragStop () {
+      this.isDragging = false
     }
   },
 

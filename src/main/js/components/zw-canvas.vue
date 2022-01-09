@@ -1,6 +1,5 @@
 <template>
-  <div class="zw-canvas" :style="style" @mousedown="mousedown" @mouseup="mouseup" @mouseleave="mouseleave"
-      @wheel="wheel">
+  <div class="zw-canvas" :style="style" @wheel="wheel">
     <el-dropdown v-if="isTeam" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -20,12 +19,6 @@
 import dmx from 'dmx-api'
 
 export default {
-
-  data () {
-    return {
-      dragPos: undefined      // temporary mouse pos while canvas drag, undefined when no canvas drag is in progress
-    }
-  },
 
   computed: {
 
@@ -147,40 +140,6 @@ export default {
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false
       }
-    },
-
-    mousedown (e) {
-      this.$el.addEventListener('mousemove', this.mousemove)
-      this.dragPos = {
-        x: e.clientX,
-        y: e.clientY
-      }
-      this.$emit('panStart')
-    },
-
-    mousemove (e) {
-      this.pan.x += e.clientX - this.dragPos.x    // TODO: dispatch action
-      this.pan.y += e.clientY - this.dragPos.y    // TODO: dispatch action
-      this.dragPos.x = e.clientX
-      this.dragPos.y = e.clientY
-    },
-
-    mouseup () {
-      this.stopPanning()
-    },
-
-    mouseleave () {
-      if (this.dragPos) {
-        this.stopPanning()
-      }
-    },
-
-    stopPanning () {
-      console.log('stopPanning')
-      this.$el.removeEventListener('mousemove', this.mousemove)
-      this.dragPos = undefined
-      this.$emit('panStop')
-      // TODO: update sever state?
     },
 
     wheel (e) {

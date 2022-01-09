@@ -1,8 +1,8 @@
 <template>
-  <div class="zw-webclient" :style="style">
+  <div class="zw-webclient" :style="style" @mousedown="mousedown" @mouseup="mouseup">
     <zw-header></zw-header>
     <div class="content-area">
-      <zw-canvas @panStart="dragStart" @panStop="dragStop"></zw-canvas>
+      <zw-canvas></zw-canvas>
       <zw-resizer @resizeStart="dragStart" @resizeStop="dragStop"></zw-resizer>
       <zw-discussion></zw-discussion>
     </div>
@@ -14,11 +14,18 @@ export default {
 
   data() {
     return {
-      isDragging: false
+      isDragging: false,    // true while any dragging is in progress (canvas pan or move resizer)
+      isPanning: false,     // true while canvas pan is in progress
+      panPos: undefined     // temporary mouse pos while canvas pan
     }
   },
 
   computed: {
+
+    pan () {
+      return this.$store.state.pan
+    },
+
     style() {
       if (this.isDragging) {
         return {
@@ -29,6 +36,43 @@ export default {
   },
 
   methods: {
+
+    mousedown (e) {
+      console.log('mousedown', e.target.classList.contains('zw-canvas'))
+      if (e.target.classList.contains('zw-canvas')) {
+        this.$el.addEventListener('mousemove', this.mousemove)
+        this.panPos = {
+          x: e.clientX,
+          y: e.clientY
+        }
+      }
+    },
+
+    mousemove (e) {
+      this.pan.x += e.clientX - this.panPos.x     // TODO: dispatch action
+      this.pan.y += e.clientY - this.panPos.y     // TODO: dispatch action
+      this.panPos.x = e.clientX
+      this.panPos.y = e.clientY
+      if (!this.isPanning) {
+        this.isPanning = true
+        this.dragStart()
+      }
+    },
+
+    mouseup () {
+      console.log('mouseup', !!this.panPos)
+      if (this.panPos) {
+        this.$el.removeEventListener('mousemove', this.mousemove)
+      }
+      // stop panning
+      if (this.isPanning) {
+        console.log('stopPanning')
+        this.isPanning = false
+        this.panPos = undefined
+        this.dragStop()
+      }
+      // TODO: update sever state?
+    },
 
     dragStart () {
       this.isDragging = true

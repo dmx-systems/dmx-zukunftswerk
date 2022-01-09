@@ -4,7 +4,7 @@
       <div class="discussion-button">
         <el-button type="text" icon="el-icon-chat-round" @click="newComment"></el-button>
       </div>
-      {{docName}}
+      <div>{{docName}}</div>
       <pre v-if="isText">{{text}}</pre>
       <img v-if="isImage" :src="fileUrl" @load="update">
       <audio v-if="isAudio" :src="fileUrl" controls></audio>
@@ -74,7 +74,7 @@ export default {
 
   data () {
     return {
-      text: '',               // plain text as contained in text file (String)      FIXME: 2x ?
+      text: '',               // used only for text files: the contained text (String)      FIXME: 2x ?
       saving: false,          // true while document is saved
       onSuccess: {            // upload success handler (2x Function)
         de: this.createSuccessHandler('de'),

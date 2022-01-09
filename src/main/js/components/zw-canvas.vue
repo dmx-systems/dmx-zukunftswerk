@@ -65,7 +65,8 @@ export default {
 
     contentLayerStyle () {
       return {
-        'transform': `translate(${this.pan.x}px, ${this.pan.y}px) scale(${this.zoom})`
+        'transform': `translate(${this.pan.x}px, ${this.pan.y}px) scale(${this.zoom})`,
+        'transform-origin': 'top left'
       }
     },
 
@@ -189,5 +190,9 @@ export default {
 .zw-canvas .add-button {
   margin: 8px;
   font-size: 24px;
+}
+
+.zw-canvas .content-layer {
+  width: 10000px;    /* avoid early line wrapping */
 }
 </style>

@@ -38,7 +38,7 @@ export default {
   methods: {
 
     mousedown (e) {
-      console.log('mousedown', e.target.classList.contains('zw-canvas'))
+      // console.log('mousedown', e.target.classList.contains('zw-canvas'))
       if (e.target.classList.contains('zw-canvas')) {
         this.$el.addEventListener('mousemove', this.mousemove)
         this.panPos = {
@@ -60,13 +60,13 @@ export default {
     },
 
     mouseup () {
-      console.log('mouseup', !!this.panPos)
+      // console.log('mouseup', !!this.panPos)
       if (this.panPos) {
         this.$el.removeEventListener('mousemove', this.mousemove)
       }
       // stop panning
       if (this.isPanning) {
-        console.log('stopPanning')
+        // console.log('stopPanning')
         this.isPanning = false
         this.panPos = undefined
         this.dragStop()

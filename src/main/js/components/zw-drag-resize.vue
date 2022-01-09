@@ -1,7 +1,7 @@
 <template>
   <vue-drag-resize :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']"
       @clicked="select" @dragstop="setPos" @resizestop="setSize">
-    <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail"></component>
+    <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail" @mousedown.native="mousedown"></component>
   </vue-drag-resize>
 </template>
 
@@ -62,6 +62,15 @@ export default {
 
     select (e) {
       this.$store.dispatch('setTopic', this.topic)
+    },
+
+    mousedown (e) {
+      // console.log('mousedown', e.target.tagName)
+      const inInput = e.target.tagName === 'INPUT'
+      const inQuill = e.target.closest('.ql-container')
+      if (inInput || inQuill) {
+        e.stopPropagation()     // prevents vue-drag-resize from starting a drag
+      }
     },
 
     setPos (e) {

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="infoMode" class="zw-note dmx-html-field info" v-html="noteHtml"></div>
-  <div v-else class="zw-note dmx-html-field form" v-loading="saving">
+  <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml"></div>
+  <div class="zw-note dmx-html-field form" v-else v-loading="saving">
     <div class="field-label">
       <zw-string>label.new_note</zw-string>
     </div>

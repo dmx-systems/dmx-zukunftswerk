@@ -127,12 +127,7 @@ export default {
             }
           }
         },
-        viewProps: {
-          'dmx.topicmaps.x': 100 - this.pan.x,
-          'dmx.topicmaps.y': 100 - this.pan.y,
-          'dmx.topicmaps.visibility': true,
-          'dmx.topicmaps.pinned': false
-        }
+        viewProps: this.viewProps()
       })
     },
 
@@ -140,13 +135,17 @@ export default {
       return new dmx.ViewTopic({
         typeUri,
         value: '',      // used as intermediate model while create
-        viewProps: {
-          'dmx.topicmaps.x': 100 - this.pan.x,
-          'dmx.topicmaps.y': 100 - this.pan.y,
-          'dmx.topicmaps.visibility': true,
-          'dmx.topicmaps.pinned': false
-        }
+        viewProps: this.viewProps()
       })
+    },
+
+    viewProps ()  {
+      return {
+        'dmx.topicmaps.x': (80 - this.pan.x) / this.zoom,
+        'dmx.topicmaps.y': (80 - this.pan.y) / this.zoom,
+        'dmx.topicmaps.visibility': true,
+        'dmx.topicmaps.pinned': false
+      }
     },
 
     mousedown (e) {

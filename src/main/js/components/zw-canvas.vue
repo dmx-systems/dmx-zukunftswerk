@@ -166,6 +166,6 @@ export default {
 }
 
 .zw-canvas .content-layer {
-  width: 10000px;    /* avoid early line wrapping */
+  width: 10000px;     /* avoid early line wrapping */
 }
 </style>

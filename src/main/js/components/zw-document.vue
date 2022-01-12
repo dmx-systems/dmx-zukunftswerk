@@ -13,15 +13,15 @@
     </template>
     <template v-else>
       <div class="field">
-        <div class="field-label">Dokument Name (de)</div>
+        <div class="field-label"><zw-string>label.document_name</zw-string> (de)</div>
         <el-input v-model="docNameTopics.de.value" ref="docName"></el-input>
       </div>
       <div class="field">
-        <div class="field-label">Nom du document (fr)</div>
+        <div class="field-label"><zw-string>label.document_name</zw-string> (fr)</div>
         <el-input v-model="docNameTopics.fr.value"></el-input>
       </div>
       <div class="field">
-        <div class="field-label">Datei (de)</div>
+        <div class="field-label"><zw-string>label.file</zw-string> (de)</div>
         <el-upload drag :action="uploadUrl" :on-success="onSuccess.de" :on-error="onError.de" ref="upload.de">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
@@ -30,7 +30,7 @@
         <el-input v-model="pathTopics.de.value"></el-input>
       </div>
       <div class="field">
-        <div class="field-label">Fichier (fr)</div>
+        <div class="field-label"><zw-string>label.file</zw-string> (fr)</div>
         <el-upload drag :action="uploadUrl" :on-success="onSuccess.fr" :on-error="onError.fr" ref="upload.fr">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>

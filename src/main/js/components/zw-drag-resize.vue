@@ -73,7 +73,7 @@ export default {
       const inInput = e.target.tagName === 'INPUT'
       const inQuill = e.target.closest('.ql-container')
       if (inInput || inQuill) {
-        e.stopPropagation()     // prevents vue-drag-resize from starting a drag
+        e.stopPropagation()     // prevent vue-drag-resize from initiating a drag
       }
     },
 
@@ -81,8 +81,8 @@ export default {
       const pos = {x: e.left, y: e.top}
       // console.log('setPos', pos)
       // Note: setPosition() would trigger vue-drag-resize's x/y watchers. An item-move would be emulated, including
-      // firing the "dragstop" event. This resuls in an endless cascade of setPos() calls.
-      // this.topic.setPosition(pos)                                           // update client state
+      // firing the "dragstop" event. This would result in an endless cascade of setPos() calls.
+      // this.topic.setPosition(pos)                                        // update client state
       if (this.topic.id >= 0 && this.isWritable) {
         dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state
       }

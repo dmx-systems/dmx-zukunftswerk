@@ -294,6 +294,15 @@ export default {
   margin-top: var(--field-spacing);
 }
 
+.zw-document .el-upload-dragger {
+  height: 90px;             /* Element UI default is 180px */
+}
+
+.zw-document .el-upload-dragger .el-icon-upload {
+  font-size: 50px;          /* Element UI default is 67px */
+  margin: 12px 0 0 0;       /* Element UI default is 40px 0 16px */
+}
+
 .zw-document .error {
   color: var(--color-danger);
 }

@@ -1,6 +1,6 @@
 <template>
   <vue-drag-resize :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']"
-      @clicked="select" @dragstop="setPos" @resizestop="setSize">
+      :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @dragstop="setPos" @resizestop="setSize">
     <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail" @mousedown.native="mousedown"></component>
   </vue-drag-resize>
 </template>
@@ -55,6 +55,10 @@ export default {
 
     isActive () {
       return this.selectedTopic && this.selectedTopic.id === this.topic.id
+    },
+
+    zoom () {
+      return this.$store.state.zoom
     }
   },
 
@@ -75,7 +79,10 @@ export default {
 
     setPos (e) {
       const pos = {x: e.left, y: e.top}
-      this.topic.setPosition(pos)                                           // update client state
+      // console.log('setPos', pos)
+      // Note: setPosition() would trigger vue-drag-resize's x/y watchers. An item-move would be emulated, including
+      // firing the "dragstop" event. This resuls in an endless cascade of setPos() calls.
+      // this.topic.setPosition(pos)                                           // update client state
       if (this.topic.id >= 0 && this.isWritable) {
         dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-webclient" :style="style" @mousedown="mousedown" @mouseup="mouseup">
+  <div class="zw-webclient" :style="style" @mousedown="mousedown" @mouseup="mouseup" @keyup.tab="tab">
     <zw-header></zw-header>
     <div class="content-area">
       <zw-canvas></zw-canvas>
@@ -49,8 +49,10 @@ export default {
     },
 
     mousemove (e) {
-      this.pan.x += e.clientX - this.panPos.x     // TODO: dispatch action
-      this.pan.y += e.clientY - this.panPos.y     // TODO: dispatch action
+      this.$store.dispatch('setPan', {
+        x: this.pan.x + e.clientX - this.panPos.x,
+        y: this.pan.y + e.clientY - this.panPos.y
+      })
       this.panPos.x = e.clientX
       this.panPos.y = e.clientY
       if (!this.isPanning) {
@@ -71,7 +73,7 @@ export default {
         this.panPos = undefined
         this.dragStop()
       }
-      // TODO: update sever state?
+      // TODO: update sever state
     },
 
     dragStart () {
@@ -80,6 +82,19 @@ export default {
 
     dragStop () {
       this.isDragging = false
+    },
+
+    tab () {
+      // auto-pan canvas when focus outside viewport while tabbing
+      const scrollTop = document.scrollingElement.scrollTop
+      // console.log('tab', scrollTop)
+      if (scrollTop > 0) {
+        document.scrollingElement.scrollTop = 0     // reset broser auto-scroll
+        this.$store.dispatch('setPan', {            // ... and compensate with panning
+          x: this.pan.x,
+          y: this.pan.y - scrollTop
+        })
+      }
     }
   },
 

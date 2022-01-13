@@ -164,8 +164,8 @@ const actions = {
    */
   revealDocument ({dispatch}, document) {
     const topic = state.topicmap.getTopic(document.id)
-    state.pan.x = -topic.pos.x    // TODO: geometry
-    state.pan.y = -topic.pos.y    // TODO: geometry
+    state.pan.x = -topic.pos.x    // TODO: geometry, zoom?
+    state.pan.y = -topic.pos.y    // TODO: geometry, zoom?
     dispatch('setTopic', topic)
   },
 
@@ -174,6 +174,10 @@ const actions = {
     if (document) {
       dispatch('setPanelVisibility', true)
     }
+  },
+
+  setPan (_, pan) {
+    state.pan = pan
   },
 
   setZoom (_, zoom) {

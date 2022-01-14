@@ -1,5 +1,5 @@
 <template>
-  <vue-drag-resize :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr', 'ml']"
+  <vue-drag-resize :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr']"
       :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @dragstop="setPos" @resizestop="setSize">
     <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail" @mousedown.native="mousedown"></component>
   </vue-drag-resize>

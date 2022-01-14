@@ -300,7 +300,7 @@ export default {
 
 .zw-document .el-upload-dragger .el-icon-upload {
   font-size: 50px;          /* Element UI default is 67px */
-  margin: 12px 0 0 0;       /* Element UI default is 40px 0 16px */
+  margin: 8px 0 0 0;        /* Element UI default is 40px 0 16px */
 }
 
 .zw-document .error {

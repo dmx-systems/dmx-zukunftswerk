@@ -178,10 +178,12 @@ const actions = {
 
   setPan (_, pan) {
     state.pan = pan
+    setTopicmapViewport()     // update server state (debounced)
   },
 
   setZoom (_, zoom) {
     state.zoom = zoom
+    setTopicmapViewport()     // update server state (debounced)
   },
 
   setPanelVisibility (_, visibility) {
@@ -256,6 +258,12 @@ function removeTopic (topic) {
     throw Error('removeTopic')
   }
   state.newTopics.splice(i, 1)
+}
+
+function setTopicmapViewport() {
+  if (state.isTeam) {
+    dmx.rpc.setTopicmapViewport(state.topicmap.id, state.pan, state.zoom)
+  }
 }
 
 // util

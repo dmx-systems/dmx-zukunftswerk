@@ -34,13 +34,8 @@ export default {
       return this.$store.state.pan
     },
 
-    zoom: {
-      get () {
-        return this.$store.state.zoom
-      },
-      set (zoom) {
-        this.$store.dispatch('setZoom', zoom)
-      }
+    zoom () {
+      return this.$store.state.zoom
     },
 
     topics () {
@@ -143,8 +138,8 @@ export default {
     },
 
     wheel (e) {
-      this.zoom -= .003 * e.deltaY
-      this.zoom = Math.min(Math.max(.5, this.zoom), 2)
+      const zoom = Math.min(Math.max(this.zoom - .003 * e.deltaY, .5), 2)
+      this.$store.dispatch('setZoom', zoom)
     }
   },
 

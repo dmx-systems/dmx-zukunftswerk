@@ -73,7 +73,6 @@ export default {
         this.panPos = undefined
         this.dragStop()
       }
-      // TODO: update sever state
     },
 
     dragStart () {
@@ -89,7 +88,7 @@ export default {
       const scrollTop = document.scrollingElement.scrollTop
       // console.log('tab', scrollTop)
       if (scrollTop > 0) {
-        document.scrollingElement.scrollTop = 0     // reset broser auto-scroll
+        document.scrollingElement.scrollTop = 0     // reset browser auto-scroll
         this.$store.dispatch('setPan', {            // ... and compensate with panning
           x: this.pan.x,
           y: this.pan.y - scrollTop

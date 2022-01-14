@@ -7,7 +7,7 @@
       <div v-html="html[origLang]"></div>
       <div v-html="html[translatedLang]"></div>
     </div>
-    <div class="button-panel">
+    <div class="button-panel" v-if="isWritable">
       <el-button type="text" @click="reply"><zw-string>button.reply</zw-string></el-button>
       <el-button type="text"><zw-string>button.edit</zw-string></el-button>
       <el-button type="text"><zw-string>button.delete</zw-string></el-button>
@@ -67,6 +67,10 @@ export default {
 
     attachments () {
       return this.comment.children['dmx.files.file#zukunftswerk.attachment']
+    },
+
+    isWritable () {
+      return this.$store.state.isWritable
     },
 
     lang () {

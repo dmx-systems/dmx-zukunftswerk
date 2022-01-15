@@ -9,8 +9,8 @@
       </el-dropdown-menu>
     </el-dropdown>
     <div class="content-layer" :style="contentLayerStyle">
-      <zw-drag-resize v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-drag-resize>
-      <zw-drag-resize v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-drag-resize>
+      <zw-canvas-item v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-canvas-item>
+      <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
     </div>
   </div>
 </template>
@@ -144,7 +144,7 @@ export default {
   },
 
   components: {
-    'zw-drag-resize': require('./zw-drag-resize').default
+    'zw-canvas-item': require('./zw-canvas-item').default
   }
 }
 </script>

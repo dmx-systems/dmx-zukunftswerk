@@ -14,6 +14,7 @@ export default {
     // once mounted we set actual width; 'auto' would prohibit manual resize
     if (this.w === 'auto') {
       this.w = this.$el.clientWidth
+      // console.log('setWidth', this.w)
     }
     this.$refs.detail.$el.style['min-width'] = 'unset'
     this.$refs.detail.$el.style['max-width'] = 'unset'
@@ -90,8 +91,8 @@ export default {
 
     setSize (e) {
       if (this.topic.id >= 0 && this.isWritable) {
-        console.log(e.width, e.height)
-        if (!isNaN(e.width)) {
+        console.log('setSize', e.width, e.height)
+        if (!isNaN(e.width) && !isNaN(e.height)) {
           dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
             'dmx.topicmaps.width': e.width,
             'dmx.topicmaps.height': e.height

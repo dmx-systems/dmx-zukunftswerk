@@ -4,7 +4,7 @@
       <div class="discussion-button">
         <el-button type="text" icon="el-icon-chat-round" @click="newComment"></el-button>
       </div>
-      <div>{{docName}}</div>
+      <div class="doc-name">{{docName}}</div>
       <pre v-if="isText">{{text}}</pre>
       <img v-if="isImage" :src="fileUrl" @load="update">
       <audio v-if="isAudio" :src="fileUrl" controls></audio>
@@ -256,10 +256,15 @@ export default {
 
 <style>
 .zw-document {
-  min-width: 120px;
-  max-width: 420px;
+  min-width: 240px;
+  max-width: 480px;
   padding: 12px;
   background-color: rgb(230, 230, 230);
+}
+
+.zw-document .doc-name {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .zw-document .discussion-button {

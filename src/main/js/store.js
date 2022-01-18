@@ -166,7 +166,7 @@ const actions = {
     const topic = state.topicmap.getTopic(document.id)
     dispatch('setTopic', topic)
     dispatch('setPan', {
-      x: -topic.pos.x * state.zoom + 40,
+      x: -topic.pos.x * state.zoom + 40,    // 40 matches zw-canvas.vue viewProps()
       y: -topic.pos.y * state.zoom
     })
   },

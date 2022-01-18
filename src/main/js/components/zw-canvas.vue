@@ -130,8 +130,8 @@ export default {
 
     viewProps ()  {
       return {
-        'dmx.topicmaps.x': (80 - this.pan.x) / this.zoom,
-        'dmx.topicmaps.y': (80 - this.pan.y) / this.zoom,
+        'dmx.topicmaps.x': (40 - this.pan.x) / this.zoom,     // 40 matches store.js revealDocuments()
+        'dmx.topicmaps.y':     - this.pan.y  / this.zoom,
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false
       }

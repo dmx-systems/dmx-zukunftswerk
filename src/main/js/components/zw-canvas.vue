@@ -156,11 +156,13 @@ export default {
 }
 
 .zw-canvas .add-button {
-  margin: 8px;
+  position: relative;   /* only positioned elements have a z-index; "absolute" would displace dropdown menu */
+  z-index: 1;           /* place button above canvas items */
   font-size: 24px;
+  margin: 8px;
 }
 
 .zw-canvas .content-layer {
-  width: 10000px;     /* avoid early line wrapping */
+  width: 10000px;       /* avoid early line wrapping */
 }
 </style>

@@ -17,7 +17,7 @@ import systems.dmx.workspaces.WorkspacesService;
  * Extends "Workspace" by 2 more "Workspace Name"s (de+fr).
  * Creates "Community" and "Team" workspaces.
  * <p>
- * Part of Zukunftswerk 1.0.
+ * Part of Zukunftswerk 0.8
  * Runs ALWAYS.
  */
 public class Migration2 extends Migration {

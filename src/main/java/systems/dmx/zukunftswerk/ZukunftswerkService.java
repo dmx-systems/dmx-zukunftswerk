@@ -11,6 +11,8 @@ public interface ZukunftswerkService {
 
     List<Topic> getDiscussion();
 
+    // Note: there is no createDocument() call. This is done by Core's createTopic().
+
     Topic createNote(String note);
 
     Topic createLabel(String label);

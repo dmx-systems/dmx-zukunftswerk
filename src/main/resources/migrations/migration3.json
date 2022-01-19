@@ -1,0 +1,10 @@
+{
+  "topic_types": [
+    // Arrow
+    {
+      "value":       "Arrow",
+      "uri":         "zukunftswerk.arrow",
+      "dataTypeUri": "dmx.core.text"
+    }
+  ]
+}

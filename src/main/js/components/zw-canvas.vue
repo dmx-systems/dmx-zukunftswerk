@@ -5,7 +5,8 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="newDocument"><zw-string>item.document</zw-string></el-dropdown-item>
         <el-dropdown-item command="newNote"><zw-string>item.note</zw-string></el-dropdown-item>
-        <el-dropdown-item command="newLabel"><zw-string>item.label</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newLabel" divided><zw-string>item.label</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newArrow"><zw-string>item.arrow</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     <div class="content-layer" :style="contentLayerStyle">
@@ -72,7 +73,8 @@ export default {
     canvasFilter (topic) {
       return topic.typeUri === 'zukunftswerk.document' ||
              topic.typeUri === 'zukunftswerk.note'     ||
-             topic.typeUri === 'zukunftswerk.label'
+             topic.typeUri === 'zukunftswerk.label'    ||
+             topic.typeUri === 'zukunftswerk.arrow'
     },
 
     handle (command) {
@@ -89,6 +91,12 @@ export default {
 
     newLabel () {
       this.$store.dispatch('newTopic', this.newViewTopic('zukunftswerk.label'))
+    },
+
+    newArrow () {
+      const arrow = this.newViewTopic('zukunftswerk.arrow')
+      arrow.value = 'Arrow ' + newArrowId()     // the Value Integrator needs something to integrate
+      this.$store.dispatch('createArrow', arrow)
     },
 
     newDocumentViewTopic () {
@@ -123,7 +131,7 @@ export default {
     newViewTopic (typeUri) {
       return new dmx.ViewTopic({
         typeUri,
-        value: '',      // used as intermediate model while create
+        value: '',      // used as intermediate note/label model while create
         viewProps: this.viewProps()
       })
     },
@@ -146,6 +154,10 @@ export default {
   components: {
     'zw-canvas-item': require('./zw-canvas-item').default
   }
+}
+
+function newArrowId () {
+  return Math.floor(Number.MAX_SAFE_INTEGER * Math.random())
 }
 </script>
 

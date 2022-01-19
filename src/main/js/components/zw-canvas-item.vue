@@ -106,6 +106,7 @@ export default {
     'zukunftswerk.document': require('./zw-document').default,
     'zukunftswerk.note': require('./zw-note').default,
     'zukunftswerk.label': require('./zw-label').default,
+    'zukunftswerk.arrow': require('./zw-arrow').default,
     'vue-drag-resize': require('vue-drag-resize').default
   }
 }

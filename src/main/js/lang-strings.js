@@ -4,8 +4,10 @@ export default {
   'item.document.fr': 'Document',
   'item.note.de': 'Notiz',
   'item.note.fr': 'Note',
-  'item.label.de': 'Beschriftung',
-  'item.label.fr': 'Étiquetage',
+  'item.label.de': 'Überschrift',
+  'item.label.fr': 'Titre',
+  'item.arrow.de': 'Pfeil',
+  'item.arrow.fr': 'Flèche',
 
   'label.shared_workspace.de': 'Gemeinsamer Arbeitsbereich',
   'label.shared_workspace.fr': 'Espace de travail commun',
@@ -19,8 +21,8 @@ export default {
   'label.new_comment.fr': 'Nouveau commentaire',
   'label.new_note.de': 'Neue Notiz',
   'label.new_note.fr': 'Nouvelle note',
-  'label.new_label.de': 'Neue Beschriftung',
-  'label.new_label.fr': 'Nouveau étiquetage',
+  'label.new_label.de': 'Neue Überschrift',
+  'label.new_label.fr': 'Nouveau Titre',
 
   'button.submit.de': 'OK',
   'button.submit.fr': 'OK',

@@ -37,6 +37,7 @@ const state = {
 const actions = {
 
   loggedIn (_, username) {
+    DEV && console.log('Login', username)
     setUsername(username)
     updateIsWritable()
   },
@@ -86,11 +87,7 @@ const actions = {
    */
   createDocument (_, topic) {
     return dmx.rpc.createTopic(topic).then(_topic => {
-      dmx.rpc.addTopicToTopicmap(state.topicmap.id, _topic.id, topic.viewProps)
-      topic.id       = _topic.id
-      topic.value    = _topic.value
-      topic.children = _topic.children
-      state.topicmap.addTopic(topic)
+      addTopicToTopicmap(topic, _topic)
       removeTopic(topic)
     })
   },
@@ -106,11 +103,7 @@ const actions = {
     })
     .then(response => response.data)
     .then(_topic => {
-      dmx.rpc.addTopicToTopicmap(state.topicmap.id, _topic.id, topic.viewProps)
-      topic.id       = _topic.id
-      topic.value    = _topic.value
-      topic.children = _topic.children
-      state.topicmap.addTopic(topic)
+      addTopicToTopicmap(topic, _topic)
       removeTopic(topic)
     })
   },
@@ -126,12 +119,17 @@ const actions = {
     })
     .then(response => response.data)
     .then(_topic => {
-      dmx.rpc.addTopicToTopicmap(state.topicmap.id, _topic.id, topic.viewProps)
-      topic.id       = _topic.id
-      topic.value    = _topic.value
-      topic.children = _topic.children
-      state.topicmap.addTopic(topic)
+      addTopicToTopicmap(topic, _topic)
       removeTopic(topic)
+    })
+  },
+
+  /**
+   * @param   topic   a dmx.ViewTopic
+   */
+  createArrow (_, topic) {
+    return dmx.rpc.createTopic(topic).then(_topic => {
+      addTopicToTopicmap(topic, _topic)
     })
   },
 
@@ -252,6 +250,18 @@ function fetchDiscussion () {
       (c1, c2) => c1.children['dmx.timestamps.created'].value - c2.children['dmx.timestamps.created'].value
     )
   })
+}
+
+/**
+ * Transfers "id", "value", and "children" from the given topic to the given viewTopic and adds the viewTopic
+ * to the topicmap. Updates both, client state and server state.
+ */
+function addTopicToTopicmap (viewTopic, topic) {
+  viewTopic.id       = topic.id
+  viewTopic.value    = topic.value
+  viewTopic.children = topic.children
+  state.topicmap.addTopic(viewTopic)                                                // update client state
+  dmx.rpc.addTopicToTopicmap(state.topicmap.id, topic.id, viewTopic.viewProps)      // update server state
 }
 
 function removeTopic (topic) {

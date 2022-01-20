@@ -1,7 +1,12 @@
 <template>
-  <vue-drag-resize :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto" :sticks="['mr']"
-      :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @dragstop="setPos" @resizestop="setSize">
+  <vue-drag-resize contentClass="zw-canvas-item" :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto"
+      :sticks="['mr']" :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @dragstop="setPos"
+      @resizestop="setSize">
     <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail" @mousedown.native="mousedown"></component>
+    <div class="button-panel" v-if="isWritable">
+      <el-button type="text" :style="buttonStyle" @click="edit"><zw-string>button.edit</zw-string></el-button>
+      <el-button type="text" :style="buttonStyle" @click="deleteItem"><zw-string>button.delete</zw-string></el-button>
+    </div>
   </vue-drag-resize>
 </template>
 
@@ -58,6 +63,12 @@ export default {
       return this.selectedTopic && this.selectedTopic.id === this.topic.id
     },
 
+    buttonStyle () {
+      return {
+        'font-size': `${14 / this.zoom}px`    // 14 = --main-font-size (see App.vue)
+      }
+    },
+
     zoom () {
       return this.$store.state.zoom
     }
@@ -67,6 +78,14 @@ export default {
 
     select (e) {
       this.$store.dispatch('setTopic', this.topic)
+    },
+
+    edit () {
+      // TODO
+    },
+
+    deleteItem () {
+      // TODO
     },
 
     mousedown (e) {
@@ -111,3 +130,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.zw-canvas-item .button-panel {
+  position: absolute;
+  visibility: hidden;
+  z-index: 1;   /* place button panel _before_ other canvas items */
+}
+
+.zw-canvas-item:hover .button-panel {
+  visibility: visible;
+}
+</style>

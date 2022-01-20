@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {MessageBox} from 'element-ui'
 import http from 'axios'
 import dmx from 'dmx-api'
 
@@ -198,6 +199,13 @@ const actions = {
     state.lang = lang
   },
 
+  delete () {
+    confirmDeletion().then(() => {
+      state.topicmap.removeTopic(state.topic.id)    // update client state
+      dmx.rpc.deleteTopic(state.topic.id)           // update server state
+    }).catch(() => {})                              // suppress unhandled rejection on cancel
+  },
+
   downloadFile (_, repoPath) {
     state.downloadUrl = filerepoUrl(repoPath) + '?download'
     setTimeout(() => {
@@ -278,8 +286,21 @@ function setTopicmapViewport() {
   }
 }
 
+function getString (key) {
+  return state.langStrings[`${key}.${state.lang}`]
+}
+
 // util
 
 function filerepoUrl (repoPath) {
   return '/filerepo/' + encodeURIComponent(repoPath)
+}
+
+function confirmDeletion () {
+  return MessageBox.confirm(getString('warning.deletion'), 'Warning', {
+    type: 'warning',
+    confirmButtonText: getString('button.delete'),
+    confirmButtonClass: 'el-button--danger',
+    showClose: false
+  })
 }

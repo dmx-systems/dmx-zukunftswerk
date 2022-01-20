@@ -85,7 +85,7 @@ export default {
     },
 
     deleteItem () {
-      // TODO
+      this.$store.dispatch('delete')
     },
 
     mousedown (e) {

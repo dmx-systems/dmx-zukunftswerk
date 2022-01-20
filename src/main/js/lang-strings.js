@@ -33,5 +33,8 @@ export default {
   'button.delete.de': 'Löschen',
   'button.delete.fr': 'Supprimer',
   'button.attach_files.de': 'Dateien anhängen',
-  'button.attach_files.fr': 'Joindre des fichiers'
+  'button.attach_files.fr': 'Joindre des fichiers',
+
+  'warning.deletion.de': 'Sie sind im Begriff dieses Objekt zu löschen!',
+  'warning.deletion.fr': 'Vous êtes sur le point de supprimer cet objet!'
 }

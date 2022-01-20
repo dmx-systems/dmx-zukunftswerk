@@ -15,7 +15,7 @@ const state = {
   username: undefined,          // username of logged in user (String), undefined if not logged in
   isTeam: false,                // true if the logged in user is member of the "Team" workspace (Boolean)
 
-  topicmap: undefined,          // the topicmap displayed on workspace canvas (dmx.Topicmap)
+  topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
   workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
   isWritable: false,            // true if the workspace is writable (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected

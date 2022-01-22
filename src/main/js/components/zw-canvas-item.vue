@@ -2,7 +2,9 @@
   <vue-drag-resize contentClass="zw-canvas-item" :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto"
       :sticks="['mr']" :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @dragstop="setPos"
       @resizestop="setSize">
-    <component :is="topic.typeUri" :topic="topic" :mode="mode" ref="detail" @mousedown.native="mousedown"></component>
+    <component :is="topic.typeUri" :topic="topic" :topicToEdit="topicToEdit" :mode="mode" ref="detail"
+      @mousedown.native="mousedown">
+    </component>
     <div class="button-panel" v-if="isWritable">
       <el-button type="text" :style="buttonStyle" @click="edit"><zw-string>button.edit</zw-string></el-button>
       <el-button type="text" :style="buttonStyle" @click="deleteItem"><zw-string>button.delete</zw-string></el-button>
@@ -28,11 +30,11 @@ export default {
   props: {
 
     topic: {
-      type: dmx.ViewTopic,    // the topic to render (dmx.ViewTopic)
+      type: dmx.ViewTopic,      // the topic to render (dmx.ViewTopic)
       required: true
     },
 
-    mode: {                   // 'info'/'form'
+    mode: {                     // 'info'/'form'
       type: String,
       default: 'info'
     }
@@ -41,7 +43,8 @@ export default {
   data () {
     const width = this.topic.viewProps['dmx.topicmaps.width']
     return {
-      w: width || 'auto'      // if width is unknown let the child component's style determine the initial width
+      w: width || 'auto',       // if width is unknown let the child component's style determine the initial width
+      topicToEdit: undefined    // the edit buffer (dmx.ViewTopic)
     }
   },
 
@@ -81,6 +84,7 @@ export default {
     },
 
     edit () {
+      this.topicToEdit = this.topic.clone()
       this.$store.dispatch('edit')
     },
 

@@ -10,10 +10,10 @@
     <template v-else>
       <div class="columns">
         <div>
-          <quill v-model="model.de" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+          <quill v-model="noteBuffer.de.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
         </div>
         <div>
-          <quill v-model="model.fr" :options="quillOptions"></quill>
+          <quill v-model="noteBuffer.fr.value" :options="quillOptions"></quill>
         </div>
       </div>
     </template>
@@ -28,28 +28,19 @@ import dmx from 'dmx-api'
 
 export default {
 
-  created () {
-    // console.log(this.note)
-    this.model.de = this.note.de
-    this.model.fr = this.note.fr
-  },
-
   data () {
     return {
-      model: {
-        de: '',
-        fr: ''
-      },
-      saving: false           // true while note is saved
+      saving: false                   // true while note is saved
     }
   },
 
   props: {
-    topic: {                  // the Note topic (dmx.ViewTopic)
+    topic: {                          // the Note topic to render (dmx.ViewTopic)
       type: dmx.ViewTopic,
       required: true
     },
-    mode: {                   // 'info'/'form'
+    topicToEdit: dmx.ViewTopic,       // the edit buffer (dmx.ViewTopic)
+    mode: {                           // 'info'/'form'
       type: String,
       default: 'info'
     }
@@ -61,6 +52,13 @@ export default {
       return {
         de: this.html('de'),
         fr: this.html('fr')
+      }
+    },
+
+    noteBuffer () {
+      return {
+        de: this.htmlBuffer('de'),
+        fr: this.htmlBuffer('fr')
       }
     },
 
@@ -108,8 +106,13 @@ export default {
       }
     },
 
-    setHtml (lang, html) {
-      this.topic.children['zukunftswerk.note.' + lang].value = html
+    htmlBuffer (lang) {
+      return this.topicToEdit.children['zukunftswerk.note.' + lang]
+    },
+
+    setHtml (lang) {
+      const compDefUri = 'zukunftswerk.note.' + lang
+      this.topic.children[compDefUri].value = this.topicToEdit.children[compDefUri].value
     },
 
     focus () {
@@ -123,8 +126,8 @@ export default {
         p = this.$store.dispatch('createNote', this.topic)
       } else {
         // transfer edit buffer to topic model
-        this.setHtml('de', this.model.de)
-        this.setHtml('fr', this.model.fr)
+        this.setHtml('de')
+        this.setHtml('fr')
         //
         p = this.$store.dispatch('updateNote', this.topic)
       }

@@ -21,6 +21,7 @@ const state = {
   isWritable: false,            // true if the workspace is writable (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
+  isEditActive: [],             // IDs of topics being edited (array)
   pan: {x: 0, y: 0},            // canvas pan (in pixel)
   zoom: 1,                      // canvas zoom (Number)
 
@@ -106,6 +107,16 @@ const actions = {
     .then(_topic => {
       addTopicToTopicmap(topic, _topic)
       removeTopic(topic)
+    })
+  },
+
+  /**
+   * @param   topic   a dmx.ViewTopic
+   */
+  updateNote (_, topic) {
+    return dmx.rpc.updateTopic(topic).then(directives => {
+      const i = state.isEditActive.indexOf(topic.id)
+      state.isEditActive.splice(i, 1)
     })
   },
 
@@ -199,11 +210,15 @@ const actions = {
     state.lang = lang
   },
 
+  edit () {
+    state.isEditActive.push(state.topic.id)
+  },
+
   delete () {
     confirmDeletion().then(() => {
       state.topicmap.removeTopic(state.topic.id)    // update client state
       dmx.rpc.deleteTopic(state.topic.id)           // update server state
-    }).catch(() => {})                              // suppress unhandled rejection on cancel
+    }).catch(() => {})      // suppress unhandled rejection on cancel
   },
 
   downloadFile (_, repoPath) {

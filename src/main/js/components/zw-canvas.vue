@@ -10,7 +10,7 @@
       </el-dropdown-menu>
     </el-dropdown>
     <div class="content-layer" :style="contentLayerStyle">
-      <zw-canvas-item v-for="topic in topics"    :topic="topic" mode="info" :key="topic.id"></zw-canvas-item>
+      <zw-canvas-item v-for="topic in topics"    :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
     </div>
   </div>
@@ -75,6 +75,10 @@ export default {
              topic.typeUri === 'zukunftswerk.note'     ||
              topic.typeUri === 'zukunftswerk.label'    ||
              topic.typeUri === 'zukunftswerk.arrow'
+    },
+
+    mode (topic) {
+      return this.$store.state.isEditActive.includes(topic.id) ? 'form' : 'info'
     },
 
     handle (command) {

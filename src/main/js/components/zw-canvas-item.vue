@@ -81,7 +81,7 @@ export default {
     },
 
     edit () {
-      // TODO
+      this.$store.dispatch('edit')
     },
 
     deleteItem () {

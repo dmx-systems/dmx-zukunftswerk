@@ -1,10 +1,22 @@
 <template>
   <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml"></div>
   <div class="zw-note dmx-html-field form" v-else v-loading="saving">
-    <div class="field-label">
-      <zw-string>label.new_note</zw-string>
-    </div>
-    <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+    <template v-if="isNew">
+      <div class="field-label">
+        <zw-string>label.new_note</zw-string>
+      </div>
+      <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+    </template>
+    <template v-else>
+      <div class="columns">
+        <div>
+          <quill v-model="model.de" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        </div>
+        <div>
+          <quill v-model="model.fr" :options="quillOptions"></quill>
+        </div>
+      </div>
+    </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>button.submit</zw-string>
     </el-button>
@@ -16,8 +28,18 @@ import dmx from 'dmx-api'
 
 export default {
 
+  created () {
+    // console.log(this.note)
+    this.model.de = this.note.de
+    this.model.fr = this.note.fr
+  },
+
   data () {
     return {
+      model: {
+        de: '',
+        fr: ''
+      },
       saving: false           // true while note is saved
     }
   },
@@ -35,12 +57,11 @@ export default {
 
   computed: {
 
-    de () {
-      return this.html('de')
-    },
-
-    fr () {
-      return this.html('fr')
+    note () {
+      return {
+        de: this.html('de'),
+        fr: this.html('fr')
+      }
     },
 
     lang () {
@@ -48,11 +69,11 @@ export default {
     },
 
     noteLang () {
-      if (this.de && this.fr) {
+      if (this.note.de && this.note.fr) {
         return this.lang
-      } else if (this.de) {
+      } else if (this.note.de) {
         return 'de'
-      } else if (this.fr) {
+      } else if (this.note.fr) {
         return 'fr'
       }
     },
@@ -69,6 +90,10 @@ export default {
       return this.mode === 'info'
     },
 
+    isNew () {
+      return !this.topic.id
+    },
+
     quillOptions () {
       return this.$store.state.quillOptions
     }
@@ -83,13 +108,27 @@ export default {
       }
     },
 
+    setHtml (lang, html) {
+      this.topic.children['zukunftswerk.note.' + lang].value = html
+    },
+
     focus () {
       this.$refs.quill.focus()
     },
 
     save () {
       this.saving = true
-      this.$store.dispatch('createNote', this.topic).then(() => {
+      let p
+      if (this.isNew) {
+        p = this.$store.dispatch('createNote', this.topic)
+      } else {
+        // transfer edit buffer to topic model
+        this.setHtml('de', this.model.de)
+        this.setHtml('fr', this.model.fr)
+        //
+        p = this.$store.dispatch('updateNote', this.topic)
+      }
+      p.then(() => {
         this.saving = false
       })
     }
@@ -114,6 +153,15 @@ export default {
 
 .zw-note.form {
   min-width: 240px;
+}
+
+.zw-note.form .columns {
+  display: flex;
+  column-gap: 12px;
+}
+
+.zw-note.form .columns > div {
+  flex-basis: 50%;
 }
 
 .zw-note .save-button {

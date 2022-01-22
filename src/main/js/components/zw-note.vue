@@ -10,10 +10,10 @@
     <template v-else>
       <div class="columns">
         <div>
-          <quill v-model="noteBuffer.de.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+          <quill v-model="noteBuffer.de" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
         </div>
         <div>
-          <quill v-model="noteBuffer.fr.value" :options="quillOptions"></quill>
+          <quill v-model="noteBuffer.fr" :options="quillOptions"></quill>
         </div>
       </div>
     </template>
@@ -107,12 +107,12 @@ export default {
     },
 
     htmlBuffer (lang) {
-      return this.topicToEdit.children['zukunftswerk.note.' + lang]
+      return this.topicToEdit.children['zukunftswerk.note.' + lang].value
     },
 
     setHtml (lang) {
       const compDefUri = 'zukunftswerk.note.' + lang
-      this.topic.children[compDefUri].value = this.topicToEdit.children[compDefUri].value
+      this.topic.children[compDefUri].value = this.noteBuffer[lang]
     },
 
     focus () {

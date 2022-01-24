@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-comment" :data-id="comment.id">
+  <div class="zw-comment" :data-id="topic.id">
     <div class="field-label">{{date}} ({{creator}})</div>
     <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
@@ -23,13 +23,13 @@
 <script>
 export default {
 
-  created () {
-    // console.log(this.comment)
-  },
+  mixins: [
+    require('./mixins/orig-lang').default,
+  ],
 
   props: {
-    comment: {
-      type: Object,     // the Comment topic to render (plain Object, not a dmx.Topic)
+    topic: {            // the Comment topic to render (plain Object, not a dmx.Topic)
+      type: Object,
       required: true
     }
   },
@@ -38,33 +38,21 @@ export default {
 
     html () {
       return {
-        de: this.comment.children['zukunftswerk.comment.de'].value,
-        fr: this.comment.children['zukunftswerk.comment.fr'].value
-      }
-    },
-
-    origLang () {
-      return this.comment.children['zukunftswerk.language#zukunftswerk.original_language'].value
-    },
-
-    translatedLang () {
-      if (this.origLang === 'de') {
-        return 'fr'
-      } else if (this.origLang === 'fr') {
-        return 'de'
+        de: this.topic.children['zukunftswerk.comment.de'].value,
+        fr: this.topic.children['zukunftswerk.comment.fr'].value
       }
     },
 
     refComment () {
-      return this.comment.children['zukunftswerk.comment']
+      return this.topic.children['zukunftswerk.comment']
     },
 
     refDocument () {
-      return this.comment.children['zukunftswerk.document']
+      return this.topic.children['zukunftswerk.document']
     },
 
     attachments () {
-      return this.comment.children['dmx.files.file#zukunftswerk.attachment']
+      return this.topic.children['dmx.files.file#zukunftswerk.attachment']
     },
 
     isWritable () {
@@ -76,11 +64,11 @@ export default {
     },
 
     created () {
-      return this.comment.children['dmx.timestamps.created'].value
+      return this.topic.children['dmx.timestamps.created'].value
     },
 
     creator () {
-      return this.comment.children['dmx.accesscontrol.creator'].value
+      return this.topic.children['dmx.accesscontrol.creator'].value
     },
 
     date () {
@@ -91,7 +79,7 @@ export default {
   methods: {
 
     reply () {
-      this.$emit('reply', this.comment)
+      this.$emit('reply', this.topic)
     },
 
     commentRefClick (comment) {

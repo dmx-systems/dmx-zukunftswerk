@@ -8,12 +8,20 @@
       <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
     </template>
     <template v-else>
-      <div class="columns">
-        <div>
-          <quill v-model="noteBuffer.de" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+      <div class="field">
+        <div class="field-label">
+          <zw-string>item.note</zw-string> ({{origLang}})
         </div>
         <div>
-          <quill v-model="noteBuffer.fr" :options="quillOptions"></quill>
+          <quill v-model="noteBuffer[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label">
+          <zw-string>item.note</zw-string> ({{translatedLang}})
+        </div>
+        <div>
+          <quill v-model="noteBuffer[translatedLang]" :options="quillOptions"></quill>
         </div>
       </div>
     </template>
@@ -28,6 +36,10 @@ import dmx from 'dmx-api'
 
 export default {
 
+  mixins: [
+    require('./mixins/orig-lang').default,
+  ],
+
   data () {
     return {
       saving: false                   // true while note is saved
@@ -39,7 +51,7 @@ export default {
       type: dmx.ViewTopic,
       required: true
     },
-    topicToEdit: dmx.ViewTopic,       // the edit buffer (dmx.ViewTopic)
+    topicBuffer: dmx.ViewTopic,       // the edit buffer (dmx.ViewTopic)
     mode: {                           // 'info'/'form'
       type: String,
       default: 'info'
@@ -107,7 +119,7 @@ export default {
     },
 
     htmlBuffer (lang) {
-      return this.topicToEdit.children['zukunftswerk.note.' + lang].value
+      return this.topicBuffer.children['zukunftswerk.note.' + lang].value
     },
 
     setHtml (lang) {
@@ -158,16 +170,7 @@ export default {
   min-width: 240px;
 }
 
-.zw-note.form .columns {
-  display: flex;
-  column-gap: 12px;
-}
-
-.zw-note.form .columns > div {
-  flex-basis: 50%;
-}
-
 .zw-note .save-button {
-  margin-top: 6px;
+  margin-top: var(--field-spacing);
 }
 </style>

@@ -6,7 +6,7 @@
       <h4><zw-string>label.discussion</zw-string></h4>
       <!-- Comments -->
       <div class="comments">
-        <zw-comment v-for="comment in filteredDiscussion" :comment="comment" :key="comment.id" @reply="reply"
+        <zw-comment v-for="comment in filteredDiscussion" :topic="comment" :key="comment.id" @reply="reply"
           @comment-ref-click="jumpTo">
         </zw-comment>
       </div>

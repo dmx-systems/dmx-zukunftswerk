@@ -12,17 +12,13 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{origLang}})
         </div>
-        <div>
-          <quill v-model="noteBuffer[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
-        </div>
+        <quill v-model="noteBuffer[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
       <div class="field">
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{translatedLang}})
         </div>
-        <div>
-          <quill v-model="noteBuffer[translatedLang]" :options="quillOptions"></quill>
-        </div>
+        <quill v-model="noteBuffer[translatedLang]" :options="quillOptions"></quill>
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -47,11 +43,14 @@ export default {
   },
 
   props: {
+
     topic: {                          // the Note topic to render (dmx.ViewTopic)
       type: dmx.ViewTopic,
       required: true
     },
+
     topicBuffer: dmx.ViewTopic,       // the edit buffer (dmx.ViewTopic)
+
     mode: {                           // 'info'/'form'
       type: String,
       default: 'info'
@@ -72,10 +71,6 @@ export default {
         de: this.htmlBuffer('de'),
         fr: this.htmlBuffer('fr')
       }
-    },
-
-    lang () {
-      return this.$store.state.lang
     },
 
     noteLang () {
@@ -102,6 +97,10 @@ export default {
 
     isNew () {
       return !this.topic.id
+    },
+
+    lang () {
+      return this.$store.state.lang
     },
 
     quillOptions () {
@@ -141,7 +140,7 @@ export default {
         this.setHtml('de')
         this.setHtml('fr')
         //
-        p = this.$store.dispatch('updateNote', this.topic)
+        p = this.$store.dispatch('update', this.topic)
       }
       p.then(() => {
         this.saving = false

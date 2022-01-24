@@ -1,10 +1,26 @@
 <template>
   <div v-if="infoMode" class="zw-label info">{{label[lang]}}</div>
   <div v-else class="zw-label form" v-loading="saving">
-    <div class="field-label">
-      <zw-string>label.new_label</zw-string>
-    </div>
-    <el-input v-model="topic.value" ref="input"></el-input>
+    <template v-if="isNew">
+      <div class="field-label">
+        <zw-string>label.new_label</zw-string>
+      </div>
+      <el-input v-model="topic.value" ref="input"></el-input>
+    </template>
+    <template v-else>
+      <div class="field">
+        <div class="field-label">
+          <zw-string>item.label</zw-string> ({{origLang}})
+        </div>
+        <el-input v-model="labelBuffer[origLang].value" ref="input"></el-input>
+      </div>
+      <div class="field">
+        <div class="field-label">
+          <zw-string>item.label</zw-string> ({{translatedLang}})
+        </div>
+        <el-input v-model="labelBuffer[translatedLang].value"></el-input>
+      </div>
+    </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>button.submit</zw-string>
     </el-button>
@@ -16,26 +32,32 @@ import dmx from 'dmx-api'
 
 export default {
 
+  mixins: [
+    require('./mixins/orig-lang').default,
+  ],
+
   mounted () {
     if (this.formMode) {
-      this.$refs.input.focus()
+      this.$refs.input.focus()      // FIXME
     }
   },
 
   data () {
     return {
-      saving: false           // true while label is saved
+      saving: false                 // true while label is saved
     }
   },
 
   props: {
 
-    topic: {
-      type: dmx.ViewTopic,    // the Label topic to render (dmx.ViewTopic)
+    topic: {                        // the Label topic to render (dmx.ViewTopic)
+      type: dmx.ViewTopic,
       required: true
     },
 
-    mode: {                   // 'info'/'form'
+    topicBuffer: dmx.ViewTopic,     // the edit buffer (dmx.ViewTopic)
+
+    mode: {                         // 'info'/'form'
       type: String,
       default: 'info'
     }
@@ -50,6 +72,13 @@ export default {
       }
     },
 
+    labelBuffer () {
+      return {
+        de: this.textBuffer('de'),
+        fr: this.textBuffer('fr')
+      }
+    },
+
     infoMode () {
       return this.mode === 'info'
     },
@@ -58,17 +87,41 @@ export default {
       return this.mode === 'form'
     },
 
+    isNew () {
+      return !this.topic.id
+    },
+
     lang () {
       return this.$store.state.lang
     }
   },
 
   methods: {
+
     save () {
       this.saving = true
-      this.$store.dispatch('createLabel', this.topic).then(() => {
+      let p
+      if (this.isNew) {
+        p = this.$store.dispatch('createLabel', this.topic)
+      } else {
+        // transfer edit buffer to topic model
+        this.setText('de')
+        this.setText('fr')
+        //
+        p = this.$store.dispatch('update', this.topic)
+      }
+      p.then(() => {
         this.saving = false
       })
+    },
+
+    textBuffer (lang) {
+      return this.topicBuffer.children['zukunftswerk.label.' + lang]
+    },
+
+    setText (lang) {
+      const compDefUri = 'zukunftswerk.label.' + lang
+      this.topic.children[compDefUri].value = this.labelBuffer[lang].value
     }
   }
 }
@@ -90,6 +143,6 @@ export default {
 }
 
 .zw-label .save-button {
-  margin-top: 6px;
+  margin-top: var(--field-spacing);
 }
 </style>

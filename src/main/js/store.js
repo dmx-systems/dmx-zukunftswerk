@@ -113,16 +113,6 @@ const actions = {
   /**
    * @param   topic   a dmx.ViewTopic
    */
-  updateNote (_, topic) {
-    return dmx.rpc.updateTopic(topic).then(directives => {
-      const i = state.isEditActive.indexOf(topic.id)
-      state.isEditActive.splice(i, 1)
-    })
-  },
-
-  /**
-   * @param   topic   a dmx.ViewTopic
-   */
   createLabel (_, topic) {
     return http.post('/zukunftswerk/label', topic.value, {
       headers: {
@@ -214,6 +204,15 @@ const actions = {
     state.isEditActive.push(state.topic.id)
   },
 
+  /**
+   * @param   topic   a dmx.ViewTopic
+   */
+  update (_, topic) {
+    return dmx.rpc.updateTopic(topic).then(directives => {
+      removeEditActive(topic)
+    })
+  },
+
   delete () {
     confirmDeletion().then(() => {
       state.topicmap.removeTopic(state.topic.id)    // update client state
@@ -293,6 +292,14 @@ function removeTopic (topic) {
     throw Error('removeTopic')
   }
   state.newTopics.splice(i, 1)
+}
+
+function removeEditActive (topic) {
+  const i = state.isEditActive.indexOf(topic.id)
+  if (i === -1) {
+    throw Error('removeEditActive')
+  }
+  state.isEditActive.splice(i, 1)
 }
 
 function setTopicmapViewport() {

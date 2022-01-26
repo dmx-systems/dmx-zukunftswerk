@@ -88,6 +88,7 @@ export default {
       this.$store.dispatch('edit')
     },
 
+    // Note: can't be named "delete"
     deleteItem () {
       this.$store.dispatch('delete')
     },

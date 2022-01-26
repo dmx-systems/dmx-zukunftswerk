@@ -264,18 +264,8 @@ export default {
 
     save () {
       this.saving = true
-      let p
-      if (this.isNew) {
-        p = this.$store.dispatch('createDocument', this.topic)
-      } else {
-        // transfer edit buffer to topic model
-        this.topic.children['zukunftswerk.document_name.de'] = this.docModel.name.de
-        this.topic.children['zukunftswerk.document_name.fr'] = this.docModel.name.fr
-        this.topic.children['dmx.files.file#zukunftswerk.de'].children['dmx.files.path'] = this.docModel.path.de
-        this.topic.children['dmx.files.file#zukunftswerk.fr'].children['dmx.files.path'] = this.docModel.path.fr
-        //
-        p = this.$store.dispatch('update', this.topic)
-      }
+      const p = this.isNew ? this.$store.dispatch('createDocument', this.topic) :
+                             this.$store.dispatch('updateDocument', this.docModel)
       p.then(() => {
         this.saving = false
       })

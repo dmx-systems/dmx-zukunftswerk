@@ -10,7 +10,7 @@ import './element-ui'
 
 console.log('[ZW] 2022/01/26')
 
-// 1) Init dmx library
+// 1) Init dmx library ### TODO: only top-level types should be required here
 dmx.init({store, onHttpError})
 dmx.typeCache.initTopicType('zukunftswerk.document')
 dmx.typeCache.initTopicType('zukunftswerk.document_name.de')
@@ -26,7 +26,10 @@ dmx.typeCache.initAssocType('zukunftswerk.original_language')
 dmx.typeCache.initAssocType('zukunftswerk.de')
 dmx.typeCache.initAssocType('zukunftswerk.fr')
 dmx.typeCache.initTopicType('dmx.files.file')
+dmx.typeCache.initTopicType('dmx.files.file_name')
 dmx.typeCache.initTopicType('dmx.files.path')
+dmx.typeCache.initTopicType('dmx.files.media_type')
+dmx.typeCache.initTopicType('dmx.files.size')
 dmx.typeCache.initAssocType('dmx.core.composition')
 
 // 2) Open websocket connection

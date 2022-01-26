@@ -94,6 +94,20 @@ const actions = {
     })
   },
 
+  updateDocument ({dispatch}, docModel) {
+    // Fills-in missing childs, e.g. "file (fr)".
+    // "allChildren" is required to keep the file's "Media Type". Note: Media Type is not an identity attribute
+    // and would be omitted/dropped due to "Reduced Details", but is required for file rendering.
+    state.topic.type.newFormModel(state.topic, true)    // allChildren=true
+    // transfer edit buffer to topic model
+    state.topic.children['zukunftswerk.document_name.de'].value = docModel.name.de.value
+    state.topic.children['zukunftswerk.document_name.fr'].value = docModel.name.fr.value
+    state.topic.children['dmx.files.file#zukunftswerk.de'].children['dmx.files.path'].value = docModel.path.de.value
+    state.topic.children['dmx.files.file#zukunftswerk.fr'].children['dmx.files.path'].value = docModel.path.fr.value
+    //
+    dispatch('update', state.topic)
+  },
+
   /**
    * @param   topic   a dmx.ViewTopic
    */

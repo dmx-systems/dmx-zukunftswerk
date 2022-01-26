@@ -84,7 +84,7 @@ export default {
     },
 
     edit () {
-      this.topicBuffer = this.topic.clone()
+      this.topicBuffer = this.topic.type.newFormModel(this.topic.clone())
       this.$store.dispatch('edit')
     },
 

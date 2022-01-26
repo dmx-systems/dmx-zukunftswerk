@@ -8,10 +8,26 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2022/01/24')
+console.log('[ZW] 2022/01/26')
 
 // 1) Init dmx library
 dmx.init({store, onHttpError})
+dmx.typeCache.initTopicType('zukunftswerk.document')
+dmx.typeCache.initTopicType('zukunftswerk.document_name.de')
+dmx.typeCache.initTopicType('zukunftswerk.document_name.fr')
+dmx.typeCache.initTopicType('zukunftswerk.note')
+dmx.typeCache.initTopicType('zukunftswerk.note.de')
+dmx.typeCache.initTopicType('zukunftswerk.note.fr')
+dmx.typeCache.initTopicType('zukunftswerk.label')
+dmx.typeCache.initTopicType('zukunftswerk.label.de')
+dmx.typeCache.initTopicType('zukunftswerk.label.fr')
+dmx.typeCache.initTopicType('zukunftswerk.language')
+dmx.typeCache.initAssocType('zukunftswerk.original_language')
+dmx.typeCache.initAssocType('zukunftswerk.de')
+dmx.typeCache.initAssocType('zukunftswerk.fr')
+dmx.typeCache.initTopicType('dmx.files.file')
+dmx.typeCache.initTopicType('dmx.files.path')
+dmx.typeCache.initAssocType('dmx.core.composition')
 
 // 2) Open websocket connection
 new DMXWebSocket('systems.dmx.webclient', messageHandler)

@@ -14,11 +14,11 @@
     <template v-else>
       <div class="field">
         <div class="field-label"><zw-string>label.document_name</zw-string> (de)</div>
-        <el-input v-model="docNameTopics.de.value" ref="docName"></el-input>
+        <el-input v-model="docModel.name.de.value" ref="docName"></el-input>
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.document_name</zw-string> (fr)</div>
-        <el-input v-model="docNameTopics.fr.value"></el-input>
+        <el-input v-model="docModel.name.fr.value"></el-input>
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.file</zw-string> (de)</div>
@@ -27,7 +27,7 @@
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
         <div class="error">{{error.de}}</div>
-        <el-input v-model="pathTopics.de.value"></el-input>
+        <el-input v-model="docModel.path.de.value"></el-input>
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.file</zw-string> (fr)</div>
@@ -36,7 +36,7 @@
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
         <div class="error">{{error.fr}}</div>
-        <el-input v-model="pathTopics.fr.value"></el-input>
+        <el-input v-model="docModel.path.fr.value"></el-input>
       </div>
       <el-button class="save-button" type="primary" size="medium" @click="save">
         <zw-string>button.submit</zw-string>
@@ -62,11 +62,15 @@ export default {
   },
 
   props: {
-    topic: {                  // the Document topic (dmx.ViewTopic)
+
+    topic: {                        // the Document topic to render (dmx.ViewTopic)
       type: dmx.ViewTopic,
       required: true
     },
-    mode: {                   // 'info'/'form'
+
+    topicBuffer: dmx.ViewTopic,     // the edit buffer (dmx.ViewTopic)
+
+    mode: {                         // 'info'/'form'
       type: String,
       default: 'info'
     }
@@ -93,32 +97,30 @@ export default {
 
   computed: {
 
-    lang () {
-      return this.$store.state.lang
-    },
-
-    docLang () {
-      const files = this.files
-      if (files.de && files.fr) {
-        return this.lang
-      } else if (files.de) {
-        return 'de'
-      } else if (files.fr) {
-        return 'fr'
-      } else {
-        return this.lang
-      }
-    },
-
     docName () {
-      const name = this.getDocNameTopic(this.docLang)
-      return name && name.value
+      if (this.docNameTopics.de && this.docNameTopics.fr) {
+        return this.docNameTopics[this.lang].value
+      } else if (this.docNameTopics.de) {
+        return this.docNameTopics.de.value
+      } else if (this.docNameTopics.fr) {
+        return this.docNameTopics.fr.value
+      }
     },
 
     docNameTopics () {
       return {
         de: this.getDocNameTopic('de'),
         fr: this.getDocNameTopic('fr')
+      }
+    },
+
+    file () {
+      if (this.files.de && this.files.fr) {
+        return this.files[this.lang]
+      } else if (this.files.de) {
+        return this.files.de
+      } else if (this.files.fr) {
+        return this.files.fr
       }
     },
 
@@ -129,8 +131,30 @@ export default {
       }
     },
 
-    file () {
-      return this.files[this.docLang]
+    docModel () {
+      if (this.isNew) {
+        return {
+          name: {
+            de: this.docNameTopics.de,
+            fr: this.docNameTopics.fr
+          },
+          path: {
+            de: this.pathTopics.de,
+            fr: this.pathTopics.fr
+          }
+        }
+      } else {
+        return {
+          name: {
+            de: this.topicBuffer.children['zukunftswerk.document_name.de'],
+            fr: this.topicBuffer.children['zukunftswerk.document_name.fr']
+          },
+          path: {
+            de: this.getPathTopic(this.topicBuffer.children['dmx.files.file#zukunftswerk.de']),
+            fr: this.getPathTopic(this.topicBuffer.children['dmx.files.file#zukunftswerk.fr'])
+          }
+        }
+      }
     },
 
     pathTopics () {
@@ -185,6 +209,14 @@ export default {
 
     formMode () {
       return this.mode === 'form'
+    },
+
+    isNew () {
+      return !this.topic.id
+    },
+
+    lang () {
+      return this.$store.state.lang
     }
   },
 
@@ -232,7 +264,19 @@ export default {
 
     save () {
       this.saving = true
-      this.$store.dispatch('createDocument', this.topic).then(() => {
+      let p
+      if (this.isNew) {
+        p = this.$store.dispatch('createDocument', this.topic)
+      } else {
+        // transfer edit buffer to topic model
+        this.topic.children['zukunftswerk.document_name.de'] = this.docModel.name.de
+        this.topic.children['zukunftswerk.document_name.fr'] = this.docModel.name.fr
+        this.topic.children['dmx.files.file#zukunftswerk.de'].children['dmx.files.path'] = this.docModel.path.de
+        this.topic.children['dmx.files.file#zukunftswerk.fr'].children['dmx.files.path'] = this.docModel.path.fr
+        //
+        p = this.$store.dispatch('update', this.topic)
+      }
+      p.then(() => {
         this.saving = false
       })
     },
@@ -240,7 +284,7 @@ export default {
     createSuccessHandler (lang) {
       return (response, file, fileList) => {
         const fileTopic = response.topic
-        this.pathTopics[lang].value = this.getPath(fileTopic)
+        this.docModel.path[lang].value = this.getPath(fileTopic)
         this.$refs['upload.' + lang].clearFiles()
       }
     },

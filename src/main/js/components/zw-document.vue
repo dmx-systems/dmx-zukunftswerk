@@ -98,28 +98,33 @@ export default {
   computed: {
 
     docName () {
-      if (this.docNameTopics.de && this.docNameTopics.fr) {
-        return this.docNameTopics[this.lang].value
-      } else if (this.docNameTopics.de) {
-        return this.docNameTopics.de.value
-      } else if (this.docNameTopics.fr) {
-        return this.docNameTopics.fr.value
+      const de = this.docNames.de && this.docNames.de.value
+      const fr = this.docNames.fr && this.docNames.fr.value
+      if (de && fr) {
+        return this.docNames[this.lang].value
+      } else if (de) {
+        return this.docNames.de.value
+      } else if (fr) {
+        return this.docNames.fr.value
       }
     },
 
-    docNameTopics () {
+    docNames () {
       return {
-        de: this.getDocNameTopic('de'),
-        fr: this.getDocNameTopic('fr')
+        de: this.getDocName('de'),
+        fr: this.getDocName('fr')
       }
     },
 
     file () {
-      if (this.files.de && this.files.fr) {
+      // Note: empty topics created while edit have ID -1
+      const de = this.files.de && this.files.de.id != -1
+      const fr = this.files.fr && this.files.fr.id != -1
+      if (de && fr) {
         return this.files[this.lang]
-      } else if (this.files.de) {
+      } else if (de) {
         return this.files.de
-      } else if (this.files.fr) {
+      } else if (fr) {
         return this.files.fr
       }
     },
@@ -135,8 +140,8 @@ export default {
       if (this.isNew) {
         return {
           name: {
-            de: this.docNameTopics.de,
-            fr: this.docNameTopics.fr
+            de: this.docNames.de,
+            fr: this.docNames.fr
           },
           path: {
             de: this.pathTopics.de,
@@ -241,7 +246,7 @@ export default {
       }
     },
 
-    getDocNameTopic (lang) {
+    getDocName (lang) {
       return this.topic.children['zukunftswerk.document_name.' + lang]
     },
 
@@ -265,7 +270,7 @@ export default {
     save () {
       this.saving = true
       const p = this.isNew ? this.$store.dispatch('createDocument', this.topic) :
-                             this.$store.dispatch('updateDocument', this.docModel)
+                             this.$store.dispatch('updateDocument', {topic: this.topic, docModel: this.docModel})
       p.then(() => {
         this.saving = false
       })

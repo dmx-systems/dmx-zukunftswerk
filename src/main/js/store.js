@@ -14,11 +14,11 @@ const width = window.innerWidth
 const state = {
 
   username: undefined,          // username of logged in user (String), undefined if not logged in
-  isTeam: false,                // true if the logged in user is member of the "Team" workspace (Boolean)
+  isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
 
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
   workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
-  isWritable: false,            // true if the workspace is writable (Boolean)
+  isWritable: false,            // true if the workspace is writable by the current user (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
   isEditActive: [],             // IDs of topics being edited (array)
@@ -95,10 +95,10 @@ const actions = {
   },
 
   updateDocument ({dispatch}, docModel) {
-    // Fill-in missing document children, e.g. "File (fr)". Note: a file's path can not be updated if the file
-    // is missing in the first place.
-    // "allChildren" is required to keep the file's "Media Type". Note: Media Type is not an identity attribute
-    // and would be omitted/dropped due to "Reduced Details", but is required for file rendering.
+    // Fill-in missing document children, e.g. "File (fr)". Note: a file path can only be updated if there is a
+    // file in the first place.
+    // "allChildren" is required to keep the file's "Media Type". Note: Media Type is required for file rendering,
+    // but it would be omitted/dropped due to "Reduced Details" as it is not an identity attribute.
     state.topic.type.newFormModel(state.topic, true)      // allChildren=true
     // Transfer edit buffer to topic model
     state.topic.children['zukunftswerk.document_name.de'].value = docModel.name.de.value
@@ -215,8 +215,17 @@ const actions = {
     state.lang = lang
   },
 
-  edit () {
-    state.isEditActive.push(state.topic.id)
+  edit ({dispatch}, topic) {
+    dispatch('setTopic', topic)   // select programmatically
+    state.isEditActive.push(topic.id)
+  },
+
+  delete ({dispatch}, topic) {
+    dispatch('setTopic', topic)   // select programmatically
+    confirmDeletion().then(() => {
+      state.topicmap.removeTopic(topic.id)      // update client state
+      dmx.rpc.deleteTopic(topic.id)             // update server state
+    }).catch(() => {})            // suppress unhandled rejection on cancel
   },
 
   /**
@@ -226,13 +235,6 @@ const actions = {
     return dmx.rpc.updateTopic(topic).then(directives => {
       removeEditActive(topic)
     })
-  },
-
-  delete () {
-    confirmDeletion().then(() => {
-      state.topicmap.removeTopic(state.topic.id)    // update client state
-      dmx.rpc.deleteTopic(state.topic.id)           // update server state
-    }).catch(() => {})      // suppress unhandled rejection on cancel
   },
 
   downloadFile (_, repoPath) {

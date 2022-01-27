@@ -33,12 +33,12 @@ export default {
 
   props: {
 
-    topic: {
-      type: dmx.ViewTopic,      // the topic to render (dmx.ViewTopic)
+    topic: {                  // the topic to render (dmx.ViewTopic)
+      type: dmx.ViewTopic,
       required: true
     },
 
-    mode: {                     // 'info'/'form'
+    mode: {                   // 'info'/'form'
       type: String,
       default: 'info'
     }
@@ -89,12 +89,12 @@ export default {
 
     edit () {
       this.topicBuffer = this.topic.type.newFormModel(this.topic.clone())
-      this.$store.dispatch('edit')
+      this.$store.dispatch('edit', this.topic)
     },
 
     // Note: can't be named "delete"
     deleteItem () {
-      this.$store.dispatch('delete')
+      this.$store.dispatch('delete', this.topic)
     },
 
     mousedown (e) {

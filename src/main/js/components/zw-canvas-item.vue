@@ -6,8 +6,12 @@
       @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="isWritable">
-      <el-button type="text" :style="buttonStyle" @click="edit"><zw-string>button.edit</zw-string></el-button>
-      <el-button type="text" :style="buttonStyle" @click="deleteItem"><zw-string>button.delete</zw-string></el-button>
+      <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
+        <zw-string>button.edit</zw-string>
+      </el-button>
+      <el-button type="text" :style="buttonStyle" @click="deleteItem" @mousedown.native.stop>
+        <zw-string>button.delete</zw-string>
+      </el-button>
     </div>
   </vue-drag-resize>
 </template>

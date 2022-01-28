@@ -14,11 +14,11 @@
     <template v-else>
       <div class="field">
         <div class="field-label"><zw-string>label.document_name</zw-string> (de)</div>
-        <el-input v-model="docModel.name.de.value" ref="docName"></el-input>
+        <el-input v-model="docModel.names.de.value" ref="docName"></el-input>
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.document_name</zw-string> (fr)</div>
-        <el-input v-model="docModel.name.fr.value"></el-input>
+        <el-input v-model="docModel.names.fr.value"></el-input>
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.file</zw-string> (de)</div>
@@ -27,7 +27,7 @@
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
         <div class="error">{{error.de}}</div>
-        <el-input v-model="docModel.path.de.value"></el-input>
+        <el-input v-model="docModel.paths.de.value"></el-input>
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.file</zw-string> (fr)</div>
@@ -36,7 +36,7 @@
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
         <div class="error">{{error.fr}}</div>
-        <el-input v-model="docModel.path.fr.value"></el-input>
+        <el-input v-model="docModel.paths.fr.value"></el-input>
       </div>
       <el-button class="save-button" type="primary" size="medium" @click="save">
         <zw-string>button.submit</zw-string>
@@ -51,13 +51,13 @@ import dmx from 'dmx-api'
 export default {
 
   created () {
-    // console.log('zw-document', this.path)
+    // console.log('zw-document', this.file)
     this.initText()
   },
 
   mounted () {
     if (this.formMode) {
-      this.$refs.docName.focus()
+      this.$refs.docName.focus()    // FIXME
     }
   },
 
@@ -139,22 +139,21 @@ export default {
     docModel () {
       if (this.isNew) {
         return {
-          name: {
-            de: this.docNames.de,
-            fr: this.docNames.fr
-          },
-          path: {
-            de: this.pathTopics.de,
-            fr: this.pathTopics.fr
-          }
+          names: this.docNames,
+          files: this.files,
+          paths: this.pathTopics
         }
       } else {
         return {
-          name: {
+          names: {
             de: this.topicBuffer.children['zukunftswerk.document_name.de'],
             fr: this.topicBuffer.children['zukunftswerk.document_name.fr']
           },
-          path: {
+          files: {
+            de: this.topicBuffer.children['dmx.files.file#zukunftswerk.de'],
+            fr: this.topicBuffer.children['dmx.files.file#zukunftswerk.fr']
+          },
+          paths: {
             de: this.getPathTopic(this.topicBuffer.children['dmx.files.file#zukunftswerk.de']),
             fr: this.getPathTopic(this.topicBuffer.children['dmx.files.file#zukunftswerk.fr'])
           }
@@ -278,8 +277,14 @@ export default {
 
     createSuccessHandler (lang) {
       return (response, file, fileList) => {
+        // this.docModel.files[lang] = response.topic
         const fileTopic = response.topic
-        this.docModel.path[lang].value = this.getPath(fileTopic)
+        delete fileTopic.assoc    // the lead-to-parent-folder assoc must not be contained in create/update request
+        if (this.isNew) {
+          this.topic.children['dmx.files.file#zukunftswerk.' + lang] = fileTopic
+        } else {
+          this.topicBuffer.children['dmx.files.file#zukunftswerk.' + lang] = fileTopic
+        }
         this.$refs['upload.' + lang].clearFiles()
       }
     },

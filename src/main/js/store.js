@@ -95,16 +95,11 @@ const actions = {
   },
 
   updateDocument ({dispatch}, {topic, docModel}) {
-    // Fill-in missing document children, e.g. "File (fr)". Note: a file path can only be updated if there is a
-    // file in the first place.
-    // "allChildren" is required to keep the file's "Media Type". Note: Media Type is required for file rendering,
-    // but it would be omitted/dropped due to "Reduced Details" as it is not an identity attribute.
-    topic.type.newFormModel(topic, true)      // allChildren=true
     // Transfer edit buffer to topic model
-    topic.children['zukunftswerk.document_name.de'].value = docModel.name.de.value
-    topic.children['zukunftswerk.document_name.fr'].value = docModel.name.fr.value
-    topic.children['dmx.files.file#zukunftswerk.de'].children['dmx.files.path'].value = docModel.path.de.value
-    topic.children['dmx.files.file#zukunftswerk.fr'].children['dmx.files.path'].value = docModel.path.fr.value
+    topic.children['zukunftswerk.document_name.de'] = docModel.names.de
+    topic.children['zukunftswerk.document_name.fr'] = docModel.names.fr
+    topic.children['dmx.files.file#zukunftswerk.de'] = docModel.files.de
+    topic.children['dmx.files.file#zukunftswerk.fr'] = docModel.files.fr
     //
     dispatch('update', topic)
   },

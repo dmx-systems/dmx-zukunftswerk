@@ -88,7 +88,9 @@ export default {
     },
 
     edit () {
-      this.topicBuffer = this.topic.type.newFormModel(this.topic.clone())
+      // "allChildren" is required to keep the file's "Media Type". Note: Media Type is required for file rendering,
+      // but it would be omitted/dropped due to "Reduced Details" as it is not an identity attribute. ### FIXDOC
+      this.topicBuffer = this.topic.type.newFormModel(this.topic.clone(), true)     // allChildren=true
       this.$store.dispatch('edit', this.topic)
     },
 

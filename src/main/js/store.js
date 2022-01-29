@@ -98,8 +98,8 @@ const actions = {
     // Transfer edit buffer to topic model
     topic.children['zukunftswerk.document_name.de'] = docModel.names.de
     topic.children['zukunftswerk.document_name.fr'] = docModel.names.fr
-    topic.children['dmx.files.file#zukunftswerk.de'] = docModel.files.de
-    topic.children['dmx.files.file#zukunftswerk.fr'] = docModel.files.fr
+    topic.children['dmx.files.file#zukunftswerk.de'] = docModel.paths.de.value ? docModel.files.de : undefined
+    topic.children['dmx.files.file#zukunftswerk.fr'] = docModel.paths.fr.value ? docModel.files.fr : undefined
     //
     dispatch('update', topic)
   },

@@ -277,14 +277,11 @@ export default {
 
     createSuccessHandler (lang) {
       return (response, file, fileList) => {
-        // this.docModel.files[lang] = response.topic
         const fileTopic = response.topic
         delete fileTopic.assoc    // the lead-to-parent-folder assoc must not be contained in create/update request
-        if (this.isNew) {
-          this.topic.children['dmx.files.file#zukunftswerk.' + lang] = fileTopic
-        } else {
-          this.topicBuffer.children['dmx.files.file#zukunftswerk.' + lang] = fileTopic
-        }
+        const topic = this.isNew ? this.topic : this.topicBuffer
+        topic.children['dmx.files.file#zukunftswerk.' + lang] = fileTopic
+        //
         this.$refs['upload.' + lang].clearFiles()
       }
     },

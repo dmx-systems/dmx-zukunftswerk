@@ -5,7 +5,7 @@
     <component :is="topic.typeUri" :topic="topic" :topicBuffer="topicBuffer" :mode="mode" ref="detail"
       @mousedown.native="mousedown">
     </component>
-    <div class="button-panel" v-if="isWritable">
+    <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
         <zw-string>button.edit</zw-string>
       </el-button>
@@ -70,6 +70,10 @@ export default {
       return this.selectedTopic && this.selectedTopic.id === this.topic.id
     },
 
+    buttonPanelVisibility () {
+      return this.infoMode && this.isWritable
+    },
+
     buttonStyle () {
       return {
         'font-size': `${14 / this.zoom}px`    // 14 = --main-font-size (see App.vue)
@@ -78,6 +82,10 @@ export default {
 
     zoom () {
       return this.$store.state.zoom
+    },
+
+    infoMode () {
+      return this.mode === 'info'
     }
   },
 

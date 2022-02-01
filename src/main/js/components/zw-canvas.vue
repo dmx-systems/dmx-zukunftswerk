@@ -104,6 +104,7 @@ export default {
     },
 
     newDocumentViewTopic () {
+      // TODO: use newFormModel()
       return new dmx.ViewTopic({
         typeUri: 'zukunftswerk.document',
         children: {
@@ -150,7 +151,7 @@ export default {
     },
 
     wheel (e) {
-      const zoom = Math.min(Math.max(this.zoom - .003 * e.deltaY, .5), 2)
+      const zoom = Math.min(Math.max(this.zoom - .003 * e.deltaY, .2), 2)
       this.$store.dispatch('setZoom', zoom)
     }
   },

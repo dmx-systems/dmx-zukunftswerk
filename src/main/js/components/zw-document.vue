@@ -68,7 +68,7 @@ export default {
       required: true
     },
 
-    topicBuffer: dmx.ViewTopic,     // the edit buffer (dmx.ViewTopic)
+    topicBuffer: dmx.ViewTopic,     // the edit buffer (dmx.ViewTopic)    // TODO: unify "topic" and "topicBuffer"?
 
     mode: {                         // 'info'/'form'
       type: String,

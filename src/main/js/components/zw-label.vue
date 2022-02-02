@@ -12,13 +12,13 @@
         <div class="field-label">
           <zw-string>item.label</zw-string> ({{origLang}})
         </div>
-        <el-input v-model="labelBuffer[origLang].value" ref="input"></el-input>
+        <el-input v-model="labelModel[origLang].value" ref="input"></el-input>
       </div>
       <div class="field">
         <div class="field-label">
           <zw-string>item.label</zw-string> ({{translatedLang}})
         </div>
-        <el-input v-model="labelBuffer[translatedLang].value"></el-input>
+        <el-input v-model="labelModel[translatedLang].value"></el-input>
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -72,10 +72,10 @@ export default {
       }
     },
 
-    labelBuffer () {
+    labelModel () {
       return {
-        de: this.textBuffer('de'),
-        fr: this.textBuffer('fr')
+        de: this.topicBuffer.children['zukunftswerk.label.de'],
+        fr: this.topicBuffer.children['zukunftswerk.label.fr']
       }
     },
 
@@ -115,13 +115,9 @@ export default {
       })
     },
 
-    textBuffer (lang) {
-      return this.topicBuffer.children['zukunftswerk.label.' + lang]
-    },
-
     setText (lang) {
       const compDefUri = 'zukunftswerk.label.' + lang
-      this.topic.children[compDefUri].value = this.labelBuffer[lang].value
+      this.topic.children[compDefUri].value = this.labelModel[lang].value
     }
   }
 }

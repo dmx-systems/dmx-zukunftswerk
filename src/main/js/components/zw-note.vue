@@ -12,13 +12,13 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{origLang}})
         </div>
-        <quill v-model="noteBuffer[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        <quill v-model="noteModel[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
       <div class="field">
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{translatedLang}})
         </div>
-        <quill v-model="noteBuffer[translatedLang]" :options="quillOptions"></quill>
+        <quill v-model="noteModel[translatedLang]" :options="quillOptions"></quill>
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -66,10 +66,10 @@ export default {
       }
     },
 
-    noteBuffer () {
+    noteModel () {
       return {
-        de: this.htmlBuffer('de'),
-        fr: this.htmlBuffer('fr')
+        de: this.topicBuffer.children['zukunftswerk.note.de'].value,
+        fr: this.topicBuffer.children['zukunftswerk.note.fr'].value
       }
     },
 
@@ -110,22 +110,6 @@ export default {
 
   methods: {
 
-    html (lang) {
-      const html = this.topic.children['zukunftswerk.note.' + lang].value
-      if (html !== '<p><br></p>') {
-        return html
-      }
-    },
-
-    htmlBuffer (lang) {
-      return this.topicBuffer.children['zukunftswerk.note.' + lang].value
-    },
-
-    setHtml (lang) {
-      const compDefUri = 'zukunftswerk.note.' + lang
-      this.topic.children[compDefUri].value = this.noteBuffer[lang]
-    },
-
     focus () {
       this.$refs.quill.focus()
     },
@@ -145,6 +129,18 @@ export default {
       p.then(() => {
         this.saving = false
       })
+    },
+
+    html (lang) {
+      const html = this.topic.children['zukunftswerk.note.' + lang].value
+      if (html !== '<p><br></p>') {
+        return html
+      }
+    },
+
+    setHtml (lang) {
+      const compDefUri = 'zukunftswerk.note.' + lang
+      this.topic.children[compDefUri].value = this.noteModel[lang]
     }
   },
 

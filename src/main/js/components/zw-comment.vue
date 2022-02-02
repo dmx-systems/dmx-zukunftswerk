@@ -1,15 +1,28 @@
 <template>
-  <div class="zw-comment" :data-id="topic.id">
+  <div :class="['zw-comment', mode]" :data-id="topic.id">
     <div class="field-label">{{date}} ({{creator}})</div>
     <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
-      <div v-html="html[origLang]"></div>
-      <div v-html="html[translatedLang]"></div>
+      <template v-if="infoMode">
+        <div v-html="comment[origLang]"></div>
+        <div v-html="comment[translatedLang]"></div>
+      </template>
+      <template v-else>
+        <div class="dmx-html-field">
+          <quill v-model="commentModel[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        </div>
+        <div class="dmx-html-field">
+          <quill v-model="commentModel[translatedLang]" :options="quillOptions"></quill>
+        </div>
+      </template>
     </div>
-    <div class="button-panel" v-if="isWritable">
+    <el-button class="save-button" v-if="formMode" type="primary" size="medium" @click="save">
+      <zw-string>button.submit</zw-string>
+    </el-button>
+    <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" @click="reply"><zw-string>button.reply</zw-string></el-button>
-      <el-button type="text"><zw-string>button.edit</zw-string></el-button>
+      <el-button type="text" @click="edit"><zw-string>button.edit</zw-string></el-button>
       <el-button type="text" @click="deleteComment"><zw-string>button.delete</zw-string></el-button>
     </div>
     <div class="attachments">
@@ -27,8 +40,16 @@ export default {
     require('./mixins/orig-lang').default,
   ],
 
+  data () {
+    return {
+      mode: 'info',             // 'info'/'form'
+      topicBuffer: undefined,   // the edit buffer (dmx.Topic)
+      saving: false             // true while note is saved
+    }
+  },
+
   props: {
-    topic: {            // the Comment topic to render (plain Object, not a dmx.Topic)
+    topic: {                    // the Comment topic to render (plain Object, not a dmx.Topic)
       type: Object,
       required: true
     }
@@ -36,11 +57,22 @@ export default {
 
   computed: {
 
-    html () {
+    comment () {
       return {
         de: this.topic.children['zukunftswerk.comment.de'].value,
         fr: this.topic.children['zukunftswerk.comment.fr'].value
       }
+    },
+
+    commentModel () {
+      return {
+        de: this.topicBuffer.children['zukunftswerk.comment.de'].value,
+        fr: this.topicBuffer.children['zukunftswerk.comment.fr'].value
+      }
+    },
+
+    buttonPanelVisibility () {
+      return this.infoMode && this.isWritable
     },
 
     refComment () {
@@ -73,13 +105,46 @@ export default {
 
     date () {
       return new Date(this.created).toLocaleString()
+    },
+
+    infoMode () {
+      return this.mode === 'info'
+    },
+
+    formMode () {
+      return this.mode === 'form'
+    },
+
+    quillOptions () {
+      return this.$store.state.quillOptions
     }
   },
 
   methods: {
 
+    focus () {
+      this.$refs.quill.focus()
+    },
+
+    save () {
+      this.saving = true
+      // transfer edit buffer to topic model
+      this.setHtml('de')
+      this.setHtml('fr')
+      //
+      this.$store.dispatch('updateComment', this.topic).then(() => {
+        this.mode = 'info'
+        this.saving = false
+      })
+    },
+
     reply () {
       this.$emit('reply', this.topic)
+    },
+
+    edit () {
+      this.mode = 'form'
+      this.topicBuffer = this.topic.clone()
     },
 
     // Note: can't be named "delete"
@@ -89,7 +154,19 @@ export default {
 
     commentRefClick (comment) {
       this.$emit('comment-ref-click', comment)
+    },
+
+    setHtml (lang) {
+      const compDefUri = 'zukunftswerk.comment.' + lang
+      this.topic.children[compDefUri].value = this.commentModel[lang]
     }
+  },
+
+  components: {
+    quill: () => ({
+      component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
+      loading: require('./zw-spinner')
+    })
   }
 }
 </script>
@@ -116,6 +193,9 @@ export default {
 
 .zw-comment .columns > div {
   flex-basis: 50%;
+}
+
+.zw-comment.info .columns > div {
   padding: 0 6px;
   background-color: white;
 }

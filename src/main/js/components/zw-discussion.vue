@@ -138,12 +138,14 @@ export default {
     },
 
     jumpTo (comment) {
+      // 1) Scroll comment into view
       // Note: Safari ignores scrollIntoView() arg
       const commentSelector = `.zw-discussion .zw-comment[data-id="${comment.id}"]`
       document.querySelector(commentSelector).scrollIntoView({
         behavior: 'smooth',
         block: 'nearest'      // avoids body scroll
       })
+      // 2) Apply "glow" effect
       const texts = document.querySelectorAll(`${commentSelector} .columns > div`)
       texts.forEach(text => {
         text.classList.add('glow')

@@ -165,6 +165,13 @@ const actions = {
     })
   },
 
+  /**
+   * @param   comment   a dmx.Topic
+   */
+  updateComment (_, comment) {
+    dmx.rpc.updateTopic(comment)
+  },
+
   newComment (_, comment) {
     state.discussion.push(comment)
   },
@@ -287,7 +294,7 @@ function updateIsWritable () {
 
 function fetchDiscussion () {
   http.get('/zukunftswerk/discussion').then(response => {
-    state.discussion = response.data.sort(
+    state.discussion = dmx.utils.instantiateMany(response.data, dmx.Topic).sort(
       (c1, c2) => c1.children['dmx.timestamps.created'].value - c2.children['dmx.timestamps.created'].value
     )
   })

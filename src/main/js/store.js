@@ -223,6 +223,13 @@ const actions = {
     }).catch(() => {})            // suppress unhandled rejection on cancel
   },
 
+  deleteComment ({dispatch}, comment) {
+    confirmDeletion('warning.delete_comment').then(() => {
+      removeComment(comment)                    // update client state
+      dmx.rpc.deleteTopic(comment.id)           // update server state
+    }).catch(() => {})            // suppress unhandled rejection on cancel
+  },
+
   /**
    * @param   topic   a dmx.ViewTopic
    */
@@ -298,6 +305,8 @@ function addTopicToTopicmap (viewTopic, topic) {
   dmx.rpc.addTopicToTopicmap(state.topicmap.id, topic.id, viewTopic.viewProps)      // update server state
 }
 
+// TODO: unify this 3 functions
+
 function removeTopic (topic) {
   const i = state.newTopics.indexOf(topic)
   if (i === -1) {
@@ -312,6 +321,14 @@ function removeEditActive (topic) {
     throw Error('removeEditActive')
   }
   state.isEditActive.splice(i, 1)
+}
+
+function removeComment (comment) {
+  const i = state.discussion.indexOf(comment)
+  if (i === -1) {
+    throw Error('removeComment')
+  }
+  state.discussion.splice(i, 1)
 }
 
 function setTopicmapViewport() {
@@ -330,8 +347,8 @@ function filerepoUrl (repoPath) {
   return '/filerepo/' + encodeURIComponent(repoPath)
 }
 
-function confirmDeletion () {
-  return MessageBox.confirm(getString('warning.deletion'), 'Warning', {
+function confirmDeletion (textKey = 'warning.delete') {
+  return MessageBox.confirm(getString(textKey), 'Warning', {
     type: 'warning',
     confirmButtonText: getString('button.delete'),
     confirmButtonClass: 'el-button--danger',

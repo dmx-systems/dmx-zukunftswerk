@@ -35,6 +35,8 @@ export default {
   'button.attach_files.de': 'Dateien anhängen',
   'button.attach_files.fr': 'Joindre des fichiers',
 
-  'warning.deletion.de': 'Sie sind im Begriff dieses Objekt zu löschen!',
-  'warning.deletion.fr': 'Vous êtes sur le point de supprimer cet objet!'
+  'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
+  'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',
+  'warning.delete_comment.de': 'Sie sind im Begriff diesen Kommentar zu löschen',
+  'warning.delete_comment.fr': 'Vous êtes sur le point de supprimer ce commentaire'
 }

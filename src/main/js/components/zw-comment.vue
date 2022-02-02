@@ -10,7 +10,7 @@
     <div class="button-panel" v-if="isWritable">
       <el-button type="text" @click="reply"><zw-string>button.reply</zw-string></el-button>
       <el-button type="text"><zw-string>button.edit</zw-string></el-button>
-      <el-button type="text"><zw-string>button.delete</zw-string></el-button>
+      <el-button type="text" @click="deleteComment"><zw-string>button.delete</zw-string></el-button>
     </div>
     <div class="attachments">
       <div v-for="file in attachments" :key="file.id">
@@ -80,6 +80,11 @@ export default {
 
     reply () {
       this.$emit('reply', this.topic)
+    },
+
+    // Note: can't be named "delete"
+    deleteComment () {
+      this.$store.dispatch('deleteComment', this.topic)
     },
 
     commentRefClick (comment) {

@@ -198,6 +198,31 @@ const actions = {
     state.discussion.push(comment)
   },
 
+  jumpToComment (_, {comment, behavior = 'smooth'}) {
+    // 1) Scroll comment into view
+    // Safari note: Safari ignores scrollIntoView() "behavior" option; scrolling is not smooth.
+    // Chrome note: in Chrome after new-comment scrolling does not work at all if "behavior" is set to "smooth".
+    // (In contrast for comment-ref-click scrolling DOES work, and is even smooth.) As workaraound we use "auto"
+    // in this very case. Scrolling works then (but not smooth, as expected).
+    // "scrollIntoView() has a long bug-history in Chrome, some of them are still open for now." (May 2020)
+    // https://stackoverflow.com/questions/61885401/scrollintoview-is-not-working-in-chrome-version-81
+    const commentSelector = `.zw-discussion .zw-comment[data-id="${comment.id}"]`
+    document.querySelector(commentSelector).scrollIntoView({
+      behavior,
+      block: 'nearest'      // avoids body scroll
+    })
+    // 2) Apply "glow" effect
+    const texts = document.querySelectorAll(`${commentSelector} .columns > div`)
+    texts.forEach(text => {
+      text.classList.add('glow')
+    })
+    setTimeout(() => {
+      texts.forEach(text => {
+        text.classList.remove('glow')
+      })
+    }, 3000)    // corresponds to CSS variable "--glow-duration" in App.vue
+  },
+
   /**
    * @param   document    a Document topic (plain object)
    */

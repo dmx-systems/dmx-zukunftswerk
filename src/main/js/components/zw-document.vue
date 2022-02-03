@@ -22,7 +22,8 @@
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.file</zw-string> (de)</div>
-        <el-upload drag :action="uploadUrl" :on-success="onSuccess.de" :on-error="onError.de" ref="upload.de">
+        <el-upload drag :action="uploadUrl" :on-success="onSuccess.de" :on-error="onError.de" ref="upload.de"
+            :before-upload="beforeUpload">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
@@ -31,14 +32,15 @@
       </div>
       <div class="field">
         <div class="field-label"><zw-string>label.file</zw-string> (fr)</div>
-        <el-upload drag :action="uploadUrl" :on-success="onSuccess.fr" :on-error="onError.fr" ref="upload.fr">
+        <el-upload drag :action="uploadUrl" :on-success="onSuccess.fr" :on-error="onError.fr" ref="upload.fr"
+            :before-upload="beforeUpload">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
         <div class="error">{{error.fr}}</div>
         <el-input v-model="docModel.paths.fr.value"></el-input>
       </div>
-      <el-button class="save-button" type="primary" size="medium" @click="save">
+      <el-button class="save-button" type="primary" size="medium" :disabled="saveButtonDisabled" @click="save">
         <zw-string>button.submit</zw-string>
       </el-button>
     </template>
@@ -78,17 +80,18 @@ export default {
 
   data () {
     return {
-      text: '',               // used only for text files: the contained text (String)      FIXME: 2x ?
-      saving: false,          // true while document is saved
-      onSuccess: {            // upload success handler (2x Function)
+      text: '',                     // used only for text files: the contained text (String)      FIXME: 2x ?
+      saving: false,                // true while document is saved (Boolean)
+      saveButtonDisabled: false,    // true when save button is disabled (Boolean)
+      onSuccess: {                  // upload success handler (2x Function)
         de: this.createSuccessHandler('de'),
         fr: this.createSuccessHandler('fr')
       },
-      onError: {              // upload error handler (2x Function)
+      onError: {                    // upload error handler (2x Function)
         de: this.createErrorHandler('de'),
         fr: this.createErrorHandler('fr')
       },
-      error: {                // the error happened while upload, if any (String)
+      error: {                      // the error happened while upload, if any (String)
         de: '',
         fr: ''
       }
@@ -283,13 +286,19 @@ export default {
         topic.children['dmx.files.file#zukunftswerk.' + lang] = fileTopic
         //
         this.$refs['upload.' + lang].clearFiles()
+        this.saveButtonDisabled = false
       }
     },
 
     createErrorHandler (lang) {
       return (error, file, fileList) => {
         this.error[lang] = `${error.name}: ${error.message}`
+        this.saveButtonDisabled = false
       }
+    },
+
+    beforeUpload (file) {
+      this.saveButtonDisabled = true
     }
   }
 }

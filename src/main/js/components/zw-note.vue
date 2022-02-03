@@ -121,8 +121,8 @@ export default {
         p = this.$store.dispatch('createNote', this.topic)
       } else {
         // transfer edit buffer to topic model
-        this.setHtml('de')
-        this.setHtml('fr')
+        this.setNote('de')
+        this.setNote('fr')
         //
         p = this.$store.dispatch('update', this.topic)
       }
@@ -138,7 +138,7 @@ export default {
       }
     },
 
-    setHtml (lang) {
+    setNote (lang) {
       const compDefUri = 'zukunftswerk.note.' + lang
       this.topic.children[compDefUri].value = this.noteModel[lang]
     }

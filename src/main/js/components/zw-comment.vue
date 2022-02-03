@@ -1,5 +1,5 @@
 <template>
-  <div :class="['zw-comment', mode]" :data-id="topic.id">
+  <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
     <div class="field-label">{{date}} ({{creator}})</div>
     <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
@@ -44,7 +44,7 @@ export default {
     return {
       mode: 'info',             // 'info'/'form'
       topicBuffer: undefined,   // the edit buffer (dmx.Topic)
-      saving: false             // true while note is saved
+      saving: false             // true while comment is saved
     }
   },
 
@@ -129,8 +129,8 @@ export default {
     save () {
       this.saving = true
       // transfer edit buffer to topic model
-      this.setHtml('de')
-      this.setHtml('fr')
+      this.setComment('de')
+      this.setComment('fr')
       //
       this.$store.dispatch('updateComment', this.topic).then(() => {
         this.mode = 'info'
@@ -156,7 +156,7 @@ export default {
       this.$emit('comment-ref-click', comment)
     },
 
-    setHtml (lang) {
+    setComment (lang) {
       const compDefUri = 'zukunftswerk.comment.' + lang
       this.topic.children[compDefUri].value = this.commentModel[lang]
     }

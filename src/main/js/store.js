@@ -367,7 +367,7 @@ function filerepoUrl (repoPath) {
 function confirmDeletion (textKey = 'warning.delete') {
   return MessageBox.confirm(getString(textKey), 'Warning', {
     type: 'warning',
-    confirmButtonText: getString('button.delete'),
+    confirmButtonText: getString('action.delete'),
     confirmButtonClass: 'el-button--danger',
     showClose: false
   })

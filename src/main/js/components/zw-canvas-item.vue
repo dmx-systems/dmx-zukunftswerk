@@ -7,10 +7,10 @@
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
-        <zw-string>button.edit</zw-string>
+        <zw-string>action.edit</zw-string>
       </el-button>
       <el-button type="text" :style="buttonStyle" @click="deleteItem" @mousedown.native.stop>
-        <zw-string>button.delete</zw-string>
+        <zw-string>action.delete</zw-string>
       </el-button>
     </div>
   </vue-drag-resize>

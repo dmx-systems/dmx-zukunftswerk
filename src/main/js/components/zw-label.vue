@@ -22,10 +22,10 @@
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
-      <zw-string>button.submit</zw-string>
+      <zw-string>action.submit</zw-string>
     </el-button>
     <el-button size="medium" @click="cancel">
-      <zw-string>button.cancel</zw-string>
+      <zw-string>action.cancel</zw-string>
     </el-button>
   </div>
 </template>

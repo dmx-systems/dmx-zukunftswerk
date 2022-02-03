@@ -22,7 +22,7 @@
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
         <div class="button-panel">
-          <el-button type="text" @click="openUploadDialog"><zw-string>button.attach_files</zw-string></el-button>
+          <el-button type="text" @click="openUploadDialog"><zw-string>action.attach_files</zw-string></el-button>
         </div>
         <div class="attachments">
           <div v-for="file in attachments" :key="file.id">
@@ -30,7 +30,7 @@
           </div>
         </div>
         <el-button class="submit-button" type="primary" size="medium" @click="submit">
-          <zw-string>button.submit</zw-string>
+          <zw-string>action.submit</zw-string>
         </el-button>
       </div>
     </template>

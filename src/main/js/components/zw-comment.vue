@@ -18,12 +18,12 @@
       </template>
     </div>
     <el-button class="save-button" v-if="formMode" type="primary" size="medium" @click="save">
-      <zw-string>button.submit</zw-string>
+      <zw-string>action.submit</zw-string>
     </el-button>
     <div class="button-panel" v-if="buttonPanelVisibility">
-      <el-button type="text" @click="reply"><zw-string>button.reply</zw-string></el-button>
-      <el-button type="text" @click="edit"><zw-string>button.edit</zw-string></el-button>
-      <el-button type="text" @click="deleteComment"><zw-string>button.delete</zw-string></el-button>
+      <el-button type="text" @click="reply"><zw-string>action.reply</zw-string></el-button>
+      <el-button type="text" @click="edit"><zw-string>action.edit</zw-string></el-button>
+      <el-button type="text" @click="deleteComment"><zw-string>action.delete</zw-string></el-button>
     </div>
     <div class="attachments">
       <div v-for="file in attachments" :key="file.id">

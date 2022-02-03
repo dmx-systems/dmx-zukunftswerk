@@ -40,6 +40,9 @@
 </template>
 
 <script>
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
+console.log('[ZW] isChrome', isChrome)
+
 export default {
 
   data () {
@@ -124,7 +127,7 @@ export default {
         this.$refs.newComment.setHTML('')     // why does binding not work here?
         this.refComment = undefined
         this.attachments = []
-        this.jumpTo(comment)
+        this.jumpTo(comment, isChrome ? 'auto' : undefined)
       }).catch(() => {
         // silence browser console
       }).finally(() => {
@@ -137,12 +140,17 @@ export default {
       this.refComment = comment
     },
 
-    jumpTo (comment) {
+    jumpTo (comment, behavior = 'smooth') {
       // 1) Scroll comment into view
-      // Note: Safari ignores scrollIntoView() arg
+      // Safari note: Safari ignores scrollIntoView() "behavior" option; scrolling is not smooth.
+      // Chrome note: in Chrome after new-comment scrolling does not work at all if "behavior" is set to "smooth".
+      // (In contrast for comment-ref-click scrolling DOES work, and is even smooth.) As a workaraound we use "auto"
+      // in this very case. Scrolling works then (but not smooth, as expected).
+      // "scrollIntoView() has a long bug-history in Chrome, some of them are still open for now." (May 2020)
+      // https://stackoverflow.com/questions/61885401/scrollintoview-is-not-working-in-chrome-version-81
       const commentSelector = `.zw-discussion .zw-comment[data-id="${comment.id}"]`
       document.querySelector(commentSelector).scrollIntoView({
-        behavior: 'smooth',
+        behavior,
         block: 'nearest'      // avoids body scroll
       })
       // 2) Apply "glow" effect

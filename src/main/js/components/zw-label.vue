@@ -1,6 +1,6 @@
 <template>
   <div v-if="infoMode" class="zw-label info">{{label[lang]}}</div>
-  <div v-else class="zw-label form" v-loading="saving">
+  <div v-else :class="['zw-label', 'form', {'new': isNew}]" v-loading="saving">
     <template v-if="isNew">
       <div class="field-label">
         <zw-string>label.new_label</zw-string>
@@ -24,6 +24,9 @@
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>button.submit</zw-string>
     </el-button>
+    <el-button size="medium" @click="cancel">
+      <zw-string>button.cancel</zw-string>
+    </el-button>
   </div>
 </template>
 
@@ -34,6 +37,7 @@ export default {
 
   mixins: [
     require('./mixins/orig-lang').default,
+    require('./mixins/cancel').default
   ],
 
   mounted () {
@@ -134,11 +138,15 @@ export default {
   border: 1px solid var(--border-color-lighter);
 }
 
-.zw-label .el-input {
+.zw-label.form .el-input {
   font-size: 24px;
 }
 
-.zw-label .save-button {
+.zw-label.form .save-button {
   margin-top: var(--field-spacing);
+}
+
+.zw-label.form.new .save-button {
+  margin-top: 6px;
 }
 </style>

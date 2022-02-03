@@ -26,6 +26,8 @@ export default {
 
   'button.submit.de': 'OK',
   'button.submit.fr': 'OK',
+  'button.cancel.de': 'Abbrechen',
+  'button.cancel.fr': 'Annuler',
   'button.reply.de': 'Antworten',
   'button.reply.fr': 'Réponse',
   'button.edit.de': 'Ändern',

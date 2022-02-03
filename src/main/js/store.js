@@ -62,6 +62,28 @@ const actions = {
     state.zoom = topicmap.zoom
   },
 
+  setPan (_, pan) {
+    state.pan = pan
+    setTopicmapViewport()     // update server state (debounced)
+  },
+
+  setZoom (_, zoom) {
+    state.zoom = zoom
+    setTopicmapViewport()     // update server state (debounced)
+  },
+
+  setPanelVisibility (_, visibility) {
+    state.panelVisibility = visibility
+  },
+
+  setPanelX (_, x) {
+    state.panelX = x
+  },
+
+  setLang (_, lang) {
+    state.lang = lang
+  },
+
   setWorkspace (_, workspace) {
     state.workspace = workspace
     updateWorkspaceCookie()
@@ -90,7 +112,7 @@ const actions = {
   createDocument (_, topic) {
     return dmx.rpc.createTopic(topic).then(_topic => {
       addTopicToTopicmap(topic, _topic)
-      removeTopic(topic)
+      removeNewTopic(topic)
     })
   },
 
@@ -116,7 +138,7 @@ const actions = {
     .then(response => response.data)
     .then(_topic => {
       addTopicToTopicmap(topic, _topic)
-      removeTopic(topic)
+      removeNewTopic(topic)
     })
   },
 
@@ -132,7 +154,7 @@ const actions = {
     .then(response => response.data)
     .then(_topic => {
       addTopicToTopicmap(topic, _topic)
-      removeTopic(topic)
+      removeNewTopic(topic)
     })
   },
 
@@ -195,28 +217,6 @@ const actions = {
     }
   },
 
-  setPan (_, pan) {
-    state.pan = pan
-    setTopicmapViewport()     // update server state (debounced)
-  },
-
-  setZoom (_, zoom) {
-    state.zoom = zoom
-    setTopicmapViewport()     // update server state (debounced)
-  },
-
-  setPanelVisibility (_, visibility) {
-    state.panelVisibility = visibility
-  },
-
-  setPanelX (_, x) {
-    state.panelX = x
-  },
-
-  setLang (_, lang) {
-    state.lang = lang
-  },
-
   edit ({dispatch}, topic) {
     dispatch('setTopic', topic)   // select programmatically
     state.isEditActive.push(topic.id)
@@ -225,16 +225,16 @@ const actions = {
   delete ({dispatch}, topic) {
     dispatch('setTopic', topic)   // select programmatically
     confirmDeletion().then(() => {
-      state.topicmap.removeTopic(topic.id)      // update client state
-      dmx.rpc.deleteTopic(topic.id)             // update server state
-    }).catch(() => {})            // suppress unhandled rejection on cancel
+      state.topicmap.removeTopic(topic.id)        // update client state
+      dmx.rpc.deleteTopic(topic.id)               // update server state
+    }).catch(() => {})  // suppress unhandled rejection on cancel
   },
 
   deleteComment ({dispatch}, comment) {
     confirmDeletion('warning.delete_comment').then(() => {
-      removeComment(comment)                    // update client state
-      dmx.rpc.deleteTopic(comment.id)           // update server state
-    }).catch(() => {})            // suppress unhandled rejection on cancel
+      removeComment(comment)                      // update client state
+      dmx.rpc.deleteTopic(comment.id)             // update server state
+    }).catch(() => {})  // suppress unhandled rejection on cancel
   },
 
   /**
@@ -244,6 +244,16 @@ const actions = {
     return dmx.rpc.updateTopic(topic).then(directives => {
       removeEditActive(topic)
     })
+  },
+
+  cancel (_, topic) {
+    if (!topic.id) {
+      // abort creation
+      removeNewTopic(topic)                       // update client state
+    } else {
+      // abort update
+      removeEditActive(topic)                     // update client state
+    }
   },
 
   downloadFile (_, repoPath) {
@@ -314,10 +324,10 @@ function addTopicToTopicmap (viewTopic, topic) {
 
 // TODO: unify this 3 functions
 
-function removeTopic (topic) {
+function removeNewTopic (topic) {
   const i = state.newTopics.indexOf(topic)
   if (i === -1) {
-    throw Error('removeTopic')
+    throw Error('removeNewTopic')
   }
   state.newTopics.splice(i, 1)
 }
@@ -340,7 +350,7 @@ function removeComment (comment) {
 
 function setTopicmapViewport() {
   if (state.isTeam) {
-    dmx.rpc.setTopicmapViewport(state.topicmap.id, state.pan, state.zoom)
+    dmx.rpc.setTopicmapViewport(state.topicmap.id, state.pan, state.zoom)           // update server state
   }
 }
 

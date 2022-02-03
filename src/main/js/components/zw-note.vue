@@ -1,6 +1,6 @@
 <template>
   <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml"></div>
-  <div class="zw-note dmx-html-field form" v-else v-loading="saving">
+  <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving">
     <template v-if="isNew">
       <div class="field-label">
         <zw-string>label.new_note</zw-string>
@@ -24,6 +24,9 @@
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>button.submit</zw-string>
     </el-button>
+    <el-button size="medium" @click="cancel">
+      <zw-string>button.cancel</zw-string>
+    </el-button>
   </div>
 </template>
 
@@ -34,6 +37,7 @@ export default {
 
   mixins: [
     require('./mixins/orig-lang').default,
+    require('./mixins/cancel').default
   ],
 
   data () {
@@ -165,7 +169,11 @@ export default {
   min-width: 240px;
 }
 
-.zw-note .save-button {
+.zw-note.form .save-button {
   margin-top: var(--field-spacing);
+}
+
+.zw-note.form.new .save-button {
+  margin-top: 6px;
 }
 </style>

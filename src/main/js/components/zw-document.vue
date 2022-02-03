@@ -43,6 +43,9 @@
       <el-button class="save-button" type="primary" size="medium" :disabled="saveButtonDisabled" @click="save">
         <zw-string>button.submit</zw-string>
       </el-button>
+      <el-button size="medium" @click="cancel">
+        <zw-string>button.cancel</zw-string>
+      </el-button>
     </template>
   </div>
 </template>
@@ -62,6 +65,10 @@ export default {
       this.$refs.docName.focus()    // FIXME
     }
   },
+
+  mixins: [
+    require('./mixins/cancel').default
+  ],
 
   props: {
 

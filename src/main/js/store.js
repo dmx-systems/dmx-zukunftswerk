@@ -39,13 +39,13 @@ const state = {
 const actions = {
 
   loggedIn (_, username) {
-    DEV && console.log('Login', username)
+    DEV && console.log('[ZW] Login', username)
     setUsername(username)
     updateIsWritable()
   },
 
   logout () {
-    DEV && console.log('Logout', state.username)
+    DEV && console.log('[ZW] Logout', state.username)
     dmx.rpc.logout().then(() => {
       state.username = undefined
       state.isTeam = false
@@ -180,7 +180,7 @@ const actions = {
         fileTopicIds: fileTopicIds.join(',')
       }
     }).then(response => {
-      const comment = response.data
+      const comment = new dmx.Topic(response.data)
       state.discussion.push(comment)
       state.refDocument = undefined
       return comment

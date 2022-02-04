@@ -161,7 +161,6 @@ export default {
     scrollDown () {
       if (this.panelVisibility) {
         // scroll down to bottom of discussion
-        console.log('scrollDown')
         document.querySelector('.zw-discussion .comments').scroll({
           top: 100000,
           behavior: 'smooth'

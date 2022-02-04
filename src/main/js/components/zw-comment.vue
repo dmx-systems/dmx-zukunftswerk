@@ -17,9 +17,14 @@
         </div>
       </template>
     </div>
-    <el-button class="save-button" v-if="formMode" type="primary" size="medium" @click="save">
-      <zw-string>action.submit</zw-string>
-    </el-button>
+    <template v-if="formMode">
+      <el-button class="save-button" type="primary" size="medium" @click="save">
+        <zw-string>action.submit</zw-string>
+      </el-button>
+      <el-button size="medium" @click="cancel">
+        <zw-string>action.cancel</zw-string>
+      </el-button>
+    </template>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" @click="reply"><zw-string>action.reply</zw-string></el-button>
       <el-button type="text" @click="edit"><zw-string>action.edit</zw-string></el-button>
@@ -138,6 +143,10 @@ export default {
       })
     },
 
+    cancel () {
+      this.mode = 'info'
+    },
+
     reply () {
       this.$emit('reply', this.topic)
     },
@@ -182,7 +191,8 @@ export default {
   margin-bottom: 6px;
 }
 
-.zw-comment .zw-attachment {
+.zw-comment .zw-attachment,
+.zw-comment .save-button {
   margin-top: 6px;
 }
 

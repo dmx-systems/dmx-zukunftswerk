@@ -27,8 +27,10 @@
     </template>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" @click="reply"><zw-string>action.reply</zw-string></el-button>
-      <el-button type="text" @click="edit"><zw-string>action.edit</zw-string></el-button>
-      <el-button type="text" @click="deleteComment"><zw-string>action.delete</zw-string></el-button>
+      <el-button type="text" @click="edit" v-if="commentIsWritable"><zw-string>action.edit</zw-string></el-button>
+      <el-button type="text" @click="deleteComment" v-if="commentIsWritable">
+        <zw-string>action.delete</zw-string>
+      </el-button>
     </div>
     <div class="attachments">
       <div v-for="file in attachments" :key="file.id">
@@ -92,8 +94,20 @@ export default {
       return this.topic.children['dmx.files.file#zukunftswerk.attachment']
     },
 
+    username () {
+      return this.$store.state.username
+    },
+
+    isTeam () {
+      return this.$store.state.isTeam
+    },
+
     isWritable () {
       return this.$store.state.isWritable
+    },
+
+    commentIsWritable () {
+      return this.isWritable && (this.username === this.creator || this.isTeam)
     },
 
     lang () {

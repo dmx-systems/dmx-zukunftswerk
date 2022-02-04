@@ -6,7 +6,7 @@ export default message => {
   case 'createComment':
     if (message.args.workspaceId === store.state.workspace.id) {
       const comment = message.args.comment
-      store.dispatch('newComment', comment)
+      store.dispatch('addComment', comment)
       Vue.nextTick(() => {
         store.dispatch('jumpToComment', {comment})
       })

@@ -7,11 +7,11 @@ export default {
 
   created () {
     this.$store.watch(state => state.panelVisibility, visible => {
-      this.$nextTick(() => {
-        if (visible) {
+      if (visible) {
+        this.$nextTick(() => {
           this.resize()
-        }
-      })
+        })
+      }
     })
     //
     window.addEventListener('resize', e => {

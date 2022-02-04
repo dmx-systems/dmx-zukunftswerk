@@ -1,6 +1,7 @@
 <template>
   <div class="zw-discussion" :style="style">
-    <el-button v-if="!isOpen" class="open-button" type="text" icon="el-icon-chat-round" @click="open"></el-button>
+    <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-chat-round" @click="open">
+    </el-button>
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-circle-close" @click="close"></el-button>
       <h4><zw-string>label.discussion</zw-string></h4>
@@ -45,6 +46,19 @@ console.log('[ZW] isChrome', isChrome)
 
 export default {
 
+  created () {
+    this.$store.watch(state => state.panelVisibility, _ => {
+      this.$nextTick(() => {
+        this.scrollDown()
+      })
+    })
+    this.$store.watch(state => state.discussion, _ => {
+      this.$nextTick(() => {
+        this.scrollDown()
+      })
+    })
+  },
+
   data () {
     return {
       newComment: '',                 // new comment being entered by the user
@@ -61,7 +75,7 @@ export default {
       return this.$store.state.isWritable
     },
 
-    isOpen () {
+    panelVisibility () {
       return this.$store.state.panelVisibility
     },
 
@@ -76,7 +90,7 @@ export default {
     },
 
     style () {
-      return this.isOpen ? {
+      return this.panelVisibility ? {
         padding: '10px 0 10px 10px',
         'flex-grow': 1
       } : {
@@ -142,6 +156,17 @@ export default {
 
     jumpTo (comment, behavior) {
       this.$store.dispatch('jumpToComment', {comment, behavior})
+    },
+
+    scrollDown () {
+      if (this.panelVisibility) {
+        // scroll down to bottom of discussion
+        console.log('scrollDown')
+        document.querySelector('.zw-discussion .comments').scroll({
+          top: 100000,
+          behavior: 'smooth'
+        })
+      }
     },
 
     removeCommentRef () {

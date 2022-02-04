@@ -194,7 +194,7 @@ const actions = {
     dmx.rpc.updateTopic(comment)
   },
 
-  newComment (_, comment) {
+  addComment (_, comment) {
     state.discussion.push(comment)
   },
 
@@ -209,7 +209,7 @@ const actions = {
     const commentSelector = `.zw-discussion .zw-comment[data-id="${comment.id}"]`
     document.querySelector(commentSelector).scrollIntoView({
       behavior,
-      block: 'nearest'      // avoids body scroll
+      block: 'nearest'      // avoid body scroll
     })
     // 2) Apply "glow" effect
     const texts = document.querySelectorAll(`${commentSelector} .columns > div`)

@@ -313,8 +313,6 @@ export default {
 
 <style>
 .zw-document {
-  min-width: 240px;
-  max-width: 480px;
   padding: 12px;
   background-color: rgb(230, 230, 230);
 }

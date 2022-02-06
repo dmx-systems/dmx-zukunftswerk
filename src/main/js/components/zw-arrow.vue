@@ -22,9 +22,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.zw-arrow {
-  max-width: 200px;
-}
-</style>

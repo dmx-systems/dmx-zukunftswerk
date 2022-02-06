@@ -21,16 +21,6 @@ import dmx from 'dmx-api'
 
 export default {
 
-  mounted () {
-    // once mounted we set actual width; 'auto' would prohibit manual resize
-    if (this.w === 'auto') {
-      this.w = this.$el.clientWidth
-      // console.log('setWidth', this.w)
-    }
-    this.$refs.detail.$el.style['min-width'] = 'unset'
-    this.$refs.detail.$el.style['max-width'] = 'unset'
-  },
-
   props: {
 
     topic: {                  // the topic to render (dmx.ViewTopic)
@@ -45,9 +35,8 @@ export default {
   },
 
   data () {
-    const width = this.topic.viewProps['dmx.topicmaps.width']
     return {
-      w: width || 'auto',       // if width is unknown let the child component's style determine the initial width
+      w: this.topic.viewProps['dmx.topicmaps.width'],
       topicBuffer: undefined    // the edit buffer (dmx.ViewTopic)
     }
   },
@@ -128,8 +117,8 @@ export default {
     },
 
     setSize (e) {
+      console.log('setSize', this.topic.id, this.isWritable, e.width, e.height)
       if (this.topic.id >= 0 && this.isWritable) {
-        console.log('setSize', e.width, e.height)
         if (!isNaN(e.width) && !isNaN(e.height)) {
           dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
             'dmx.topicmaps.width': e.width,

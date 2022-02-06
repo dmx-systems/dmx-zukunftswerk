@@ -129,7 +129,7 @@ export default {
             }
           }
         },
-        viewProps: this.viewProps()
+        viewProps: this.viewProps('zukunftswerk.document')
       })
     },
 
@@ -137,16 +137,18 @@ export default {
       return new dmx.ViewTopic({
         typeUri,
         value: '',      // used as intermediate note/label model while create
-        viewProps: this.viewProps()
+        viewProps: this.viewProps(typeUri)
       })
     },
 
-    viewProps ()  {
+    viewProps (typeUri)  {
       return {
         'dmx.topicmaps.x': (40 - this.pan.x) / this.zoom,     // 40 matches store.js revealDocuments()
         'dmx.topicmaps.y':     - this.pan.y  / this.zoom,
         'dmx.topicmaps.visibility': true,
-        'dmx.topicmaps.pinned': false
+        'dmx.topicmaps.pinned': false,
+        'dmx.topicmaps.width': typeUri === 'zukunftswerk.arrow' ? 200 : 384
+        // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
       }
     },
 

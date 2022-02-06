@@ -159,14 +159,8 @@ export default {
 
 <style>
 .zw-note {
-  min-width: 120px;
-  max-width: 420px;
-  padding: 10px;
+  padding: 12px;
   background-color: rgb(255, 250, 109);
-}
-
-.zw-note.form {
-  min-width: 240px;
 }
 
 .zw-note.form .save-button {

@@ -108,8 +108,8 @@ export default {
     setPos (e) {
       const pos = {x: e.left, y: e.top}
       // console.log('setPos', pos)
-      // Note: setPosition() would trigger vue-drag-resize's x/y watchers. An item-move would be emulated, including
-      // firing the "dragstop" event. This would result in an endless cascade of setPos() calls.
+      // Note: this.topic.setPosition() would trigger vue-drag-resize's x/y watchers. An item-move would be emulated,
+      // including firing the "dragstop" event. This would result in an endless cascade of setPos() calls.
       // this.topic.setPosition(pos)                                        // update client state
       if (this.topic.id >= 0 && this.isWritable) {
         dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state

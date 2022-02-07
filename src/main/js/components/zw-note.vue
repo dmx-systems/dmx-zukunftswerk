@@ -120,17 +120,18 @@ export default {
 
     save () {
       this.saving = true
-      let p
+      let action
       if (this.isNew) {
-        p = this.$store.dispatch('createNote', this.topic)
+        action = 'createNote'
       } else {
+        action = 'update'
         // transfer edit buffer to topic model
         this.setNote('de')
         this.setNote('fr')
-        //
-        p = this.$store.dispatch('update', this.topic)
       }
-      p.then(() => {
+      this.$store.dispatch(action, this.topic).catch(() => {
+        // silence browser console
+      }).finally(() => {
         this.saving = false
       })
     },

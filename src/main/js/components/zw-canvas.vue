@@ -10,7 +10,7 @@
       </el-dropdown-menu>
     </el-dropdown>
     <div class="content-layer" :style="contentLayerStyle">
-      <zw-canvas-item v-for="topic in topics"    :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
+      <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
     </div>
   </div>
@@ -143,8 +143,8 @@ export default {
 
     viewProps (typeUri)  {
       return {
-        'dmx.topicmaps.x': (40 - this.pan.x) / this.zoom,     // 40 matches store.js revealDocuments()
-        'dmx.topicmaps.y':     - this.pan.y  / this.zoom,
+        'dmx.topicmaps.x': (this.$store.state.NEW_POS_X - this.pan.x) / this.zoom,
+        'dmx.topicmaps.y': (this.$store.state.NEW_POS_Y - this.pan.y) / this.zoom,
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false,
         'dmx.topicmaps.width': typeUri === 'zukunftswerk.arrow' ? 200 : 384
@@ -176,6 +176,10 @@ function newArrowId () {
 .zw-canvas {
   flex-grow: 1;
   background-image: url("../../resources/grid.png");
+}
+
+.zw-canvas .el-dropdown {
+  position: absolute;   /* don't consume canvas space */
 }
 
 .zw-canvas .add-button {

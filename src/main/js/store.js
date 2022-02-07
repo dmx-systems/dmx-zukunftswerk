@@ -33,7 +33,10 @@ const state = {
 
   lang: 'de',                   // UI language ('de'/'fr')
   langStrings:  require('./lang-strings').default,
-  quillOptions: require('./quill-options').default
+  quillOptions: require('./quill-options').default,
+
+  NEW_POS_X: 42,                // position of both, new items, and document revelation
+  NEW_POS_Y: 42
 }
 
 const actions = {
@@ -230,8 +233,8 @@ const actions = {
     const topic = state.topicmap.getTopic(document.id)
     dispatch('setTopic', topic)
     dispatch('setPan', {
-      x: -topic.pos.x * state.zoom + 40,    // 40 matches zw-canvas.vue viewProps()
-      y: -topic.pos.y * state.zoom
+      x: -topic.pos.x * state.zoom + state.NEW_POS_X,
+      y: -topic.pos.y * state.zoom + state.NEW_POS_Y
     })
   },
 

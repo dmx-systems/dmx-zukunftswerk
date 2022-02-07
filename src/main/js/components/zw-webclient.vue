@@ -62,7 +62,6 @@ export default {
     },
 
     mouseup () {
-      // console.log('mouseup', !!this.panPos)
       if (this.panPos) {
         this.$el.removeEventListener('mousemove', this.mousemove)
       }

@@ -1,6 +1,6 @@
 <template>
   <vue-drag-resize contentClass="zw-canvas-item" :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto"
-      :sticks="['mr']" :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @dragstop="setPos"
+      :sticks="['mr']" :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @click.native.stop @dragstop="setPos"
       @resizestop="setSize">
     <component :is="topic.typeUri" :topic="topic" :topicBuffer="topicBuffer" :mode="mode" ref="detail"
       @mousedown.native="mousedown">

@@ -19,7 +19,13 @@
 <script>
 import dmx from 'dmx-api'
 
+let HEADER_HEIGHT
+
 export default {
+
+  mounted () {
+    HEADER_HEIGHT = document.querySelector('.zw-header').clientHeight
+  },
 
   computed: {
 
@@ -158,7 +164,10 @@ export default {
 
     wheel (e) {
       const zoom = Math.min(Math.max(this.zoom - .003 * e.deltaY, .2), 2)
-      this.$store.dispatch('setZoom', zoom)
+      const zoomChange = zoom - this.zoom
+      const px = (e.clientX - this.pan.x) / this.zoom * zoomChange
+      const py = (e.clientY - this.pan.y - HEADER_HEIGHT) / this.zoom * zoomChange
+      this.$store.dispatch('setViewport', {pan: {x: this.pan.x - px, y: this.pan.y - py}, zoom})
     }
   },
 

@@ -35,7 +35,7 @@ const state = {
   langStrings:  require('./lang-strings').default,
   quillOptions: require('./quill-options').default,
 
-  NEW_POS_X: 42,                // position of both, new items, and document revelation
+  NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
   NEW_POS_Y: 42
 }
 
@@ -65,15 +65,22 @@ const actions = {
     state.zoom = topicmap.zoom
   },
 
+
+  setViewport (_, {pan, zoom}) {
+    state.pan = pan
+    state.zoom = zoom
+    setTopicmapViewport()     // update server state (debounced)
+  },
+
   setPan (_, pan) {
     state.pan = pan
     setTopicmapViewport()     // update server state (debounced)
   },
 
-  setZoom (_, zoom) {
+  /* setZoom (_, zoom) {
     state.zoom = zoom
     setTopicmapViewport()     // update server state (debounced)
-  },
+  }, */
 
   setPanelVisibility (_, visibility) {
     state.panelVisibility = visibility

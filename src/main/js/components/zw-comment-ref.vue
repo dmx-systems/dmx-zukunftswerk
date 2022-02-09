@@ -1,11 +1,9 @@
 <template>
   <div class="zw-comment-ref" v-if="comment">
-    <el-button class="button" type="text" @click="click">
+    <el-tag :closable="removable" size="medium" @click="click" @close="remove">
       <span class="fa fa-comment"></span>
       <zw-truncate :html="html[lang]"></zw-truncate>
-    </el-button>
-    <el-button class="remove-button" v-if="removable" type="text" icon="el-icon-circle-close" @click="remove">
-    </el-button>
+    </el-tag>
   </div>
 </template>
 
@@ -45,23 +43,10 @@ export default {
 </script>
 
 <style>
-.zw-comment-ref {
-  position: relative;
-}
-
-.zw-comment-ref .button {
-  white-space: unset;     /* Element UI button default is "nowrap" */
-  text-align: unset;      /* Element UI button default is "center" */
-}
-
-.zw-comment-ref .remove-button {
-  position: absolute;
-  top: -3px;
-  font-size: 20px;
-  visibility: hidden;
-}
-
-.zw-comment-ref:hover .remove-button {
-  visibility: visible;
+.zw-comment-ref .el-tag {
+  height: unset;          /* Element UI Tag default is 32px; not suitable for multi-line tags */
+  line-height: unset;     /* Element UI Tag default is 30px */
+  white-space: unset;     /* Element UI Tag default is "nowrap" */
+  padding: 5px 10px;      /* Element UI Tag default is "0 10px" */
 }
 </style>

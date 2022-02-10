@@ -326,7 +326,7 @@ export default {
 }
 
 .zw-document.ref-doc {
-  background-color: rgb(197, 224, 180);
+  background-color: var(--doc-filter-color);
 }
 
 .zw-document .doc-name {

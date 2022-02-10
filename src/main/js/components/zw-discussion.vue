@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-discussion" :style="style">
+  <div :class="classes">
     <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-chat-round" @click="open">
     </el-button>
     <template v-else>
@@ -72,6 +72,14 @@ export default {
 
   computed: {
 
+    classes () {
+      return [
+        'zw-discussion',
+        this.panelVisibility ? 'open' : 'close',
+        {'doc': this.refDocument}
+      ]
+    },
+
     heading () {
       return this.getString(this.refDocument ? 'label.document_discussion' : 'label.discussion')
     },
@@ -92,20 +100,6 @@ export default {
       return this.discussion && this.discussion.filter(
         comment => !this.refDocument || this.getDocumentId(comment) === this.refDocument.id
       )
-    },
-
-    // TODO: use extra class and static style, use CSS vars
-    style () {
-      const style = {}
-      if (this.panelVisibility) {
-        style.padding = '10px 0 10px 10px'
-        style['flex-grow'] = 1
-      } else {
-        style.padding = '5px'
-        style.width = 'auto'
-      }
-      style['background-color'] = this.refDocument ? 'rgb(197, 224, 180)' : 'rgb(173, 185, 202)'
-      return style
     },
 
     refTopicId () {
@@ -227,11 +221,26 @@ export default {
 
 <style>
 .zw-discussion {
+  background-color: var(--discussion-color);
   display: flex;
   flex-direction: column;
   position: relative;
   box-sizing: border-box;
   z-index: 1;
+}
+
+.zw-discussion.doc {
+  background-color: var(--doc-filter-color);
+}
+
+.zw-discussion.open {
+  padding: 10px 0 10px 10px;
+  flex-grow: 1;
+}
+
+.zw-discussion.close {
+  padding: 5px;
+  width: auto !important;
 }
 
 .zw-discussion .open-button {

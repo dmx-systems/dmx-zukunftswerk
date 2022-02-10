@@ -44,9 +44,9 @@ export default {
 
 <style>
 .zw-comment-ref .el-tag {
-  height: unset;          /* Element UI Tag default is 32px; not suitable for multi-line tags */
-  line-height: unset;     /* Element UI Tag default is 30px */
-  white-space: unset;     /* Element UI Tag default is "nowrap" */
-  padding: 5px 10px;      /* Element UI Tag default is "0 10px" */
+  height: unset;                  /* Element UI Tag default is 32px; not suitable for multi-line tags */
+  line-height: unset;             /* Element UI Tag default is 30px */
+  white-space: unset;             /* Element UI Tag default is "nowrap" */
+  padding: 5px 10px 5px 10px;     /* Element UI Tag default is "0 10px" */
 }
 </style>

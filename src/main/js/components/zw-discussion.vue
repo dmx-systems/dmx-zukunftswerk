@@ -4,7 +4,8 @@
     </el-button>
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-circle-close" @click="close"></el-button>
-      <h4><zw-string>label.discussion</zw-string></h4>
+      <h4>{{heading}}</h4>
+      <zw-document-ref class="doc-filter" :document="refDocument" :removable="true"></zw-document-ref>
       <!-- Comments -->
       <div class="comments">
         <zw-comment v-for="comment in filteredDiscussion" :topic="comment" :key="comment.id" @reply="reply"
@@ -18,7 +19,7 @@
         </div>
         <zw-comment-ref :comment="refComment" :removable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
-        <zw-document-ref :document="refDocument" :removable="true" @remove="removeDocumentRef"></zw-document-ref>
+        <zw-document-ref :document="refDocument" :removable="true"></zw-document-ref>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
@@ -70,6 +71,10 @@ export default {
   },
 
   computed: {
+
+    heading () {
+      return this.getString(this.refDocument ? 'label.document_discussion' : 'label.discussion')
+    },
 
     isWritable () {
       return this.$store.state.isWritable
@@ -172,10 +177,6 @@ export default {
       this.refComment = undefined
     },
 
-    removeDocumentRef () {
-      this.$store.dispatch('setRefDocument', undefined)
-    },
-
     removeAttachment (file) {
       this.attachments = this.attachments.filter(f => f.id !== file.id)
     },
@@ -199,6 +200,12 @@ export default {
     getDocumentId (comment) {
       const doc = comment.children['zukunftswerk.document']
       return doc && doc.id
+    },
+
+    // copy in store.js
+    getString (key) {
+      const state = this.$store.state
+      return state.langStrings[`${key}.${state.lang}`]
     }
   },
 
@@ -233,6 +240,10 @@ export default {
   top: 5px;
   right: 4px;
   font-size: 24px;
+}
+
+.zw-discussion .doc-filter {
+  margin-bottom: 24px;
 }
 
 .zw-discussion .submit-button {

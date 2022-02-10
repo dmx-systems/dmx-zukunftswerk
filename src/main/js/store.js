@@ -389,6 +389,7 @@ function setTopicmapViewport() {
   }
 }
 
+// copy in zw-discussion.vue
 function getString (key) {
   return state.langStrings[`${key}.${state.lang}`]
 }

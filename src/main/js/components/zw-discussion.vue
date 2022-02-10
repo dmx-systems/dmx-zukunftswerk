@@ -94,6 +94,7 @@ export default {
       )
     },
 
+    // TODO: use extra class and static style, use CSS vars
     style () {
       const style = {}
       if (this.panelVisibility) {

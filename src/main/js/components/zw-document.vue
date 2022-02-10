@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-document" v-loading="saving">
+  <div :class="['zw-document', {'ref-doc': isRefDocument}]" v-loading="saving">
     <template v-if="infoMode">
       <div class="discussion-button">
         <el-button type="text" icon="el-icon-chat-round" @click="setRefDocument"></el-button>
@@ -229,6 +229,14 @@ export default {
       return !this.topic.id
     },
 
+    isRefDocument () {
+      return this.refDocument && this.refDocument.id === this.topic.id
+    },
+
+    refDocument () {
+      return this.$store.state.refDocument
+    },
+
     lang () {
       return this.$store.state.lang
     }
@@ -315,6 +323,10 @@ export default {
 .zw-document {
   padding: 12px;
   background-color: rgb(230, 230, 230);
+}
+
+.zw-document.ref-doc {
+  background-color: rgb(197, 224, 180);
 }
 
 .zw-document .doc-name {

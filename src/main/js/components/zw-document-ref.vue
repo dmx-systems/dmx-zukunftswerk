@@ -1,6 +1,6 @@
 <template>
   <div class="zw-document-ref" v-if="document">
-    <el-tag :closable="removable" size="medium" @click="revealDoc" @close="remove">
+    <el-tag :closable="removable" size="medium" @click="reveal" @close="remove">
       <span class="fa fa-file-o"></span>
       <span>{{docName}}</span>
     </el-tag>
@@ -49,7 +49,7 @@ export default {
 
   methods: {
 
-    revealDoc () {
+    reveal () {
       this.$store.dispatch('revealDocument', this.document)
     },
 

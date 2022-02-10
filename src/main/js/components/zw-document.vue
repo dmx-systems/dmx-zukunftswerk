@@ -2,7 +2,7 @@
   <div class="zw-document" v-loading="saving">
     <template v-if="infoMode">
       <div class="discussion-button">
-        <el-button type="text" icon="el-icon-chat-round" @click="newComment"></el-button>
+        <el-button type="text" icon="el-icon-chat-round" @click="setRefDocument"></el-button>
       </div>
       <div class="doc-name">{{docName}}</div>
       <pre v-if="isText">{{text}}</pre>
@@ -272,7 +272,7 @@ export default {
       return file && file.children['dmx.files.path']
     },
 
-    newComment () {
+    setRefDocument () {
       this.$store.dispatch('setRefDocument', this.topic)
     },
 

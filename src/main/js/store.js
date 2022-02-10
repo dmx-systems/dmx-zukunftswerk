@@ -237,12 +237,15 @@ const actions = {
    * @param   document    a Document topic (plain object)
    */
   revealDocument ({dispatch}, document) {
+    // 1) select and pan
     const topic = state.topicmap.getTopic(document.id)
     dispatch('setTopic', topic)
     dispatch('setPan', {
       x: -topic.pos.x * state.zoom + state.NEW_POS_X,
       y: -topic.pos.y * state.zoom + state.NEW_POS_Y
     })
+    // 2) set doc filter
+    dispatch('setRefDocument', document)
   },
 
   setRefDocument ({dispatch}, document) {

@@ -95,13 +95,16 @@ export default {
     },
 
     style () {
-      return this.panelVisibility ? {
-        padding: '10px 0 10px 10px',
-        'flex-grow': 1
-      } : {
-        padding: '5px',
-        width: 'auto'
+      const style = {}
+      if (this.panelVisibility) {
+        style.padding = '10px 0 10px 10px'
+        style['flex-grow'] = 1
+      } else {
+        style.padding = '5px'
+        style.width = 'auto'
       }
+      style['background-color'] = this.refDocument ? 'rgb(197, 224, 180)' : 'rgb(173, 185, 202)'
+      return style
     },
 
     refTopicId () {
@@ -227,7 +230,6 @@ export default {
   flex-direction: column;
   position: relative;
   box-sizing: border-box;
-  background-color: rgb(182, 216, 202);
   z-index: 1;
 }
 

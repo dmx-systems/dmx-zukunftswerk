@@ -86,7 +86,7 @@ export default {
   align-items: baseline;
   color: white;
   padding: 8px;
-  background-color: rgb(63, 65, 104);
+  background-color: var(--header-color);
   z-index: 1;
 }
 

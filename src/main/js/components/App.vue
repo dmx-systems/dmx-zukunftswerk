@@ -41,6 +41,7 @@
   --line-height: 1.5;
   --paragraph-spacing: 0.5em;
   --field-spacing: 1.2em;                     /* vertical spacing between data fields */
+  --header-color: rgb(63, 65, 104);
   --highlight-color: #409eff;                 /* matches --color-primary */
   --highlight-color-2: #66b1ff;               /* matches --color-primary-light-2 */
   --color-danger: #f56c6c;                    /* matches --color-danger */

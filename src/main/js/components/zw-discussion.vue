@@ -58,6 +58,11 @@ export default {
         this.scrollDown()
       })
     })
+    this.$store.watch(state => state.refDocument, _ => {
+      this.$nextTick(() => {
+        this.scrollDown()
+      })
+    })
   },
 
   data () {

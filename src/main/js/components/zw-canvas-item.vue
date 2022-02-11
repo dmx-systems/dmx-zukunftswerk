@@ -1,8 +1,9 @@
 <template>
-  <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h"
-      :handles="handles" :scale="zoom" @activated="select" @click.native.stop @dragstop="setPos" @resizestop="setSize">
-    <component :is="topic.typeUri" :topic="topic" :topicBuffer="topicBuffer" :mode="mode" @mousedown.native="mousedown"
-      @handles="setHandles">
+  <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h" :handles="handles"
+      :scale="zoom" @activated="select" @dragstop="setPos" @resizestop="setSize" @resizing="adjustHeight"
+      @click.native.stop>
+    <component :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode" @mousedown.native="mousedown"
+      @resize-style="setResizeStyle">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
@@ -23,12 +24,12 @@ export default {
 
   props: {
 
-    topic: {                  // the topic to render (dmx.ViewTopic)
+    topic: {                    // the topic to render (dmx.ViewTopic)
       type: dmx.ViewTopic,
       required: true
     },
 
-    mode: {                   // 'info'/'form'
+    mode: {                     // 'info'/'form'
       type: String,
       default: 'info'
     }
@@ -37,20 +38,19 @@ export default {
   data () {
     return {
       w: this.topic.viewProps['dmx.topicmaps.width'],
-      h: 'auto',
-      handles: ['mr'],
+      resizeStyle: 'x',         // 'x'/'xy'
       topicBuffer: undefined    // the edit buffer (dmx.ViewTopic)
     }
   },
 
   computed: {
 
-    topicmap () {
-      return this.$store.state.topicmap
+    h () {
+      return this.resizeStyle === 'x' ? 'auto' : this.topic.viewProps['dmx.topicmaps.height']
     },
 
-    isWritable () {
-      return this.$store.state.isWritable
+    handles () {
+      return this.resizeStyle === 'x' ? ['mr'] : ['mr', 'bm', 'br']
     },
 
     buttonPanelVisibility () {
@@ -61,6 +61,14 @@ export default {
       return {
         'font-size': `${14 / this.zoom}px`    // 14 = --main-font-size (see App.vue)
       }
+    },
+
+    topicmap () {
+      return this.$store.state.topicmap
+    },
+
+    isWritable () {
+      return this.$store.state.isWritable
     },
 
     zoom () {
@@ -123,10 +131,14 @@ export default {
       }
     },
 
-    setHandles (handles) {
-      if (handles) {
-        this.handles = handles
-        this.h = this.topic.viewProps['dmx.topicmaps.height']
+    setResizeStyle (style) {
+      this.resizeStyle = style
+    },
+
+    adjustHeight () {
+      console.log('adjustHeight')
+      if (this.resizeStyle === 'x') {
+        this.$el.style.height = 'auto'
       }
     }
   },
@@ -143,17 +155,17 @@ export default {
 
 <style>
 .zw-canvas-item.vdr {
-  /* border: unset; */
+  border: 1px solid white;      /* vdr default border is "1px dashed #000" */
 }
 
 .zw-canvas-item.active {
-  /* border: 1px dashed var(--border-color); */
+  border: 1px dashed #aaa;
 }
 
 .zw-canvas-item .button-panel {
   position: absolute;
   visibility: hidden;
-  z-index: 1;   /* place button panel before other canvas items */
+  z-index: 1;                   /* place button panel before other canvas items */
 }
 
 .zw-canvas-item:hover .button-panel {

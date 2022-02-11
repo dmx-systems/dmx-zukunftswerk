@@ -56,8 +56,10 @@ import dmx from 'dmx-api'
 export default {
 
   created () {
-    // console.log('zw-document', this.handles)
-    this.$emit('handles', this.handles)
+    // console.log('zw-document')
+    if (this.isPDF) {
+      this.$emit('resize-style', 'xy')
+    }
     this.initText()
   },
 
@@ -236,12 +238,6 @@ export default {
 
     refDocument () {
       return this.$store.state.refDocument
-    },
-
-    handles () {
-      if (this.isPDF) {
-        return ['mr', 'bm', 'br']
-      }
     },
 
     lang () {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['zw-document', {'ref-doc': isRefDocument}]" v-loading="saving">
+  <div :class="['zw-document', {'ref-doc': isRefDocument}, mode]" v-loading="saving">
     <template v-if="infoMode">
       <div class="discussion-button">
         <el-button type="text" icon="el-icon-chat-round" @click="setRefDocument"></el-button>
@@ -56,7 +56,8 @@ import dmx from 'dmx-api'
 export default {
 
   created () {
-    // console.log('zw-document', this.file)
+    // console.log('zw-document', this.handles)
+    this.$emit('handles', this.handles)
     this.initText()
   },
 
@@ -237,6 +238,12 @@ export default {
       return this.$store.state.refDocument
     },
 
+    handles () {
+      if (this.isPDF) {
+        return ['mr', 'bm', 'br']
+      }
+    },
+
     lang () {
       return this.$store.state.lang
     }
@@ -251,8 +258,7 @@ export default {
   methods: {
 
     update() {
-      // console.log("update")
-      // this.context.updated()   ### TODO
+      // this.$emit('update')     // ### FIXME?
     },
 
     initText () {
@@ -321,12 +327,19 @@ export default {
 
 <style>
 .zw-document {
+  box-sizing: border-box;
+  height: 100%;
   padding: 12px;
   background-color: rgb(230, 230, 230);
 }
 
 .zw-document.ref-doc {
   background-color: var(--doc-filter-color);
+}
+
+.zw-document.info {
+  display: flex;
+  flex-direction: column;
 }
 
 .zw-document .doc-name {
@@ -354,12 +367,11 @@ export default {
 }
 
 .zw-document > img {
-  max-width: 100%;
+  width: 100%;
 }
 
 .zw-document > .pdf {
-  width: 100%;
-  height: 100vh;
+  flex-grow: 1;
 }
 
 .zw-document .save-button {

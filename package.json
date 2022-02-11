@@ -19,7 +19,7 @@
     "dmx-websocket": "https://github.com/dmx-systems/dmx-websocket.git",
     "element-ui": "2.13.2",
     "vue": "2.6.11",
-    "vue-drag-resize": "1.5.4",
+    "vue-draggable-resizable": "^2.3.0",
     "vue-element-dialog-draggable": "1.0.3",
     "vue-quill-minimum": "1.8.2",
     "vue-router": "3.0.7",

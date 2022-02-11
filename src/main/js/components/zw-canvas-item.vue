@@ -1,9 +1,8 @@
 <template>
-  <vue-drag-resize contentClass="zw-canvas-item" :isActive="isActive" :x="topic.pos.x" :y="topic.pos.y" :w="w" h="auto"
-      :sticks="['mr']" :parentScaleX="zoom" :parentScaleY="zoom" @clicked="select" @click.native.stop @dragstop="setPos"
-      @resizestop="setSize">
-    <component :is="topic.typeUri" :topic="topic" :topicBuffer="topicBuffer" :mode="mode" ref="detail"
-      @mousedown.native="mousedown">
+  <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h"
+      :handles="handles" :scale="zoom" @activated="select" @click.native.stop @dragstop="setPos" @resizestop="setSize">
+    <component :is="topic.typeUri" :topic="topic" :topicBuffer="topicBuffer" :mode="mode" @mousedown.native="mousedown"
+      @handles="setHandles">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
@@ -13,11 +12,12 @@
         <zw-string>action.delete</zw-string>
       </el-button>
     </div>
-  </vue-drag-resize>
+  </vue-draggable-resizable>
 </template>
 
 <script>
 import dmx from 'dmx-api'
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
 
@@ -37,6 +37,8 @@ export default {
   data () {
     return {
       w: this.topic.viewProps['dmx.topicmaps.width'],
+      h: 'auto',
+      handles: ['mr'],
       topicBuffer: undefined    // the edit buffer (dmx.ViewTopic)
     }
   },
@@ -49,14 +51,6 @@ export default {
 
     isWritable () {
       return this.$store.state.isWritable
-    },
-
-    selectedTopic () {
-      return this.$store.state.topic
-    },
-
-    isActive () {
-      return this.selectedTopic && this.selectedTopic.id === this.topic.id
     },
 
     buttonPanelVisibility () {
@@ -101,30 +95,38 @@ export default {
       const inInput = e.target.tagName === 'INPUT'
       const inQuill = e.target.closest('.ql-container')
       if (inInput || inQuill) {
-        e.stopPropagation()     // prevent vue-drag-resize from initiating a drag
+        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag ### FIXME?
       }
     },
 
-    setPos (e) {
-      const pos = {x: e.left, y: e.top}
-      // console.log('setPos', pos)
-      // Note: this.topic.setPosition() would trigger vue-drag-resize's x/y watchers. An item-move would be emulated,
-      // including firing the "dragstop" event. This would result in an endless cascade of setPos() calls.
+    setPos (x, y) {
+      // console.log('setPos', x, y)
+      const pos = {x, y}
+      // Note: this.topic.setPosition() would trigger vue-draggable-resizable's x/y watchers. An item-move would be
+      // emulated, including firing the "dragstop" event. This would result in an endless cascade of setPos() calls.
+      // ### FIXME?
       // this.topic.setPosition(pos)                                        // update client state
       if (this.topic.id >= 0 && this.isWritable) {
         dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state
       }
     },
 
-    setSize (e) {
-      console.log('setSize', this.topic.id, this.isWritable, e.width, e.height)
+    setSize (x, y, width, height) {
+      console.log('setSize', width, height)
       if (this.topic.id >= 0 && this.isWritable) {
-        if (!isNaN(e.width) && !isNaN(e.height)) {
+        if (!isNaN(width) && !isNaN(height)) {
           dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
-            'dmx.topicmaps.width': e.width,
-            'dmx.topicmaps.height': e.height
+            'dmx.topicmaps.width': width,
+            'dmx.topicmaps.height': height
           })
         }
+      }
+    },
+
+    setHandles (handles) {
+      if (handles) {
+        this.handles = handles
+        this.h = this.topic.viewProps['dmx.topicmaps.height']
       }
     }
   },
@@ -134,16 +136,24 @@ export default {
     'zukunftswerk.note': require('./zw-note').default,
     'zukunftswerk.label': require('./zw-label').default,
     'zukunftswerk.arrow': require('./zw-arrow').default,
-    'vue-drag-resize': require('vue-drag-resize').default
+    'vue-draggable-resizable': require('vue-draggable-resizable')
   }
 }
 </script>
 
 <style>
+.zw-canvas-item.vdr {
+  /* border: unset; */
+}
+
+.zw-canvas-item.active {
+  /* border: 1px dashed var(--border-color); */
+}
+
 .zw-canvas-item .button-panel {
   position: absolute;
   visibility: hidden;
-  z-index: 1;   /* place button panel _before_ other canvas items */
+  z-index: 1;   /* place button panel before other canvas items */
 }
 
 .zw-canvas-item:hover .button-panel {

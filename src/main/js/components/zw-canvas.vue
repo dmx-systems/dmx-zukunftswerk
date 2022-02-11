@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-canvas" :style="style" @click="click" @wheel="wheel">
+  <div class="zw-canvas" :style="style" @wheel="wheel">
     <el-dropdown v-if="isTeam" trigger="click" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -156,10 +156,6 @@ export default {
         'dmx.topicmaps.width': typeUri === 'zukunftswerk.arrow' ? 200 : 384
         // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
       }
-    },
-
-    click () {
-      this.$store.dispatch('setTopic', undefined)             // reset topic selection
     },
 
     wheel (e) {

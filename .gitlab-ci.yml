@@ -51,3 +51,5 @@ copy-to-release:
 trigger-project:
   stage: deploy
   trigger: dmx-projects/zukunftswerk
+  only:
+    - master

@@ -37,10 +37,10 @@
       sans-serif;
   --main-font-size: 14px;
   --label-font-size: 12px;
-  --label-color: #909399;   /* matches --color-text-secondary in element-ui/packages/theme-chalk/src/common/var.scss */
   --line-height: 1.5;
   --paragraph-spacing: 0.5em;
   --field-spacing: 1.2em;                     /* vertical spacing between data fields */
+  --label-color: #909399;   /* matches --color-text-secondary in element-ui/packages/theme-chalk/src/common/var.scss */
   --header-color: rgb(63, 65, 104);
   --discussion-color: rgb(173, 185, 202);
   --doc-filter-color: rgb(197, 224, 180);

@@ -192,7 +192,6 @@ const actions = {
     }).then(response => {
       const comment = new dmx.Topic(response.data)
       state.discussion.push(comment)
-      state.refDocument = undefined
       return comment
     })
   },

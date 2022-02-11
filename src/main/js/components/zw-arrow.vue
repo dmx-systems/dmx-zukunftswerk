@@ -13,7 +13,6 @@
 import dmx from 'dmx-api'
 
 export default {
-
   props: {
     topic: {                  // the Arrow topic (dmx.ViewTopic)
       type: dmx.ViewTopic,

@@ -46,6 +46,7 @@
   --doc-filter-color: rgb(197, 224, 180);
   --highlight-color: #409eff;                 /* matches --color-primary */
   --highlight-color-2: #66b1ff;               /* matches --color-primary-light-2 */
+  --highlight-color-7: #c6e2ff;               /* matches --color-primary-light-7 */
   --color-danger: #f56c6c;                    /* matches --color-danger */
   --border-color: #dcdfe6;                    /* matches --border-color-base */
   --border-color-lighter: #ebeef5;            /* matches --border-color-lighter */

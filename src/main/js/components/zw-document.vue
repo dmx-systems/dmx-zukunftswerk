@@ -348,7 +348,7 @@ export default {
   top: 0;
   right: -28px;
   padding: 4px;
-  background-color: rgb(193, 216, 235);
+  background-color: var(--highlight-color-7);
   border-top-right-radius: 14px;
   border-bottom-right-radius: 14px;
 }

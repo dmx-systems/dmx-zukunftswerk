@@ -108,19 +108,14 @@ export default {
     },
 
     setPos (x, y) {
-      // console.log('setPos', x, y)
       const pos = {x, y}
-      // Note: this.topic.setPosition() would trigger vue-draggable-resizable's x/y watchers. An item-move would be
-      // emulated, including firing the "dragstop" event. This would result in an endless cascade of setPos() calls.
-      // ### FIXME?
-      // this.topic.setPosition(pos)                                        // update client state
+      this.topic.setPosition(pos)                                           // update client state
       if (this.topic.id >= 0 && this.isWritable) {
         dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state
       }
     },
 
     setSize (x, y, width, height) {
-      console.log('setSize', width, height)
       if (this.topic.id >= 0 && this.isWritable) {
         if (!isNaN(width) && !isNaN(height)) {
           dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
@@ -136,7 +131,6 @@ export default {
     },
 
     adjustHeight () {
-      console.log('adjustHeight')
       if (this.resizeStyle === 'x') {
         this.$el.style.height = 'auto'
       }

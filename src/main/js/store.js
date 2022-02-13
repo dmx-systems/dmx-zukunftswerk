@@ -21,9 +21,10 @@ const state = {
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
-  isEditActive: [],             // IDs of topics being edited (array)
+  isEditActive: [],             // IDs of topics being edited (array)     // ### TODO: drop this
   pan: {x: 0, y: 0},            // canvas pan (in pixel)
   zoom: 1,                      // canvas zoom (Number)
+  isDragging: false,            // true while any dragging is in progress (item move, canvas pan, or panel resize)
 
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
@@ -56,40 +57,6 @@ const actions = {
     })
   },
 
-  setTopicmap (_, topicmap) {
-    state.topicmap = topicmap
-    state.pan = {
-      x: topicmap.panX,
-      y: topicmap.panY
-    }
-    state.zoom = topicmap.zoom
-  },
-
-
-  setViewport (_, {pan, zoom}) {
-    state.pan = pan
-    state.zoom = zoom
-    setTopicmapViewport()     // update server state (debounced)
-  },
-
-  setPan (_, pan) {
-    state.pan = pan
-    setTopicmapViewport()     // update server state (debounced)
-  },
-
-  /* setZoom (_, zoom) {
-    state.zoom = zoom
-    setTopicmapViewport()     // update server state (debounced)
-  }, */
-
-  setPanelVisibility (_, visibility) {
-    state.panelVisibility = visibility
-  },
-
-  setPanelX (_, x) {
-    state.panelX = x
-  },
-
   setLang (_, lang) {
     state.lang = lang
   },
@@ -101,8 +68,44 @@ const actions = {
     fetchDiscussion()
   },
 
+  setTopicmap (_, topicmap) {
+    state.topicmap = topicmap
+    state.pan = {
+      x: topicmap.panX,
+      y: topicmap.panY
+    }
+    state.zoom = topicmap.zoom
+  },
+
   setTopic (_, topic) {
     state.topic = topic
+  },
+
+  setPan (_, pan) {
+    state.pan = pan
+    setTopicmapViewport()     // update server state (debounced)
+  },
+
+  setViewport (_, {pan, zoom}) {
+    state.pan = pan
+    state.zoom = zoom
+    setTopicmapViewport()     // update server state (debounced)
+  },
+
+  setPanelVisibility (_, visibility) {
+    state.panelVisibility = visibility
+  },
+
+  setPanelX (_, x) {
+    state.panelX = x
+  },
+
+  dragStart () {
+    state.isDragging = true
+  },
+
+  dragStop () {
+    state.isDragging = false
   },
 
   newTopic (_, topic) {

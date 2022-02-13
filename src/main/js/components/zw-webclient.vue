@@ -1,9 +1,9 @@
 <template>
-  <div class="zw-webclient" :style="style" @mousedown="mousedown" @mouseup="mouseup" @keyup.tab="tab">
+  <div :class="['zw-webclient', {dragging: isDragging}]" @mousedown="mousedown" @mouseup="mouseup" @keyup.tab="tab">
     <zw-header></zw-header>
     <div class="content-area">
       <zw-canvas></zw-canvas>
-      <zw-resizer @resizeStart="dragStart" @resizeStop="dragStop"></zw-resizer>
+      <zw-resizer></zw-resizer>
       <zw-discussion></zw-discussion>
     </div>
   </div>
@@ -12,9 +12,12 @@
 <script>
 export default {
 
+  mixins: [
+    require('./mixins/dragging').default
+  ],
+
   data() {
     return {
-      isDragging: false,    // true while any dragging is in progress (canvas pan or move resizer)
       isPanning: false,     // true while canvas pan is in progress
       panPos: undefined     // temporary mouse pos while canvas pan
     }
@@ -26,12 +29,8 @@ export default {
       return this.$store.state.pan
     },
 
-    style() {
-      if (this.isDragging) {
-        return {
-          'user-select': 'none'
-        }
-      }
+    isDragging () {
+      return this.$store.state.isDragging
     }
   },
 
@@ -74,14 +73,6 @@ export default {
       }
     },
 
-    dragStart () {
-      this.isDragging = true
-    },
-
-    dragStop () {
-      this.isDragging = false
-    },
-
     tab () {
       // auto-pan canvas when focus outside viewport while tabbing
       const scrollTop = document.scrollingElement.scrollTop
@@ -110,6 +101,10 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.zw-webclient.dragging {
+  user-select: none;
 }
 
 .zw-webclient .content-area {

@@ -5,6 +5,10 @@
 <script>
 export default {
 
+  mixins: [
+    require('./mixins/dragging').default
+  ],
+
   created () {
     this.$store.watch(state => state.panelVisibility, visible => {
       if (visible) {
@@ -43,7 +47,7 @@ export default {
       const left = this.left
       const {addEventListener, removeEventListener} = window
 
-      this.$emit('resizeStart')
+      this.dragStart()
 
       const onMouseMove = ({pageX}) => {
         this.$store.dispatch('setPanelX', left + pageX - initialPageX)
@@ -53,7 +57,7 @@ export default {
       const onMouseUp = () => {
         removeEventListener('mousemove', onMouseMove)
         removeEventListener('mouseup',   onMouseUp)
-        this.$emit('resizeStop')
+        this.dragStop()
       }
 
       addEventListener('mousemove', onMouseMove)

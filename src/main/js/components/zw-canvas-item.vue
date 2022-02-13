@@ -1,7 +1,7 @@
 <template>
   <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h" :handles="handles"
-      :scale="zoom" @activated="select" @dragstop="setPos" @resizestop="setSize" @resizing="adjustHeight"
-      @click.native.stop>
+      :scale="zoom" :on-drag-start="onDragStart" @activated="select" @dragstop="setPos" @resizestop="setSize"
+      @resizing="adjustHeight">
     <component :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode" @mousedown.native="mousedown"
       @resize-style="setResizeStyle">
     </component>
@@ -21,6 +21,10 @@ import dmx from 'dmx-api'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
+
+  mixins: [
+    require('./mixins/dragging').default
+  ],
 
   props: {
 
@@ -98,6 +102,10 @@ export default {
       this.$store.dispatch('delete', this.topic)
     },
 
+    onDragStart () {
+      this.dragStart()
+    },
+
     mousedown (e) {
       // console.log('mousedown', e.target.tagName)
       const inInput = e.target.tagName === 'INPUT'
@@ -108,6 +116,8 @@ export default {
     },
 
     setPos (x, y) {
+      this.dragStop()
+      //
       const pos = {x, y}
       this.topic.setPosition(pos)                                           // update client state
       if (this.topic.id >= 0 && this.isWritable) {

@@ -84,9 +84,16 @@ export default {
     }
   },
 
+  watch: {
+    zoom () {
+      this.adjustHandles()
+    }
+  },
+
   methods: {
 
     select (e) {
+      this.adjustHandles()
       this.$store.dispatch('setTopic', this.topic)
     },
 
@@ -144,6 +151,12 @@ export default {
       if (this.resizeStyle === 'x') {
         this.$el.style.height = 'auto'
       }
+    },
+
+    adjustHandles () {
+      document.querySelectorAll('.handle').forEach(handle => {
+        handle.style.transform = `scale(${1 / this.zoom}) translate(${1 / this.zoom}px, ${1 / this.zoom}px)`
+      })
     }
   },
 

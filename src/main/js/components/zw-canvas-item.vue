@@ -1,9 +1,9 @@
 <template>
   <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h" :handles="handles"
-      :scale="zoom" :on-drag-start="onDragStart" @activated="select" @dragstop="setPos" @resizestop="setSize"
-      @resizing="adjustHeight">
-    <component :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode" @mousedown.native="mousedown"
-      @resize-style="setResizeStyle">
+      :scale="zoom" @activated="select" @dragstop="setPos" @resizestop="setSize" @dragging="dragging"
+      @resizing="resizing">
+    <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
+      @mousedown.native="mousedown" @resize-style="setResizeStyle">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
@@ -43,7 +43,10 @@ export default {
     return {
       w: this.topic.viewProps['dmx.topicmaps.width'],
       resizeStyle: 'x',         // 'x'/'xy'
-      topicBuffer: undefined    // the edit buffer (dmx.ViewTopic)
+      topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
+      hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
+                                // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
+                                // "dragStop".
     }
   },
 
@@ -109,21 +112,19 @@ export default {
       this.$store.dispatch('delete', this.topic)
     },
 
-    onDragStart () {
-      this.dragStart()
-    },
-
     mousedown (e) {
-      // console.log('mousedown', e.target.tagName)
       const inInput = e.target.tagName === 'INPUT'
       const inQuill = e.target.closest('.ql-container')
+      // FIXME: handle el-upload fields?
+      // console.log('mousedown', inInput, inQuill)
       if (inInput || inQuill) {
-        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag ### FIXME?
+        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag
       }
     },
 
     setPos (x, y) {
       this.dragStop()
+      this.hasDragStarted = false
       //
       const pos = {x, y}
       this.topic.setPosition(pos)                                           // update client state
@@ -133,6 +134,9 @@ export default {
     },
 
     setSize (x, y, width, height) {
+      this.dragStop()
+      this.hasDragStarted = false
+      //
       if (this.topic.id >= 0 && this.isWritable) {
         if (!isNaN(width) && !isNaN(height)) {
           dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
@@ -147,7 +151,17 @@ export default {
       this.resizeStyle = style
     },
 
-    adjustHeight () {
+    dragging () {
+      if (!this.hasDragStarted) {
+        this.hasDragStarted = true
+        this.dragStart()
+      }
+    },
+
+    resizing () {
+      this.dragging()
+      //
+      // console.log('resizing')
       if (this.resizeStyle === 'x') {
         this.$el.style.height = 'auto'
       }
@@ -157,7 +171,7 @@ export default {
       document.querySelectorAll('.handle').forEach(handle => {
         handle.style.transform = `scale(${1 / this.zoom}) translate(${1 / this.zoom}px, ${1 / this.zoom}px)`
       })
-    }
+    },
   },
 
   components: {
@@ -171,18 +185,23 @@ export default {
 </script>
 
 <style>
-.zw-canvas-item.vdr {
-  border: 1px solid white;      /* vdr default border is "1px dashed #000" */
+.zw-canvas-item.vdr {                       /* "vdr" class is added by vdr */
+  border: 1px solid transparent;            /* vdr default border is "1px dashed #000" */
 }
 
-.zw-canvas-item.active {
+.zw-canvas-item.active {                    /* "active" class is added by vdr */
   border: 1px dashed #aaa;
+}
+
+.zw-canvas-item.dragging .item-content,     /* "dragging" class is added by vdr */
+.zw-canvas-item.resizing .item-content {    /* "resizing" class is added by vdr */
+  pointer-events: none;                     /* prevent interaction with PDF renderer while dragging/resizing */
 }
 
 .zw-canvas-item .button-panel {
   position: absolute;
   visibility: hidden;
-  z-index: 1;                   /* place button panel before other canvas items */
+  z-index: 1;                               /* place button panel before other canvas items */
 }
 
 .zw-canvas-item:hover .button-panel {

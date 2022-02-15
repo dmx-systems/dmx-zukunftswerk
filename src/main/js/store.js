@@ -24,7 +24,8 @@ const state = {
   isEditActive: [],             // IDs of topics being edited (array)     // ### TODO: drop this
   pan: {x: 0, y: 0},            // canvas pan (in pixel)
   zoom: 1,                      // canvas zoom (Number)
-  isDragging: false,            // true while any dragging is in progress (item move, canvas pan, or panel resize)
+  isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
+                                // canvas pan, panel resize)
 
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
@@ -101,10 +102,12 @@ const actions = {
   },
 
   dragStart () {
+    // console.log('dragStart')
     state.isDragging = true
   },
 
   dragStop () {
+    // console.log('dragStop')
     state.isDragging = false
   },
 

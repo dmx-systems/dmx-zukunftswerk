@@ -55,6 +55,10 @@ import dmx from 'dmx-api'
 
 export default {
 
+  mixins: [
+    require('./mixins/cancel').default
+  ],
+
   created () {
     // console.log('zw-document')
     if (this.isPDF) {
@@ -68,10 +72,6 @@ export default {
       this.$refs.docName.focus()    // FIXME
     }
   },
-
-  mixins: [
-    require('./mixins/cancel').default
-  ],
 
   props: {
 

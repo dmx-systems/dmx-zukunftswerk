@@ -37,7 +37,7 @@ export default {
   methods: {
 
     mousedown (e) {
-      // console.log('mousedown', e.target.classList.contains('zw-canvas'))
+      // console.log('mousedown', e.target.classList.contains('zw-canvas'), e)
       if (e.target.classList.contains('zw-canvas')) {
         this.$el.addEventListener('mousemove', this.mousemove)
         this.panPos = {

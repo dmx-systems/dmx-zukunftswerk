@@ -171,7 +171,7 @@ export default {
       document.querySelectorAll('.handle').forEach(handle => {
         handle.style.transform = `scale(${1 / this.zoom}) translate(${1 / this.zoom}px, ${1 / this.zoom}px)`
       })
-    },
+    }
   },
 
   components: {

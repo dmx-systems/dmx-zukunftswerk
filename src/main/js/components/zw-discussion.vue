@@ -279,6 +279,10 @@ export default {
   margin-top: 20px;
 }
 
+.zw-discussion .new-comment .ql-editor {
+  max-height: 35vh;
+}
+
 .zw-discussion .new-comment .zw-comment-ref,
 .zw-discussion .new-comment .zw-document-ref {
   margin-bottom: 6px;

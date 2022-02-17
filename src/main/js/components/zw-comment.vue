@@ -1,13 +1,13 @@
 <template>
-  <div class="zw-comment-wrapper">
+  <div class="zw-comment-container">
     <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
       <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
       <zw-document-ref :document="refDocument"></zw-document-ref>
       <div class="field-label"><b>{{creator}}</b> at {{date}}</div>
       <div class="columns">
         <template v-if="infoMode">
-          <div class="dmx-html-field left info" v-html="comment[origLang]"></div>
-          <div class="dmx-html-field right info" v-html="comment[translatedLang]"></div>
+          <div class="dmx-html-field info left" v-html="comment[origLang]"></div>
+          <div class="dmx-html-field info right" v-html="comment[translatedLang]"></div>
         </template>
         <template v-else>
           <div class="dmx-html-field left">
@@ -19,9 +19,7 @@
         </template>
       </div>
       <div class="attachments">
-        <div v-for="file in attachments" :key="file.id">
-          <zw-attachment :file="file" :enabled="true"></zw-attachment>
-        </div>
+        <zw-attachment v-for="file in attachments" :file="file" :enabled="true" :key="file.id"></zw-attachment>
       </div>
       <template v-if="formMode">
         <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -199,9 +197,9 @@ export default {
 <style>
 
 .zw-comment {
+  background-color: white;
   padding: 12px;
   border-radius: 10px;
-  background-color: white;
 }
 
 .zw-comment .field-label {
@@ -213,7 +211,11 @@ export default {
   margin-bottom: 15px;
 }
 
-.zw-comment .zw-attachment,
+.zw-comment .zw-attachment {
+  margin-top: 6px;
+}
+
+.zw-comment .zw-attachment:first-child,
 .zw-comment .save-button {
   margin-top: 15px;
 }
@@ -226,23 +228,23 @@ export default {
   flex-basis: 50%;
 }
 
-.zw-comment .columns > div.left {
+.zw-comment .columns > .left {
   border-right: 1px dashed #aaa;
 }
 
-.zw-comment.info .columns > div.left {
+.zw-comment.info .columns > .left {
   padding-right: 10px;
 }
 
-.zw-comment.info .columns > div.right {
+.zw-comment.info .columns > .right {
   padding-left: 10px;
 }
 
-.zw-comment .columns > div.left .ql-editor {
+.zw-comment .columns > .left .ql-editor {
   padding: 0 10px 0 0 !important;
 }
 
-.zw-comment .columns > div.right .ql-editor {
+.zw-comment .columns > .right .ql-editor {
   padding: 0 0 0 10px !important;
 }
 
@@ -250,11 +252,11 @@ export default {
   animation: glow var(--glow-duration);
 }
 
-.zw-comment-wrapper .button-panel {
+.zw-comment-container .button-panel {
   visibility: hidden;
 }
 
-.zw-comment-wrapper:hover .button-panel {
+.zw-comment-container:hover .button-panel {
   visibility: visible;
 }
 

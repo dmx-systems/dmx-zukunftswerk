@@ -14,22 +14,20 @@
       </div>
       <!-- New-Comment Panel -->
       <div class="new-comment" v-if="isWritable" v-loading="submitting">
-        <div class="field-label">
-          <zw-string>label.new_comment</zw-string>
-        </div>
         <zw-comment-ref :comment="refComment" :removable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
         <zw-document-ref :document="refDocument" :removable="true"></zw-document-ref>
+        <div class="field-label"><zw-string>label.new_comment</zw-string></div>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
+        <div class="attachments">
+          <zw-attachment v-for="file in attachments" :file="file" :removable="true" :key="file.id"
+            @remove="removeAttachment">
+          </zw-attachment>
+        </div>
         <div class="button-panel">
           <el-button type="text" @click="openUploadDialog"><zw-string>action.attach_files</zw-string></el-button>
-        </div>
-        <div class="attachments">
-          <div v-for="file in attachments" :key="file.id">
-            <zw-attachment :file="file" :removable="true" @remove="removeAttachment"></zw-attachment>
-          </div>
         </div>
         <el-button class="submit-button" type="primary" size="medium" @click="submit">
           <zw-string>action.submit</zw-string>
@@ -263,33 +261,38 @@ export default {
   margin-bottom: 24px;
 }
 
-.zw-discussion .submit-button {
-  margin-top: 6px;
-}
-
 .zw-discussion .comments {
   overflow: auto;
 }
 
-.zw-discussion .comments .zw-comment-wrapper + .zw-comment-wrapper {
+.zw-discussion .comments .zw-comment-container + .zw-comment-container {
   margin-top: 5px;
 }
 
 .zw-discussion .new-comment {
-  margin-top: 20px;
+  margin-top: 22px;
+  background-color: white;
+  padding: 12px;
+  border-radius: 10px;
 }
 
 .zw-discussion .new-comment .ql-editor {
   max-height: 35vh;
+  padding: 0 !important;
 }
 
 .zw-discussion .new-comment .zw-comment-ref,
 .zw-discussion .new-comment .zw-document-ref {
-  margin-bottom: 6px;
+  margin-bottom: 15px;
 }
 
 .zw-discussion .new-comment .zw-attachment {
   margin-top: 6px;
+}
+
+.zw-discussion .new-comment .zw-attachment:first-child,
+.zw-discussion .new-comment .submit-button {
+  margin-top: 15px;
 }
 
 .zw-discussion .new-comment .button-panel {

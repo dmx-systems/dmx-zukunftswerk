@@ -265,12 +265,12 @@ export default {
   overflow: auto;
 }
 
-.zw-discussion .comments .zw-comment-container + .zw-comment-container {
-  margin-top: 5px;
+.zw-discussion .comments .zw-comment + .zw-comment {
+  margin-top: 20px;
 }
 
 .zw-discussion .new-comment {
-  margin-top: 22px;
+  margin-top: 24px;
   background-color: white;
   padding: 12px;
   border-radius: 10px;

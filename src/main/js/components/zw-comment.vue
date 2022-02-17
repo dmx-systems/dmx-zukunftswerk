@@ -1,42 +1,45 @@
 <template>
-  <div class="zw-comment-container">
-    <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
-      <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
-      <zw-document-ref :document="refDocument"></zw-document-ref>
+  <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
+    <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
+    <zw-document-ref :document="refDocument"></zw-document-ref>
+    <div class="heading">
       <div class="field-label"><b>{{creator}}</b> at {{date}}</div>
-      <div class="columns">
-        <template v-if="infoMode">
-          <div class="dmx-html-field info left" v-html="comment[origLang]"></div>
-          <div class="dmx-html-field info right" v-html="comment[translatedLang]"></div>
-        </template>
-        <template v-else>
-          <div class="dmx-html-field left">
-            <quill v-model="commentModel[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
-          </div>
-          <div class="dmx-html-field right">
-            <quill v-model="commentModel[translatedLang]" :options="quillOptions"></quill>
-          </div>
-        </template>
+      <div class="button-panel" v-if="buttonPanelVisibility">
+        <el-button class="fa fa-reply" type="text" @click="reply"></el-button>
+        <el-dropdown v-if="commentIsWritable" size="medium" trigger="click" @command="handle">
+          <el-button type="text" class="fa fa-ellipsis-v"></el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="edit"><zw-string>action.edit</zw-string></el-dropdown-item>
+            <el-dropdown-item command="deleteComment" divided><zw-string>action.delete</zw-string></el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
-      <div class="attachments">
-        <zw-attachment v-for="file in attachments" :file="file" :enabled="true" :key="file.id"></zw-attachment>
-      </div>
-      <template v-if="formMode">
-        <el-button class="save-button" type="primary" size="medium" @click="save">
-          <zw-string>action.submit</zw-string>
-        </el-button>
-        <el-button size="medium" @click="cancel">
-          <zw-string>action.cancel</zw-string>
-        </el-button>
+    </div>
+    <div class="columns">
+      <template v-if="infoMode">
+        <div class="dmx-html-field info left" v-html="comment[origLang]"></div>
+        <div class="dmx-html-field info right" v-html="comment[translatedLang]"></div>
+      </template>
+      <template v-else>
+        <div class="dmx-html-field left">
+          <quill v-model="commentModel[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        </div>
+        <div class="dmx-html-field right">
+          <quill v-model="commentModel[translatedLang]" :options="quillOptions"></quill>
+        </div>
       </template>
     </div>
-    <div class="button-panel" v-if="buttonPanelVisibility">
-      <el-button type="text" @click="reply"><zw-string>action.reply</zw-string></el-button>
-      <el-button type="text" @click="edit" v-if="commentIsWritable"><zw-string>action.edit</zw-string></el-button>
-      <el-button type="text" @click="deleteComment" v-if="commentIsWritable">
-        <zw-string>action.delete</zw-string>
-      </el-button>
+    <div class="attachments">
+      <zw-attachment v-for="file in attachments" :file="file" :enabled="true" :key="file.id"></zw-attachment>
     </div>
+    <template v-if="formMode">
+      <el-button class="save-button" type="primary" size="medium" @click="save">
+        <zw-string>action.submit</zw-string>
+      </el-button>
+      <el-button size="medium" @click="cancel">
+        <zw-string>action.cancel</zw-string>
+      </el-button>
+    </template>
   </div>
 </template>
 
@@ -165,6 +168,10 @@ export default {
       this.$emit('reply', this.topic)
     },
 
+    handle (command) {
+      this[command]()
+    },
+
     edit () {
       this.mode = 'form'
       this.topicBuffer = this.topic.clone()
@@ -202,8 +209,25 @@ export default {
   border-radius: 10px;
 }
 
-.zw-comment .field-label {
-  margin-bottom: 10px !important;
+.zw-comment .heading {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.zw-comment .heading > div:first-child {
+  flex-grow: 1;
+}
+
+.zw-comment .heading .button-panel {
+  visibility: hidden;
+}
+
+.zw-comment:hover .heading .button-panel {
+  visibility: visible;
+}
+
+.zw-comment .heading .button-panel .el-dropdown {
+  margin-left: 6px;
 }
 
 .zw-comment .zw-comment-ref,
@@ -250,14 +274,6 @@ export default {
 
 .zw-comment .columns > div.glow {
   animation: glow var(--glow-duration);
-}
-
-.zw-comment-container .button-panel {
-  visibility: hidden;
-}
-
-.zw-comment-container:hover .button-panel {
-  visibility: visible;
 }
 
 @keyframes glow {

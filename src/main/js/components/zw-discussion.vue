@@ -271,8 +271,8 @@ export default {
   overflow: auto;
 }
 
-.zw-discussion .comments .zw-comment + .zw-comment {
-  margin-top: 20px;
+.zw-discussion .comments .zw-comment-wrapper + .zw-comment-wrapper {
+  margin-top: 5px;
 }
 
 .zw-discussion .new-comment {
@@ -296,7 +296,7 @@ export default {
   position: absolute;
   right: 0;
   visibility: hidden;
-  z-index: 1;   /* place button panel _before_ attachments */
+  z-index: 1;   /* place button panel before attachments */
 }
 
 .zw-discussion .new-comment:hover .button-panel {

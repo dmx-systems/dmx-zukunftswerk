@@ -253,12 +253,17 @@ export default {
   overflow: auto;
 }
 
+.zw-discussion .comments .zw-comment {
+  margin-right: 10px;
+}
+
 .zw-discussion .comments .zw-comment + .zw-comment {
   margin-top: 20px;
 }
 
 .zw-discussion .new-comment {
   margin-top: 20px;
+  margin-right: 10px;
   background-color: white;
   padding: 12px;
   border-radius: 10px;
@@ -285,9 +290,9 @@ export default {
 
 .zw-discussion .new-comment .button-panel {
   position: absolute;
-  right: 0;
+  right: 22px;    /* 10px margin + 12px padding */
   visibility: hidden;
-  z-index: 1;   /* place button panel before attachments */
+  z-index: 1;     /* place button panel before attachments */
 }
 
 .zw-discussion .new-comment:hover .button-panel {

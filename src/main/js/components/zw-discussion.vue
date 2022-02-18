@@ -1,5 +1,5 @@
 <template>
-  <div :class="classes">
+  <div :class="['zw-discussion', panelVisibility ? 'open' : 'close']">
     <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-chat-round" @click="open">
     </el-button>
     <template v-else>
@@ -74,14 +74,6 @@ export default {
   },
 
   computed: {
-
-    classes () {
-      return [
-        'zw-discussion',
-        this.panelVisibility ? 'open' : 'close',
-        {'doc': this.refDocument}
-      ]
-    },
 
     heading () {
       return this.getString(this.refDocument ? 'label.document_discussion' : 'label.discussion')
@@ -232,10 +224,6 @@ export default {
   z-index: 1;
 }
 
-.zw-discussion.doc {
-  background-color: var(--doc-filter-color);
-}
-
 .zw-discussion.open {
   padding: 10px 0 10px 10px;
   flex-grow: 1;
@@ -270,7 +258,7 @@ export default {
 }
 
 .zw-discussion .new-comment {
-  margin-top: 24px;
+  margin-top: 20px;
   background-color: white;
   padding: 12px;
   border-radius: 10px;

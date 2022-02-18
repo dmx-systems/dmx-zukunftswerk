@@ -1,7 +1,7 @@
 <template>
   <div class="zw-document-ref" v-if="document">
-    <el-tag :closable="removable" size="medium" @click="reveal" @close="remove">
-      <span class="fa fa-file-o"></span>
+    <el-tag :type="type" :closable="removable" size="medium" @click="reveal" @close="remove">
+      <span class="fa fa-fw fa-file-o"></span>
       <span>{{docName}}</span>
     </el-tag>
   </div>
@@ -11,8 +11,8 @@
 export default {
 
   props: {
-    document: Object,     // the referred-to Document, optional (plain Object, not a dmx.Topic)
-    removable: Boolean    // if true the remove-button is rendered, optional
+    document: Object,       // the referred-to Document, optional (plain Object, not a dmx.Topic)
+    removable: Boolean      // if true the remove-button is rendered, optional
   },
 
   computed: {
@@ -40,6 +40,16 @@ export default {
         de: this.document.children['zukunftswerk.document_name.de'],
         fr: this.document.children['zukunftswerk.document_name.fr']
       }
+    },
+
+    type () {
+      if (this.refDocument && this.refDocument.id === this.document.id) {
+        return 'success'
+      }
+    },
+
+    refDocument () {
+      return this.$store.state.refDocument
     },
 
     lang () {

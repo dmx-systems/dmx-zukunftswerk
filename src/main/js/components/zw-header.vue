@@ -1,5 +1,6 @@
 <template>
   <div class="zw-header">
+    <img class="logo" :src="logo">
     <div class="workspace">
       <zw-string>label.shared_workspace</zw-string>:
       <span class="name">{{workspaceName}}</span>
@@ -14,6 +15,11 @@
 </template>
 
 <script>
+const logo = {
+  de: require('../../resources/logo.de.png'),
+  fr: require('../../resources/logo.fr.png')
+}
+
 export default {
 
   computed: {
@@ -54,6 +60,10 @@ export default {
       }
     },
 
+    logo () {
+      return logo[this.lang]
+    },
+
     lang () {
       return this.$store.state.lang
     }
@@ -83,11 +93,15 @@ export default {
 <style>
 .zw-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   color: white;
-  padding: 8px;
   background-color: var(--header-color);
   z-index: 1;
+}
+
+.zw-header img.logo {
+  height: 44px;
+  margin-right: 72px;
 }
 
 .zw-header .workspace {

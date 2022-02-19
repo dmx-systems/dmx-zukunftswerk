@@ -5,11 +5,15 @@
       <zw-string>label.shared_workspace</zw-string>:
       <span class="name">{{workspaceName}}</span>
     </div>
-    <div>
-      <el-button type="text" :style="style('de')" @click="setLang('de')">DE</el-button>
-      <span>|</span>
-      <el-button type="text" :style="style('fr')" @click="setLang('fr')">FR</el-button>
-    </div>
+    <el-dropdown size="medium" trigger="click" @command="setLang">
+      <el-button type="text">
+        <span>{{lang.toUpperCase()}}</span><span class="el-icon-arrow-down el-icon--right"></span>
+      </el-button>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="de">DE</el-dropdown-item>
+        <el-dropdown-item command="fr">FR</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
     <zw-login-state></zw-login-state>
   </div>
 </template>
@@ -70,15 +74,6 @@ export default {
   },
 
   methods: {
-
-    style (lang) {
-      if (this.lang === lang) {
-        return {
-          'text-decoration': 'underline'
-        }
-      }
-    },
-
     setLang (lang) {
       this.$store.dispatch('setLang', lang)
     }
@@ -93,8 +88,9 @@ export default {
 <style>
 .zw-header {
   display: flex;
-  align-items: center;
   color: white;
+  padding: 2px 6px;
+  align-items: center;
   background-color: var(--header-color);
   z-index: 1;
 }

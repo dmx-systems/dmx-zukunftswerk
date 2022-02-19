@@ -246,7 +246,8 @@ export default {
 }
 
 .zw-discussion .doc-filter {
-  margin-bottom: 24px;
+  margin-right: 10px;
+  margin-bottom: 28px;
 }
 
 .zw-discussion .comments {

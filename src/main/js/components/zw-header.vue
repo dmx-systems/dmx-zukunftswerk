@@ -88,9 +88,9 @@ export default {
 <style>
 .zw-header {
   display: flex;
-  color: white;
-  padding: 2px 6px;
   align-items: center;
+  padding: 2px 10px;
+  color: white;
   background-color: var(--header-color);
   z-index: 1;
 }

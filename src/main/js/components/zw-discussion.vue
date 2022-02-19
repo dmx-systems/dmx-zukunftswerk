@@ -230,7 +230,7 @@ export default {
 }
 
 .zw-discussion.close {
-  padding: 5px;
+  padding: 7px;
   width: auto !important;
 }
 
@@ -240,8 +240,8 @@ export default {
 
 .zw-discussion .close-button {
   position: absolute;
-  top: 5px;
-  right: 4px;
+  top: 6px;
+  right: 6px;
   font-size: 24px;
 }
 

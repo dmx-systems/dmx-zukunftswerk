@@ -1,9 +1,8 @@
 {
   "plugins": [
-    "syntax-dynamic-import", [
-    "component", {
+    ["component", {
       "libraryName": "element-ui",
       "styleLibraryName": "theme-chalk"
-    }
-  ]]
+    }]
+  ]
 }

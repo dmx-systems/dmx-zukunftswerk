@@ -9,7 +9,7 @@
       <img v-if="isImage" :src="fileUrl" @load="update">
       <audio v-if="isAudio" :src="fileUrl" controls></audio>
       <video v-if="isVideo" :src="fileUrl" controls @loadeddata="update"></video>
-      <embed v-if="isPDF" :src="fileUrl" :type="mediaType" class="pdf" @load="update"></embed>
+      <zw-pdf-viewer v-if="isPDF" :src="fileUrl" :type="mediaType" class="pdf" @load="update"></zw-pdf-viewer>
     </template>
     <template v-else>
       <div class="field">
@@ -317,6 +317,10 @@ export default {
     beforeUpload (file) {
       this.saveButtonDisabled = true
     }
+  },
+
+  components: {
+    'zw-pdf-viewer':  require('./zw-pdf-viewer').default
   }
 }
 </script>

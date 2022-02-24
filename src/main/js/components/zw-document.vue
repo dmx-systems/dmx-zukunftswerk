@@ -1,15 +1,15 @@
 <template>
-  <div :class="['zw-document', {'ref-doc': isRefDocument}, mode]" v-loading="saving">
+  <div :class="['zw-document', {'ref-doc': isRefDocument}, mode]" v-loading="isLoading">
     <template v-if="infoMode">
       <div class="discussion-button">
         <el-button type="text" icon="el-icon-chat-round" @click="setRefDocument"></el-button>
       </div>
       <div class="doc-name">{{docName}}</div>
       <pre v-if="isText">{{text}}</pre>
-      <img v-if="isImage" :src="fileUrl" @load="update">
+      <img v-if="isImage" :src="fileUrl" @loadstart="loading" @load="complete">
       <audio v-if="isAudio" :src="fileUrl" controls></audio>
       <video v-if="isVideo" :src="fileUrl" controls @loadeddata="update"></video>
-      <zw-pdf-viewer v-if="isPDF" :src="fileUrl" @load="update"></zw-pdf-viewer>
+      <zw-pdf-viewer v-if="isPDF" :src="fileUrl" @loading="loading" @complete="complete"></zw-pdf-viewer>
     </template>
     <template v-else>
       <div class="field">
@@ -88,7 +88,7 @@ export default {
   data () {
     return {
       text: '',                     // used only for text files: the contained text (String)      FIXME: 2x ?
-      saving: false,                // true while document is saved (Boolean)
+      isLoading: false,             // true while document is loaded/saved (Boolean)
       saveButtonDisabled: false,    // true when save button is disabled (Boolean)
       onSuccess: {                  // upload success handler (2x Function)
         de: this.createSuccessHandler('de'),
@@ -284,12 +284,22 @@ export default {
     },
 
     save () {
-      this.saving = true
+      this.loading()
       const p = this.isNew ? this.$store.dispatch('createDocument', this.topic) :
                              this.$store.dispatch('updateDocument', {topic: this.topic, docModel: this.docModel})
       p.then(() => {
-        this.saving = false
+        this.complete()
       })
+    },
+
+    loading () {
+      // console.log('loading')
+      this.isLoading = true
+    },
+
+    complete () {
+      // console.log('complete')
+      this.isLoading = false
     },
 
     createSuccessHandler (lang) {
@@ -326,7 +336,7 @@ export default {
 .zw-document {
   box-sizing: border-box;
   height: 100%;
-  padding: 12px;
+  padding: 8px;
   background-color: var(--discussion-color);
 }
 

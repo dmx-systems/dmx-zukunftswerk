@@ -11,6 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/js/pdf.worker.j
 export default {
 
   created () {
+    this.$emit('loading')
     pdfjs.getDocument(this.src).promise.then(pdf => {
       return pdf.getPage(1)
     }).then(page => {
@@ -24,7 +25,7 @@ export default {
         viewport
       }).promise
     }).then(() => {
-      console.log('Page complete!')
+      this.$emit('complete')
     })
   },
 

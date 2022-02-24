@@ -1,9 +1,9 @@
 <template>
   <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
-    <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
-    <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="heading">
-      <div class="field-label"><b>{{creator}}</b> at {{date}}</div>
+      <div>
+        <b>{{creator}}</b><span class="date label">{{date}}</span>
+      </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
         <el-button class="fa fa-reply" type="text" @click="reply"></el-button>
         <el-dropdown v-if="commentIsWritable" size="medium" trigger="click" @command="handle">
@@ -15,6 +15,8 @@
         </el-dropdown>
       </div>
     </div>
+    <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
+    <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
       <template v-if="infoMode">
         <div class="dmx-html-field info left" v-html="comment[origLang]"></div>
@@ -216,6 +218,10 @@ export default {
 
 .zw-comment .heading > div:first-child {
   flex-grow: 1;
+}
+
+.zw-comment .heading .date {
+  margin-left: 15px;
 }
 
 .zw-comment .heading .button-panel {

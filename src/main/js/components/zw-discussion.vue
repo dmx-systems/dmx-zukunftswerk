@@ -245,7 +245,7 @@ export default {
   font-size: 30px;
 }
 
-.zw-discussion .heading {
+.zw-discussion > .heading {
   font-size: 20px;
   font-weight: bold;
   margin-top: 14px;

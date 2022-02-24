@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <div>zw-pdf-viewer</div>
-    <div>{{src}}</div>
-  </div>
+  <canvas ref="canvas"></canvas>
 </template>
 
 <script>
@@ -15,7 +12,17 @@ export default {
     pdfjs.getDocument(this.src).promise.then(pdf => {
       return pdf.getPage(1)
     }).then(page => {
-      console.log('page', page)
+      const scale = 1.5
+      const viewport = page.getViewport({scale})
+      const canvas = this.$refs.canvas
+      canvas.width = viewport.width
+      canvas.height = viewport.height
+      return page.render({
+        canvasContext: canvas.getContext('2d'),
+        viewport
+      }).promise
+    }).then(() => {
+      console.log('Page complete!')
     })
   },
 

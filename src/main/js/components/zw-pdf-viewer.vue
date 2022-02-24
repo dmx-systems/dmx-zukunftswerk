@@ -1,5 +1,7 @@
 <template>
-  <canvas ref="canvas"></canvas>
+  <div class="zw-pdf-viewer">
+    <canvas ref="canvas"></canvas>
+  </div>
 </template>
 
 <script>
@@ -36,4 +38,7 @@ export default {
 </script>
 
 <style>
+.zw-pdf-viewer canvas {
+  width: 100%;
+}
 </style>

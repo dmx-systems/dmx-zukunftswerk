@@ -9,7 +9,7 @@
       <img v-if="isImage" :src="fileUrl" @load="update">
       <audio v-if="isAudio" :src="fileUrl" controls></audio>
       <video v-if="isVideo" :src="fileUrl" controls @loadeddata="update"></video>
-      <zw-pdf-viewer v-if="isPDF" :src="fileUrl" :type="mediaType" class="pdf" @load="update"></zw-pdf-viewer>
+      <zw-pdf-viewer v-if="isPDF" :src="fileUrl" @load="update"></zw-pdf-viewer>
     </template>
     <template v-else>
       <div class="field">
@@ -61,9 +61,6 @@ export default {
 
   created () {
     // console.log('zw-document')
-    if (this.isPDF) {
-      this.$emit('resize-style', 'xy')
-    }
     this.initText()
   },
 
@@ -368,10 +365,6 @@ export default {
 
 .zw-document > img {
   width: 100%;
-}
-
-.zw-document > .pdf {
-  flex-grow: 1;
 }
 
 .zw-document .save-button {

@@ -11,8 +11,8 @@ export default {
 
   'label.shared_workspace.de': 'Gemeinsamer Arbeitsbereich',
   'label.shared_workspace.fr': 'Espace de travail commun',
-  'label.discussion.de': 'Diskussion',
-  'label.discussion.fr': 'Discussion',
+  'label.discussion.de': 'Diskussionsbeiträge',
+  'label.discussion.fr': 'Contributions à la discussion',
   'label.document_discussion.de': 'Diskussion zu Dokument',
   'label.document_discussion.fr': 'Discussion sur le document',
   'label.document_name.de': 'Dokument Name',

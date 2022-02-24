@@ -42,7 +42,7 @@
   --field-spacing: 1.2em;                     /* vertical spacing between data fields */
   --label-color: #909399;   /* matches --color-text-secondary in element-ui/packages/theme-chalk/src/common/var.scss */
   --header-color: black;
-  --discussion-color: rgb(237, 237, 240);     /* picked from PDF renderer */
+  --discussion-color: #e6e6e6;
   --doc-filter-color: rgb(230, 244, 220);
   --highlight-color: #409eff;                 /* matches --color-primary */
   --highlight-color-2: #66b1ff;               /* matches --color-primary-light-2 */

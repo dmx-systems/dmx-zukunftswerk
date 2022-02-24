@@ -1,10 +1,10 @@
 <template>
   <div :class="['zw-discussion', panelVisibility ? 'open' : 'close']">
-    <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-chat-round" @click="open">
+    <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-arrow-left" @click="open">
     </el-button>
     <template v-else>
-      <el-button class="close-button" type="text" icon="el-icon-circle-close" @click="close"></el-button>
-      <h4>{{heading}}</h4>
+      <el-button class="close-button" type="text" icon="el-icon-arrow-right" @click="close"></el-button>
+      <div class="heading">{{heading}}</div>
       <zw-document-ref class="doc-filter" :document="refDocument" :removable="true"></zw-document-ref>
       <!-- Comments -->
       <div class="comments">
@@ -12,7 +12,7 @@
           @comment-ref-click="jumpTo">
         </zw-comment>
       </div>
-      <!-- New-Comment Panel -->
+      <!-- New-Comment panel -->
       <div class="new-comment" v-if="isWritable" v-loading="submitting">
         <zw-comment-ref :comment="refComment" :removable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
@@ -230,19 +230,26 @@ export default {
 }
 
 .zw-discussion.close {
-  padding: 7px;
+  padding: 5px;
   width: auto !important;
 }
 
 .zw-discussion .open-button {
-  font-size: 24px;
+  font-size: 30px;
 }
 
 .zw-discussion .close-button {
   position: absolute;
   top: 6px;
-  right: 6px;
-  font-size: 24px;
+  right: 0px;
+  font-size: 30px;
+}
+
+.zw-discussion .heading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 14px;
+  margin-bottom: 20px;
 }
 
 .zw-discussion .doc-filter {

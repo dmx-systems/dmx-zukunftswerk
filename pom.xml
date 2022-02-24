@@ -54,7 +54,14 @@
                     <exclude>index.html</exclude>
                     <exclude>favicon.png</exclude>
                     <exclude>grid.png</exclude>
+                    <exclude>logo.de.png</exclude>
+                    <exclude>logo.fr.png</exclude>
+                    <exclude>js/</exclude>
                 </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/js</directory>
+                <targetPath>web/js</targetPath>
             </resource>
         </resources>
         <plugins>

@@ -18,7 +18,7 @@
     "dmx-login-dialog": "https://github.com/dmx-systems/dmx-login-dialog.git",
     "dmx-websocket": "https://github.com/dmx-systems/dmx-websocket.git",
     "element-ui": "2.13.2",
-    "pdfjs-dist": "^2.12.313",
+    "pdfjs-dist": "2.12.313",
     "vue": "2.6.11",
     "vue-draggable-resizable": "^2.3.0",
     "vue-element-dialog-draggable": "1.0.3",

@@ -7,9 +7,18 @@
 
 <script>
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.js'
-console.log('pdfjs', pdfjs)
+pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/js/pdf.worker.js'
 
 export default {
+
+  created () {
+    pdfjs.getDocument(this.src).promise.then(pdf => {
+      return pdf.getPage(1)
+    }).then(page => {
+      console.log('page', page)
+    })
+  },
+
   props: {
     src: {
       type: String,

@@ -45,6 +45,8 @@ export default {
     type () {
       if (this.refDocument && this.refDocument.id === this.document.id) {
         return 'success'
+      } else {
+        return 'warning'
       }
     },
 

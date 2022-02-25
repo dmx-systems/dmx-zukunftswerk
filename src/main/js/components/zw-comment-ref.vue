@@ -1,6 +1,6 @@
 <template>
   <div class="zw-comment-ref" v-if="comment">
-    <el-tag :closable="removable" size="medium" @click="click" @close="remove">
+    <el-tag type="warning" :closable="removable" size="medium" @click="click" @close="remove">
       <span class="fa fa-fw fa-comment"></span>
       <zw-truncate :html="html[lang]"></zw-truncate>
     </el-tag>

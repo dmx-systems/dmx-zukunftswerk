@@ -234,11 +234,11 @@ export default {
   width: auto !important;
 }
 
-.zw-discussion .open-button {
+.zw-discussion > .open-button {
   font-size: 30px;
 }
 
-.zw-discussion .close-button {
+.zw-discussion > .close-button {
   position: absolute;
   top: 6px;
   right: 0px;

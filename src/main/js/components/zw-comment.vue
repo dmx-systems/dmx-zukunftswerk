@@ -2,7 +2,7 @@
   <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
     <div class="heading">
       <div>
-        <b>{{creator}}</b><span class="date label">{{date}}</span>
+        <span class="creator label">{{creator}}</span><span class="date label">{{date}}</span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
         <el-button class="fa fa-reply" type="text" @click="reply"></el-button>
@@ -213,11 +213,15 @@ export default {
 
 .zw-comment .heading {
   display: flex;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .zw-comment .heading > div:first-child {
   flex-grow: 1;
+}
+
+.zw-comment .heading .creator {
+  font-weight: bold;
 }
 
 .zw-comment .heading .date {
@@ -263,22 +267,22 @@ export default {
 }
 
 .zw-comment.info .columns > .left {
-  padding-right: 10px;
+  padding-right: 15px;
 }
 
 .zw-comment.info .columns > .right {
-  padding-left: 10px;
+  padding-left: 15px;
 }
 
 .zw-comment .columns > .left .ql-editor {
-  padding: 0 10px 0 0 !important;
+  padding: 0 15px 0 0 !important;
 }
 
 .zw-comment .columns > .right .ql-editor {
-  padding: 0 0 0 10px !important;
+  padding: 0 0 0 15px !important;
 }
 
-.zw-comment .columns > div.glow {
+.zw-comment .columns.glow {
   animation: glow var(--glow-duration);
 }
 

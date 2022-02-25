@@ -227,14 +227,10 @@ const actions = {
       block: 'nearest'      // avoid body scroll
     })
     // 2) Apply "glow" effect
-    const texts = document.querySelectorAll(`${commentSelector} .columns > div`)
-    texts.forEach(text => {
-      text.classList.add('glow')
-    })
+    const text = document.querySelector(`${commentSelector} .columns`)
+    text.classList.add('glow')
     setTimeout(() => {
-      texts.forEach(text => {
-        text.classList.remove('glow')
-      })
+      text.classList.remove('glow')
     }, 3000)    // corresponds to CSS variable "--glow-duration" in App.vue
   },
 

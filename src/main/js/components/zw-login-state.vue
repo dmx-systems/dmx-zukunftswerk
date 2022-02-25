@@ -60,7 +60,7 @@ export default {
 
 <style>
 .zw-login-state .el-button.sign-in {
-  font-size: var(--label-font-size) !important;
+  font-size: var(--secondary-font-size) !important;
   padding: 4px 8px !important;
 }
 </style>

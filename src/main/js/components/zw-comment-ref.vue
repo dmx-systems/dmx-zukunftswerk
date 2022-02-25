@@ -1,9 +1,8 @@
 <template>
-  <div class="zw-comment-ref" v-if="comment">
-    <el-tag type="warning" :closable="removable" size="medium" @click="click" @close="remove">
-      <span class="fa fa-fw fa-comment"></span>
-      <zw-truncate :html="html[lang]"></zw-truncate>
-    </el-tag>
+  <div class="zw-comment-ref" v-if="comment" @click="click">
+    <div class="creator label">theo</div>
+    <zw-truncate class="comment label" :html="html[lang]"></zw-truncate>
+    <el-button class="close-button" v-if="removable" type="text" icon="el-icon-close" @click="remove"></el-button>
   </div>
 </template>
 
@@ -43,11 +42,27 @@ export default {
 </script>
 
 <style>
-.zw-comment-ref .el-tag {
+.zw-comment-ref {
+  position: relative;
+  background-color: #fff6cc;
+  border-left: 5px solid #ffd100;
+  padding: 6px 6px 6px 10px;
   cursor: pointer;
-  height: unset;                  /* Element UI Tag default is 32px; not suitable for multi-line tags */
-  line-height: unset;             /* Element UI Tag default is 30px */
-  white-space: unset;             /* Element UI Tag default is "nowrap" */
-  padding: 5px 10px 5px 10px;     /* Element UI Tag default is "0 10px" */
+}
+
+.zw-comment-ref .creator {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.zw-comment-ref .comment {
+  font-style: italic;
+}
+
+.zw-comment-ref .close-button {
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 </style>

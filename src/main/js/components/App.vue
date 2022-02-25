@@ -33,22 +33,22 @@
     All the mess vanish if multiple-word font names are not quoted at all in CSS. There are some debates whether this
     is valid CSS or not. Fact is multiple-word font names without quotes do work in all major browsers.
   */
-  --main-font-family: -apple-system, system-ui, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue,
+  --primary-font-family: -apple-system, system-ui, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue,
       sans-serif;
-  --main-font-size: 14px;
-  --label-font-size: 12px;
+  --primary-font-size: 14px;
+  --secondary-font-size: 13px;
+  --secondary-color: #808080;
   --line-height: 1.5;
   --paragraph-spacing: 0.5em;
   --field-spacing: 1.2em;                     /* vertical spacing between data fields */
-  --label-color: #909399;   /* matches --color-text-secondary in element-ui/packages/theme-chalk/src/common/var.scss */
   --header-color: black;
   --discussion-color: #e6e6e6;
   --doc-filter-color: rgb(230, 244, 220);
-  --highlight-color: #409eff;                 /* matches --color-primary */
-  --highlight-color-2: #66b1ff;               /* matches --color-primary-light-2 */
-  --color-danger: #f56c6c;                    /* matches --color-danger */
-  --border-color: #dcdfe6;                    /* matches --border-color-base */
-  --border-color-lighter: #ebeef5;            /* matches --border-color-lighter */
+  --highlight-color: #409eff;                 /* matches Element UI --color-primary */
+  --highlight-color-2: #66b1ff;               /* matches Element UI --color-primary-light-2 */
+  --color-danger: #f56c6c;                    /* matches Element UI --color-danger */
+  --border-color: #dcdfe6;                    /* matches Element UI --border-color-base */
+  --border-color-lighter: #ebeef5;            /* matches Element UI --border-color-lighter */
   --glow-duration: 3s;                        /* corresponds to jumpTo() in zw-discussion.vue */
 }
 
@@ -60,8 +60,8 @@ body {
   height: 100%;
   margin: 0;
   overflow: hidden;       /* avoid body bounce when scrolling reaches top/bottom */
-  font-family: var(--main-font-family);
-  font-size:   var(--main-font-size);
+  font-family: var(--primary-font-family);
+  font-size:   var(--primary-font-size);
 }
 
 body.fixed {
@@ -71,13 +71,13 @@ body.fixed {
 /* Reusable classes */
 
 .label {
-  font-size: var(--label-font-size) !important;
-  color:     var(--label-color) !important;
+  font-size: var(--secondary-font-size) !important;
+  color:     var(--secondary-color) !important;
 }
 
 .field-label {
-  font-size: var(--label-font-size) !important;
-  color:     var(--label-color) !important;
+  font-size: var(--secondary-font-size) !important;
+  color:     var(--secondary-color) !important;
   margin-bottom: 3px !important;
 }
 
@@ -173,35 +173,35 @@ body.fixed {
 /* Quill Overrides */
 
 .ql-container {
-  font-family: var(--main-font-family) !important;    /* Quill default is "Helvetica, Arial, sans-serif" */
-  font-size:   var(--main-font-size)   !important;    /* Quill default is 13px */
+  font-family: var(--primary-font-family) !important;     /* Quill default is "Helvetica, Arial, sans-serif" */
+  font-size:   var(--primary-font-size)   !important;     /* Quill default is 13px */
 }
 
 .ql-container .ql-editor {
-  line-height: inherit !important;                    /* Quill default is 1.42; inherit from dmx-html-field */
-  padding: 6px 8px !important;                        /* Quill default is 12px 15px */
+  line-height: inherit !important;                        /* Quill default is 1.42; inherit from dmx-html-field */
+  padding: 6px 8px !important;                            /* Quill default is 12px 15px */
   background-color: white;
 }
 
 .ql-container .ql-editor h1 {
-  margin-top: 0.67em;                                 /* Restore user agent style; Quill default is 0 */
-  margin-bottom: 0.67em;                              /* Restore user agent style; Quill default is 0 */
+  margin-top: 0.67em;                                     /* Restore user agent style; Quill default is 0 */
+  margin-bottom: 0.67em;                                  /* Restore user agent style; Quill default is 0 */
 }
 
 .ql-container .ql-editor h2 {
-  margin-top: 0.83em;                                 /* Restore user agent style; Quill default is 0 */
-  margin-bottom: 0.83em;                              /* Restore user agent style; Quill default is 0 */
+  margin-top: 0.83em;                                     /* Restore user agent style; Quill default is 0 */
+  margin-bottom: 0.83em;                                  /* Restore user agent style; Quill default is 0 */
 }
 
 .ql-container .ql-editor h3 {
-  margin-top: 1em;                                    /* Restore user agent style; Quill default is 0 */
-  margin-bottom: 1em;                                 /* Restore user agent style; Quill default is 0 */
+  margin-top: 1em;                                        /* Restore user agent style; Quill default is 0 */
+  margin-bottom: 1em;                                     /* Restore user agent style; Quill default is 0 */
 }
 
 .ql-container .ql-editor ol,
 .ql-container .ql-editor ul {
-  margin-top: 1em;                                    /* Restore user agent style; Quill default is 0 */
-  margin-bottom: 1em;                                 /* Restore user agent style; Quill default is 0 */
+  margin-top: 1em;                                        /* Restore user agent style; Quill default is 0 */
+  margin-bottom: 1em;                                     /* Restore user agent style; Quill default is 0 */
 }
 
 .ql-container .ql-tooltip {

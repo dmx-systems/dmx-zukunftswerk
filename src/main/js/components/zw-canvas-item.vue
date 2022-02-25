@@ -66,7 +66,7 @@ export default {
 
     buttonStyle () {
       return {
-        'font-size': `${14 / this.zoom}px`    // 14 = --main-font-size (see App.vue)
+        'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
       }
     },
 

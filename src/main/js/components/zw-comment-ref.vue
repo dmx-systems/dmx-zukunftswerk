@@ -43,6 +43,7 @@ export default {
 
 <style>
 .zw-comment-ref {
+  display: inline-block;
   position: relative;
   background-color: #fff6cc;
   border-left: 5px solid #ffd100;

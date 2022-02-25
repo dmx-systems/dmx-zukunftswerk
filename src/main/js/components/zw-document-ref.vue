@@ -1,9 +1,8 @@
 <template>
-  <div class="zw-document-ref" v-if="document">
-    <el-tag :type="type" :closable="removable" size="medium" @click="reveal" @close="remove">
-      <span class="fa fa-fw fa-file-o"></span>
-      <span>{{docName}}</span>
-    </el-tag>
+  <div class="zw-document-ref" v-if="document" @click="reveal">
+    <span class="icon fa fa-fw fa-file-o"></span>
+    <span class="label">{{docName}}</span>
+    <el-button class="close-button" v-if="removable" type="text" icon="el-icon-close" @click="remove"></el-button>
   </div>
 </template>
 
@@ -42,18 +41,6 @@ export default {
       }
     },
 
-    type () {
-      if (this.refDocument && this.refDocument.id === this.document.id) {
-        return 'success'
-      } else {
-        return 'warning'
-      }
-    },
-
-    refDocument () {
-      return this.$store.state.refDocument
-    },
-
     lang () {
       return this.$store.state.lang
     }
@@ -73,11 +60,23 @@ export default {
 </script>
 
 <style>
-.zw-document-ref .el-tag {
+.zw-document-ref {
+  display: inline-block;
+  background-color: #fff6cc;
+  padding: 6px;
   cursor: pointer;
-  height: unset;                  /* Element UI Tag default is 32px; not suitable for multi-line tags */
-  line-height: unset;             /* Element UI Tag default is 30px */
-  white-space: unset;             /* Element UI Tag default is "nowrap" */
-  padding: 5px 10px 5px 10px;     /* Element UI Tag default is "0 10px" */
+}
+
+.zw-document-ref .icon {
+  color: #ffd100;
+}
+
+.zw-document-ref .close-button {
+  font-size: 20px;
+  margin-left: 6px;
+}
+
+.zw-document-ref .close-button > i {
+  vertical-align: text-bottom;
 }
 </style>

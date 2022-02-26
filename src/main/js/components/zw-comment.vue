@@ -2,7 +2,7 @@
   <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
     <div class="heading">
       <div>
-        <span class="creator label">{{creator}}</span><span class="date label">{{date}}</span>
+        <span class="creator">{{creator}}</span><span class="date label">{{date}}</span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
         <el-button class="fa fa-reply" type="text" @click="reply"></el-button>
@@ -221,6 +221,7 @@ export default {
 }
 
 .zw-comment .heading .creator {
+  font-size: var(--secondary-font-size);
   font-weight: bold;
 }
 

@@ -5,7 +5,7 @@
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-arrow-right" @click="close"></el-button>
       <div class="heading">{{heading}}</div>
-      <zw-document-ref class="doc-filter" :document="refDocument" :removable="true"></zw-document-ref>
+      <zw-document-ref class="doc-filter" :document="refDocument" :closable="true"></zw-document-ref>
       <!-- Comments -->
       <div class="comments">
         <zw-comment v-for="comment in filteredDiscussion" :topic="comment" :key="comment.id" @reply="reply"
@@ -14,15 +14,15 @@
       </div>
       <!-- New-Comment panel -->
       <div class="new-comment" v-if="isWritable" v-loading="submitting">
-        <zw-comment-ref :comment="refComment" :removable="true" @click="jumpTo" @remove="removeCommentRef">
+        <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
-        <zw-document-ref :document="refDocument" :removable="true"></zw-document-ref>
+        <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
         <div class="field-label"><zw-string>label.new_comment</zw-string></div>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
         <div class="attachments">
-          <zw-attachment v-for="file in attachments" :file="file" :removable="true" :key="file.id"
+          <zw-attachment v-for="file in attachments" :file="file" :closable="true" :key="file.id"
             @remove="removeAttachment">
           </zw-attachment>
         </div>
@@ -253,6 +253,7 @@ export default {
 }
 
 .zw-discussion .doc-filter {
+  align-self: flex-start;
   margin-right: 10px;
   margin-bottom: 28px;
 }

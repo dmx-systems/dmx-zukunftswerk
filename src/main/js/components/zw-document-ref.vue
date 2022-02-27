@@ -1,8 +1,8 @@
 <template>
-  <div class="zw-document-ref" v-if="document" @click="reveal">
+  <div :class="['zw-document-ref', {closable}]" v-if="document" @click="reveal">
     <span class="icon fa fa-fw fa-file-o"></span>
-    <span class="label">{{docName}}</span>
-    <el-button class="close-button" v-if="removable" type="text" icon="el-icon-close" @click="remove"></el-button>
+    <span class="doc-name label">{{docName}}</span>
+    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click="remove"></el-button>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
 
   props: {
     document: Object,       // the referred-to Document, optional (plain Object, not a dmx.Topic)
-    removable: Boolean      // if true the remove-button is rendered, optional
+    closable: Boolean       // if true the close-button is rendered, optional
   },
 
   computed: {
@@ -62,17 +62,26 @@ export default {
 <style>
 .zw-document-ref {
   display: inline-block;
-  background-color: #fff6cc;
+  background-color: var(--primary-color-light);
   padding: 6px;
   cursor: pointer;
 }
 
+.zw-document-ref.closable {
+  background-color: var(--primary-color);
+}
+
 .zw-document-ref .icon {
-  color: #ffd100;
+  color: var(--primary-color);
+}
+
+.zw-document-ref.closable .icon,
+.zw-document-ref.closable .doc-name {
+  color: black !important;
 }
 
 .zw-document-ref .close-button {
-  font-size: 20px;
+  font-size: 18px;
   margin-left: 6px;
 }
 

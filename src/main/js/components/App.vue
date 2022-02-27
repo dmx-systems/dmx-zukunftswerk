@@ -41,9 +41,12 @@
   --line-height: 1.5;
   --paragraph-spacing: 0.5em;
   --field-spacing: 1.2em;                     /* vertical spacing between data fields */
+
   --header-color: black;
   --discussion-color: #e6e6e6;
-  --doc-filter-color: rgb(230, 244, 220);
+  --doc-filter-color: #ffe880;
+  --primary-color: #ffd100;                   /* yellow */
+  --primary-color-light: #fff6cc;             /* light yellow */
   --highlight-color: #409eff;                 /* matches Element UI --color-primary */
   --highlight-color-2: #66b1ff;               /* matches Element UI --color-primary-light-2 */
   --color-danger: #f56c6c;                    /* matches Element UI --color-danger */

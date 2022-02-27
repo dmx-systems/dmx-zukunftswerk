@@ -1,6 +1,6 @@
 <template>
   <div :class="['zw-attachment', {enabled}]">
-    <el-tag :closable="removable" size="medium" @click="download" @close="remove">
+    <el-tag :closable="closable" size="medium" @click="download" @close="remove">
       <span class="fa fa-fw fa-paperclip"></span>
       <span>{{fileName}}</span>
     </el-tag>
@@ -16,7 +16,7 @@ export default {
       required: true
     },
     enabled: Boolean,
-    removable: Boolean    // if true the remove-button is rendered, optional
+    closable: Boolean     // if true the close-button is rendered, optional
   },
 
   computed: {

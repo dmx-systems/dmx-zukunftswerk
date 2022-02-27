@@ -1,8 +1,8 @@
 <template>
   <div class="zw-comment-ref" v-if="comment" @click="click">
-    <div class="creator label">theo</div>
+    <div class="creator label">todo</div>
     <zw-truncate class="comment label" :html="html[lang]"></zw-truncate>
-    <el-button class="close-button" v-if="removable" type="text" icon="el-icon-close" @click="remove"></el-button>
+    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click="remove"></el-button>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
 
   props: {
     comment: Object,      // the referred-to Comment, optional (plain Object, not a dmx.Topic)
-    removable: Boolean    // if true the remove-button is rendered, optional
+    closable: Boolean     // if true the close-button is rendered, optional
   },
 
   computed: {
@@ -45,9 +45,9 @@ export default {
 .zw-comment-ref {
   display: inline-block;
   position: relative;
-  background-color: #fff6cc;
-  border-left: 5px solid #ffd100;
-  padding: 6px 6px 6px 10px;
+  background-color: var(--primary-color-light);
+  border-left: 5px solid var(--primary-color);
+  padding: 6px 10px;
   cursor: pointer;
 }
 
@@ -61,9 +61,9 @@ export default {
 }
 
 .zw-comment-ref .close-button {
-  font-size: 20px;
+  font-size: 18px;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 1px;
+  right: 1px;
 }
 </style>

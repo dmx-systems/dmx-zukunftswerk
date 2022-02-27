@@ -4,8 +4,11 @@
     </el-button>
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-arrow-right" @click="close"></el-button>
-      <div class="heading">{{heading}}</div>
-      <zw-document-ref class="doc-filter" :document="refDocument" :closable="true"></zw-document-ref>
+      <zw-string class="heading">label.discussion</zw-string>
+      <div class="doc-filter" v-if="refDocument">
+        <zw-string>label.document_filter</zw-string>
+        <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
+      </div>
       <!-- Comments -->
       <div class="comments">
         <zw-comment v-for="comment in filteredDiscussion" :topic="comment" :key="comment.id" @reply="reply"
@@ -74,10 +77,6 @@ export default {
   },
 
   computed: {
-
-    heading () {
-      return this.getString(this.refDocument ? 'label.document_discussion' : 'label.discussion')
-    },
 
     isWritable () {
       return this.$store.state.isWritable
@@ -193,12 +192,6 @@ export default {
     getDocumentId (comment) {
       const doc = comment.children['zukunftswerk.document']
       return doc && doc.id
-    },
-
-    // copy in store.js
-    getString (key) {
-      const state = this.$store.state
-      return state.langStrings[`${key}.${state.lang}`]
     }
   },
 
@@ -253,9 +246,14 @@ export default {
 }
 
 .zw-discussion .doc-filter {
-  align-self: flex-start;
   margin-right: 10px;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
+}
+
+.zw-discussion .doc-filter .zw-string {
+  font-size: 20px;
+  line-height: 32px;
+  margin-right: 6px;
 }
 
 .zw-discussion .comments {

@@ -140,7 +140,7 @@ export default {
     },
 
     quillOptions () {
-      return this.$store.state.quillOptions
+      return this.$store.state.quillOptions2
     }
   },
 

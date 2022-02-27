@@ -308,6 +308,9 @@ const actions = {
   }
 }
 
+// Quill instances inside comments-list need special options
+state.quillOptions2 = {bounds: '.zw-discussion .comments', ...state.quillOptions}
+
 const store = new Vuex.Store({
   state,
   actions

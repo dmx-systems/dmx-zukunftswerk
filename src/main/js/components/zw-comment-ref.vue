@@ -1,6 +1,6 @@
 <template>
   <div class="zw-comment-ref" v-if="comment" @click="click">
-    <div class="creator label">todo</div>
+    <div class="creator label">{{creator}}</div>
     <zw-truncate class="comment label" :html="html[lang]"></zw-truncate>
     <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click="remove"></el-button>
   </div>
@@ -21,6 +21,10 @@ export default {
         de: this.comment.children['zukunftswerk.comment.de'].value,
         fr: this.comment.children['zukunftswerk.comment.fr'].value
       }
+    },
+
+    creator () {
+      return this.comment.children['dmx.accesscontrol.creator'].value
     },
 
     lang () {

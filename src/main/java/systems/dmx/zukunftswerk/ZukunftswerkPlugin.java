@@ -63,6 +63,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public void preSendTopic(Topic topic) {
         if (topic.getTypeUri().equals(COMMENT)) {
             acs.enrichWithUserInfo(topic);
+            Topic refComment = topic.getChildTopics().getTopicOrNull(COMMENT);
+            if (refComment != null) {
+                acs.enrichWithUserInfo(refComment);
+            }
         }
     }
 

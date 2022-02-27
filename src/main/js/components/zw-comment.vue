@@ -52,18 +52,18 @@ export default {
     require('./mixins/orig-lang').default,
   ],
 
+  props: {
+    topic: {                    // the Comment topic to render (plain Object, not a dmx.Topic ### FIXDOC?)
+      type: Object,
+      required: true
+    }
+  },
+
   data () {
     return {
       mode: 'info',             // 'info'/'form'
       topicBuffer: undefined,   // the edit buffer (dmx.Topic)
       saving: false             // true while comment is saved
-    }
-  },
-
-  props: {
-    topic: {                    // the Comment topic to render (plain Object, not a dmx.Topic ### FIXDOC?)
-      type: Object,
-      required: true
     }
   },
 

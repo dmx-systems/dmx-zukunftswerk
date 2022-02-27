@@ -2,7 +2,7 @@
   <div :class="['zw-document-ref', {closable}]" v-if="document" @click="reveal">
     <span class="icon fa fa-fw fa-file-o"></span>
     <span class="doc-name label">{{docName}}</span>
-    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click="remove"></el-button>
+    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="remove"></el-button>
   </div>
 </template>
 

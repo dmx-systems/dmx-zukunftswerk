@@ -82,6 +82,25 @@ const actions = {
     state.topic = topic
   },
 
+  setTopicPos (_, {topic, x, y}) {
+    const pos = {x, y}
+    topic.setPosition(pos)                                            // update client state
+    if (topic.id >= 0 && state.isTeam) {
+      dmx.rpc.setTopicPosition(state.topicmap.id, topic.id, pos)      // update server state
+    }
+  },
+
+  setTopicSize (_, {topic, width, height}) {
+    if (topic.id >= 0 && state.isTeam) {
+      if (!isNaN(width) && !isNaN(height)) {
+        dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
+          'dmx.topicmaps.width': width,
+          'dmx.topicmaps.height': height
+        })
+      }
+    }
+  },
+
   setPan (_, pan) {
     state.pan = pan
     setTopicmapViewport()     // update server state (debounced)

@@ -125,26 +125,13 @@ export default {
     setPos (x, y) {
       this.dragStop()
       this.hasDragStarted = false
-      //
-      const pos = {x, y}
-      this.topic.setPosition(pos)                                           // update client state
-      if (this.topic.id >= 0 && this.isWritable) {
-        dmx.rpc.setTopicPosition(this.topicmap.id, this.topic.id, pos)      // update server state
-      }
+      this.$store.dispatch('setTopicPos', {topic: this.topic, x, y})
     },
 
     setSize (x, y, width, height) {
       this.dragStop()
       this.hasDragStarted = false
-      //
-      if (this.topic.id >= 0 && this.isWritable) {
-        if (!isNaN(width) && !isNaN(height)) {
-          dmx.rpc.setTopicViewProps(this.topicmap.id, this.topic.id, {
-            'dmx.topicmaps.width': width,
-            'dmx.topicmaps.height': height
-          })
-        }
-      }
+      this.$store.dispatch('setTopicSize', {topic: this.topic, width, height})
     },
 
     setResizeStyle (style) {

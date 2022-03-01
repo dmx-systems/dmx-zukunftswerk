@@ -7,6 +7,12 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**0.9.1** -- Mar 1, 2022
+
+* Bug fixes:
+    * PDF viewer and language switch
+    * Edit/Delete and non-team members
+
 **0.9** -- Mar 1, 2022
 
 * Actions: edit, delete

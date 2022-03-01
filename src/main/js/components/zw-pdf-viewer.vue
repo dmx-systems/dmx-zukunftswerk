@@ -103,8 +103,8 @@ export default {
 
 .zw-pdf-viewer .toolbar {
   position: absolute;
-  right: 8px;
-  bottom: 11px;
+  right: 10px;
+  bottom: 10px;
   padding: 2px;
   background-color: rgba(255, 255, 255, .7);
   visibility: hidden;

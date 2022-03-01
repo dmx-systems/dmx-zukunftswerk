@@ -1,7 +1,7 @@
 {
   "name": "dmx-zukunftswerk",
-  "version": "0.8.0",
-  "description": "The Zukunftswerk collaboration platform",
+  "version": "0.9.0",
+  "description": "The Zukunftswerk Collaboration Platform",
   "author": "Jörg Richter <jri@dmx.berlin>",
   "license": "AGPL-3.0",
   "repository": {

@@ -61,7 +61,7 @@ export default {
     },
 
     buttonPanelVisibility () {
-      return this.infoMode && this.isWritable
+      return this.infoMode && this.isTeam
     },
 
     buttonStyle () {
@@ -70,12 +70,12 @@ export default {
       }
     },
 
-    topicmap () {
-      return this.$store.state.topicmap
+    isTeam () {
+      return this.$store.state.isTeam
     },
 
-    isWritable () {
-      return this.$store.state.isWritable
+    topicmap () {
+      return this.$store.state.topicmap
     },
 
     zoom () {

@@ -15,6 +15,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/js/pdf.worker.j
 
 export default {
 
+  created () {
+    this.fetchPDF()
+  },
+
   props: {
     src: {
       type: String,
@@ -50,22 +54,32 @@ export default {
     }
   },
 
-  created () {
-    this.$emit('loading')
-    pdfjs.getDocument(this.src).promise.then(pdf => {
-      this.pdf = pdf
-      this.pageNr = 1
-      this.$emit('complete')
-    })
-  },
-
   watch: {
+
     pageNr () {
       this.renderPage()
+    },
+
+    src () {
+      const pageNr = this.pageNr
+      this.fetchPDF().then(() => {
+        if (pageNr == 1) {      // if previous page is != 1 page is already rendered by fetchPDF() (via pageNr watcher)
+          this.renderPage()
+        }
+      })
     }
   },
 
   methods: {
+
+    fetchPDF () {
+      this.$emit('loading')
+      return pdfjs.getDocument(this.src).promise.then(pdf => {
+        this.pdf = pdf
+        this.pageNr = 1
+        this.$emit('complete')
+      })
+    },
 
     renderPage () {
       return this.pdf.getPage(this.pageNr).then(page => {

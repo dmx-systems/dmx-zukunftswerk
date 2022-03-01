@@ -48,24 +48,6 @@ console.log('[ZW] isChrome', isChrome)
 
 export default {
 
-  created () {
-    this.$store.watch(state => state.panelVisibility, _ => {
-      this.$nextTick(() => {
-        this.scrollDown()
-      })
-    })
-    this.$store.watch(state => state.discussion, _ => {
-      this.$nextTick(() => {
-        this.scrollDown()
-      })
-    })
-    this.$store.watch(state => state.refDocument, _ => {
-      this.$nextTick(() => {
-        this.scrollDown()
-      })
-    })
-  },
-
   data () {
     return {
       newComment: '',                 // new comment being entered by the user
@@ -120,6 +102,18 @@ export default {
     }
   },
 
+  watch: {
+    panelVisibility () {
+      this.scrollDown()
+    },
+    discussion () {
+      this.scrollDown()
+    },
+    refDocument () {
+      this.scrollDown()
+    }
+  },
+
   methods: {
 
     open () {
@@ -160,10 +154,12 @@ export default {
 
     scrollDown () {
       if (this.panelVisibility) {
-        // scroll down to bottom of discussion
-        document.querySelector('.zw-discussion .comments').scroll({
-          top: 100000,
-          behavior: 'smooth'
+        this.$nextTick(() => {
+          // scroll down to bottom of discussion
+          document.querySelector('.zw-discussion .comments').scroll({
+            top: 100000,
+            behavior: 'smooth'
+          })
         })
       }
     },

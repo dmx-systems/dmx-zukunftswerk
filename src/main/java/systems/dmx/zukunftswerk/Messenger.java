@@ -26,17 +26,17 @@ class Messenger {
 
     // ----------------------------------------------------------------------------------------- Package Private Methods
 
-    void createComment(long workspaceId, Topic comment) {
+    void addComment(long workspaceId, Topic comment) {
         try {
             sendToAllButOrigin(new JSONObject()
-                .put("type", "createComment")
+                .put("type", "addComment")
                 .put("args", new JSONObject()
                     .put("workspaceId", workspaceId)
                     .put("comment", comment.toJSON())
                 )
             );
         } catch (Exception e) {
-            logger.log(Level.WARNING, "Error while sending a \"createComment\" message:", e);
+            logger.log(Level.WARNING, "Error while sending a \"addComment\" message:", e);
         }
     }
 

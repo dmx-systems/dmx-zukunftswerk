@@ -112,14 +112,16 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Consumes("text/plain")
     @Transactional
     @Override
-    public Topic createComment(String comment, @QueryParam("refTopicId") long refTopicId,
+    public Topic createComment(String comment, @QueryParam("refTopicIds") IdList refTopicIds,
                                                @QueryParam("fileTopicIds") IdList fileTopicIds) {
         try {
             TopicModel commentModel = createBilingualTopicModel(COMMENT, comment);
             // add comment/document ref
-            if (refTopicId != 0) {
-                String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
-                commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
+            if (refTopicIds != null) {
+                for (long refTopicId : refTopicIds) {
+                    String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
+                    commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
+                }
             }
             // add attachments
             if (fileTopicIds != null) {
@@ -131,10 +133,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             Topic commentTopic = dmx.createTopic(commentModel);
             acs.enrichWithUserInfo(commentTopic);
             ts.enrichWithTimestamps(commentTopic);
-            me.createComment(workspaceId(), commentTopic);
+            me.addComment(workspaceId(), commentTopic);
             return commentTopic;
         } catch (Exception e) {
-            throw new RuntimeException("Creating comment failed, refTopicId=" + refTopicId + ", fileTopicIds=" +
+            throw new RuntimeException("Creating comment failed, refTopicIds=" + refTopicIds + ", fileTopicIds=" +
                 fileTopicIds, e);
         }
     }

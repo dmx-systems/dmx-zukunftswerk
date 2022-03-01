@@ -203,15 +203,15 @@ const actions = {
   },
 
   /**
-   * @param   refTopicId    optional: a Comment ID or a Document ID
+   * @param   refTopicIds    array: a Comment ID, or a Document ID, or both
    */
-  createComment (_, {comment, refTopicId, fileTopicIds}) {
+  createComment (_, {comment, refTopicIds, fileTopicIds}) {
     return http.post('/zukunftswerk/comment', comment, {
       headers: {
         'Content-Type': 'text/plain'
       },
       params: {
-        refTopicId,
+        refTopicIds: refTopicIds.join(','),
         fileTopicIds: fileTopicIds.join(',')
       }
     }).then(response => {

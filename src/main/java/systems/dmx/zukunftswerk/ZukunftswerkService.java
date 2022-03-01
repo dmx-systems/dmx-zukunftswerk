@@ -11,11 +11,12 @@ public interface ZukunftswerkService {
 
     List<Topic> getDiscussion();
 
-    // Note: there is no createDocument() call. This is done by Core's createTopic().
+    // Note: there is no createDocument() call.
+    // Documents are created by a generic createTopic() call.
 
     Topic createNote(String note);
 
     Topic createLabel(String label);
 
-    Topic createComment(String comment, long refTopicId, IdList fileTopicIds);
+    Topic createComment(String comment, IdList refTopicIds, IdList fileTopicIds);
 }

@@ -32,7 +32,7 @@
         <div class="button-panel">
           <el-button type="text" @click="openUploadDialog"><zw-string>action.attach_files</zw-string></el-button>
         </div>
-        <el-button class="submit-button" type="primary" size="medium" @click="submit">
+        <el-button class="submit-button" type="primary" size="medium" @click="createComment">
           <zw-string>action.submit</zw-string>
         </el-button>
       </div>
@@ -96,12 +96,15 @@ export default {
       )
     },
 
-    refTopicId () {
+    refTopicIds () {
+      const ids = []
       if (this.refComment) {
-        return this.refComment.id
-      } else if (this.refDocument) {
-        return this.refDocument.id
+        ids.push(this.refComment.id)
       }
+      if (this.refDocument) {
+        ids.push(this.refDocument.id)
+      }
+      return ids
     },
 
     refDocument () {
@@ -127,11 +130,11 @@ export default {
       this.$store.dispatch('setPanelVisibility', false)
     },
 
-    submit () {
+    createComment () {
       this.submitting = true
       this.$store.dispatch('createComment', {
         comment: this.newComment,
-        refTopicId: this.refTopicId,
+        refTopicIds: this.refTopicIds,
         fileTopicIds: this.fileTopicIds
       }).then(comment => {
         this.newComment = ''

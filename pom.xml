@@ -7,7 +7,7 @@
     <name>DMX Zukunftswerk</name>
     <groupId>systems.dmx</groupId>
     <artifactId>dmx-zukunftswerk</artifactId>
-    <version>0.9</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <description>The Zukunftswerk collaboration platform</description>

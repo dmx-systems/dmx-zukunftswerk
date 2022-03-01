@@ -1,9 +1,9 @@
 <template>
   <div class="zw-pdf-viewer">
     <canvas ref="canvas"></canvas>
-    <div class="toolbar">
+    <div class="toolbar" v-if="multipage" :style="toolbarStyle">
       <el-button type="text" icon="el-icon-arrow-left" @click="prev"></el-button>
-      <el-input class="page" v-model="pageNr"></el-input> / {{numPages}}
+      <span>{{pageNr}} / {{numPages}}</span>
       <el-button type="text" icon="el-icon-arrow-right" @click="next"></el-button>
     </div>
   </div>
@@ -25,13 +25,28 @@ export default {
   data () {
     return {
       pdf: undefined,
-      pageNr: 1
+      pageNr: undefined
     }
   },
 
   computed: {
+
     numPages () {
       return this.pdf?.numPages
+    },
+
+    multipage () {
+      return this.numPages > 1
+    },
+
+    toolbarStyle () {
+      return {
+        'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
+      }
+    },
+
+    zoom () {
+      return this.$store.state.zoom
     }
   },
 
@@ -39,8 +54,7 @@ export default {
     this.$emit('loading')
     pdfjs.getDocument(this.src).promise.then(pdf => {
       this.pdf = pdf
-      return this.renderPage()
-    }).then(() => {
+      this.pageNr = 1
       this.$emit('complete')
     })
   },
@@ -54,7 +68,7 @@ export default {
   methods: {
 
     renderPage () {
-      this.pdf.getPage(this.pageNr).then(page => {
+      return this.pdf.getPage(this.pageNr).then(page => {
         const scale = 1.5
         const viewport = page.getViewport({scale})
         const canvas = this.$refs.canvas
@@ -87,7 +101,20 @@ export default {
   width: 100%;
 }
 
-.zw-pdf-viewer .toolbar .page {
-  width: 50px;
+.zw-pdf-viewer .toolbar {
+  position: absolute;
+  right: 8px;
+  bottom: 11px;
+  padding: 2px;
+  background-color: rgba(255, 255, 255, .7);
+  visibility: hidden;
+}
+
+.zw-pdf-viewer:hover .toolbar {
+  visibility: visible;
+}
+
+.zw-pdf-viewer .toolbar .el-button {
+  font-size: inherit;
 }
 </style>

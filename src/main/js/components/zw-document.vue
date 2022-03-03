@@ -56,6 +56,7 @@ import dmx from 'dmx-api'
 export default {
 
   mixins: [
+    require('./mixins/doc-util').default,
     require('./mixins/cancel').default
   ],
 
@@ -126,26 +127,6 @@ export default {
       }
     },
 
-    file () {
-      // Note: empty topics created while edit have ID -1
-      const de = this.files.de && this.files.de.id != -1
-      const fr = this.files.fr && this.files.fr.id != -1
-      if (de && fr) {
-        return this.files[this.lang]
-      } else if (de) {
-        return this.files.de
-      } else if (fr) {
-        return this.files.fr
-      }
-    },
-
-    files () {
-      return {
-        de: this.getFile('de'),
-        fr: this.getFile('fr')
-      }
-    },
-
     docModel () {
       if (this.isNew) {
         return {
@@ -178,19 +159,11 @@ export default {
       }
     },
 
-    path () {
-      return this.getPath(this.file)
-    },
-
     mediaType () {
       if (this.file) {
         const mediaType = this.file.children['dmx.files.media_type']
         return mediaType && mediaType.value
       }
-    },
-
-    fileUrl () {
-      return '/filerepo/' + encodeURIComponent(this.path)
     },
 
     uploadUrl () {
@@ -235,10 +208,6 @@ export default {
 
     refDocument () {
       return this.$store.state.refDocument
-    },
-
-    lang () {
-      return this.$store.state.lang
     }
   },
 
@@ -264,19 +233,6 @@ export default {
 
     getDocName (lang) {
       return this.topic.children['zukunftswerk.document_name.' + lang]
-    },
-
-    getFile (lang) {
-      return this.topic.children['dmx.files.file#zukunftswerk.' + lang]
-    },
-
-    getPath (file) {
-      const path = this.getPathTopic(file)
-      return path && path.value
-    },
-
-    getPathTopic (file) {
-      return file && file.children['dmx.files.path']
     },
 
     setRefDocument () {
@@ -324,10 +280,6 @@ export default {
     beforeUpload (file) {
       this.saveButtonDisabled = true
     }
-  },
-
-  components: {
-    'zw-pdf-viewer':  require('./zw-pdf-viewer').default
   }
 }
 </script>

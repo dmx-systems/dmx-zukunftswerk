@@ -2,7 +2,8 @@
   <div :class="['zw-webclient', {dragging: isDragging}]" @mousedown="mousedown" @mouseup="mouseup" @keyup.tab="tab">
     <zw-header></zw-header>
     <div class="content-area">
-      <zw-canvas></zw-canvas>
+      <zw-pdf-viewer v-if="fullscreen" :src="fileUrl"></zw-pdf-viewer>
+      <zw-canvas v-else></zw-canvas>
       <zw-resizer></zw-resizer>
       <zw-discussion></zw-discussion>
     </div>
@@ -13,6 +14,7 @@
 export default {
 
   mixins: [
+    require('./mixins/doc-util').default,
     require('./mixins/dragging').default
   ],
 
@@ -25,12 +27,20 @@ export default {
 
   computed: {
 
+    topic () {
+      return this.$store.state.topic
+    },
+
     pan () {
       return this.$store.state.pan
     },
 
     isDragging () {
       return this.$store.state.isDragging
+    },
+
+    fullscreen () {
+      return this.$store.state.fullscreen
     }
   },
 

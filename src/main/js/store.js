@@ -26,6 +26,7 @@ const state = {
   zoom: 1,                      // canvas zoom (Number)
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
                                 // canvas pan, panel resize)
+  fullscreen: false,            // if true the current document is rendered fullscreen
 
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
@@ -128,6 +129,10 @@ const actions = {
   dragStop () {
     // console.log('dragStop')
     state.isDragging = false
+  },
+
+  setFullscreen (_, fullscreen) {
+    state.fullscreen = fullscreen
   },
 
   newTopic (_, topic) {

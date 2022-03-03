@@ -1,3 +1,6 @@
+/**
+ * Note: the host component is expected to hold "topic": any topic which has an "Original Language" field.
+ */
 export default {
 
   computed: {

@@ -8,7 +8,7 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 0.9.1')
+console.log('[ZW] 2022/03/03')
 
 // 1) Init dmx library ### TODO: only top-level types should be required here
 dmx.init({store, onHttpError})
@@ -41,6 +41,7 @@ Vue.component('zw-truncate',     require('./components/zw-truncate').default)
 Vue.component('zw-comment-ref',  require('./components/zw-comment-ref').default)
 Vue.component('zw-document-ref', require('./components/zw-document-ref').default)
 Vue.component('zw-attachment',   require('./components/zw-attachment').default)
+Vue.component('zw-pdf-viewer',   require('./components/zw-pdf-viewer').default)
 
 // 4) Create Vue root instance
 new Vue({

@@ -1,7 +1,10 @@
 <template>
   <div class="zw-pdf-viewer">
     <canvas ref="canvas"></canvas>
-    <div class="toolbar" v-if="multipage" :style="toolbarStyle">
+    <div class="toolbar upper" :style="toolbarStyle">
+      <el-button type="text" :icon="fullscreenIcon" @click="toggleFullscreen"></el-button>
+    </div>
+    <div class="toolbar lower" v-if="pagerVisibility" :style="toolbarStyle">
       <el-button type="text" icon="el-icon-arrow-left" @click="prev"></el-button>
       <span>{{pageNr}} / {{numPages}}</span>
       <el-button type="text" icon="el-icon-arrow-right" @click="next"></el-button>
@@ -43,6 +46,10 @@ export default {
       return this.numPages > 1
     },
 
+    pagerVisibility () {
+      return this.multipage && !this.fullscreen
+    },
+
     toolbarStyle () {
       return {
         'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
@@ -51,6 +58,14 @@ export default {
 
     zoom () {
       return this.$store.state.zoom
+    },
+
+    fullscreenIcon () {
+      return this.fullscreen ? 'el-icon-bottom-left' : 'el-icon-top-right'
+    },
+
+    fullscreen () {
+      return this.$store.state.fullscreen
     }
   },
 
@@ -95,6 +110,10 @@ export default {
       })
     },
 
+    toggleFullscreen () {
+      this.$store.dispatch('setFullscreen', !this.fullscreen)
+    },
+
     prev () {
       if (this.pageNr > 1) {
         this.pageNr--
@@ -111,17 +130,29 @@ export default {
 </script>
 
 <style>
+.zw-pdf-viewer {
+  position: relative;
+}
+
 .zw-pdf-viewer canvas {
   width: 100%;
 }
 
 .zw-pdf-viewer .toolbar {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  visibility: hidden;
   padding: 2px;
   background-color: rgba(255, 255, 255, .7);
-  visibility: hidden;
+}
+
+.zw-pdf-viewer .toolbar.upper {
+  right: 4px;
+  top: 4px;
+}
+
+.zw-pdf-viewer .toolbar.lower {
+  right: 1px;
+  bottom: 4px;
 }
 
 .zw-pdf-viewer:hover .toolbar {

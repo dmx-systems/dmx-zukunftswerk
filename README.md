@@ -12,11 +12,13 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 * Bug fixes:
     * PDF viewer and language switch
     * Edit/Delete and non-team members
+* Compatible with DMX 5.3-SNAPSHOT
 
 **0.9** -- Mar 1, 2022
 
-* Actions: edit, delete
-    * Reply works also in document context
+* Actions:
+    * Edit and Delete for all types
+    * Reply works also when doc-filter is set
 * UI improvements:
     * UI-less PDF viewer
     * Discussion panel: chat metaphor
@@ -33,6 +35,6 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 * Data model: Notes, Documents, Comments, Labels, Arrows
 * Basic UI: header, canvas, discussion panel, doc-filter
 * Actions: create, reply, pan, zoom, move item, resize item
-* User roles: team member (authoring), user (commenting)
+* User roles: team member (authoring), participant (commenting)
 * Client-sync: comments
 * Compatible with DMX 5.3-SNAPSHOT

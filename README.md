@@ -25,16 +25,16 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
     * Canvas zooms around mouse position
     * All forms have a Cancel button
 * Design:
-    * Header shows ZW logo
     * Redesigned discussion panel
-    * More visible doc-filter
+    * Doc-filter is more visible
+    * Header shows ZW logo
 * Compatible with DMX 5.3-SNAPSHOT
 
 **0.8** -- Jan 15, 2022
 
 * Data model: Notes, Documents, Comments, Labels, Arrows
 * Basic UI: header, canvas, discussion panel, doc-filter
-* Actions: create, reply, pan, zoom, move item, resize item
+* Actions: create, reply, set doc-filter, pan, zoom, move item, resize item
 * User roles: team member (authoring), participant (commenting)
 * Client-sync: comments
 * Compatible with DMX 5.3-SNAPSHOT

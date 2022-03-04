@@ -1,6 +1,8 @@
 <template>
-  <div class="zw-pdf-viewer">
-    <canvas ref="canvas"></canvas>
+  <div :class="['zw-pdf-viewer', {fullscreen}]">
+    <div class="scroll-container">
+      <canvas ref="canvas"></canvas>
+    </div>
     <div class="toolbar upper" :style="toolbarStyle">
       <el-button type="text" :icon="fullscreenIcon" @click="toggleFullscreen"></el-button>
     </div>
@@ -47,7 +49,7 @@ export default {
     },
 
     pagerVisibility () {
-      return this.multipage && !this.fullscreen
+      return this.multipage
     },
 
     toolbarStyle () {
@@ -60,12 +62,12 @@ export default {
       return this.$store.state.zoom
     },
 
-    fullscreenIcon () {
-      return this.fullscreen ? 'el-icon-bottom-left' : 'el-icon-top-right'
-    },
-
     fullscreen () {
       return this.$store.state.fullscreen
+    },
+
+    fullscreenIcon () {
+      return this.fullscreen ? 'el-icon-bottom-left' : 'el-icon-top-right'
     }
   },
 
@@ -134,7 +136,12 @@ export default {
   position: relative;
 }
 
-.zw-pdf-viewer canvas {
+.zw-pdf-viewer.fullscreen .scroll-container {
+  height: 100%;
+  overflow: auto;
+}
+
+.zw-pdf-viewer .scroll-container canvas {
   width: 100%;
 }
 
@@ -146,13 +153,22 @@ export default {
 }
 
 .zw-pdf-viewer .toolbar.upper {
-  right: 4px;
   top: 4px;
+  right: 4px;
+}
+
+.zw-pdf-viewer.fullscreen .toolbar.upper {
+  right: 16px;
 }
 
 .zw-pdf-viewer .toolbar.lower {
   right: 1px;
   bottom: 4px;
+}
+
+.zw-pdf-viewer.fullscreen .toolbar.lower {
+  bottom: 20px;
+  right: 16px;
 }
 
 .zw-pdf-viewer:hover .toolbar {

@@ -53,8 +53,10 @@ export default {
     },
 
     toolbarStyle () {
-      return {
-        'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
+      if (!this.fullscreen) {
+        return {
+          'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
+        }
       }
     },
 

@@ -2,10 +2,10 @@
   <div :class="['zw-webclient', {dragging: isDragging}]" @mousedown="mousedown" @mouseup="mouseup" @keyup.tab="tab">
     <zw-header></zw-header>
     <div class="content-area">
-      <zw-pdf-viewer v-if="fullscreen" :src="fileUrl"></zw-pdf-viewer>
-      <zw-canvas v-else></zw-canvas>
+      <zw-pdf-viewer class="left-panel" v-if="fullscreen" :src="fileUrl"></zw-pdf-viewer>
+      <zw-canvas class="left-panel" v-else></zw-canvas>
       <zw-resizer></zw-resizer>
-      <zw-discussion></zw-discussion>
+      <zw-discussion class="right-panel"></zw-discussion>
     </div>
   </div>
 </template>

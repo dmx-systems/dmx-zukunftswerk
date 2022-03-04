@@ -111,11 +111,9 @@ export default {
           canvasContext: canvas.getContext('2d'),
           viewport
         }).promise
+      }).then(() => {
+        this.$store.dispatch('readPanelXFromView')
       })
-    },
-
-    toggleFullscreen () {
-      this.$store.dispatch('setFullscreen', !this.fullscreen)
     },
 
     prev () {
@@ -128,6 +126,10 @@ export default {
       if (this.pageNr < this.numPages) {
         this.pageNr++
       }
+    },
+
+    toggleFullscreen () {
+      this.$store.dispatch('setFullscreen', !this.fullscreen)
     }
   }
 }
@@ -173,7 +175,7 @@ export default {
 }
 
 .zw-pdf-viewer.fullscreen .toolbar.lower {
-  bottom: 0px;
+  bottom: 18px;
   right: 20px;
 }
 

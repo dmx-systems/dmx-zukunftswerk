@@ -121,6 +121,10 @@ const actions = {
     state.panelX = x
   },
 
+  readPanelXFromView () {
+    state.panelX = document.querySelector('.left-panel').clientWidth
+  },
+
   dragStart () {
     // console.log('dragStart')
     state.isDragging = true
@@ -131,8 +135,13 @@ const actions = {
     state.isDragging = false
   },
 
-  setFullscreen (_, fullscreen) {
+  setFullscreen ({dispatch}, fullscreen) {
     state.fullscreen = fullscreen
+    if (!fullscreen) {
+      Vue.nextTick(() => {
+        document.querySelector('.zw-resizer').__vue__.resize()
+      })
+    }
   },
 
   newTopic (_, topic) {

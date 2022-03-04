@@ -20,8 +20,7 @@ export default {
     //
     window.addEventListener('resize', e => {
       if (this.visible) {
-        // read state from view
-        this.$store.dispatch('setPanelX', document.querySelector('.zw-canvas').clientWidth)
+        this.$store.dispatch('readPanelXFromView')      // read state from view
       }
     })
   },
@@ -71,8 +70,8 @@ export default {
      */
     resize () {
       const container = document.querySelector('.zw-webclient')
-      const paneL     = document.querySelector('.zw-canvas')
-      const paneR     = document.querySelector('.zw-discussion')
+      const paneL     = document.querySelector('.left-panel')
+      const paneR     = document.querySelector('.right-panel')
       const paneLWidth = this.left
       const paneRWidth = container.clientWidth - paneLWidth
       paneL.style.width = `${paneLWidth}px`

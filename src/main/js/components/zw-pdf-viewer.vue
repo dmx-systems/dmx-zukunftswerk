@@ -163,14 +163,18 @@ export default {
   right: 16px;
 }
 
+.zw-pdf-viewer.fullscreen .toolbar.upper .el-button {
+  font-size: 18px;
+}
+
 .zw-pdf-viewer .toolbar.lower {
   right: 1px;
   bottom: 4px;
 }
 
 .zw-pdf-viewer.fullscreen .toolbar.lower {
-  bottom: 20px;
-  right: 16px;
+  bottom: 0px;
+  right: 20px;
 }
 
 .zw-pdf-viewer:hover .toolbar {

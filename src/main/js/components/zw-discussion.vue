@@ -211,7 +211,7 @@ export default {
   background-color: var(--discussion-color);
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: relative;         /* place close-button relative to this element */
   box-sizing: border-box;
   z-index: 1;
 }

@@ -175,7 +175,6 @@ export default {
 }
 
 .zw-pdf-viewer.fullscreen .toolbar.lower {
-  bottom: 18px;
   right: 20px;
 }
 

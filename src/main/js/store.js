@@ -29,7 +29,7 @@ const state = {
   fullscreen: false,            // if true the current document is rendered fullscreen
 
   panelVisibility: true,        // discussion panel visibility (Boolean)
-  panelX: 0.65 * width,         // x coordinate in pixel (Number)
+  panelX: 0.65 * width,         // x coordinate in pixel (Number)         // ### TODO: rename to "canvasWidth"?
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment

@@ -68,6 +68,10 @@ export default {
       return this.$store.state.fullscreen
     },
 
+    panelX () {
+      return this.$store.state.panelX
+    },
+
     fullscreenIcon () {
       return this.fullscreen ? 'el-icon-bottom-left' : 'el-icon-top-right'
     }
@@ -102,8 +106,11 @@ export default {
 
     renderPage () {
       return this.pdf.getPage(this.pageNr).then(page => {
-        const scale = 1.5
-        const viewport = page.getViewport({scale})
+        let viewport = page.getViewport({scale: 1})
+        if (this.fullscreen) {
+          const scale = this.panelX / viewport.width
+          viewport = page.getViewport({scale})
+        }
         const canvas = this.$refs.canvas
         canvas.width = viewport.width
         canvas.height = viewport.height
@@ -111,8 +118,6 @@ export default {
           canvasContext: canvas.getContext('2d'),
           viewport
         }).promise
-      }).then(() => {
-        this.$store.dispatch('readPanelXFromView')
       })
     },
 

@@ -1,17 +1,16 @@
 <template>
-  <div :class="['zw-attachment', {enabled}]">
-    <el-tag :closable="closable" size="medium" @click="download" @close="remove">
-      <span class="fa fa-fw fa-paperclip"></span>
-      <span>{{fileName}}</span>
-    </el-tag>
-  </div>
+  <el-button class="zw-attachment" type="text" :disabled="!enabled" @click="download">
+    <span class="icon fa fa-fw fa-paperclip"></span>
+    <span class="file-name">{{fileName}}</span>
+    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click="remove"></el-button>
+  </el-button>
 </template>
 
 <script>
 export default {
 
   props: {
-    file: {   // the attachment (File topic, plain Object)
+    file: {               // the attachment (File topic, plain Object)
       type: Object,
       required: true
     },
@@ -33,9 +32,7 @@ export default {
   methods: {
 
     download () {
-      if (this.enabled) {
-        this.$store.dispatch('downloadFile', this.path)
-      }
+      this.$store.dispatch('downloadFile', this.path)
     },
 
     remove () {
@@ -46,14 +43,25 @@ export default {
 </script>
 
 <style>
-.zw-attachment .el-tag {
-  height: unset;                  /* Element UI Tag default is 32px; not suitable for multi-line tags */
-  line-height: unset;             /* Element UI Tag default is 30px */
-  white-space: unset;             /* Element UI Tag default is "nowrap" */
-  padding: 5px 10px 5px 10px;     /* Element UI Tag default is "0 10px" */
+.zw-attachment {
+  display: block;
+  margin-left: 0 !important;
 }
 
-.zw-attachment.enabled .el-tag {
-  cursor: pointer;
+.zw-attachment .file-name {
+  font-size: var(--secondary-font-size);
+}
+
+.zw-attachment .icon {
+  font-size: 16px;
+}
+
+.zw-attachment .close-button {
+  font-size: 16px;
+  visibility: hidden;
+}
+
+.zw-attachment:hover .close-button {
+  visibility: visible;
 }
 </style>

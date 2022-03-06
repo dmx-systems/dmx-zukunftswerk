@@ -20,7 +20,6 @@
         <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
         <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
-        <div class="field-label"><zw-string>label.new_comment</zw-string></div>
         <div class="dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
         </div>
@@ -54,7 +53,11 @@ export default {
       refComment: undefined,          // comment the new comment relates to (a Comment topic, plain object)
       attachments: [],                // attachments for the new comment (array of File topics)
       uploadDialogVisible: false,     // upload dialog visibility (for comment attachments)
-      submitting: false               // true while submitting new comment
+      submitting: false,              // true while submitting new comment
+      quillOptions: {                 // options for new-comment quill editor
+        placeholder: this.$store.state.getString('label.new_comment'),
+        ...this.$store.state.quillOptions
+      }
     }
   },
 
@@ -95,10 +98,6 @@ export default {
 
     fileTopicIds () {
       return this.attachments.map(file => file.id)
-    },
-
-    quillOptions () {
-      return this.$store.state.quillOptions
     }
   },
 
@@ -278,6 +277,13 @@ export default {
 .zw-discussion .new-comment .ql-editor {
   max-height: 35vh;
   padding: 0 !important;
+}
+
+.zw-discussion .new-comment .ql-editor.ql-blank::before {
+  color: var(--secondary-color);
+  font-style: unset;
+  left: unset;
+  right: unset;
 }
 
 .zw-discussion .new-comment .zw-comment-ref,

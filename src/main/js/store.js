@@ -37,6 +37,7 @@ const state = {
   lang: 'de',                   // UI language ('de'/'fr')
   langStrings:  require('./lang-strings').default,
   quillOptions: require('./quill-options').default,
+  getString,
 
   NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
   NEW_POS_Y: 42

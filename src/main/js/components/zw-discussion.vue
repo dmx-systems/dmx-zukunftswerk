@@ -20,16 +20,16 @@
         <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
         </zw-comment-ref>
         <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
-        <div class="dmx-html-field">
+        <div class="editor-container dmx-html-field">
           <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
+          <el-button class="attach-button" type="text" icon="el-icon-paperclip" :title="attachButtonTitle"
+            @click="openUploadDialog">
+          </el-button>
         </div>
         <div class="attachments">
           <zw-attachment v-for="file in attachments" :file="file" :closable="true" :key="file.id"
             @remove="removeAttachment">
           </zw-attachment>
-        </div>
-        <div class="button-panel">
-          <el-button type="text" @click="openUploadDialog"><zw-string>action.attach_files</zw-string></el-button>
         </div>
         <el-button class="submit-button" type="primary" size="medium" @click="createComment">
           <zw-string>action.submit</zw-string>
@@ -98,6 +98,10 @@ export default {
 
     fileTopicIds () {
       return this.attachments.map(file => file.id)
+    },
+
+    attachButtonTitle () {
+      return this.$store.state.getString('action.attach_files')
     }
   },
 
@@ -274,9 +278,13 @@ export default {
   border-radius: 10px;
 }
 
+.zw-discussion .new-comment .editor-container {
+  position: relative;
+}
+
 .zw-discussion .new-comment .ql-editor {
   max-height: 35vh;
-  padding: 0 !important;
+  padding: 0 40px 0 0 !important;
 }
 
 .zw-discussion .new-comment .ql-editor.ql-blank::before {
@@ -300,14 +308,10 @@ export default {
   margin-top: 15px;
 }
 
-.zw-discussion .new-comment .button-panel {
+.zw-discussion .new-comment .attach-button {
   position: absolute;
-  right: 22px;    /* 10px margin + 12px padding */
-  visibility: hidden;
-  z-index: 1;     /* place button panel before attachments */
-}
-
-.zw-discussion .new-comment:hover .button-panel {
-  visibility: visible;
+  top: 0;
+  right: 0;
+  font-size: 20px;
 }
 </style>

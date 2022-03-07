@@ -48,6 +48,11 @@ export default {
   margin-left: 0 !important;
 }
 
+.zw-attachment.is-disabled {
+  color: var(--secondary-color);    /* Element UI Button default is #c0c4cc */
+  cursor: unset !important;
+}
+
 .zw-attachment .file-name {
   font-size: var(--secondary-font-size);
 }

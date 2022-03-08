@@ -16,23 +16,24 @@
         </zw-comment>
       </div>
       <!-- New-Comment panel -->
-      <div class="new-comment" v-if="isWritable" v-loading="submitting">
-        <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
-        </zw-comment-ref>
-        <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
-        <div class="editor-container dmx-html-field">
-          <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
-          <el-button class="attach-button" type="text" icon="el-icon-paperclip" :title="attachButtonTitle"
-            @click="openUploadDialog">
-          </el-button>
+      <div class="new-comment-container">
+        <div class="new-comment" v-if="isWritable" v-loading="submitting">
+          <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
+          </zw-comment-ref>
+          <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
+          <div class="editor-container dmx-html-field">
+            <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
+            <el-button class="attach-button" type="text" icon="el-icon-paperclip" :title="attachButtonTitle"
+              @click="openUploadDialog">
+            </el-button>
+          </div>
+          <div class="attachments">
+            <zw-attachment v-for="file in attachments" :file="file" :closable="true" :key="file.id"
+              @remove="removeAttachment">
+            </zw-attachment>
+          </div>
         </div>
-        <div class="attachments">
-          <zw-attachment v-for="file in attachments" :file="file" :closable="true" :key="file.id"
-            @remove="removeAttachment">
-          </zw-attachment>
-        </div>
-        <el-button class="submit-button" type="primary" size="medium" @click="createComment">
-          <zw-string>action.submit</zw-string>
+        <el-button class="submit-button" type="text" icon="el-icon-circle-plus" size="medium" @click="createComment">
         </el-button>
       </div>
     </template>
@@ -269,9 +270,13 @@ export default {
   margin-top: 20px;
 }
 
-.zw-discussion .new-comment {
+.zw-discussion .new-comment-container {
+  display: flex;
   margin-top: 20px;
-  margin-right: 10px;
+}
+
+.zw-discussion .new-comment {
+  flex-grow: 1;
   background-color: white;
   padding: 12px;
   border-radius: 10px;
@@ -302,8 +307,7 @@ export default {
   margin-top: 6px;
 }
 
-.zw-discussion .new-comment .zw-attachment:first-child,
-.zw-discussion .new-comment .submit-button {
+.zw-discussion .new-comment .zw-attachment:first-child {
   margin-top: 15px;
 }
 
@@ -312,5 +316,10 @@ export default {
   top: 0;
   right: 0;
   font-size: 20px;
+}
+
+.zw-discussion .new-comment-container .submit-button {
+  font-size: 30px;
+  margin: 0 10px;
 }
 </style>

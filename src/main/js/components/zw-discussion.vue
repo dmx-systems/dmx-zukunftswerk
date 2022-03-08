@@ -272,6 +272,7 @@ export default {
 
 .zw-discussion .new-comment-container {
   display: flex;
+  align-items: flex-end;
   margin-top: 20px;
 }
 
@@ -320,6 +321,6 @@ export default {
 
 .zw-discussion .new-comment-container .submit-button {
   font-size: 30px;
-  margin: 0 10px;
+  margin: 0 10px 5px 10px;
 }
 </style>

@@ -16,8 +16,8 @@
         </zw-comment>
       </div>
       <!-- New-Comment panel -->
-      <div class="new-comment-container">
-        <div class="new-comment" v-if="isWritable" v-loading="submitting">
+      <div class="new-comment-container" v-if="isWritable" v-loading="submitting">
+        <div class="new-comment">
           <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
           </zw-comment-ref>
           <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
@@ -236,7 +236,7 @@ export default {
 .zw-discussion > .close-button {
   position: absolute;
   top: 6px;
-  right: 0px;
+  right: 6px;
   font-size: 30px;
 }
 
@@ -321,6 +321,6 @@ export default {
 
 .zw-discussion .new-comment-container .submit-button {
   font-size: 30px;
-  margin: 0 10px 5px 10px;
+  margin: 0 10px 6px 10px;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div :class="['zw-discussion', panelVisibility ? 'open' : 'close']">
-    <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-arrow-left" @click="open">
+    <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-d-arrow-left" @click="open">
     </el-button>
     <template v-else>
-      <el-button class="close-button" type="text" icon="el-icon-arrow-right" @click="close"></el-button>
+      <el-button class="close-button" type="text" icon="el-icon-d-arrow-right" @click="close"></el-button>
       <zw-string class="heading">label.discussion</zw-string>
       <div class="doc-filter" v-if="refDocument">
         <zw-string>label.document_filter</zw-string>
@@ -221,7 +221,6 @@ export default {
 
 .zw-discussion.open {
   padding: 10px 0 10px 10px;
-  flex-grow: 1;
 }
 
 .zw-discussion.close {

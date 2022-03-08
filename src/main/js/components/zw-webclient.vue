@@ -119,6 +119,7 @@ export default {
 
 .zw-webclient .content-area {
   display: flex;
+  flex-grow: 1;
   min-height: 0;
 }
 </style>

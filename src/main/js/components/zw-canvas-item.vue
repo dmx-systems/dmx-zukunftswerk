@@ -1,7 +1,7 @@
 <template>
   <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h" :handles="handles"
-      :scale="zoom" @activated="select" @dragstop="setPos" @resizestop="setSize" @dragging="dragging"
-      @resizing="resizing">
+      :scale="zoom" :draggable="isTeam" :resizable="isTeam" @activated="select" @dragstop="setPos" @resizestop="setSize"
+      @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @mousedown.native="mousedown" @resize-style="setResizeStyle">
     </component>

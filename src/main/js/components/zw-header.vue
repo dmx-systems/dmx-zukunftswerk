@@ -5,6 +5,10 @@
       <zw-string>label.shared_workspace</zw-string>:
       <span class="name">{{workspaceName}}</span>
     </div>
+    <div class="team-panel" v-if="isTeam">
+      <el-button type="text" icon="el-icon-s-tools" @click="team"></el-button>
+      <el-button type="text" icon="el-icon-s-custom" @click="team"></el-button>
+    </div>
     <el-dropdown size="medium" trigger="click" @command="setLang">
       <el-button type="text">
         <span>{{lang.toUpperCase()}}</span><span class="el-icon-arrow-down el-icon--right"></span>
@@ -27,6 +31,10 @@ const logo = {
 export default {
 
   computed: {
+
+    isTeam () {
+      return this.$store.state.isTeam
+    },
 
     workspace () {
       return this.$store.state.workspace
@@ -74,8 +82,13 @@ export default {
   },
 
   methods: {
+
     setLang (lang) {
       this.$store.dispatch('setLang', lang)
+    },
+
+    team () {
+      // TODO
     }
   },
 
@@ -107,6 +120,10 @@ export default {
 .zw-header .workspace .name {
   font-weight: bold;
   font-style: italic;
+}
+
+.zw-header .team-panel {
+  margin-right: 24px;
 }
 
 .zw-header .zw-login-state {

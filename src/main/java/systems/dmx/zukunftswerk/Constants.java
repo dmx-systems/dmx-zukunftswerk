@@ -13,6 +13,7 @@ public class Constants {
     public static final String LANGUAGE          = "zukunftswerk.language";
 
     // Assoc Types
+    public static final String SHARED_WORKSPACE  = "zukunftswerk.shared_workspace";
     public static final String ATTACHMENT        = "zukunftswerk.attachment";
     public static final String ORIGINAL_LANGUAGE = "zukunftswerk.original_language";
     public static final String DE                = "zukunftswerk.de";

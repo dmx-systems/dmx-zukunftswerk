@@ -244,6 +244,19 @@
             }
           }
         ]
+      },
+      // Arrow
+      {
+        "value":       "Arrow",
+        "uri":         "zukunftswerk.arrow",
+        "dataTypeUri": "dmx.core.text"
+      }
+    ],
+    "assoc_types": [
+      {
+        "value":       "Shared Workspace",
+        "uri":         "zukunftswerk.shared_workspace",
+        "dataTypeUri": "dmx.core.text"
       }
     ],
     "topics": [

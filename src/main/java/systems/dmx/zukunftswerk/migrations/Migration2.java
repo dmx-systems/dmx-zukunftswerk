@@ -15,7 +15,7 @@ import systems.dmx.workspaces.WorkspacesService;
 
 /**
  * Extends "Workspace" by 2 more "Workspace Name"s (de+fr).
- * Creates "Community" and "Team" workspaces.
+ * Creates "Team" workspaces.
  * <p>
  * Part of Zukunftswerk 0.8
  * Runs ALWAYS.
@@ -40,10 +40,7 @@ public class Migration2 extends Migration {
             .addCompDefBefore(mf.newCompDefModel(DE, false, false, WORKSPACE, WORKSPACE_NAME, ONE), SHARING_MODE)
             .addCompDefBefore(mf.newCompDefModel(FR, false, false, WORKSPACE, WORKSPACE_NAME, ONE), SHARING_MODE);
         //
-        // Create "Community" and "Team" workspaces
-        acs.setWorkspaceOwner(
-            ws.createWorkspace("Community", "zukunftswerk.community", SharingMode.PUBLIC), ADMIN_USERNAME
-        );
+        // Create "Team" workspace
         acs.setWorkspaceOwner(
             ws.createWorkspace("Team", "zukunftswerk.team", SharingMode.PUBLIC), ADMIN_USERNAME
         );

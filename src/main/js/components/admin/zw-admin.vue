@@ -51,19 +51,20 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: var(--discussion-color);
-  padding: 15px 10px 10px 10px;
+  padding: 27px 12px 12px 12px;
 }
 
 .zw-admin .nav-bar .el-button {
+  font-size: 16px;
   margin: 0;
 }
 
 .zw-admin .nav-bar .el-button + .el-button {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .zw-admin .nav-bar .close-button {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .zw-admin .nav-bar .gap {

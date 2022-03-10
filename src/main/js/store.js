@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import {MessageBox} from 'element-ui'
 import http from 'axios'
 import dmx from 'dmx-api'
+import adminStore from './admin-store'
 
 window.addEventListener('focus', updateWorkspaceCookie)
 
@@ -35,7 +36,7 @@ const state = {
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   lang: 'de',                   // UI language ('de'/'fr')
-  langStrings:  require('./lang-strings').default,
+  langStrings:  require('./ui-strings').default,
   quillOptions: require('./quill-options').default,
   getString,
 
@@ -347,6 +348,8 @@ const store = new Vuex.Store({
   state,
   actions
 })
+
+store.registerModule('admin', adminStore)
 
 export default store
 

@@ -11,6 +11,10 @@ export default {
 
   'label.shared_workspace.de': 'Gemeinsamer Arbeitsbereich',
   'label.shared_workspace.fr': 'Espace de travail commun',
+  'label.admin_workspaces.de': 'Workspaces und Mitglieder',
+  'label.admin_workspaces.fr': 'Espaces de travail et membres',
+  'label.admin_users.de': 'Benutzer und Mitgliedschaften',
+  'label.admin_users.fr': 'Utilisateurs et affiliations',
   'label.discussion.de': 'Diskussionsbeiträge',
   'label.discussion.fr': 'Contributions à la discussion',
   'label.document_filter.de': 'Filter auf Dokument:',

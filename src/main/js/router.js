@@ -6,7 +6,7 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Webclient from './components/zw-webclient'
+import Workspace from './components/zw-workspace'
 import store from './store'
 import dmx from 'dmx-api'
 
@@ -16,12 +16,12 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      component: Webclient
+      component: Workspace
     },
     {
       path: '/:topicmapId',
       name: 'topicmap',
-      component: Webclient
+      component: Workspace
     }
   ]
 })

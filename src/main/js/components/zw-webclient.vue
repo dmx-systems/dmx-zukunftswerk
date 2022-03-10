@@ -1,12 +1,7 @@
 <template>
   <div :class="['zw-webclient', {dragging: isDragging}]" @mousedown="mousedown" @mouseup="mouseup" @keyup.tab="tab">
     <zw-header></zw-header>
-    <div class="content-area">
-      <zw-pdf-viewer class="left-panel" v-if="fullscreen" :src="fileUrl"></zw-pdf-viewer>
-      <zw-canvas class="left-panel" v-else></zw-canvas>
-      <zw-resizer></zw-resizer>
-      <zw-discussion class="right-panel"></zw-discussion>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -14,7 +9,6 @@
 export default {
 
   mixins: [
-    require('./mixins/doc-util').default,
     require('./mixins/dragging').default
   ],
 
@@ -27,20 +21,12 @@ export default {
 
   computed: {
 
-    topic () {
-      return this.$store.state.topic
-    },
-
     pan () {
       return this.$store.state.pan
     },
 
     isDragging () {
       return this.$store.state.isDragging
-    },
-
-    fullscreen () {
-      return this.$store.state.fullscreen
     }
   },
 
@@ -98,10 +84,7 @@ export default {
   },
 
   components: {
-    'zw-header':     require('./zw-header').default,
-    'zw-canvas':     require('./zw-canvas').default,
-    'zw-discussion': require('./zw-discussion').default,
-    'zw-resizer':    require('./zw-resizer').default
+    'zw-header': require('./zw-header').default
   }
 }
 </script>
@@ -115,11 +98,5 @@ export default {
 
 .zw-webclient.dragging {
   user-select: none;
-}
-
-.zw-webclient .content-area {
-  display: flex;
-  flex-grow: 1;
-  min-height: 0;
 }
 </style>

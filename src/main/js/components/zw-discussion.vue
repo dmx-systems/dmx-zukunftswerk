@@ -222,6 +222,7 @@ export default {
 
 .zw-discussion.open {
   padding: 10px 0 10px 10px;
+  flex-grow: 1;
 }
 
 .zw-discussion.close {

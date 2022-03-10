@@ -4,6 +4,8 @@ package systems.dmx.zukunftswerk;
 
 public class Constants {
 
+    public static final String ZW_PLUGIN_URI     = "systems.dmx.zukunftswerk";
+
     // Topic Types
     public static final String DOCUMENT          = "zukunftswerk.document";
     public static final String NOTE              = "zukunftswerk.note";

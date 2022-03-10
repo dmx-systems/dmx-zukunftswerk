@@ -2,9 +2,11 @@ package systems.dmx.zukunftswerk;
 
 import static systems.dmx.core.Constants.*;
 import static systems.dmx.files.Constants.*;
+import static systems.dmx.workspaces.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.accesscontrol.AccessControlService;
+import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
@@ -141,11 +143,24 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
+    @GET
+    @Path("/admin/workspaces")
+    @Override
+    public List<RelatedTopic> getAllZWWorkspaces() {
+        try {
+            return dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE);
+        } catch (Exception e) {
+            throw new RuntimeException("Retrieving the ZW workspaces failed", e);
+        }
+    }
+
+
+
     // ------------------------------------------------------------------------------------------------- Private Methods
 
     private TopicModel createBilingualTopicModel(String topicTypeUri, String text) {
         // "en" acts as dummy language, not used in this application.
-        // This translation's sole purpose is language detection of the original text.
+        // This translation's sole purpose is language detection for the original text.
         Translation translation = deepls.translate(text, "en").get(0);
         String origLang = translation.detectedSourceLang.toLowerCase();
         logger.info("origLang=\"" + origLang + "\"");

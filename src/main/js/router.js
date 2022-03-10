@@ -7,6 +7,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Workspace from './components/zw-workspace'
+import Admin from './components/zw-admin'
 import store from './store'
 import dmx from 'dmx-api'
 
@@ -22,6 +23,11 @@ const router = new VueRouter({
       path: '/:topicmapId',
       name: 'topicmap',
       component: Workspace
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin
     }
   ]
 })
@@ -40,11 +46,9 @@ store.registerModule('routerModule', {
       initialNavigation(router.currentRoute)
     },
 
-    callRoute (_, location) {
-      router.push(location)
-    },
-
-    // ...
+    callAdminRoute () {
+      router.push({name: 'admin'})
+    }
   }
 })
 

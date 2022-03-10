@@ -5,10 +5,7 @@
       <zw-string>label.shared_workspace</zw-string>:
       <span class="name">{{workspaceName}}</span>
     </div>
-    <div class="team-panel" v-if="isTeam">
-      <el-button type="text" icon="el-icon-s-tools" @click="team"></el-button>
-      <el-button type="text" icon="el-icon-s-custom" @click="team"></el-button>
-    </div>
+    <el-button class="admin-button fa fa-wrench" v-if="isTeam" type="text" @click="admin"></el-button>
     <el-dropdown size="medium" trigger="click" @command="setLang">
       <el-button type="text">
         <span>{{lang.toUpperCase()}}</span><span class="el-icon-arrow-down el-icon--right"></span>
@@ -87,8 +84,8 @@ export default {
       this.$store.dispatch('setLang', lang)
     },
 
-    team () {
-      // TODO
+    admin () {
+      this.$store.dispatch('callAdminRoute')
     }
   },
 
@@ -122,8 +119,8 @@ export default {
   font-style: italic;
 }
 
-.zw-header .team-panel {
-  margin-right: 24px;
+.zw-header .admin-button {
+  margin-right: 20px;
 }
 
 .zw-header .zw-login-state {

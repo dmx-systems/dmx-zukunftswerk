@@ -366,8 +366,9 @@ function setUsername (username) {
 }
 
 function updateWorkspaceCookie () {
-  // console.log('dmx_workspace_id', state.workspace.id)
-  dmx.utils.setCookie('dmx_workspace_id', state.workspace.id)
+  if (state.workspace) {
+    dmx.utils.setCookie('dmx_workspace_id', state.workspace.id)
+  }
 }
 
 function updateIsWritable () {

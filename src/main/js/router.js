@@ -7,7 +7,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Workspace from './components/zw-workspace'
-import Admin from './components/zw-admin'
+import Admin from './components/admin/zw-admin'
 import store from './store'
 import dmx from 'dmx-api'
 
@@ -20,14 +20,14 @@ const router = new VueRouter({
       component: Workspace
     },
     {
-      path: '/:topicmapId',
-      name: 'topicmap',
-      component: Workspace
-    },
-    {
       path: '/admin',
       name: 'admin',
       component: Admin
+    },
+    {
+      path: '/:topicmapId',
+      name: 'workspace',
+      component: Workspace
     }
   ]
 })
@@ -44,6 +44,13 @@ store.registerModule('routerModule', {
 
     initialNavigation () {
       initialNavigation(router.currentRoute)
+    },
+
+    callWorkspaceRoute () {
+      router.push({
+        name: 'workspace',
+        params: {topicmapId: store.state.topicmap.id}
+      })
     },
 
     callAdminRoute () {
@@ -110,7 +117,7 @@ const getAssignedWorkspace = dmx.rpc.getAssignedWorkspace
 /**
  * Converts the given value into Number.
  *
- * @return  the number, or undefined if `undefined` or `null` is given.
+ * @return  the number, or undefined if `undefined`/`null` is given.
  *          Never returns `null`.
  *
  * @throws  if the given value is not one of Number/String/undefined/null.

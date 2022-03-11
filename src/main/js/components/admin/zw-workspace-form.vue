@@ -34,17 +34,6 @@ export default {
     }
   },
 
-  computed: {
-
-    workspaces () {
-      return this.$store.state.admin.workspaces
-    },
-
-    noWorkspaces () {
-      return this.workspaces.length === 0
-    }
-  },
-
   methods: {
 
     createWorkspace () {
@@ -70,10 +59,10 @@ export default {
 
 .zw-workspace-form .heading {
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .zw-workspace-form .submit-button {
-  margin-top: 24px;
+  margin-top: 26px;
 }
 </style>

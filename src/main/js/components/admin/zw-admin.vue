@@ -42,8 +42,9 @@ export default {
 
   components: {
     'zw-workspaces': require('./zw-workspaces').default,
+    'zw-users': require('./zw-users').default,
     'zw-workspace-form': require('./zw-workspace-form').default,
-    'zw-users': require('./zw-users').default
+    'zw-user-form': require('./zw-user-form').default
   }
 }
 </script>

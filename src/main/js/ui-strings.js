@@ -33,8 +33,14 @@ export default {
   'label.new_label.fr': 'Nouveau Titre',
   'label.new_workspace.de': 'Neuer Arbeitsbereich',
   'label.new_workspace.fr': 'Nouvel espace de travail',
+  'label.new_user.de': 'Neuer Benutzer',
+  'label.new_user.fr': 'Nouvel utilisateur',
   'label.workspace_name.de': 'Name',
   'label.workspace_name.fr': 'Nom',
+  'label.display_name.de': 'Name',
+  'label.display_name.fr': 'Nom',
+  'label.email_address.de': 'Email',
+  'label.email_address.fr': 'E-mail',
 
   'action.submit.de': 'OK',
   'action.submit.fr': 'OK',
@@ -50,6 +56,8 @@ export default {
   'action.attach_files.fr': 'Joindre des fichiers',
   'action.add_workspace.de': 'Arbeitsbereich hinuzfügen',
   'action.add_workspace.fr': 'Ajouter un espace de travail',
+  'action.add_user.de': 'Benutzer hinuzfügen',
+  'action.add_user.fr': 'Ajouter un utilisateur',
 
   'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',

@@ -26,5 +26,7 @@ public interface ZukunftswerkService {
 
     // Admin
 
-    List<RelatedTopic> getAllZWWorkspaces();
+    List<RelatedTopic> getZWWorkspaces();
+
+    Topic createZWWorkspace(String nameDe, String nameFr);
 }

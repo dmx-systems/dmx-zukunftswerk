@@ -13,6 +13,7 @@ import systems.dmx.core.osgi.PluginActivator;
 import systems.dmx.core.service.Cookies;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
+import systems.dmx.core.service.accesscontrol.SharingMode;
 import systems.dmx.core.service.event.PreSendTopic;
 import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
@@ -43,8 +44,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     @Inject private DeepLService deepls;
     @Inject private TimestampsService ts;
-    @Inject private WorkspacesService ws;           // needed by migration 2
-    @Inject private AccessControlService acs;       // needed by migration 2
+    @Inject private WorkspacesService ws;
+    @Inject private AccessControlService acs;
 
     private Messenger me;
 
@@ -143,14 +144,38 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
+    // Admin
+
     @GET
     @Path("/admin/workspaces")
     @Override
-    public List<RelatedTopic> getAllZWWorkspaces() {
+    public List<RelatedTopic> getZWWorkspaces() {
         try {
             return dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE);
         } catch (Exception e) {
             throw new RuntimeException("Retrieving the ZW workspaces failed", e);
+        }
+    }
+
+    @POST
+    @Path("/admin/workspace")
+    @Transactional
+    @Override
+    public Topic createZWWorkspace(@QueryParam("nameDe") String nameDe, @QueryParam("nameFr") String nameFr) {
+        try {
+            Topic workspace = ws.createWorkspace(nameDe, null, SharingMode.PUBLIC);     // FIXME: make COLLABORATIVE
+            workspace.update(mf.newChildTopicsModel()
+                .set(WORKSPACE_NAME + "#" + DE, nameDe)
+                .set(WORKSPACE_NAME + "#" + FR, nameFr)
+            );
+            dmx.createAssoc(mf.newAssocModel(
+                SHARED_WORKSPACE,
+                mf.newTopicPlayerModel(ZW_PLUGIN_URI, DEFAULT),
+                mf.newTopicPlayerModel(workspace.getId(), DEFAULT)
+            ));
+            return workspace;
+        } catch (Exception e) {
+            throw new RuntimeException("Creating a ZW workspace failed", e);
         }
     }
 

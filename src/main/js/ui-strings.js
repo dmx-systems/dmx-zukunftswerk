@@ -15,6 +15,8 @@ export default {
   'label.admin_workspaces.fr': 'Espaces de travail et membres',
   'label.admin_users.de': 'Benutzer und Mitgliedschaften',
   'label.admin_users.fr': 'Utilisateurs et affiliations',
+  'label.no_workspaces.de': 'Keine Workspaces vorhanden',
+  'label.no_workspaces.fr': 'Aucun espace de travail disponible',
   'label.discussion.de': 'Diskussionsbeiträge',
   'label.discussion.fr': 'Contributions à la discussion',
   'label.document_filter.de': 'Filter auf Dokument:',
@@ -29,6 +31,10 @@ export default {
   'label.new_note.fr': 'Nouvelle Note',
   'label.new_label.de': 'Neue Überschrift',
   'label.new_label.fr': 'Nouveau Titre',
+  'label.new_workspace.de': 'Neuer Workspace',
+  'label.new_workspace.fr': 'Nouvel espace de travail',
+  'label.workspace_name.de': 'Name',
+  'label.workspace_name.fr': 'Nom',
 
   'action.submit.de': 'OK',
   'action.submit.fr': 'OK',
@@ -42,6 +48,8 @@ export default {
   'action.delete.fr': 'Supprimer',
   'action.attach_files.de': 'Dateien anhängen',
   'action.attach_files.fr': 'Joindre des fichiers',
+  'action.add_workspace.de': 'Workspace hinuzfügen',
+  'action.add_workspace.fr': 'Ajouter un espace de travail',
 
   'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',

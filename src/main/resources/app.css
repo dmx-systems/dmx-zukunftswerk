@@ -30,7 +30,7 @@
   --secondary-color: #808080;
   --line-height: 1.5;
   --paragraph-spacing: 0.5em;
-  --field-spacing: 1.2em;                     /* vertical spacing between data fields */
+  --field-spacing: 16px;                      /* vertical spacing between data fields */
 
   --header-color: black;
   --discussion-color: #e6e6e6;
@@ -62,6 +62,10 @@ body.fixed {
 }
 
 /* Reusable classes */
+
+.secondary {
+  color: var(--secondary-color);
+}
 
 .label {
   font-size: var(--secondary-font-size) !important;

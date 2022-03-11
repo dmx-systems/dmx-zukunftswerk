@@ -243,7 +243,6 @@ export default {
 
 .zw-discussion > .heading {
   font-size: 20px;
-  font-weight: bold;
   margin-top: 14px;
   margin-bottom: 20px;
 }

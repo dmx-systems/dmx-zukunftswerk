@@ -6,27 +6,33 @@
       <div class="gap"></div>
       <el-button class="close-button fa fa-times-circle-o" type="text" @click="close"></el-button>
     </div>
-    <component :is="adminArea"></component>
+    <component :is="primaryPanel"></component>
+    <component :is="secondaryPanel"></component>
   </div>
 </template>
 
 <script>
 export default {
 
-  data () {
-    return {
-      adminArea: 'zw-workspaces'      // selected area: 'zw-workspaces'/'zw-users'
+  computed: {
+
+    primaryPanel () {
+      return this.$store.state.admin.primaryPanel
+    },
+
+    secondaryPanel () {
+      return this.$store.state.admin.secondaryPanel
     }
   },
 
   methods: {
 
     goWorkspaces () {
-      this.adminArea = 'zw-workspaces'
+      this.$store.dispatch('admin/setPrimaryPanel', 'zw-workspaces')
     },
 
     goUsers () {
-      this.adminArea = 'zw-users'
+      this.$store.dispatch('admin/setPrimaryPanel', 'zw-users')
     },
 
     close () {
@@ -36,6 +42,7 @@ export default {
 
   components: {
     'zw-workspaces': require('./zw-workspaces').default,
+    'zw-workspace-form': require('./zw-workspace-form').default,
     'zw-users': require('./zw-users').default
   }
 }
@@ -51,7 +58,7 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: var(--discussion-color);
-  padding: 27px 12px 12px 12px;
+  padding: 24px 12px 12px 12px;
 }
 
 .zw-admin .nav-bar .el-button {

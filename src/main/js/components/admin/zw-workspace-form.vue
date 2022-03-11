@@ -64,7 +64,7 @@ export default {
 <style>
 .zw-workspace-form {
   flex-grow: 1;
-  padding: 24px;
+  padding: 30px;
   background-color: var(--discussion-color);
 }
 

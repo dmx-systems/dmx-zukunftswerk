@@ -10,6 +10,7 @@ const actions = {
 
   setPrimaryPanel (_, panel) {
     state.primaryPanel = panel
+    state.secondaryPanel = undefined
   },
 
   setSecondaryPanel (_, panel) {

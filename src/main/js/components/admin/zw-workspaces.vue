@@ -43,7 +43,7 @@ export default {
 <style>
 .zw-workspaces {
   flex-grow: 1;
-  padding: 24px;
+  padding: 30px;
 }
 
 .zw-workspaces .heading {

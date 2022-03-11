@@ -1,5 +1,6 @@
 package systems.dmx.zukunftswerk;
 
+import static systems.dmx.accesscontrol.Constants.*;
 import static systems.dmx.core.Constants.*;
 import static systems.dmx.files.Constants.*;
 import static systems.dmx.workspaces.Constants.*;
@@ -154,6 +155,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             return dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE);
         } catch (Exception e) {
             throw new RuntimeException("Retrieving the ZW workspaces failed", e);
+        }
+    }
+
+    @GET
+    @Path("/admin/users")
+    @Override
+    public List<Topic> getUsers() {
+        try {
+            return dmx.getTopicsByType(USERNAME);
+        } catch (Exception e) {
+            throw new RuntimeException("Retrieving the ZW users failed", e);
         }
     }
 

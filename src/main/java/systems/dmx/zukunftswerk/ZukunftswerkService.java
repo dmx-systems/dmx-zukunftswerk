@@ -21,12 +21,15 @@ public interface ZukunftswerkService {
 
     Topic createComment(String comment, IdList refTopicIds, IdList fileTopicIds);
 
-    // Note: there is no createDocument() call.
-    // Documents are created by a generic createTopic() call.
+    // Note: there are no createDocument() or createArrow() calls here.
+    // Documents and arrows are created by generic createTopic() calls.
+    // For documents and arrows no auto-translation is involved.
 
     // Admin
 
     List<RelatedTopic> getZWWorkspaces();
+
+    List<Topic> getUsers();
 
     Topic createZWWorkspace(String nameDe, String nameFr);
 }

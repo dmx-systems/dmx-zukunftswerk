@@ -58,7 +58,7 @@ store.registerModule('routerModule', {
 store.watch(
   state => state.routerModule.router.currentRoute,
   (to, from) => {
-    console.log('Route watcher', to, from)
+    // console.log('Route watcher', to, from)
     navigate(to, from)
   }
 )

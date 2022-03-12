@@ -66,6 +66,7 @@ const actions = {
   },
 
   setWorkspace (_, workspaceId) {
+    console.log('setWorkspace', workspaceId)
     dmx.rpc.getTopic(workspaceId, true).then(workspace => {           // includeChildren=true
       if (workspace.typeUri !== 'dmx.workspaces.workspace') {
         throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)

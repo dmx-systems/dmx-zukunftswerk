@@ -36,7 +36,6 @@ export default {
 
 <style>
 .zw-users {
-  flex-grow: 1;
   padding: 30px;
 }
 

@@ -6,8 +6,8 @@
       <div class="gap"></div>
       <el-button class="close-button fa fa-times-circle-o" type="text" @click="close"></el-button>
     </div>
-    <component :is="primaryPanel"></component>
-    <component :is="secondaryPanel"></component>
+    <component class="primary-panel" :is="primaryPanel"></component>
+    <component class="secondary-panel" :is="secondaryPanel"></component>
   </div>
 </template>
 
@@ -77,5 +77,9 @@ export default {
 
 .zw-admin .nav-bar .gap {
   flex-grow: 1;
+}
+
+.zw-admin .primary-panel {
+  flex-basis: 50%;
 }
 </style>

@@ -152,7 +152,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public List<RelatedTopic> getZWWorkspaces() {
         try {
-            return dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE);
+            return DMXUtils.loadChildTopics(
+                dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE)
+            );
         } catch (Exception e) {
             throw new RuntimeException("Retrieving the ZW workspaces failed", e);
         }

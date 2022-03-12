@@ -43,6 +43,6 @@ export default {
 
 <style>
 .zw-workspaces .zw-workspace-item + .zw-workspace-item {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 </style>

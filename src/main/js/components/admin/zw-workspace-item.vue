@@ -1,6 +1,6 @@
 <template>
   <div class="zw-workspace-item">
-    <div class="name">{{workspace.value}}</div>
+    <div class="name">{{workspaceName}}</div>
     <el-dropdown size="medium" trigger="click" @command="handle">
       <el-button type="text" class="fa fa-ellipsis-v"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -23,6 +23,10 @@
 
 <script>
 export default {
+
+  mixins: [
+    require('../mixins/workspace-name').default
+  ],
 
   props: {
     workspace: {      // plain Workspace topic

@@ -11,8 +11,8 @@ export default {
       return this.$store.state.lang
     },
 
-    langStrings () {
-      return this.$store.state.langStrings
+    uiStrings () {
+      return this.$store.state.uiStrings
     },
 
     key () {
@@ -20,7 +20,7 @@ export default {
     },
 
     langString () {
-      return this.langStrings[this.key + '.' + this.lang]
+      return this.uiStrings[this.key + '.' + this.lang]
     }
   }
 }

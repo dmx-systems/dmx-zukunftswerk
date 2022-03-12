@@ -20,14 +20,14 @@ const router = new VueRouter({
       component: Workspace
     },
     {
+      path: '/workspace/:workspaceId',
+      name: 'workspace',
+      component: Workspace
+    },
+    {
       path: '/admin',
       name: 'admin',
       component: Admin
-    },
-    {
-      path: '/:topicmapId',
-      name: 'workspace',
-      component: Workspace
     }
   ]
 })
@@ -42,14 +42,10 @@ store.registerModule('routerModule', {
 
   actions: {
 
-    initialNavigation () {
-      initialNavigation(router.currentRoute)
-    },
-
     callWorkspaceRoute () {
       router.push({
         name: 'workspace',
-        params: {topicmapId: store.state.topicmap.id}
+        params: {workspaceId: store.state.workspace.id}
       })
     },
 
@@ -59,57 +55,24 @@ store.registerModule('routerModule', {
   }
 })
 
-// TODO: why does the watcher kick in when an initial URL is present?
-// Since when is it this way?
-function registerRouteWatcher () {
-  store.watch(
-    state => state.routerModule.router.currentRoute,
-    (to, from) => {
-      // console.log('### Route watcher', to, from)
-      navigate(to, from)
-    }
-  )
-}
-
-/**
- * Sets up initial app state according to start URL.
- * Pushes the initial route if a redirect is needed.
- */
-function initialNavigation (route) {
-  //
-  registerRouteWatcher()
-  //
-  const topicmapId = id(route.params.topicmapId)
-  let _workspace
-  //
-  // topicmap validity check
-  if (topicmapId) {
-    // console.log(`Checking workspace of topicmap ${topicmapId}`)
-    // Note: get-assigned-workspace responses are not cached by the browser.
-    // In contrast get-topic responses *are* cached by the browser.
-    // Doing get-assigned-workspace first avoids working with stale data.
-    getAssignedWorkspace(topicmapId, true).then(workspace => {
-      _workspace = workspace
-      return dmx.rpc.getTopic(topicmapId)
-    }).then(topic => {
-      if (topic.typeUri !== 'dmx.topicmaps.topicmap') {
-        throw Error(`${topicmapId} is not a topicmap (but a ${topic.typeUri})`)
-      }
-      return dmx.rpc.getTopicmap(topic.id, true)      // includeChildren=true
-    }).then(topicmap => {
-      store.dispatch('setTopicmap', topicmap)
-      store.dispatch('setWorkspace', _workspace)
-    }).catch(error => {
-      console.warn(`Topicmap ${topicmapId} check failed`, error)
-    })
+store.watch(
+  state => state.routerModule.router.currentRoute,
+  (to, from) => {
+    console.log('Route watcher', to, from)
+    navigate(to, from)
   }
-}
+)
 
 /**
  * Adapts app state when route changes.
  */
 function navigate (to, from) {
-  // TODO
+  if (to.name === 'workspace') {
+    const workspaceId = id(to.params.workspaceId)
+    if (workspaceId !== store.state.workspace?.id) {
+      store.dispatch('setWorkspace', workspaceId)
+    }
+  }
 }
 
 const getAssignedWorkspace = dmx.rpc.getAssignedWorkspace

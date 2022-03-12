@@ -22,9 +22,9 @@ const state = {
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
-  isEditActive: [],             // IDs of topics being edited (array)     // ### TODO: drop this
-  pan: {x: 0, y: 0},            // canvas pan (in pixel)
-  zoom: 1,                      // canvas zoom (Number)
+  isEditActive: [],             // IDs of topics being edited (array)     // ### TODO: drop this, query model ID instead
+  pan: {x: 0, y: 0},            // canvas pan (in pixel)                  // ### TODO: drop this, calculate instead
+  zoom: 1,                      // canvas zoom (Number)                   // ### TODO: drop this, calculate instead
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
                                 // canvas pan, panel resize)
   fullscreen: false,            // if true the current document is rendered fullscreen
@@ -36,7 +36,7 @@ const state = {
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   lang: 'de',                   // UI language ('de'/'fr')
-  langStrings:  require('./ui-strings').default,
+  uiStrings:    require('./ui-strings').default,
   quillOptions: require('./quill-options').default,
   getString,
 
@@ -65,20 +65,26 @@ const actions = {
     state.lang = lang
   },
 
-  setWorkspace (_, workspace) {
-    state.workspace = workspace
-    updateWorkspaceCookie()
-    updateIsWritable()
-    fetchDiscussion()
-  },
-
-  setTopicmap (_, topicmap) {
-    state.topicmap = topicmap
-    state.pan = {
-      x: topicmap.panX,
-      y: topicmap.panY
-    }
-    state.zoom = topicmap.zoom
+  setWorkspace (_, workspaceId) {
+    dmx.rpc.getTopic(workspaceId, true).then(workspace => {           // includeChildren=true
+      if (workspace.typeUri !== 'dmx.workspaces.workspace') {
+        throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)
+      }
+      state.workspace = workspace
+      updateWorkspaceCookie()
+      updateIsWritable()
+      fetchDiscussion()
+      return getWorkspaceTopicmap(workspaceId)
+    }).then(topicmap => {
+      state.topicmap = topicmap
+      state.pan = {
+        x: topicmap.panX,
+        y: topicmap.panY
+      }
+      state.zoom = topicmap.zoom
+    }).catch(error => {
+      console.warn(`Workspace ${workspaceId} check failed`, error)
+    })
   },
 
   setTopic (_, topic) {
@@ -103,11 +109,13 @@ const actions = {
   },
 
   setPan (_, pan) {
+    // FIXME: update topicmap model?
     state.pan = pan
     setTopicmapViewport()     // update server state (debounced)
   },
 
   setViewport (_, {pan, zoom}) {
+    // FIXME: update topicmap model?
     state.pan = pan
     state.zoom = zoom
     setTopicmapViewport()     // update server state (debounced)
@@ -433,7 +441,7 @@ function setTopicmapViewport() {
 }
 
 function getString (key) {
-  return state.langStrings[`${key}.${state.lang}`]
+  return state.uiStrings[`${key}.${state.lang}`]
 }
 
 // util
@@ -448,5 +456,12 @@ function confirmDeletion (textKey = 'warning.delete') {
     confirmButtonText: getString('action.delete'),
     confirmButtonClass: 'el-button--danger',
     showClose: false
+  })
+}
+
+function getWorkspaceTopicmap (workspaceId) {
+  return dmx.rpc.getAssignedTopics(workspaceId, 'dmx.topicmaps.topicmap').then(topics => {
+    // TODO: show warning if there are more than one topicmaps
+    return dmx.rpc.getTopicmap(topics[0].id, true)      // includeChildren=true
   })
 }

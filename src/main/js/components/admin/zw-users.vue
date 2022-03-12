@@ -2,7 +2,7 @@
   <div class="zw-users">
     <div class="heading"><zw-string>label.admin_users</zw-string></div>
     <div v-for="user in users">{{user.value}}</div>
-    <el-button class="add-user-button" size="medium" icon="el-icon-plus" @click="addUser">
+    <el-button class="add-button" size="medium" icon="el-icon-plus" @click="addUser">
       <zw-string>action.add_user</zw-string>
     </el-button>
   </div>
@@ -33,18 +33,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.zw-users {
-  padding: 30px;
-}
-
-.zw-users .heading {
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-
-.zw-users .add-user-button {
-  margin-top: 24px;
-}
-</style>

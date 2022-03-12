@@ -32,29 +32,31 @@ const router = new VueRouter({
   ]
 })
 
-export default router
+const state = {
+  router
+}
 
-store.registerModule('routerModule', {
+const actions = {
 
-  state: {
-    router
+  /**
+   * @param   workspaceId   optional
+   */
+  callWorkspaceRoute (_, workspaceId) {
+    const id = workspaceId || store.state.workspace.id
+    router.push({
+      name: 'workspace',
+      params: {workspaceId: id}
+    })
   },
 
-  actions: {
-
-    callWorkspaceRoute () {
-      router.push({
-        name: 'workspace',
-        params: {workspaceId: store.state.workspace.id}
-      })
-    },
-
-    callAdminRoute () {
-      router.push({name: 'admin'})
-    }
+  callAdminRoute () {
+    router.push({name: 'admin'})
   }
-})
+}
 
+export default router
+
+store.registerModule('routerModule', {state, actions})
 store.watch(
   state => state.routerModule.router.currentRoute,
   (to, from) => {
@@ -74,8 +76,6 @@ function navigate (to, from) {
     }
   }
 }
-
-const getAssignedWorkspace = dmx.rpc.getAssignedWorkspace
 
 /**
  * Converts the given value into Number.

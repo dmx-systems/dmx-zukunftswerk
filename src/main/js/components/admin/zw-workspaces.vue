@@ -3,9 +3,9 @@
     <div class="heading"><zw-string>label.admin_workspaces</zw-string></div>
     <div v-if="noWorkspaces" class="secondary"><zw-string>label.no_workspaces</zw-string></div>
     <div v-else>
-      <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace"></zw-workspace-item>
+      <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace" :key="workspace.id"></zw-workspace-item>
     </div>
-    <el-button class="add-workspace-button" size="medium" icon="el-icon-plus" @click="addWorkspace">
+    <el-button class="add-button" size="medium" icon="el-icon-plus" @click="addWorkspace">
       <zw-string>action.add_workspace</zw-string>
     </el-button>
   </div>
@@ -16,11 +16,6 @@ export default {
 
   created () {
     this.$store.dispatch('admin/fetchZWWorkspaces')
-  },
-
-  data () {
-    return {
-    }
   },
 
   computed: {
@@ -47,16 +42,7 @@ export default {
 </script>
 
 <style>
-.zw-workspaces {
-  padding: 30px;
-}
-
-.zw-workspaces .heading {
-  font-size: 20px;
-  margin-bottom: 20px;
-}
-
-.zw-workspaces .add-workspace-button {
-  margin-top: 24px;
+.zw-workspaces .zw-workspace-item + .zw-workspace-item {
+  margin-top: 10px;
 }
 </style>

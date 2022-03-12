@@ -31,14 +31,6 @@ export default {
     }
   },
 
-  data () {
-    return {
-    }
-  },
-
-  computed: {
-  },
-
   methods: {
 
     handle (command) {
@@ -46,15 +38,19 @@ export default {
     },
 
     show () {
+      this.$store.dispatch('callWorkspaceRoute', this.workspace.id)
     },
 
     edit () {
+      // TODO
     },
 
     delete () {
+      // TODO
     },
 
     adminUsers () {
+      // TODO
     }
   }
 }
@@ -65,7 +61,6 @@ export default {
   display: flex;
   background-color: #f6f6f6;
   padding: 10px;
-  margin-top: 10px;
 }
 
 .zw-workspace-item .name {

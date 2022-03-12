@@ -81,5 +81,15 @@ export default {
 
 .zw-admin .primary-panel {
   flex-basis: 50%;
+  padding: 30px;
+}
+
+.zw-admin .primary-panel .heading {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.zw-admin .primary-panel .add-button {
+  margin-top: 24px;
 }
 </style>

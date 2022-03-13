@@ -99,6 +99,11 @@ body.fixed {
   margin-top: 1em !important;
 }
 
+.el-collapse-item__header,
+.el-collapse-item__content {
+  font-size: unset;
+}
+
 /* HTML fields */
 
 .dmx-html-field {

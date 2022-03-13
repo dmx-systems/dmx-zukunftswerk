@@ -9,7 +9,7 @@ import messageHandler from './message-handler'
 import './element-ui'
 import '../resources/app.css'
 
-console.log('[ZW] 2022/03/12')
+console.log('[ZW] 2022/03/13')
 
 // 1) Init dmx library ### TODO: only top-level types should be required here
 dmx.init({store, onHttpError})

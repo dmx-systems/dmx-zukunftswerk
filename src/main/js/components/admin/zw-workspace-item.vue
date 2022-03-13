@@ -1,24 +1,27 @@
 <template>
-  <div class="zw-workspace-item">
-    <div class="name">{{workspaceName}}</div>
-    <el-dropdown size="medium" trigger="click" @command="handle">
-      <el-button type="text" class="fa fa-ellipsis-v"></el-button>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="show">
-          <i class="fa fa-fw fa-eye"></i><zw-string>action.show_workspace</zw-string>
-        </el-dropdown-item>
-        <el-dropdown-item command="edit">
-          <i class="fa fa-fw fa-pencil"></i><zw-string>action.edit_workspace</zw-string>
-        </el-dropdown-item>
-        <el-dropdown-item command="delete">
-          <i class="fa fa-fw fa-trash"></i><zw-string>action.delete_workspace</zw-string>
-        </el-dropdown-item>
-        <el-dropdown-item command="adminUsers" divided>
-          <i class="fa fa-fw fa-users"></i><zw-string>action.admin_users</zw-string>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-  </div>
+  <el-collapse-item class="zw-workspace-item" :name="workspace.id">
+    <div class="workspace" slot="title">
+      <div class="name">{{workspaceName}}</div>
+      <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
+        <el-button type="text" class="fa fa-ellipsis-v"></el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="show">
+            <i class="fa fa-fw fa-eye"></i><zw-string>action.show_workspace</zw-string>
+          </el-dropdown-item>
+          <el-dropdown-item command="edit">
+            <i class="fa fa-fw fa-pencil"></i><zw-string>action.edit_workspace</zw-string>
+          </el-dropdown-item>
+          <el-dropdown-item command="delete">
+            <i class="fa fa-fw fa-trash"></i><zw-string>action.delete_workspace</zw-string>
+          </el-dropdown-item>
+          <el-dropdown-item command="adminUsers" divided>
+            <i class="fa fa-fw fa-users"></i><zw-string>action.admin_users</zw-string>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <i>list members here ...</i>
+  </el-collapse-item>
 </template>
 
 <script>
@@ -61,13 +64,12 @@ export default {
 </script>
 
 <style>
-.zw-workspace-item {
+.zw-workspace-item .workspace {
   display: flex;
-  background-color: #f6f6f6;
-  padding: 10px;
+  width: 92%;
 }
 
-.zw-workspace-item .name {
+.zw-workspace-item .workspace .name {
   flex-grow: 1;
 }
 </style>

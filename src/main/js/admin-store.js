@@ -1,4 +1,6 @@
+import Vue from 'vue'
 import http from 'axios'
+import dmx from 'dmx-api'
 
 const state = {
   primaryPanel: 'zw-workspaces',    // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
@@ -26,17 +28,27 @@ const actions = {
     })
   },
 
+  createZWWorkspace (_, {nameDe, nameFr}) {
+    return http.post('/zukunftswerk/admin/workspace', undefined, {params: {nameDe, nameFr}}).then(response => {
+      state.workspaces.push(response.data)
+    })
+  },
+
+  fetchMemberships (_, workspaceId) {
+    const workspace = getWorkspace(workspaceId)
+    if (!workspace.memberships) {
+      dmx.rpc.getMemberships(workspaceId).then(usernames => {
+      // console.log('fetchMemberships', workspaceId, usernames)
+        Vue.set(workspace, 'memberships', usernames)      // ad-hoc property is not reactive by default
+      })
+    }
+  },
+
   fetchUsers () {
     http.get('/zukunftswerk/admin/users').then(response => {
       state.users = response.data.sort(
         (u1, u2) => u1.value.localeCompare(u2.value)
       )
-    })
-  },
-
-  createZWWorkspace (_, {nameDe, nameFr}) {
-    return http.post('/zukunftswerk/admin/workspace', undefined, {params: {nameDe, nameFr}}).then(response => {
-      state.workspaces.push(response.data)
     })
   },
 
@@ -49,4 +61,10 @@ export default {
   namespaced: true,
   state,
   actions
+}
+
+// state helper
+
+function getWorkspace (id) {
+  return state.workspaces.find(ws => ws.id === id)
 }

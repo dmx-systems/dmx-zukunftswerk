@@ -37,8 +37,11 @@ export default {
 
   methods: {
 
-    change (val) {
-      console.log(val)
+    change (expandedIds) {
+      // console.log(expandedIds)
+      expandedIds.forEach(id => {
+        this.$store.dispatch('admin/fetchMemberships', id)
+      })
     },
 
     addWorkspace () {

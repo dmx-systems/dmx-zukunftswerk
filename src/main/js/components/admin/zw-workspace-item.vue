@@ -20,7 +20,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <i>list members here ...</i>
+    <div v-for="username in workspace.memberships">{{username.value}}</div>
   </el-collapse-item>
 </template>
 

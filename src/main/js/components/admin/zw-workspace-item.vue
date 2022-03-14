@@ -14,8 +14,8 @@
           <el-dropdown-item command="delete">
             <i class="fa fa-fw fa-trash"></i><zw-string>action.delete_workspace</zw-string>
           </el-dropdown-item>
-          <el-dropdown-item command="adminUsers" divided>
-            <i class="fa fa-fw fa-users"></i><zw-string>action.admin_users</zw-string>
+          <el-dropdown-item command="editMemberships" divided>
+            <i class="fa fa-fw fa-users"></i><zw-string>action.edit_memberships</zw-string>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -56,8 +56,9 @@ export default {
       // TODO
     },
 
-    adminUsers () {
-      // TODO
+    editMemberships () {
+      this.$store.dispatch('admin/setActiveWorkspace', this.workspace)
+      this.$store.dispatch('admin/setSecondaryPanel', 'zw-membership-form')
     }
   }
 }

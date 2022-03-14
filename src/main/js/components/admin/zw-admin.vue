@@ -42,8 +42,9 @@ export default {
 
   components: {
     'zw-workspaces': require('./zw-workspaces').default,
-    'zw-users': require('./zw-users').default,
     'zw-workspace-form': require('./zw-workspace-form').default,
+    'zw-membership-form': require('./zw-membership-form').default,
+    'zw-users': require('./zw-users').default,
     'zw-user-form': require('./zw-user-form').default
   }
 }
@@ -86,10 +87,25 @@ export default {
 
 .zw-admin .primary-panel .heading {
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .zw-admin .primary-panel .add-button {
-  margin-top: 24px;
+  margin-top: 34px;
+}
+
+.zw-admin .secondary-panel {
+  flex-grow: 1;
+  padding: 30px;
+  background-color: var(--discussion-color);
+}
+
+.zw-admin .secondary-panel .heading {
+  font-size: 20px;
+  margin-bottom: 22px;
+}
+
+.zw-admin .secondary-panel .submit-button {
+  margin-top: 26px;
 }
 </style>

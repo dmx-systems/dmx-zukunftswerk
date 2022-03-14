@@ -1,0 +1,72 @@
+<template>
+  <div class="zw-membership-form">
+    <div class="heading"><zw-string>label.edit_memberships</zw-string></div>
+    <table>
+      <tr>
+        <td><zw-string>label.user</zw-string></td>
+        <td><zw-string>label.member</zw-string></td>
+        <td><zw-string>label.editor</zw-string></td>
+      </tr>
+      <tr v-for="(user, i) in users">
+        <td>{{user.value}}</td>
+        <td><el-checkbox v-model="membershipModel[i]"></el-checkbox></td>
+      </tr>
+    </table>
+    <el-button class="submit-button" type="primary" size="medium" @click="updateMemberships">
+      <zw-string>action.submit</zw-string>
+    </el-button>
+    <el-button size="medium" @click="clearSecondaryPanel">
+      <zw-string>action.cancel</zw-string>
+    </el-button>
+  </div>
+</template>
+
+<script>
+export default {
+
+  mixins: [
+    require('./mixins/admin-util').default
+  ],
+
+  created () {
+    this.$store.dispatch('admin/fetchUsers')
+    this.$store.dispatch('admin/fetchMemberships', this.activeWorkspace.id)
+  },
+
+  computed: {
+
+    users () {
+      return this.$store.state.admin.users
+    },
+
+    activeWorkspace () {
+      return this.$store.state.admin.activeWorkspace
+    },
+
+    memberships () {
+      return this.activeWorkspace.memberships
+    },
+
+    membershipModel () {
+      return this.users.map(user => this.isMember(user))
+    }
+  },
+
+  methods: {
+
+    isMember (user) {
+      return this.memberships?.find(_user => _user.id === user.id) !== undefined
+    },
+
+    updateMemberships () {
+      // TODO
+    }
+  }
+}
+</script>
+
+<style>
+.zw-membership-form table {
+  width: 100%;
+}
+</style>

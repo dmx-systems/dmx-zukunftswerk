@@ -21,6 +21,10 @@
 <script>
 export default {
 
+  mixins: [
+    require('./mixins/admin-util').default
+  ],
+
   created () {
     this.$store.dispatch('admin/fetchZWWorkspaces')
   },
@@ -35,34 +39,12 @@ export default {
   },
 
   methods: {
-
     createWorkspace () {
       this.$store.dispatch('admin/createZWWorkspace', {
         nameDe: this.model.de,
         nameFr: this.model.fr
       }).then(this.clearSecondaryPanel)
-    },
-
-    clearSecondaryPanel () {
-      this.$store.dispatch('admin/setSecondaryPanel', undefined)
     }
   }
 }
 </script>
-
-<style>
-.zw-workspace-form {
-  flex-grow: 1;
-  padding: 30px;
-  background-color: var(--discussion-color);
-}
-
-.zw-workspace-form .heading {
-  font-size: 20px;
-  margin-bottom: 22px;
-}
-
-.zw-workspace-form .submit-button {
-  margin-top: 26px;
-}
-</style>

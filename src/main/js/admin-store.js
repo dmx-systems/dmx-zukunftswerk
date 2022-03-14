@@ -6,6 +6,7 @@ const state = {
   primaryPanel: 'zw-workspaces',    // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
   secondaryPanel: undefined,        // 'zw-workspace-form' or undefined if secondary panel is not engaged ### TODO: drop
   workspaces: [],                   // all ZW shared workspaces (array of plain Workspace topics)
+  activeWorkspace: undefined,       // (plain Workspace topic)
   users: []                         // all user(name)s in the system (array of plain Username topics)
 }
 
@@ -20,6 +21,10 @@ const actions = {
     state.secondaryPanel = panel
   },
 
+  setActiveWorkspace (_, workspace) {
+    state.activeWorkspace = workspace
+  },
+
   fetchZWWorkspaces () {
     http.get('/zukunftswerk/admin/workspaces').then(response => {
       state.workspaces = response.data.sort(
@@ -29,7 +34,9 @@ const actions = {
   },
 
   createZWWorkspace (_, {nameDe, nameFr}) {
-    return http.post('/zukunftswerk/admin/workspace', undefined, {params: {nameDe, nameFr}}).then(response => {
+    return http.post('/zukunftswerk/admin/workspace', undefined, {
+      params: {nameDe, nameFr}
+    }).then(response => {
       state.workspaces.push(response.data)
     })
   },
@@ -38,18 +45,21 @@ const actions = {
     const workspace = getWorkspace(workspaceId)
     if (!workspace.memberships) {
       dmx.rpc.getMemberships(workspaceId).then(usernames => {
-      // console.log('fetchMemberships', workspaceId, usernames)
+        // console.log('fetchMemberships', workspaceId, usernames)
         Vue.set(workspace, 'memberships', usernames)      // ad-hoc property is not reactive by default
       })
     }
   },
 
   fetchUsers () {
-    http.get('/zukunftswerk/admin/users').then(response => {
-      state.users = response.data.sort(
-        (u1, u2) => u1.value.localeCompare(u2.value)
-      )
-    })
+    if (!state.users.length) {
+      // console.log('fetchUsers')
+      http.get('/zukunftswerk/admin/users').then(response => {
+        state.users = response.data.sort(
+          (u1, u2) => u1.value.localeCompare(u2.value)
+        )
+      })
+    }
   },
 
   createUser (_, userModel) {

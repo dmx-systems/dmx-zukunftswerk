@@ -74,6 +74,12 @@ export default {
   'action.edit_memberships.fr': 'Gérer les membres',
   'action.add_user.de': 'Benutzer hinuzfügen',
   'action.add_user.fr': 'Ajouter un utilisateur',
+  'action.edit_user.de': 'Benutzer bearbeiten',
+  'action.edit_user.fr': 'Modifier l\'utilisateur',
+  'action.delete_user.de': 'Benutzer löschen',
+  'action.delete_user.fr': 'Supprimer l\'utilisateur',
+  'action.edit_affiliations.de': 'Mitgliedschaften verwalten',
+  'action.edit_affiliations.fr': 'Gérer les affiliations',
 
   'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',

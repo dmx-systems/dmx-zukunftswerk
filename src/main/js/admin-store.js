@@ -6,8 +6,9 @@ const state = {
   primaryPanel: 'zw-workspaces',    // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
   secondaryPanel: undefined,        // 'zw-workspace-form' or undefined if secondary panel is not engaged ### TODO: drop
   workspaces: [],                   // all ZW shared workspaces (array of plain Workspace topics)
+  users: [],                        // all users in the system (array of plain Username topics)
   activeWorkspace: undefined,       // (plain Workspace topic)
-  users: []                         // all user(name)s in the system (array of plain Username topics)
+  activeUser: undefined             // (plain Username topic)
 }
 
 const actions = {
@@ -30,6 +31,10 @@ const actions = {
 
   setActiveWorkspace (_, workspace) {
     state.activeWorkspace = workspace
+  },
+
+  setActiveUser (_, user) {
+    state.activeUser = user
   },
 
   fetchZWWorkspaces () {

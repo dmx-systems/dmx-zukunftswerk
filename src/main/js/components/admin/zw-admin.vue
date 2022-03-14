@@ -82,7 +82,7 @@ export default {
 
 .zw-admin .primary-panel {
   flex-basis: 50%;
-  padding: 30px;
+  padding: 35px;
 }
 
 .zw-admin .primary-panel .heading {
@@ -96,7 +96,7 @@ export default {
 
 .zw-admin .secondary-panel {
   flex-grow: 1;
-  padding: 30px;
+  padding: 35px;
   background-color: var(--discussion-color);
 }
 

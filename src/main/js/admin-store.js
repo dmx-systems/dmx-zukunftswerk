@@ -1,14 +1,17 @@
 import Vue from 'vue'
 import http from 'axios'
 import dmx from 'dmx-api'
+import SHA256 from './lib/sha256'
+
+const ENCODED_PASSWORD_PREFIX = '-SHA256-'
 
 const state = {
-  primaryPanel: 'zw-workspaces',    // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
-  secondaryPanel: undefined,        // 'zw-workspace-form' or undefined if secondary panel is not engaged ### TODO: drop
-  workspaces: [],                   // all ZW shared workspaces (array of plain Workspace topics)
-  users: [],                        // all users in the system (array of plain Username topics)
-  activeWorkspace: undefined,       // (plain Workspace topic)
-  activeUser: undefined             // (plain Username topic)
+  primaryPanel: 'zw-workspaces',   // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
+  secondaryPanel: undefined,       // 'zw-workspace-form' or undefined if secondary panel is not engaged ### TODO: drop
+  workspaces: [],                  // all ZW shared workspaces (array of plain Workspace topics)
+  users: [],                       // all users in the system (array of plain Username topics)
+  activeWorkspace: undefined,      // (plain Workspace topic)
+  activeUser: undefined            // (plain Username topic)
 }
 
 const actions = {
@@ -75,7 +78,10 @@ const actions = {
   },
 
   createUser (_, userModel) {
-    // TODO
+    // TODO. Just for testing.
+    return dmx.rpc.createUserAccount(userModel.emailAddress, encodePassword('123')).then(user => {
+      state.users.push(user)
+    })
   }
 }
 
@@ -89,4 +95,10 @@ export default {
 
 function getWorkspace (id) {
   return state.workspaces.find(ws => ws.id === id)
+}
+
+// helper
+
+function encodePassword (password) {
+  return ENCODED_PASSWORD_PREFIX + SHA256(password)
 }

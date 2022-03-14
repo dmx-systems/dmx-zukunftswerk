@@ -14,11 +14,18 @@ const actions = {
 
   setPrimaryPanel (_, panel) {
     state.primaryPanel = panel
-    state.secondaryPanel = undefined
+    if (panel === 'zw-workspaces' && state.activeWorkspace) {
+      state.secondaryPanel = 'zw-membership-form'
+    } else {
+      state.secondaryPanel = undefined
+    }
   },
 
   setSecondaryPanel (_, panel) {
     state.secondaryPanel = panel
+    if (panel === 'zw-workspace-form' || !panel) {
+      state.activeWorkspace = undefined
+    }
   },
 
   setActiveWorkspace (_, workspace) {

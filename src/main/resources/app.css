@@ -104,6 +104,11 @@ body.fixed {
   font-size: unset;
 }
 
+.el-collapse-item.zw-selected .el-collapse-item__wrap,
+.el-collapse-item.zw-selected .el-collapse-item__header {
+  background-color: #f6f6f6;
+}
+
 /* HTML fields */
 
 .dmx-html-field {

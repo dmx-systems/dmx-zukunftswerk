@@ -1,5 +1,5 @@
 <template>
-  <el-collapse-item class="zw-workspace-item" :name="workspace.id">
+  <el-collapse-item :class="['zw-workspace-item', {'zw-selected': selected}]" :name="workspace.id">
     <div class="workspace" slot="title">
       <div class="name">{{workspaceName}}</div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
@@ -35,6 +35,17 @@ export default {
     workspace: {      // plain Workspace topic
       type: Object,
       required: true
+    }
+  },
+
+  computed: {
+
+    activeWorkspace () {
+      return this.$store.state.admin.activeWorkspace
+    },
+
+    selected () {
+      return this.activeWorkspace?.id === this.workspace.id
     }
   },
 

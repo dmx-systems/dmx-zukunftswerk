@@ -7,7 +7,7 @@
       <div class="button-panel" v-if="buttonPanelVisibility">
         <el-button class="fa fa-reply" type="text" @click="reply"></el-button>
         <el-dropdown v-if="commentIsWritable" size="medium" trigger="click" @command="handle">
-          <el-button type="text" class="fa fa-ellipsis-v"></el-button>
+          <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="edit"><zw-string>action.edit</zw-string></el-dropdown-item>
             <el-dropdown-item command="deleteComment" divided><zw-string>action.delete</zw-string></el-dropdown-item>

@@ -3,7 +3,7 @@
     <div class="workspace" slot="title">
       <div class="name">{{workspaceName}}</div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
-        <el-button type="text" class="fa fa-ellipsis-v"></el-button>
+        <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="show">
             <i class="fa fa-fw fa-eye"></i><zw-string>action.show_workspace</zw-string>

@@ -3,7 +3,7 @@
     <div class="user" slot="title">
       <div class="name">{{user.value}}</div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
-        <el-button type="text" class="fa fa-ellipsis-v"></el-button>
+        <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="edit">
             <i class="fa fa-fw fa-pencil"></i><zw-string>action.edit_user</zw-string>

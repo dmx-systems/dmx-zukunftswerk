@@ -59,21 +59,33 @@ const actions = {
   fetchMemberships (_, workspaceId) {
     const workspace = getWorkspace(workspaceId)
     if (!workspace.memberships) {
-      dmx.rpc.getMemberships(workspaceId).then(usernames => {
+      return dmx.rpc.getMemberships(workspaceId).then(usernames => {
         // console.log('fetchMemberships', workspaceId, usernames)
         Vue.set(workspace, 'memberships', usernames)      // ad-hoc property is not reactive by default
       })
+    } else {
+      return Promise.resolve()
     }
+  },
+
+  updateMemberships (_, {addUserIds, removeUserIds}) {
+    console.log('updateMemberships', addUserIds, removeUserIds)
+    const workspace = state.activeWorkspace
+    dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
+      workspace.memberships = usernames
+    })
   },
 
   fetchUsers () {
     if (!state.users.length) {
       // console.log('fetchUsers')
-      http.get('/zukunftswerk/admin/users').then(response => {
+      return http.get('/zukunftswerk/admin/users').then(response => {
         state.users = response.data.sort(
           (u1, u2) => u1.value.localeCompare(u2.value)
         )
       })
+    } else {
+      return Promise.resolve()
     }
   },
 

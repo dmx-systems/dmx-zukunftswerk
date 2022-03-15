@@ -9,7 +9,7 @@
       </tr>
       <tr v-for="(user, i) in users">
         <td>{{user.value}}</td>
-        <td><el-checkbox v-model="membershipModel[i]"></el-checkbox></td>
+        <td><el-checkbox v-model="model[i]"></el-checkbox></td>
       </tr>
     </table>
     <el-button class="submit-button" type="primary" size="medium" @click="updateMemberships">
@@ -29,8 +29,14 @@ export default {
   ],
 
   created () {
-    this.$store.dispatch('admin/fetchUsers')
-    this.$store.dispatch('admin/fetchMemberships', this.activeWorkspace.id)
+    // console.log('zw-membership-form')
+    this.initModel()
+  },
+
+  data () {
+    return {
+      model: []       // membership model: a flag for every user, true=member
+    }
   },
 
   computed: {
@@ -45,21 +51,36 @@ export default {
 
     memberships () {
       return this.activeWorkspace.memberships
-    },
+    }
+  },
 
-    membershipModel () {
-      return this.users.map(user => this.isMember(user))
+  watch: {
+    activeWorkspace () {
+      // console.log('watch activeWorkspace', this.activeWorkspace.id, this.memberships)
+      this.initModel()
     }
   },
 
   methods: {
+
+    initModel () {
+      // console.log('initModel')
+      Promise.all([
+        this.$store.dispatch('admin/fetchUsers'),
+        this.$store.dispatch('admin/fetchMemberships', this.activeWorkspace.id)
+      ]).then(() => {
+        this.model = this.users.map(user => this.isMember(user))
+      })
+    },
 
     isMember (user) {
       return this.memberships?.find(_user => _user.id === user.id) !== undefined
     },
 
     updateMemberships () {
-      // TODO
+      let i = 0; const addUserIds    = this.users.filter(user =>  this.model[i++]).map(user => user.id)
+          i = 0; const removeUserIds = this.users.filter(user => !this.model[i++]).map(user => user.id)
+      this.$store.dispatch('admin/updateMemberships', {addUserIds, removeUserIds})
     }
   }
 }

@@ -40,10 +40,14 @@ export default {
 
   methods: {
     createWorkspace () {
+      this.$emit('loading')
       this.$store.dispatch('admin/createZWWorkspace', {
         nameDe: this.model.de,
         nameFr: this.model.fr
-      }).then(this.clearSecondaryPanel)
+      }).then(() => {
+        this.$emit('complete')
+        this.clearSecondaryPanel()
+      })
     }
   }
 }

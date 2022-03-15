@@ -40,7 +40,11 @@ export default {
 
   methods: {
     createUser () {
-      this.$store.dispatch('admin/createUser', this.model).then(this.clearSecondaryPanel)
+      this.$emit('loading')
+      this.$store.dispatch('admin/createUser', this.model).then(() => {
+        this.$emit('complete')
+        this.clearSecondaryPanel()
+      })
     }
   }
 }

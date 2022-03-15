@@ -7,12 +7,20 @@
       <el-button class="close-button fa fa-times-circle-o" type="text" @click="close"></el-button>
     </div>
     <component class="primary-panel" :is="primaryPanel"></component>
-    <component class="secondary-panel" :is="secondaryPanel"></component>
+    <component class="secondary-panel" :is="secondaryPanel" v-loading="loading" @loading="startLoading"
+      @complete="stopLoading">
+    </component>
   </div>
 </template>
 
 <script>
 export default {
+
+  data () {
+    return {
+      loading: false
+    }
+  },
 
   computed: {
 
@@ -37,6 +45,14 @@ export default {
 
     close () {
       this.$store.dispatch('callWorkspaceRoute')
+    },
+
+    startLoading () {
+      this.loading = true
+    },
+
+    stopLoading () {
+      this.loading = false
     }
   },
 

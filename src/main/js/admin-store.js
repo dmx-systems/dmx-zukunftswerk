@@ -40,7 +40,7 @@ const actions = {
   setExpandedWorkspaceIds ({dispatch}, workspaceIds) {
     state.expandedWorkspaceIds = workspaceIds
     workspaceIds.forEach(id => {
-      dispatch('admin/fetchMemberships', id)
+      dispatch('fetchMemberships', id)
     })
   },
 

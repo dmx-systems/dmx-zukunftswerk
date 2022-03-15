@@ -2,7 +2,7 @@
   <div class="zw-workspaces">
     <div class="heading"><zw-string>label.admin_workspaces</zw-string></div>
     <div v-if="noWorkspaces" class="secondary"><zw-string>label.no_workspaces</zw-string></div>
-    <el-collapse v-else v-model="expanded" @change="change">
+    <el-collapse v-else v-model="expandedWorkspaceIds">
       <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace" :key="workspace.id"></zw-workspace-item>
     </el-collapse>
     <el-button class="add-button" size="medium" icon="el-icon-plus" @click="addWorkspace">
@@ -18,12 +18,6 @@ export default {
     this.$store.dispatch('admin/fetchZWWorkspaces')
   },
 
-  data () {
-    return {
-      expanded: []
-    }
-  },
-
   computed: {
 
     workspaces () {
@@ -32,18 +26,20 @@ export default {
 
     noWorkspaces () {
       return this.workspaces.length === 0
+    },
+
+    expandedWorkspaceIds: {
+      get () {
+        return this.$store.state.admin.expandedWorkspaceIds
+      },
+      set (ids) {
+        // console.log('expandedWorkspaceIds set', ids)
+        this.$store.dispatch('admin/setExpandedWorkspaceIds', ids)
+      }
     }
   },
 
   methods: {
-
-    change (expandedIds) {
-      // console.log(expandedIds)
-      expandedIds.forEach(id => {
-        this.$store.dispatch('admin/fetchMemberships', id)
-      })
-    },
-
     addWorkspace () {
       this.$store.dispatch('admin/setSecondaryPanel', 'zw-workspace-form')
     }
@@ -54,6 +50,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

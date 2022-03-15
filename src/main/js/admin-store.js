@@ -9,8 +9,9 @@ const state = {
   primaryPanel: 'zw-workspaces',   // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
   secondaryPanel: undefined,       // 'zw-workspace-form' or undefined if secondary panel is not engaged ### TODO: drop
   workspaces: [],                  // all ZW shared workspaces (array of plain Workspace topics)
-  users: [],                       // all users in the system (array of plain Username topics)
+  expandedWorkspaceIds: [],        // IDs of the workspaces that are expanded
   activeWorkspace: undefined,      // (plain Workspace topic)
+  users: [],                       // all users in the system (array of plain Username topics)
   activeUser: undefined            // (plain Username topic)
 }
 
@@ -36,6 +37,20 @@ const actions = {
     state.activeWorkspace = workspace
   },
 
+  setExpandedWorkspaceIds ({dispatch}, workspaceIds) {
+    state.expandedWorkspaceIds = workspaceIds
+    workspaceIds.forEach(id => {
+      dispatch('admin/fetchMemberships', id)
+    })
+  },
+
+  expandWorkspace (_, workspaceId) {
+    // console.log('expandWorkspace', workspaceId, state.expandedWorkspaceIds)
+    if (!state.expandedWorkspaceIds.includes(workspaceId)) {
+      state.expandedWorkspaceIds.push(workspaceId)
+    }
+  },
+
   setActiveUser (_, user) {
     state.activeUser = user
   },
@@ -45,34 +60,6 @@ const actions = {
       state.workspaces = response.data.sort(
         (w1, w2) => w1.value.localeCompare(w2.value)
       )
-    })
-  },
-
-  createZWWorkspace (_, {nameDe, nameFr}) {
-    return http.post('/zukunftswerk/admin/workspace', undefined, {
-      params: {nameDe, nameFr}
-    }).then(response => {
-      state.workspaces.push(response.data)
-    })
-  },
-
-  fetchMemberships (_, workspaceId) {
-    const workspace = getWorkspace(workspaceId)
-    if (!workspace.memberships) {
-      return dmx.rpc.getMemberships(workspaceId).then(usernames => {
-        // console.log('fetchMemberships', workspaceId, usernames)
-        Vue.set(workspace, 'memberships', usernames)      // ad-hoc property is not reactive by default
-      })
-    } else {
-      return Promise.resolve()
-    }
-  },
-
-  updateMemberships (_, {addUserIds, removeUserIds}) {
-    console.log('updateMemberships', addUserIds, removeUserIds)
-    const workspace = state.activeWorkspace
-    dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
-      workspace.memberships = usernames
     })
   },
 
@@ -87,6 +74,35 @@ const actions = {
     } else {
       return Promise.resolve()
     }
+  },
+
+  fetchMemberships (_, workspaceId) {
+    const workspace = getWorkspace(workspaceId)
+    if (!workspace.memberships) {
+      return dmx.rpc.getMemberships(workspaceId).then(usernames => {
+        // console.log('fetchMemberships', workspaceId, usernames)
+        Vue.set(workspace, 'memberships', usernames)      // ad-hoc property is not reactive by default
+      })
+    } else {
+      return Promise.resolve()
+    }
+  },
+
+  updateMemberships ({dispatch}, {addUserIds, removeUserIds}) {
+    // console.log('updateMemberships', addUserIds, removeUserIds)
+    const workspace = state.activeWorkspace
+    dispatch('expandWorkspace', workspace.id)
+    return dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
+      workspace.memberships = usernames
+    })
+  },
+
+  createZWWorkspace (_, {nameDe, nameFr}) {
+    return http.post('/zukunftswerk/admin/workspace', undefined, {
+      params: {nameDe, nameFr}
+    }).then(response => {
+      state.workspaces.push(response.data)
+    })
   },
 
   createUser (_, userModel) {

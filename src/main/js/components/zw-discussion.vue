@@ -10,7 +10,8 @@
         <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
       </div>
       <!-- Comments -->
-      <div class="comments">
+      <div v-if="noComments" class="secondary"><zw-string>label.no_comments</zw-string></div>
+      <div v-else class="comments">
         <zw-comment v-for="comment in filteredDiscussion" :topic="comment" :key="comment.id" @reply="reply"
           @comment-ref-click="jumpTo">
         </zw-comment>
@@ -77,9 +78,13 @@ export default {
     },
 
     filteredDiscussion () {
-      return this.discussion && this.discussion.filter(
+      return this.discussion?.filter(
         comment => !this.refDocument || this.getDocumentId(comment) === this.refDocument.id
       )
+    },
+
+    noComments () {
+      return this.filteredDiscussion?.length === 0
     },
 
     refTopicIds () {

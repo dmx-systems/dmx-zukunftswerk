@@ -19,6 +19,8 @@ export default {
   'label.no_workspaces.fr': 'Aucun espace de travail disponible',
   'label.discussion.de': 'Diskussionsbeiträge',
   'label.discussion.fr': 'Contributions à la discussion',
+  'label.no_comments.de': 'Noch keine Diskussionsbeiträge',
+  'label.no_comments.fr': 'Pas encore de discussion',
   'label.document_filter.de': 'Filter auf Dokument:',
   'label.document_filter.fr': 'Filtre sur document:',
   'label.document_name.de': 'Dokument Name',

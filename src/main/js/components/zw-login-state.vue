@@ -40,7 +40,7 @@ export default {
     },
 
     handle (command) {
-      command && this.$store.dispatch(command)
+      this.$store.dispatch(command)
     },
 
     open () {

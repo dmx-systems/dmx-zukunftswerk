@@ -16,13 +16,14 @@ const width = window.innerWidth
 const state = {
 
   teamWorkspace,                // a promise, resolved with the "Team" Workspace topic (dmx.Topic)
-  ready,                        // a promise, resolved once this state is initialized: "username", "workspaces",
-                                // "isTeam"
+  ready,                        // a promise, resolved once User state is initialized
 
+  // User state
   username: undefined,          // username of logged in user (String), undefined if not logged in
   workspaces: [],               // workspaces the logged in user is a member of (array of plain Workspace topics)
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
 
+  // Workspace state
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
   workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
@@ -35,12 +36,14 @@ const state = {
                                 // canvas pan, panel resize)
   fullscreen: false,            // if true the current document is rendered fullscreen
 
+  // Discussion Panel state
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * width,         // x coordinate in pixel (Number)         // ### TODO: rename to "canvasWidth"?
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
+  // Misc state
   lang: 'de',                   // UI language ('de'/'fr')
   uiStrings:    require('./ui-strings').default,
   quillOptions: require('./quill-options').default,
@@ -68,13 +71,13 @@ const actions = {
     })
   },
 
-  logout () {
+  logout ({dispatch}) {
     DEV && console.log('[ZW] Logout', state.username)
     dmx.rpc.logout().then(() => {
       state.username = undefined
       state.workspaces = []
       state.isTeam = false
-      updateIsWritable()
+      dispatch('callLoginRoute')
     })
   },
 

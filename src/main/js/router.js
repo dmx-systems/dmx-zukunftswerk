@@ -71,6 +71,10 @@ const actions = {
     })
   },
 
+  callLoginRoute () {
+    router.push({name: 'login'})
+  },
+
   callAdminRoute () {
     router.push({name: 'admin'})
   }

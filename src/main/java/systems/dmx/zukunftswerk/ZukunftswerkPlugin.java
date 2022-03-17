@@ -32,6 +32,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -77,12 +78,35 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ZukunftswerkService
 
     @GET
+    @Path("/workspaces")
+    @Override
+    public List<RelatedTopic> getZWWorkspaces() {
+        try {
+            // FIXME: public workspaces (w/o Membership) are not supported
+            Topic username = acs.getUsernameTopic();
+            if (username != null) {
+                return DMXUtils.loadChildTopics(
+                    username.getRelatedTopics(MEMBERSHIP, DEFAULT, DEFAULT, WORKSPACE)
+                );
+            } else {
+                return new ArrayList();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Retrieving the user's ZW workspaces failed", e);
+        }
+    }
+
+    @GET
     @Path("/discussion")
     @Override
     public List<Topic> getDiscussion() {
-        return DMXUtils.loadChildTopics(
-            ws.getAssignedTopics(workspaceId(), COMMENT)
-        );
+        try {
+            return DMXUtils.loadChildTopics(
+                ws.getAssignedTopics(workspaceId(), COMMENT)
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Retrieving the discussion for workspace " + workspaceId() + " failed", e);
+        }
     }
 
     @POST
@@ -150,24 +174,24 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @GET
     @Path("/admin/workspaces")
     @Override
-    public List<RelatedTopic> getZWWorkspaces() {
+    public List<RelatedTopic> getAllZWWorkspaces() {
         try {
             return DMXUtils.loadChildTopics(
                 dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE)
             );
         } catch (Exception e) {
-            throw new RuntimeException("Retrieving the ZW workspaces failed", e);
+            throw new RuntimeException("Retrieving all ZW workspaces failed", e);
         }
     }
 
     @GET
     @Path("/admin/users")
     @Override
-    public List<Topic> getUsers() {
+    public List<Topic> getAllUsers() {
         try {
             return dmx.getTopicsByType(USERNAME);
         } catch (Exception e) {
-            throw new RuntimeException("Retrieving the ZW users failed", e);
+            throw new RuntimeException("Retrieving all ZW users failed", e);
         }
     }
 

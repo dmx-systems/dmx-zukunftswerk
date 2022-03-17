@@ -11,6 +11,11 @@ import java.util.List;
 public interface ZukunftswerkService {
 
     /**
+     * Retrieves all ZW workspaces the logged in user is a member of.
+     */
+    List<RelatedTopic> getZWWorkspaces();
+
+    /**
      * Retrieves all comments of the current workspace (according to workspace cookie).
      */
     List<Topic> getDiscussion();
@@ -27,9 +32,9 @@ public interface ZukunftswerkService {
 
     // Admin
 
-    List<RelatedTopic> getZWWorkspaces();
+    List<RelatedTopic> getAllZWWorkspaces();
 
-    List<Topic> getUsers();
+    List<Topic> getAllUsers();
 
     Topic createZWWorkspace(String nameDe, String nameFr);
 }

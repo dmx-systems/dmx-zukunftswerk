@@ -57,8 +57,8 @@ export default {
       uploadDialogVisible: false,     // upload dialog visibility (for comment attachments)
       submitting: false,              // true while submitting new comment
       quillOptions: {                 // options for new-comment quill editor
-        placeholder: this.$store.state.getString('label.new_comment'),
-        ...this.$store.state.quillOptions
+        placeholder: this.$store.state.getString('label.new_comment'),    // FIXME: once Quill instance is created
+        ...this.$store.state.quillOptions                                 // ... placeholder is not lang-reactive
       }
     }
   },
@@ -161,11 +161,14 @@ export default {
       this.$store.dispatch('jumpToComment', {comment, behavior})
     },
 
+    /**
+     * Scrolls down to bottom of discussion.
+     */
     scrollDown () {
       if (this.panelVisibility) {
         this.$nextTick(() => {
-          // scroll down to bottom of discussion
-          document.querySelector('.zw-discussion .comments').scroll({
+          // Note: if there are no comments the "comments" element does not exist
+          document.querySelector('.zw-discussion .comments')?.scroll({
             top: 100000,
             behavior: 'smooth'
           })

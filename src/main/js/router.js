@@ -6,6 +6,7 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Login from './components/zw-login'
 import Workspace from './components/zw-workspace'
 import Admin from './components/admin/zw-admin'
 import store from './store'
@@ -17,7 +18,12 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      component: Workspace
+      name: 'root'
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
       path: '/workspace/:workspaceId',
@@ -30,6 +36,22 @@ const router = new VueRouter({
       component: Admin
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  store.state.ready.then(() => {
+    if (store.state.username || to.name === 'login') {
+      if (to.name === 'root') {
+        store.dispatch('getInitialWorkspaceId').then(workspaceId => {
+          next({name: 'workspace', params: {workspaceId}})
+        })
+      } else {
+        next()
+      }
+    } else {
+      next({name: 'login'})
+    }
+  })
 })
 
 const state = {

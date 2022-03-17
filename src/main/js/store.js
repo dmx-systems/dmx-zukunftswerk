@@ -10,11 +10,17 @@ window.addEventListener('focus', updateWorkspaceCookie)
 Vue.use(Vuex)
 
 const teamWorkspace = dmx.rpc.getTopicByUri('zukunftswerk.team')
+const ready = dmx.rpc.getUsername().then(initUserState)
 const width = window.innerWidth
 
 const state = {
 
+  teamWorkspace,                // a promise, resolved with the "Team" Workspace topic (dmx.Topic)
+  ready,                        // a promise, resolved once this state is initialized: "username", "workspaces",
+                                // "isTeam"
+
   username: undefined,          // username of logged in user (String), undefined if not logged in
+  workspaces: [],               // workspaces the logged in user is a member of (array of plain Workspace topics)
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
 
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
@@ -46,18 +52,41 @@ const state = {
 
 const actions = {
 
-  loggedIn (_, username) {
+  login ({dispatch}, credentials) {
+    return dmx.rpc.login(credentials, 'Basic').then(() => {
+      dispatch('loggedIn', credentials.username)
+    })
+  },
+
+  // TODO: inline to login()
+  loggedIn ({dispatch}, username) {
     DEV && console.log('[ZW] Login', username)
-    setUsername(username)
-    updateIsWritable()
+    initUserState(username).then(() =>
+      dispatch('getInitialWorkspaceId')
+    ).then(workspaceId => {
+      dispatch('callWorkspaceRoute', workspaceId)
+    })
   },
 
   logout () {
     DEV && console.log('[ZW] Logout', state.username)
     dmx.rpc.logout().then(() => {
       state.username = undefined
+      state.workspaces = []
       state.isTeam = false
       updateIsWritable()
+    })
+  },
+
+  getInitialWorkspaceId () {
+    return dmx.isAdmin().then(isAdmin => {
+      if (isAdmin) {
+        return state.teamWorkspace.then(workspace => {
+          return workspace.id
+        })
+      } else {
+        return state.workspaces[0].id
+      }
     })
   },
 
@@ -67,6 +96,9 @@ const actions = {
 
   setWorkspace (_, workspaceId) {
     console.log('setWorkspace', workspaceId)
+    if (!workspaceId) {
+      throw Error(`${workspaceId} is not a workspace ID`)
+    }
     dmx.rpc.getTopic(workspaceId, true).then(workspace => {           // includeChildren=true
       if (workspace.typeUri !== 'dmx.workspaces.workspace') {
         throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)
@@ -362,19 +394,28 @@ store.registerModule('admin', adminStore)
 
 export default store
 
-// init state
-
-dmx.rpc.getUsername().then(setUsername)
-
 // state helper
 
-function setUsername (username) {
-  teamWorkspace
-    .then(workspace => workspace.isWritable())
-    .then(isWritable => {
-      state.username = username
-      state.isTeam = isWritable
-    })
+/**
+ * Initialzes 3 states:
+ *   "username"
+ *   "workspaces"
+ *   "isTeam"
+ *
+ * @return  a promise, resolved once the state is initialized.
+ */
+function initUserState (username) {
+  return Promise.all([
+    http.get('/zukunftswerk/workspaces').then(response => {
+      state.workspaces = response.data
+    }),
+    teamWorkspace
+      .then(workspace => workspace.isWritable())
+      .then(isWritable => {
+        state.username = username
+        state.isTeam = isWritable
+      })
+  ])
 }
 
 function updateWorkspaceCookie () {

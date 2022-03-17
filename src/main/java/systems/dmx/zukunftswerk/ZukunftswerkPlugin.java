@@ -201,7 +201,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public Topic createZWWorkspace(@QueryParam("nameDe") String nameDe, @QueryParam("nameFr") String nameFr) {
         try {
-            Topic workspace = ws.createWorkspace(nameDe, null, SharingMode.PUBLIC);     // FIXME: make COLLABORATIVE
+            Topic workspace = ws.createWorkspace(nameDe, null, SharingMode.COLLABORATIVE);
             workspace.update(mf.newChildTopicsModel()
                 .set(WORKSPACE_NAME + "#" + DE, nameDe)
                 .set(WORKSPACE_NAME + "#" + FR, nameFr)

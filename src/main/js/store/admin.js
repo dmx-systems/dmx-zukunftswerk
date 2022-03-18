@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import http from 'axios'
 import dmx from 'dmx-api'
-import SHA256 from './lib/sha256'
+import SHA256 from '../lib/sha256'
 
 const ENCODED_PASSWORD_PREFIX = '-SHA256-'
 

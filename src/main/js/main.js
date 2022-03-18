@@ -1,13 +1,12 @@
 import dmx from 'dmx-api'
 import DMXWebSocket from 'dmx-websocket'
 import Vue from 'vue'
-import App from './components/zw-webclient'
-import store from './store'
+import App from './components/App'
+import store from './store/zukunftswerk'
 import router from './router'
 import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
-import '../resources/app.css'
 
 console.log('[ZW] 2022/03/18')
 

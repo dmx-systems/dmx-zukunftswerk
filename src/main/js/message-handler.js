@@ -1,4 +1,4 @@
-import store from './store'
+import store from './store/zukunftswerk'
 import Vue from 'vue'
 
 export default message => {

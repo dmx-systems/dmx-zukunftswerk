@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import {MessageBox} from 'element-ui'
 import http from 'axios'
 import dmx from 'dmx-api'
-import adminStore from './admin-store'
+import adminStore from './admin'
 
 window.addEventListener('focus', updateWorkspaceCookie)
 
@@ -45,12 +45,12 @@ const state = {
 
   // Misc state
   logo: {
-    de: require('../resources/logo.de.png'),
-    fr: require('../resources/logo.fr.png')
+    de: require('../../resources/logo.de.png'),
+    fr: require('../../resources/logo.fr.png')
   },
   lang: 'de',                   // UI language ('de'/'fr')
-  uiStrings:    require('./ui-strings').default,
-  quillOptions: require('./quill-options').default,
+  uiStrings:    require('../ui-strings').default,
+  quillOptions: require('../quill-options').default,
   getString,
 
   NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)

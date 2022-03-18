@@ -1,3 +1,8 @@
+<template>
+  <router-view></router-view>
+</template>
+
+<style>
 :root {
   /*
     Note 1: we use the native font of the respective platform.
@@ -220,3 +225,4 @@ body.fixed {
 .ql-container .ql-tooltip .ql-toolbar .ql-formats:nth-child(4) {
   margin-left: 12px;    /* margin for 2nd toolbar row */
 }
+</style>

@@ -7,9 +7,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './components/zw-login'
+import Webclient from './components/zw-webclient'
 import Workspace from './components/zw-workspace'
 import Admin from './components/admin/zw-admin'
-import store from './store'
+import store from './store/zukunftswerk'
 import dmx from 'dmx-api'
 
 Vue.use(VueRouter)
@@ -18,22 +19,25 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      name: 'root'
+      name: 'root',
+      component: Webclient,
+      children: [
+        {
+          path: '/workspace/:workspaceId',
+          name: 'workspace',
+          component: Workspace
+        },
+        {
+          path: '/admin',
+          name: 'admin',
+          component: Admin
+        }
+      ]
     },
     {
       path: '/login',
       name: 'login',
       component: Login
-    },
-    {
-      path: '/workspace/:workspaceId',
-      name: 'workspace',
-      component: Workspace
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: Admin
     }
   ]
 })

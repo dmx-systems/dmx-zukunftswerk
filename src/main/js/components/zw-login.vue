@@ -76,30 +76,27 @@ export default {
 
 <style>
 .zw-login {
-  flex-grow: 1;
+  height: 100%;
   background-color: black;
   padding-left: 80px;
+  padding-top: 60px;
 }
 
 .zw-login .login-form {
   padding-left: 80px;
 }
 
-.zw-login .logo {
-  margin-top: 50px;
-}
-
 .zw-login .welcome {
   color: var(--primary-color);
   font-size: 20px;
-  margin-top: 50px;
+  margin-top: 38px;
 }
 
 .zw-login .login {
   color: var(--primary-color);
-  font-size: 40px;
-  margin-top: 10px;
-  margin-bottom: 25px;
+  font-size: 36px;
+  margin-top: 28px;
+  margin-bottom: 22px;
 }
 
 .zw-login .message {

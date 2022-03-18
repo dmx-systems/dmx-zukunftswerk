@@ -9,7 +9,7 @@ window.addEventListener('focus', updateWorkspaceCookie)
 
 Vue.use(Vuex)
 
-const teamWorkspace = dmx.rpc.getTopicByUri('zukunftswerk.team')
+const teamWorkspace = dmx.rpc.getTopicByUri('zukunftswerk.team', true)      // includeChildren=true
 const ready = dmx.rpc.getUsername().then(initUserState)
 const width = window.innerWidth
 
@@ -60,19 +60,16 @@ const state = {
 const actions = {
 
   login ({dispatch}, credentials) {
-    return dmx.rpc.login(credentials, 'Basic').then(() => {
-      dispatch('loggedIn', credentials.username)
-    })
-  },
-
-  // TODO: inline to login()
-  loggedIn ({dispatch}, username) {
-    DEV && console.log('[ZW] Login', username)
-    initUserState(username).then(() =>
+    return dmx.rpc.login(credentials, 'Basic').then(() =>
+      credentials.username
+    ).then(username => {
+      DEV && console.log('[ZW] Login', username)
+      return initUserState(username)
+    }).then(() =>
       dispatch('getInitialWorkspaceId')
-    ).then(workspaceId => {
+    ).then(workspaceId =>
       dispatch('callWorkspaceRoute', workspaceId)
-    })
+    )
   },
 
   logout ({dispatch}) {

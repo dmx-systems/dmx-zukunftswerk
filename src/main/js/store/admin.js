@@ -55,11 +55,14 @@ const actions = {
     state.activeUser = user
   },
 
-  fetchZWWorkspaces () {
+  fetchZWWorkspaces ({rootState}) {
     http.get('/zukunftswerk/admin/workspaces').then(response => {
       state.workspaces = response.data.sort(
         (w1, w2) => w1.value.localeCompare(w2.value)
       )
+      return rootState.teamWorkspace
+    }).then(workspace => {
+      state.workspaces.push(workspace)
     })
   },
 

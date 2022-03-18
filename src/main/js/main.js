@@ -35,13 +35,14 @@ dmx.typeCache.initAssocType('dmx.core.composition')
 // 2) Open websocket connection
 new DMXWebSocket('systems.dmx.webclient', messageHandler)
 
-// 3) Global component registrations
-Vue.component('zw-string',       require('./components/zw-string').default)
-Vue.component('zw-truncate',     require('./components/zw-truncate').default)
-Vue.component('zw-comment-ref',  require('./components/zw-comment-ref').default)
-Vue.component('zw-document-ref', require('./components/zw-document-ref').default)
-Vue.component('zw-attachment',   require('./components/zw-attachment').default)
-Vue.component('zw-pdf-viewer',   require('./components/zw-pdf-viewer').default)
+// 3) Global component registrations (used in several components)
+Vue.component('zw-language-switch', require('./components/zw-language-switch').default)
+Vue.component('zw-string',          require('./components/zw-string').default)
+Vue.component('zw-truncate',        require('./components/zw-truncate').default)
+Vue.component('zw-comment-ref',     require('./components/zw-comment-ref').default)
+Vue.component('zw-document-ref',    require('./components/zw-document-ref').default)
+Vue.component('zw-attachment',      require('./components/zw-attachment').default)
+Vue.component('zw-pdf-viewer',      require('./components/zw-pdf-viewer').default)
 
 // 4) Create Vue root instance
 new Vue({

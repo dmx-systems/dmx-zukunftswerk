@@ -2,6 +2,7 @@
   <div class="zw-login">
     <div class="logo">
       <img :src="logoSrc">
+      <zw-language-switch></zw-language-switch>
     </div>
     <div class="login-form">
       <div class="welcome">
@@ -82,6 +83,11 @@ export default {
   padding-top: 60px;
 }
 
+.zw-login .logo img {
+  vertical-align: top;
+  margin-right: 180px;
+}
+
 .zw-login .login-form {
   padding-left: 80px;
 }
@@ -89,14 +95,15 @@ export default {
 .zw-login .welcome {
   color: var(--primary-color);
   font-size: 20px;
-  margin-top: 38px;
+  margin-top: 42px;
 }
 
 .zw-login .login {
   color: var(--primary-color);
   font-size: 36px;
-  margin-top: 28px;
-  margin-bottom: 22px;
+  font-weight: lighter;
+  margin-top: 10px;
+  margin-bottom: 28px;
 }
 
 .zw-login .message {
@@ -106,7 +113,7 @@ export default {
 }
 
 .zw-login .el-input {
-  width: 300px;
+  width: 280px;
 }
 
 .zw-login .submit-button {

@@ -6,15 +6,7 @@
       <span class="name">{{workspaceName}}</span>
     </div>
     <el-button class="admin-button fa fa-wrench" v-if="isTeam" type="text" @click="admin"></el-button>
-    <el-dropdown size="medium" trigger="click" @command="setLang">
-      <el-button type="text">
-        <span>{{lang.toUpperCase()}}</span><span class="el-icon-arrow-down el-icon--right"></span>
-      </el-button>
-      <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="de">DE</el-dropdown-item>
-        <el-dropdown-item command="fr">FR</el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+    <zw-language-switch></zw-language-switch>
     <zw-login-state></zw-login-state>
   </div>
 </template>
@@ -39,11 +31,6 @@ export default {
   },
 
   methods: {
-
-    setLang (lang) {
-      this.$store.dispatch('setLang', lang)
-    },
-
     admin () {
       this.$store.dispatch('callAdminRoute')
     }

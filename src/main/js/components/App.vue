@@ -107,7 +107,7 @@ body.fixed {
 
 .el-collapse-item__header,
 .el-collapse-item__content {
-  font-size: unset;
+  font-size: unset !important;
 }
 
 .el-collapse-item.zw-selected .el-collapse-item__wrap,

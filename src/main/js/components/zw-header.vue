@@ -1,6 +1,6 @@
 <template>
   <div class="zw-header">
-    <img class="logo" :src="logo">
+    <img class="logo" :src="logoSrc">
     <div class="workspace">
       <zw-string>label.shared_workspace</zw-string>:
       <span class="name">{{workspaceName}}</span>
@@ -20,14 +20,10 @@
 </template>
 
 <script>
-const logo = {
-  de: require('../../resources/logo.de.png'),
-  fr: require('../../resources/logo.fr.png')
-}
-
 export default {
 
   mixins: [
+    require('./mixins/logo').default,
     require('./mixins/workspace-name').default
   ],
 
@@ -39,10 +35,6 @@ export default {
 
     workspace () {
       return this.$store.state.workspace
-    },
-
-    logo () {
-      return logo[this.lang]
     }
   },
 

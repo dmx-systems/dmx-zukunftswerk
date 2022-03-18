@@ -44,6 +44,10 @@ const state = {
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
+  logo: {
+    de: require('../resources/logo.de.png'),
+    fr: require('../resources/logo.fr.png')
+  },
   lang: 'de',                   // UI language ('de'/'fr')
   uiStrings:    require('./ui-strings').default,
   quillOptions: require('./quill-options').default,

@@ -9,6 +9,10 @@ export default {
   'item.arrow.de': 'Pfeil',
   'item.arrow.fr': 'Flèche',
 
+  'label.welcome.de': 'Online Kollaborationsplattform',
+  'label.welcome.fr': 'Plate-forme de collaboration en ligne',
+  'label.login.de': 'Login',
+  'label.login.fr': 'Login',
   'label.shared_workspace.de': 'Gemeinsamer Arbeitsbereich',
   'label.shared_workspace.fr': 'Espace de travail commun',
   'label.admin_workspaces.de': 'Arbeitsbereiche und Mitglieder',
@@ -51,6 +55,8 @@ export default {
   'label.display_name.fr': 'Nom',
   'label.email_address.de': 'Email',
   'label.email_address.fr': 'E-mail',
+  'label.password.de': 'Passwort',
+  'label.password.fr': 'Mot de passe',
 
   'action.submit.de': 'OK',
   'action.submit.fr': 'OK',

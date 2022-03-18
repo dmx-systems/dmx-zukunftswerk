@@ -7,7 +7,7 @@
     </div>
     <el-button class="admin-button fa fa-wrench" v-if="isTeam" type="text" @click="admin"></el-button>
     <zw-language-switch></zw-language-switch>
-    <zw-login-state></zw-login-state>
+    <zw-user-menu></zw-user-menu>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ export default {
   },
 
   components: {
-    'zw-login-state':  require('./zw-login-state').default
+    'zw-user-menu': require('./zw-user-menu').default
   }
 }
 </script>
@@ -70,7 +70,7 @@ export default {
   margin-right: 20px;
 }
 
-.zw-header .zw-login-state {
+.zw-header .zw-user-menu {
   margin-left: 20px;
 }
 </style>

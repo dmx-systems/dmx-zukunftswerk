@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "dmx-api": "https://github.com/dmx-systems/dmx-api.git",
-    "dmx-login-dialog": "https://github.com/dmx-systems/dmx-login-dialog.git",
     "dmx-websocket": "https://github.com/dmx-systems/dmx-websocket.git",
     "element-ui": "2.13.2",
     "pdfjs-dist": "2.12.313",

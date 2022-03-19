@@ -35,6 +35,7 @@ import javax.ws.rs.Consumes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 
@@ -49,6 +50,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Inject private WorkspacesService ws;
     @Inject private AccessControlService acs;
 
+    private Topic zwPluginTopic;
     private Messenger me;
 
     private Logger logger = Logger.getLogger(getClass().getName());
@@ -59,6 +61,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     @Override
     public void init() {
+        zwPluginTopic = dmx.getTopicByUri(ZW_PLUGIN_URI);
         me = new Messenger(dmx.getWebSocketService());
     }
 
@@ -87,6 +90,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             if (username != null) {
                 return DMXUtils.loadChildTopics(
                     username.getRelatedTopics(MEMBERSHIP, DEFAULT, DEFAULT, WORKSPACE)
+                            .stream().filter(this::isZWWorkspace).collect(Collectors.toList())
                 );
             } else {
                 return new ArrayList();
@@ -177,7 +181,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public List<RelatedTopic> getAllZWWorkspaces() {
         try {
             return DMXUtils.loadChildTopics(
-                dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE)
+                zwPluginTopic.getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE)
             );
         } catch (Exception e) {
             throw new RuntimeException("Retrieving all ZW workspaces failed", e);
@@ -243,6 +247,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             .set(topicTypeUri + "." + targetLang, translatedComment)
             .set(LANGUAGE + "#" + ORIGINAL_LANGUAGE, origLang)
         );
+    }
+
+    private boolean isZWWorkspace(Topic workspace) {
+        return dmx.getAssocBetweenTopicAndTopic(
+            SHARED_WORKSPACE, workspace.getId(), zwPluginTopic.getId(), DEFAULT, DEFAULT
+        ) != null;
     }
 
     private long workspaceId() {

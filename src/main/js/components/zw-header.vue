@@ -11,6 +11,9 @@
           <el-dropdown-item v-for="workspace in workspaces" :command="workspace.id" :key="workspace.id">
             {{workspace.value}}
           </el-dropdown-item>
+          <el-dropdown-item v-if="isTeam && teamWorkspace" :command="teamWorkspace.id" :divided="divided">
+            {{teamWorkspace.value}}
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -28,7 +31,23 @@ export default {
     require('./mixins/workspace-name').default
   ],
 
+  created () {
+    this.$store.state.teamWorkspace.then(workspace => {
+      this.teamWorkspace = workspace
+    })
+  },
+
+  data () {
+    return {
+      teamWorkspace: undefined      // a Workspace topic
+    }
+  },
+
   computed: {
+
+    divided () {
+      return this.workspaces.length > 0
+    },
 
     workspaces () {
       return this.$store.state.workspaces

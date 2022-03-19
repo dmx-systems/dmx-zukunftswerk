@@ -3,7 +3,16 @@
     <img class="logo" :src="logoSrc">
     <div class="workspace">
       <zw-string>label.shared_workspace</zw-string>:
-      <span class="name">{{workspaceName}}</span>
+      <el-dropdown size="medium" trigger="click" @command="setWorkspace">
+        <el-button type="text">
+          <span class="name">{{workspaceName}}</span><span class="el-icon-arrow-down el-icon--right"></span>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item v-for="workspace in workspaces" :command="workspace.id" :key="workspace.id">
+            {{workspace.value}}
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
     <el-button class="admin-button fa fa-wrench" v-if="isTeam" type="text" @click="admin"></el-button>
     <zw-language-switch></zw-language-switch>
@@ -21,6 +30,10 @@ export default {
 
   computed: {
 
+    workspaces () {
+      return this.$store.state.workspaces
+    },
+
     isTeam () {
       return this.$store.state.isTeam
     },
@@ -31,6 +44,11 @@ export default {
   },
 
   methods: {
+
+    setWorkspace (id) {
+      this.$store.dispatch('callWorkspaceRoute', id)
+    },
+
     admin () {
       this.$store.dispatch('callAdminRoute')
     }

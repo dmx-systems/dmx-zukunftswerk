@@ -8,7 +8,7 @@ const ENCODED_PASSWORD_PREFIX = '-SHA256-'
 const state = {
   primaryPanel: 'zw-workspaces',   // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
   secondaryPanel: undefined,       // 'zw-workspace-form' or undefined if secondary panel is not engaged ### TODO: drop
-  workspaces: [],                  // all ZW shared workspaces (array of plain Workspace topics)
+  workspaces: [],                  // all ZW shared workspaces + the "Team" workspace (array of plain Workspace topics)
   expandedWorkspaceIds: [],        // IDs of the workspaces that are expanded
   activeWorkspace: undefined,      // (plain Workspace topic)
   users: [],                       // all users in the system (array of plain Username topics)

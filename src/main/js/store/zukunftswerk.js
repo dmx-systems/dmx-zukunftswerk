@@ -19,8 +19,8 @@ const state = {
   ready,                        // a promise, resolved once User state is initialized
 
   // User state
-  username: undefined,          // username of logged in user (String), undefined if not logged in
-  workspaces: [],               // workspaces the logged in user is a member of (array of plain Workspace topics)
+  username: undefined,          // username of current user (String), undefined if not logged in
+  workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics)
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
 
   // Workspace state
@@ -99,7 +99,6 @@ const actions = {
   },
 
   setWorkspace (_, workspaceId) {
-    console.log('setWorkspace', workspaceId)
     if (!workspaceId) {
       throw Error(`${workspaceId} is not a workspace ID`)
     }

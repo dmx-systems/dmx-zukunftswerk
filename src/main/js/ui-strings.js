@@ -15,6 +15,8 @@ export default {
   'label.login.fr': 'Login',
   'label.shared_workspace.de': 'Gemeinsamer Arbeitsbereich',
   'label.shared_workspace.fr': 'Espace de travail commun',
+  'label.admin.de': 'Online Kollaborationsplattform - Verwaltung',
+  'label.admin.fr': 'Plate-forme de collaboration en ligne - Administration',
   'label.admin_workspaces.de': 'Arbeitsbereiche und Mitglieder',
   'label.admin_workspaces.fr': 'Espaces de travail et membres',
   'label.admin_users.de': 'Benutzer und Mitgliedschaften',

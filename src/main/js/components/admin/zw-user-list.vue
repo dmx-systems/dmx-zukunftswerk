@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-users">
+  <div class="zw-user-list">
     <div class="heading"><zw-string>label.admin_users</zw-string></div>
     <el-collapse v-model="expanded" @change="change">
       <zw-user-item v-for="user in users" :user="user" :key="user.id"></zw-user-item>

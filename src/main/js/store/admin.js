@@ -6,20 +6,20 @@ import SHA256 from '../lib/sha256'
 const ENCODED_PASSWORD_PREFIX = '-SHA256-'
 
 const state = {
-  primaryPanel: 'zw-workspaces',   // 'zw-workspaces'/'zw-users' ### TODO: drop; utilize router instead (nested routes?)
-  secondaryPanel: undefined,       // 'zw-workspace-form' or undefined if secondary panel is not engaged ### TODO: drop
-  workspaces: [],                  // all ZW shared workspaces + the "Team" workspace (array of plain Workspace topics)
-  expandedWorkspaceIds: [],        // IDs of the workspaces that are expanded
-  activeWorkspace: undefined,      // (plain Workspace topic)
-  users: [],                       // all users in the system (array of plain Username topics)
-  activeUser: undefined            // (plain Username topic)
+  primaryPanel: 'zw-workspace-list',  // 'zw-workspace-list'/'zw-user-list'
+  secondaryPanel: undefined,          // 'zw-workspace-form'/... or undefined if secondary panel is not engaged
+  workspaces: [],                     // all ZW shared workspaces+the "Team" workspace (array of plain Workspace topics)
+  expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
+  activeWorkspace: undefined,         // (plain Workspace topic)
+  users: [],                          // all users in the system (array of plain Username topics)
+  activeUser: undefined               // (plain Username topic)
 }
 
 const actions = {
 
   setPrimaryPanel (_, panel) {
     state.primaryPanel = panel
-    if (panel === 'zw-workspaces' && state.activeWorkspace) {
+    if (panel === 'zw-workspace-list' && state.activeWorkspace) {
       state.secondaryPanel = 'zw-membership-form'
     } else {
       state.secondaryPanel = undefined

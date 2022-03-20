@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-workspaces">
+  <div class="zw-workspace-list">
     <div class="heading"><zw-string>label.admin_workspaces</zw-string></div>
     <div v-if="noWorkspaces" class="secondary"><zw-string>label.no_workspaces</zw-string></div>
     <el-collapse v-else v-model="expandedWorkspaceIds">

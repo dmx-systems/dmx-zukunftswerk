@@ -25,10 +25,6 @@ export default {
     require('./mixins/admin-util').default
   ],
 
-  created () {
-    this.$store.dispatch('admin/fetchZWWorkspaces')
-  },
-
   data () {
     return {
       model: {

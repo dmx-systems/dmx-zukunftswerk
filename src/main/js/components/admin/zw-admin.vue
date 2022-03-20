@@ -36,11 +36,11 @@ export default {
   methods: {
 
     goWorkspaces () {
-      this.$store.dispatch('admin/setPrimaryPanel', 'zw-workspaces')
+      this.$store.dispatch('admin/setPrimaryPanel', 'zw-workspace-list')
     },
 
     goUsers () {
-      this.$store.dispatch('admin/setPrimaryPanel', 'zw-users')
+      this.$store.dispatch('admin/setPrimaryPanel', 'zw-user-list')
     },
 
     close () {
@@ -57,11 +57,11 @@ export default {
   },
 
   components: {
-    'zw-workspaces': require('./zw-workspaces').default,
+    'zw-workspace-list': require('./zw-workspace-list').default,
     'zw-workspace-form': require('./zw-workspace-form').default,
-    'zw-membership-form': require('./zw-membership-form').default,
-    'zw-users': require('./zw-users').default,
-    'zw-user-form': require('./zw-user-form').default
+    'zw-user-list': require('./zw-user-list').default,
+    'zw-user-form': require('./zw-user-form').default,
+    'zw-membership-form': require('./zw-membership-form').default
   }
 }
 </script>

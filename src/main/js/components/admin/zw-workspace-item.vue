@@ -69,7 +69,7 @@ export default {
 
     editMemberships () {
       this.$store.dispatch('admin/setActiveWorkspace', this.workspace)
-      this.$store.dispatch('admin/setSecondaryPanel', 'zw-membership-form')
+      this.$store.dispatch('admin/setSecondaryPanel', 'zw-workspace-memberships')
     }
   }
 }

@@ -24,7 +24,7 @@ const actions = {
   setPrimaryPanel (_, panel) {
     state.primaryPanel = panel
     if (panel === 'zw-workspace-list' && state.activeWorkspace) {
-      state.secondaryPanel = 'zw-membership-form'
+      state.secondaryPanel = 'zw-workspace-memberships'
     } else {
       state.secondaryPanel = undefined
     }

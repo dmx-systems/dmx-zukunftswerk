@@ -57,9 +57,8 @@ export default {
     },
 
     editAffiliations () {
-      // TODO
-      // this.$store.dispatch('admin/setActiveWorkspace', this.workspace)
-      // this.$store.dispatch('admin/setSecondaryPanel', 'zw-membership-form')
+      this.$store.dispatch('admin/setActiveUser', this.user)
+      this.$store.dispatch('admin/setSecondaryPanel', 'zw-user-memberships')
     }
   }
 }

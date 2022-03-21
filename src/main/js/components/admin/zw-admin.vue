@@ -59,9 +59,10 @@ export default {
   components: {
     'zw-workspace-list': require('./zw-workspace-list').default,
     'zw-workspace-form': require('./zw-workspace-form').default,
+    'zw-workspace-memberships': require('./zw-workspace-memberships').default,
     'zw-user-list': require('./zw-user-list').default,
     'zw-user-form': require('./zw-user-form').default,
-    'zw-membership-form': require('./zw-membership-form').default
+    'zw-user-memberships': require('./zw-user-memberships').default
   }
 }
 </script>

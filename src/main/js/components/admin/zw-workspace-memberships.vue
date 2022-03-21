@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-membership-form">
+  <div class="zw-workspace-memberships">
     <div class="heading"><zw-string>label.edit_memberships</zw-string></div>
     <table>
       <tr>
@@ -29,7 +29,7 @@ export default {
   ],
 
   created () {
-    // console.log('zw-membership-form')
+    // console.log('zw-workspace-memberships')
     this.initModel()
   },
 
@@ -91,7 +91,7 @@ export default {
 </script>
 
 <style>
-.zw-membership-form table {
+.zw-workspace-memberships table {
   width: 100%;
 }
 </style>

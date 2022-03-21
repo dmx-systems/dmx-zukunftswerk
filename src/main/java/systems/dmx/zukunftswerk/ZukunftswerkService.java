@@ -28,7 +28,7 @@ public interface ZukunftswerkService {
 
     // Note: there are no createDocument() or createArrow() calls here.
     // Documents and arrows are created by generic createTopic() calls.
-    // For documents and arrows no auto-translation is involved.
+    // No auto-translation is involved.
 
     // Admin
 
@@ -36,6 +36,8 @@ public interface ZukunftswerkService {
      * Retrieves all ZW shared workspaces.
      */
     List<RelatedTopic> getAllZWWorkspaces();
+
+    List<RelatedTopic> getZWWorkspacesOfUser(String username);
 
     List<Topic> getAllUsers();
 

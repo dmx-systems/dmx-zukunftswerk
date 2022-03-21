@@ -88,10 +88,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             // FIXME: public workspaces (w/o Membership) are not supported
             Topic username = acs.getUsernameTopic();
             if (username != null) {
-                return DMXUtils.loadChildTopics(
-                    username.getRelatedTopics(MEMBERSHIP, DEFAULT, DEFAULT, WORKSPACE)
-                            .stream().filter(this::isZWWorkspace).collect(Collectors.toList())
-                );
+                return getZWWorkspaces(username);
             } else {
                 return new ArrayList();
             }
@@ -189,6 +186,21 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @GET
+    @Path("/admin/user/{username}/workspaces")
+    @Override
+    public List<RelatedTopic> getZWWorkspacesOfUser(@PathParam("username") String username) {
+        try {
+            Topic usernameTopic = acs.getUsernameTopic(username);
+            if (usernameTopic == null) {
+                throw new IllegalArgumentException("No such user: \"" + username + "\"");
+            }
+            return getZWWorkspaces(usernameTopic);
+        } catch (Exception e) {
+            throw new RuntimeException("Retrieving ZW workspaces of user \"" + username + "\" failed", e);
+        }
+    }
+
+    @GET
     @Path("/admin/users")
     @Override
     public List<Topic> getAllUsers() {
@@ -246,6 +258,13 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             .set(topicTypeUri + "." + origLang, text)
             .set(topicTypeUri + "." + targetLang, translatedComment)
             .set(LANGUAGE + "#" + ORIGINAL_LANGUAGE, origLang)
+        );
+    }
+
+    private List<RelatedTopic> getZWWorkspaces(Topic username) {
+        return DMXUtils.loadChildTopics(
+            username.getRelatedTopics(MEMBERSHIP, DEFAULT, DEFAULT, WORKSPACE)
+                    .stream().filter(this::isZWWorkspace).collect(Collectors.toList())
         );
     }
 

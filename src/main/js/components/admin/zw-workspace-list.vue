@@ -2,7 +2,7 @@
   <div class="zw-workspace-list">
     <div class="heading"><zw-string>label.admin_workspaces</zw-string></div>
     <div v-if="noWorkspaces" class="secondary"><zw-string>label.no_workspaces</zw-string></div>
-    <el-collapse v-else v-model="expandedWorkspaceIds">
+    <el-collapse v-else v-model="expandedIds">
       <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace" :key="workspace.id"></zw-workspace-item>
     </el-collapse>
     <el-button class="add-button" size="medium" icon="el-icon-plus" @click="addWorkspace">
@@ -15,7 +15,7 @@
 export default {
 
   created () {
-    this.$store.dispatch('admin/fetchZWWorkspaces')
+    this.$store.dispatch('admin/fetchAllZWWorkspaces')
   },
 
   computed: {
@@ -28,7 +28,7 @@ export default {
       return this.workspaces.length === 0
     },
 
-    expandedWorkspaceIds: {
+    expandedIds: {
       get () {
         return this.$store.state.admin.expandedWorkspaceIds
       },

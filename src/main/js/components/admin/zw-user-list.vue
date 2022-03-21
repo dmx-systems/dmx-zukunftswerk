@@ -1,7 +1,7 @@
 <template>
   <div class="zw-user-list">
     <div class="heading"><zw-string>label.admin_users</zw-string></div>
-    <el-collapse v-model="expanded" @change="change">
+    <el-collapse v-model="expandedUsernames">
       <zw-user-item v-for="user in users" :user="user" :key="user.id"></zw-user-item>
     </el-collapse>
     <el-button class="add-button" size="medium" icon="el-icon-plus" @click="addUser">
@@ -14,31 +14,26 @@
 export default {
 
   created () {
-    this.$store.dispatch('admin/fetchUsers')
-  },
-
-  data () {
-    return {
-      expanded: []
-    }
+    this.$store.dispatch('admin/fetchAllUsers')
   },
 
   computed: {
+
     users () {
       return this.$store.state.admin.users
+    },
+
+    expandedUsernames: {
+      get () {
+        return this.$store.state.admin.expandedUsernames
+      },
+      set (usernames) {
+        this.$store.dispatch('admin/setExpandedUsernames', usernames)
+      }
     }
   },
 
   methods: {
-
-    change (expandedIds) {
-      // TODO
-      // console.log(expandedIds)
-      // expandedIds.forEach(id => {
-      //   this.$store.dispatch('admin/fetchMemberships', id)
-      // })
-    },
-
     addUser () {
       this.$store.dispatch('admin/setSecondaryPanel', 'zw-user-form')
     }

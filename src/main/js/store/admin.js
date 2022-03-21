@@ -6,12 +6,16 @@ import SHA256 from '../lib/sha256'
 const ENCODED_PASSWORD_PREFIX = '-SHA256-'
 
 const state = {
+
   primaryPanel: 'zw-workspace-list',  // 'zw-workspace-list'/'zw-user-list'
   secondaryPanel: undefined,          // 'zw-workspace-form'/... or undefined if secondary panel is not engaged
+
   workspaces: [],                     // all ZW shared workspaces+the "Team" workspace (array of plain Workspace topics)
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
   activeWorkspace: undefined,         // (plain Workspace topic)
+
   users: [],                          // all users in the system (array of plain Username topics)
+  expandedUsernames: [],              // usernames of the users that are expanded
   activeUser: undefined               // (plain Username topic)
 }
 
@@ -44,6 +48,13 @@ const actions = {
     })
   },
 
+  setExpandedUsernames ({dispatch}, usernames) {
+    state.expandedUsernames = usernames
+    usernames.forEach(username => {
+      dispatch('fetchZWWorkspacesOfUser', username)
+    })
+  },
+
   expandWorkspace (_, workspaceId) {
     // console.log('expandWorkspace', workspaceId, state.expandedWorkspaceIds)
     if (!state.expandedWorkspaceIds.includes(workspaceId)) {
@@ -55,7 +66,7 @@ const actions = {
     state.activeUser = user
   },
 
-  fetchZWWorkspaces ({rootState}) {
+  fetchAllZWWorkspaces ({rootState}) {
     http.get('/zukunftswerk/admin/workspaces').then(response => {
       state.workspaces = response.data.sort(
         (w1, w2) => w1.value.localeCompare(w2.value)
@@ -66,9 +77,9 @@ const actions = {
     })
   },
 
-  fetchUsers () {
+  fetchAllUsers () {
     if (!state.users.length) {
-      // console.log('fetchUsers')
+      // console.log('fetchAllUsers')
       return http.get('/zukunftswerk/admin/users').then(response => {
         state.users = response.data.sort(
           (u1, u2) => u1.value.localeCompare(u2.value)
@@ -80,11 +91,23 @@ const actions = {
   },
 
   fetchMemberships (_, workspaceId) {
-    const workspace = getWorkspace(workspaceId)
+    const workspace = findWorkspace(workspaceId)
     if (!workspace.memberships) {
       return dmx.rpc.getMemberships(workspaceId).then(usernames => {
         // console.log('fetchMemberships', workspaceId, usernames)
-        Vue.set(workspace, 'memberships', usernames)      // ad-hoc property is not reactive by default
+        Vue.set(workspace, 'memberships', usernames)          // ad-hoc property is not reactive by default
+      })
+    } else {
+      return Promise.resolve()
+    }
+  },
+
+  fetchZWWorkspacesOfUser (_, username) {
+    const usernameTopic = findUser(username)
+    if (!usernameTopic.memberships) {
+      return http.get(`/zukunftswerk/admin/user/${username}/workspaces`).then(response => {
+        const workspaces = response.data
+        Vue.set(usernameTopic, 'memberships', workspaces)     // ad-hoc property is not reactive by default
       })
     } else {
       return Promise.resolve()
@@ -124,8 +147,12 @@ export default {
 
 // state helper
 
-function getWorkspace (id) {
+function findWorkspace (id) {
   return state.workspaces.find(ws => ws.id === id)
+}
+
+function findUser (username) {
+  return state.users.find(ws => ws.value === username)
 }
 
 // helper

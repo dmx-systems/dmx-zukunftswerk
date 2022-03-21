@@ -1,5 +1,5 @@
 <template>
-  <el-collapse-item :class="['zw-user-item', {'zw-selected': selected}]" :name="user.id">
+  <el-collapse-item :class="['zw-user-item', {'zw-selected': selected}]" :name="user.value">
     <div class="user" slot="title">
       <div class="name">{{user.value}}</div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
@@ -17,7 +17,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <!-- TODO div v-for="username in workspace.memberships">{{username.value}}</div-->
+    <div v-for="workspace in user.memberships">{{workspace.value}}</div>
   </el-collapse-item>
 </template>
 

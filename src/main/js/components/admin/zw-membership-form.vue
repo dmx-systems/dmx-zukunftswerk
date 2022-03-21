@@ -66,7 +66,7 @@ export default {
     initModel () {
       // console.log('initModel')
       Promise.all([
-        this.$store.dispatch('admin/fetchUsers'),
+        this.$store.dispatch('admin/fetchAllUsers'),
         this.$store.dispatch('admin/fetchMemberships', this.activeWorkspace.id)
       ]).then(() => {
         this.model = this.users.map(user => this.isMember(user))

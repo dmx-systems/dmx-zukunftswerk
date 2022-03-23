@@ -7,6 +7,7 @@ import static systems.dmx.workspaces.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.accesscontrol.AccessControlService;
+import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
@@ -51,6 +52,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Inject private AccessControlService acs;
 
     private Topic zwPluginTopic;
+    private Topic teamWorkspace;
     private Messenger me;
 
     private Logger logger = Logger.getLogger(getClass().getName());
@@ -62,6 +64,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public void init() {
         zwPluginTopic = dmx.getTopicByUri(ZW_PLUGIN_URI);
+        teamWorkspace = dmx.getTopicByUri(TEAM_WORKSPACE_URI);
         me = new Messenger(dmx.getWebSocketService());
     }
 
@@ -194,7 +197,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             if (usernameTopic == null) {
                 throw new IllegalArgumentException("No such user: \"" + username + "\"");
             }
-            return getZWWorkspaces(usernameTopic);
+            List<RelatedTopic> workspaces = getZWWorkspaces(usernameTopic);
+            Assoc membership = acs.getMembership(username, teamWorkspace.getId());
+            if (membership != null) {
+                workspaces.add(membership.getDMXObjectByType(WORKSPACE));
+            }
+            return workspaces;
         } catch (Exception e) {
             throw new RuntimeException("Retrieving ZW workspaces of user \"" + username + "\" failed", e);
         }

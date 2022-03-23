@@ -37,6 +37,10 @@ public interface ZukunftswerkService {
      */
     List<RelatedTopic> getAllZWWorkspaces();
 
+    /**
+     * Retrieves the ZW shared workspaces of the current user plus the "Team" workspace, if the
+     * current user is a Team member.
+     */
     List<RelatedTopic> getZWWorkspacesOfUser(String username);
 
     List<Topic> getAllUsers();

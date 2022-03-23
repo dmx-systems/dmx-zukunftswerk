@@ -78,14 +78,13 @@ export default {
     },
 
     updateMemberships () {
-      /* TODO
-      let i = 0; const addUserIds    = this.workspaces.filter(user =>  this.model[i++]).map(user => user.id)
-          i = 0; const removeUserIds = this.workspaces.filter(user => !this.model[i++]).map(user => user.id)
+      let i = 0; const addWorkspaceIds    = this.workspaces.filter(ws =>  this.model[i++]).map(ws => ws.id)
+          i = 0; const removeWorkspaceIds = this.workspaces.filter(ws => !this.model[i++]).map(ws => ws.id)
       this.$emit('loading')
-      this.$store.dispatch('admin/updateMemberships', {addUserIds, removeUserIds}).then(() => {
+      this.$store.dispatch('admin/updateUserMemberships', {addWorkspaceIds, removeWorkspaceIds}).then(() => {
         this.$emit('complete')
         this.clearSecondaryPanel()
-      }) */
+      })
     }
   }
 }

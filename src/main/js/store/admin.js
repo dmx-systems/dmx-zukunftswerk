@@ -15,7 +15,7 @@ const state = {
   activeWorkspace: undefined,         // (plain Workspace topic)
 
   users: [],                          // all users in the system (array of plain Username topics)
-  expandedUsernames: [],              // usernames of the users that are expanded
+  expandedUsernames: [],              // usernames of the users that are expanded (array of String)
   activeUser: undefined               // (plain Username topic)
 }
 
@@ -59,6 +59,13 @@ const actions = {
     // console.log('expandWorkspace', workspaceId, state.expandedWorkspaceIds)
     if (!state.expandedWorkspaceIds.includes(workspaceId)) {
       state.expandedWorkspaceIds.push(workspaceId)
+    }
+  },
+
+  expandUser (_, username) {
+    // console.log('expandUser', username, state.expandedUsernames)
+    if (!state.expandedUsernames.includes(username)) {
+      state.expandedUsernames.push(username)
     }
   },
 
@@ -114,12 +121,21 @@ const actions = {
     }
   },
 
-  updateMemberships ({dispatch}, {addUserIds, removeUserIds}) {
-    // console.log('updateMemberships', addUserIds, removeUserIds)
+  updateWorkspaceMemberships ({dispatch}, {addUserIds, removeUserIds}) {
+    // console.log('updateWorkspaceMemberships', addUserIds, removeUserIds)
     const workspace = state.activeWorkspace
     dispatch('expandWorkspace', workspace.id)
     return dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
       workspace.memberships = usernames
+    })
+  },
+
+  updateUserMemberships ({dispatch}, {addWorkspaceIds, removeWorkspaceIds}) {
+    // console.log('updateUserMemberships', addWorkspaceIds, removeWorkspaceIds)
+    const username = state.activeUser
+    dispatch('expandUser', username.value)
+    return dmx.rpc.bulkUpdateUserMemberships(username.value, addWorkspaceIds, removeWorkspaceIds).then(workspaces => {
+      username.memberships = workspaces
     })
   },
 

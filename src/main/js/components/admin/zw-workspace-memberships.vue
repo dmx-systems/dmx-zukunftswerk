@@ -81,7 +81,7 @@ export default {
       let i = 0; const addUserIds    = this.users.filter(user =>  this.model[i++]).map(user => user.id)
           i = 0; const removeUserIds = this.users.filter(user => !this.model[i++]).map(user => user.id)
       this.$emit('loading')
-      this.$store.dispatch('admin/updateMemberships', {addUserIds, removeUserIds}).then(() => {
+      this.$store.dispatch('admin/updateWorkspaceMemberships', {addUserIds, removeUserIds}).then(() => {
         this.$emit('complete')
         this.clearSecondaryPanel()
       })

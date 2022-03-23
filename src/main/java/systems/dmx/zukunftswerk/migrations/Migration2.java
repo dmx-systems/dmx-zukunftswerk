@@ -43,6 +43,7 @@ public class Migration2 extends Migration {
         // Create "Team" workspace
         acs.setWorkspaceOwner(
             ws.createWorkspace("Team", "zukunftswerk.team", SharingMode.PUBLIC), ADMIN_USERNAME
+            // FIXME: at the moment the frontend relies on a public team workspace
         );
     }
 }

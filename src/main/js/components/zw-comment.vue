@@ -2,7 +2,12 @@
   <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
     <div class="heading">
       <div>
-        <span class="creator">{{creator}}</span><span class="date label">{{date}}</span>
+        <span class="creator">{{creator}}</span>
+        <span class="date label">{{date}}</span>
+        <span class="edit-flag label">
+          (<zw-string>label.translation</zw-string>:
+          <zw-string v-if="!editFlag">label.automatic</zw-string><zw-string v-if="editFlag">label.edited</zw-string>)
+        </span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
         <el-button class="fa fa-reply" type="text" @click="reply"></el-button>
@@ -127,6 +132,10 @@ export default {
       return this.topic.children['dmx.accesscontrol.creator'].value
     },
 
+    editFlag () {
+      return this.topic.children['zukunftswerk.translation_edited']?.value
+    },
+
     date () {
       return new Date(this.created).toLocaleString()
     },
@@ -225,8 +234,9 @@ export default {
   font-weight: bold;
 }
 
-.zw-comment .heading .date {
-  margin-left: 15px;
+.zw-comment .heading .date,
+.zw-comment .heading .edit-flag {
+  margin-left: 12px;
 }
 
 .zw-comment .heading .button-panel {

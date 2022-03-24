@@ -12,10 +12,13 @@ import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
+import systems.dmx.core.service.ChangeReport;
+import systems.dmx.core.service.ChangeReport.Change;
 import systems.dmx.core.service.Cookies;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.service.accesscontrol.SharingMode;
+import systems.dmx.core.service.event.PostUpdateTopic;
 import systems.dmx.core.service.event.PreSendTopic;
 import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
@@ -42,7 +45,7 @@ import java.util.stream.Collectors;
 
 @Path("/zukunftswerk")
 @Produces("application/json")
-public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, PreSendTopic {
+public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, PostUpdateTopic, PreSendTopic {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
@@ -69,6 +72,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     // Listeners
+
+    @Override
+    public void postUpdateTopic(Topic topic, ChangeReport report, TopicModel updateModel) {
+        if (topic.getTypeUri().equals(COMMENT)) {
+            String origLang = topic.getChildTopics().getString(LANGUAGE + "#" + ORIGINAL_LANGUAGE);
+            List<Change> changes = report.getChanges(COMMENT + "." + targetLang(origLang));
+            if (changes != null) {
+                topic.update(mf.newChildTopicsModel().set(TRANSLATION_EDITED, true));
+            }
+        }
+    }
 
     @Override
     public void preSendTopic(Topic topic) {
@@ -250,15 +264,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         // This translation's sole purpose is language detection for the original text.
         Translation translation = deepls.translate(text, "en").get(0);
         String origLang = translation.detectedSourceLang.toLowerCase();
-        logger.info("origLang=\"" + origLang + "\"");
-        String targetLang;
-        if (origLang.equals("de")) {
-            targetLang = "fr";
-        } else if (origLang.equals("fr")) {
-            targetLang = "de";
-        } else {
-            throw new RuntimeException("Unsupported original language: \"" + origLang + "\" (detected)");
-        }
+        String targetLang = targetLang(origLang);
         // translate comment
         String translatedComment = deepls.translate(text, targetLang).get(0).text;
         //
@@ -267,6 +273,16 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             .set(topicTypeUri + "." + targetLang, translatedComment)
             .set(LANGUAGE + "#" + ORIGINAL_LANGUAGE, origLang)
         );
+    }
+
+    private String targetLang(String origLang) {
+        if (origLang.equals("de")) {
+            return "fr";
+        } else if (origLang.equals("fr")) {
+            return "de";
+        } else {
+            throw new RuntimeException("Unsupported original language: \"" + origLang + "\" (detected)");
+        }
     }
 
     private List<RelatedTopic> getZWWorkspaces(Topic username) {

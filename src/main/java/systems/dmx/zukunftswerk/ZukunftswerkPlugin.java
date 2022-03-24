@@ -173,7 +173,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
-    // Admin
+    // --- Admin ---
 
     @GET
     @Path("/admin/workspaces")

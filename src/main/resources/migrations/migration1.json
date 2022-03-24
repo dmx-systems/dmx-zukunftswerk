@@ -1,4 +1,4 @@
-// Part of Zukunftswerk 0.8
+// Part of Zukunftswerk 1.0
 [
   {
     "assoc_types": [
@@ -91,6 +91,11 @@
         "dataTypeUri": "dmx.core.html"
       },
       {
+        "value":       "Translation Edited",
+        "uri":         "zukunftswerk.translation_edited",
+        "dataTypeUri": "dmx.core.boolean"
+      },
+      {
         "value":       "Comment",
         "uri":         "zukunftswerk.comment",
         "dataTypeUri": "dmx.core.entity",
@@ -118,6 +123,10 @@
                 }
               }
             ]
+          },
+          {
+            "childTypeUri":        "zukunftswerk.translation_edited",
+            "childCardinalityUri": "dmx.core.one"
           },
           {
             "childTypeUri":        "zukunftswerk.comment",

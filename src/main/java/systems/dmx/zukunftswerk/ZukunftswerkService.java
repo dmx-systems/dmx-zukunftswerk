@@ -30,7 +30,7 @@ public interface ZukunftswerkService {
     // Documents and arrows are created by generic createTopic() calls.
     // No auto-translation is involved.
 
-    // Admin
+    // --- Admin ---
 
     /**
      * Retrieves all ZW shared workspaces.

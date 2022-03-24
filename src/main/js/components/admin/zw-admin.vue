@@ -4,7 +4,7 @@
       <el-button class="fa fa-list" type="text" @click="goWorkspaces"></el-button>
       <el-button class="fa fa-users" type="text" @click="goUsers"></el-button>
       <div class="gap"></div>
-      <el-button class="close-button fa fa-times-circle-o" type="text" @click="close"></el-button>
+      <el-button class="close-button fa fa-times-circle-o" v-if="showClose" type="text" @click="close"></el-button>
     </div>
     <component class="primary-panel" :is="primaryPanel"></component>
     <component class="secondary-panel" :is="secondaryPanel" v-loading="loading" @loading="startLoading"
@@ -30,6 +30,14 @@ export default {
 
     secondaryPanel () {
       return this.$store.state.admin.secondaryPanel
+    },
+
+    workspace () {
+      return this.$store.state.workspace
+    },
+
+    showClose () {
+      return this.workspace !== undefined
     }
   },
 

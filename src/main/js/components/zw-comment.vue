@@ -6,7 +6,7 @@
         <span class="date label">{{date}}</span>
         <span class="edit-flag label">
           (<zw-string>label.translation</zw-string>:
-          <zw-string v-if="!editFlag">label.automatic</zw-string><zw-string v-if="editFlag">label.edited</zw-string>)
+          <zw-string v-if="!editFlag" key="automatic">label.automatic</zw-string><zw-string v-if="editFlag" key="edited">label.edited</zw-string>)
         </span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
@@ -161,11 +161,10 @@ export default {
 
     save () {
       this.saving = true
-      // transfer edit buffer to topic model
-      this.setComment('de')
-      this.setComment('fr')
-      //
-      this.$store.dispatch('updateComment', this.topic).then(() => {
+      this.$store.dispatch('updateComment', {
+        commentId: this.topic.id,
+        commentModel: this.commentModel
+      }).then(() => {
         this.mode = 'info'
         this.saving = false
       })
@@ -195,11 +194,6 @@ export default {
 
     commentRefClick (comment) {
       this.$emit('comment-ref-click', comment)
-    },
-
-    setComment (lang) {
-      const compDefUri = 'zukunftswerk.comment.' + lang
-      this.topic.children[compDefUri].value = this.commentModel[lang]
     }
   },
 

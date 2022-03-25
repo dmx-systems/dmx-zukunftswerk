@@ -210,7 +210,7 @@ const actions = {
   },
 
   updateDocument ({dispatch}, {topic, docModel}) {
-    // Transfer edit buffer to topic model
+    // Transfer edit buffer to topic model ### TODO: refactor
     topic.children['zukunftswerk.document_name.de'] = docModel.names.de
     topic.children['zukunftswerk.document_name.fr'] = docModel.names.fr
     topic.children['dmx.files.file#zukunftswerk.de'] = docModel.paths.de.value ? docModel.files.de : undefined
@@ -282,8 +282,14 @@ const actions = {
   /**
    * @param   comment   a dmx.Topic
    */
-  updateComment (_, comment) {
-    dmx.rpc.updateTopic(comment)
+  updateComment (_, {commentId, commentModel}) {
+    dmx.rpc.updateTopic({
+      id: commentId,
+      children: {
+        'zukunftswerk.comment.de': commentModel.de,
+        'zukunftswerk.comment.fr': commentModel.fr
+      }
+    }).then(replaceComment)
   },
 
   addComment (_, comment) {
@@ -477,6 +483,14 @@ function removeComment (comment) {
     throw Error('removeComment')
   }
   state.discussion.splice(i, 1)
+}
+
+function replaceComment (comment) {
+  const i = state.discussion.findIndex(cmt => cmt.id === comment.id)
+  if (i === -1) {
+    throw Error('replaceComment')
+  }
+  state.discussion.splice(i, 1, comment)
 }
 
 function setTopicmapViewport() {

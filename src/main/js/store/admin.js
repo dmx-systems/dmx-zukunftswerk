@@ -147,10 +147,20 @@ const actions = {
     })
   },
 
+  /**
+   * @param   userModel   object w/ "displayName" and "emailAddress" props.
+   */
   createUser (_, userModel) {
-    // TODO. Just for testing.
-    return dmx.rpc.createUserAccount(userModel.emailAddress, encodePassword('123')).then(user => {
-      state.users.push(user)
+    const mailbox = userModel.emailAddress
+    const displayName = userModel.displayName
+    const password = btoa(newPassword())
+    http.get(`/sign-up/custom-handle/${mailbox}/${displayName}/${password}`/*, {
+      headers: {
+        ACCEPT: 'application/json'
+      }
+    }*/).then(response => {
+      console.log('createUser', response.data)
+      state.users.push(response.data)
     })
   }
 }
@@ -175,4 +185,8 @@ function findUser (username) {
 
 function encodePassword (password) {
   return ENCODED_PASSWORD_PREFIX + SHA256(password)
+}
+
+function newPassword () {
+  return Math.floor(Number.MAX_SAFE_INTEGER * Math.random())
 }

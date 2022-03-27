@@ -32,7 +32,7 @@
         <div class="field-label"><zw-string>label.email_address</zw-string></div>
         <el-input v-model="emailAddress"></el-input>
       </div>
-      <el-button class="reset-button" type="primary" @click="requestReset">
+      <el-button class="reset-button" type="primary" @click="resetPassword">
         <zw-string>action.submit</zw-string>
       </el-button>
     </el-dialog>
@@ -96,9 +96,8 @@ export default {
       this.visible = false
     },
 
-    requestReset () {
-      console.log('requestReset')
-      // TODO
+    resetPassword () {
+      this.$store.dispatch('resetPassword', this.emailAddress)
       this.closeDialog()
     },
   }

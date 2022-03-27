@@ -15,6 +15,7 @@ public class Constants {
     public static final String COMMENT            = "zukunftswerk.comment";
     public static final String LANGUAGE           = "zukunftswerk.language";
     public static final String TRANSLATION_EDITED = "zukunftswerk.translation_edited";
+    public static final String DISPLAY_NAME       = "zukunftswerk.display_name";        // synthetic
 
     // Assoc Types
     public static final String SHARED_WORKSPACE   = "zukunftswerk.shared_workspace";

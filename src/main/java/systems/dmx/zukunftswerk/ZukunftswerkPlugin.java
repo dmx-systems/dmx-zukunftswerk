@@ -24,6 +24,7 @@ import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
 import systems.dmx.deepl.Translation;
+import systems.dmx.signup.service.SignupPluginService;
 import systems.dmx.timestamps.TimestampsService;
 import systems.dmx.workspaces.WorkspacesService;
 
@@ -53,6 +54,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Inject private TimestampsService ts;
     @Inject private WorkspacesService ws;
     @Inject private AccessControlService acs;
+    @Inject private SignupPluginService ss;
 
     private Topic zwPluginTopic;
     private Topic teamWorkspace;
@@ -92,6 +94,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             if (refComment != null) {
                 acs.enrichWithUserInfo(refComment);
             }
+        } else if (topic.getTypeUri().equals(USERNAME)) {
+            String username = topic.getSimpleValue().toString();
+            String displayName = ss.getDisplayName(username);
+            topic.getChildTopics().getModel().set(DISPLAY_NAME, displayName);
         }
     }
 

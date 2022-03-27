@@ -1,7 +1,7 @@
 <template>
   <el-collapse-item :class="['zw-user-item', {'zw-selected': selected}]" :name="user.value">
     <div class="user" slot="title">
-      <div class="name">{{user.value}}</div>
+      <div class="name">{{displayName}} ({{user.value}})</div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
         <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
         <el-dropdown-menu slot="dropdown">
@@ -32,6 +32,10 @@ export default {
   },
 
   computed: {
+
+    displayName () {
+      return this.user.children['zukunftswerk.display_name'].value
+    },
 
     activeUser () {
       return this.$store.state.admin.activeUser

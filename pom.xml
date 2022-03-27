@@ -44,6 +44,11 @@
             <artifactId>dmx-timestamps</artifactId>
             <version>5.3-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>systems.dmx</groupId>
+            <artifactId>dmx-sign-up</artifactId>
+            <version>2.0.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

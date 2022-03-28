@@ -134,7 +134,7 @@ export default {
 
     displayName () {
       const user = this.$store.state.getUser(this.creator)
-      return user.children['zukunftswerk.display_name']?.value || 'unknown'     // TODO: add language resource
+      return user.children['zukunftswerk.display_name']?.value || '?'     // TODO
     },
 
     editFlag () {

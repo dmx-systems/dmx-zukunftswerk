@@ -34,7 +34,7 @@ export default {
   computed: {
 
     displayName () {
-      return this.user.children['zukunftswerk.display_name']?.value || 'unknown'     // TODO: add language resource
+      return this.user.children['zukunftswerk.display_name']?.value || '?'     // TODO
     },
 
     activeUser () {

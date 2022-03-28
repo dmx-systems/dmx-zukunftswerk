@@ -1,8 +1,8 @@
 <template>
   <div class="zw-admin">
     <div class="nav-bar">
-      <el-button class="fa fa-list" type="text" @click="goWorkspaces"></el-button>
-      <el-button class="fa fa-users" type="text" @click="goUsers"></el-button>
+      <el-button :class="['fa', 'fa-list', {'zw-selected': area1}]" type="text" @click="goWorkspaces"></el-button>
+      <el-button :class="['fa', 'fa-users', {'zw-selected': area2}]" type="text" @click="goUsers"></el-button>
       <div class="gap"></div>
       <el-button class="close-button fa fa-times-circle-o" v-if="showClose" type="text" @click="close"></el-button>
     </div>
@@ -23,6 +23,14 @@ export default {
   },
 
   computed: {
+
+    area1 () {
+      return this.primaryPanel === 'zw-workspace-list'
+    },
+
+    area2 () {
+      return this.primaryPanel === 'zw-user-list'
+    },
 
     primaryPanel () {
       return this.$store.state.admin.primaryPanel
@@ -85,16 +93,22 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: var(--discussion-color);
-  padding: 24px 12px 12px 12px;
+  padding: 20px 6px 6px 6px;
+  flex-basis: 32px;
 }
 
 .zw-admin .nav-bar .el-button {
   font-size: 16px;
-  margin: 0;
+  line-height: 1.5;
+}
+
+.zw-admin .nav-bar .el-button.zw-selected {
+  background-color: white;
 }
 
 .zw-admin .nav-bar .el-button + .el-button {
-  margin-top: 15px;
+  margin-top: 10px;
+  margin-left: 0;
 }
 
 .zw-admin .nav-bar .close-button {

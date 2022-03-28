@@ -63,7 +63,8 @@ const state = {
 const actions = {
 
   login ({dispatch}, credentials) {
-    return dmx.rpc.login(credentials, 'Basic').then(username => {     // TODO: LDAP login
+    const authMethod = DEV ? 'Basic' : 'LDAP'
+    return dmx.rpc.login(credentials, authMethod).then(username => {
       DEV && console.log('[ZW] Login', username)
       return initUserState(username)
     }).then(() =>

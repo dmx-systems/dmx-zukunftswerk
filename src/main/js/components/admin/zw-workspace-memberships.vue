@@ -42,7 +42,7 @@ export default {
   computed: {
 
     users () {
-      return this.$store.state.admin.users
+      return this.$store.state.users
     },
 
     activeWorkspace () {
@@ -56,7 +56,6 @@ export default {
 
   watch: {
     activeWorkspace () {
-      // console.log('watch activeWorkspace', this.activeWorkspace.id, this.memberships)
       this.initModel()
     }
   },
@@ -64,9 +63,8 @@ export default {
   methods: {
 
     initModel () {
-      // console.log('initModel')
       Promise.all([
-        this.$store.dispatch('admin/fetchAllUsers'),
+        this.$store.dispatch('fetchAllUsers'),
         this.$store.dispatch('admin/fetchMemberships', this.activeWorkspace.id)
       ]).then(() => {
         this.model = this.users.map(user => this.isMember(user))

@@ -14,13 +14,13 @@
 export default {
 
   created () {
-    this.$store.dispatch('admin/fetchAllUsers')
+    this.$store.dispatch('fetchAllUsers')
   },
 
   computed: {
 
     users () {
-      return this.$store.state.admin.users
+      return this.$store.state.users
     },
 
     expandedUsernames: {

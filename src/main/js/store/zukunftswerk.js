@@ -19,9 +19,10 @@ const state = {
   ready,                        // a promise, resolved once User state is initialized
 
   // User state
-  username: undefined,          // username of current user (String), undefined if not logged in
+  username: '',                 // username of current user (String), empty/undefined if not logged in
   workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics)
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
+  users: [],                    // all users in the system (array of plain Username topics)
 
   // Workspace state
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
@@ -51,6 +52,8 @@ const state = {
   lang: 'de',                   // UI language ('de'/'fr')
   uiStrings:    require('../ui-strings').default,
   quillOptions: require('../quill-options').default,
+
+  getUser,
   getString,
 
   NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
@@ -60,9 +63,7 @@ const state = {
 const actions = {
 
   login ({dispatch}, credentials) {
-    return dmx.rpc.login(credentials, 'Basic').then(() =>
-      credentials.username
-    ).then(username => {
+    return dmx.rpc.login(credentials, 'Basic').then(username => {     // TODO: LDAP login
       DEV && console.log('[ZW] Login', username)
       return initUserState(username)
     }).then(() =>
@@ -74,18 +75,27 @@ const actions = {
 
   logout ({dispatch}) {
     DEV && console.log('[ZW] Logout', state.username)
-    dmx.rpc.logout().then(() => {
-      state.username = undefined
-      state.workspaces = []
-      state.isTeam = false
-      dispatch('callLoginRoute')
-    })
+    dmx.rpc.logout()
+    initUserState()
+    dispatch('callLoginRoute')
   },
 
   resetPassword (_, emailAddress) {
     http.get(`/sign-up/password-token/${emailAddress}/%2f`).then(response => {    // redirectUrl=/ (%2f)
       console.log('resetPassword', response.data)
     })
+  },
+
+  fetchAllUsers () {
+    if (!state.users.length) {
+      return http.get('/zukunftswerk/admin/users').then(response => {
+        state.users = response.data.sort(
+          (u1, u2) => u1.value.localeCompare(u2.value)
+        )
+      })
+    } else {
+      return Promise.resolve()
+    }
   },
 
   getInitialWorkspaceId () {
@@ -417,20 +427,31 @@ export default store
  *   "workspaces"
  *   "isTeam"
  *
+ * @param   username  the username or empty/undefined if not logged in
+ *
  * @return  a promise, resolved once the state is initialized.
  */
 function initUserState (username) {
-  return Promise.all([
-    http.get('/zukunftswerk/workspaces').then(response => {
-      state.workspaces = response.data
-    }),
-    teamWorkspace
-      .then(workspace => workspace.isWritable())
-      .then(isWritable => {
-        state.username = username
-        state.isTeam = isWritable
-      })
-  ])
+  console.log(username)
+  if (username) {
+    return Promise.all([
+      teamWorkspace
+        .then(workspace => workspace.isWritable())
+        .then(isWritable => {
+          state.username = username
+          state.isTeam = isWritable
+        }),
+      http.get('/zukunftswerk/workspaces').then(response => {
+        state.workspaces = response.data
+      }),
+      store.dispatch('fetchAllUsers')     // needed for accessing display names
+    ])
+  } else {
+    state.username = ''
+    state.workspaces = []
+    state.isTeam = false
+    return Promise.resolve()
+  }
 }
 
 function updateWorkspaceCookie () {
@@ -503,6 +524,10 @@ function setTopicmapViewport() {
   if (state.isTeam) {
     dmx.rpc.setTopicmapViewport(state.topicmap.id, state.pan, state.zoom)           // update server state
   }
+}
+
+function getUser (username) {
+  return state.users.find(ws => ws.value === username)
 }
 
 function getString (key) {

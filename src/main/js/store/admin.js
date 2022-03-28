@@ -14,7 +14,6 @@ const state = {
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
   activeWorkspace: undefined,         // (plain Workspace topic)
 
-  users: [],                          // all users in the system (array of plain Username topics)
   expandedUsernames: [],              // usernames of the users that are expanded (array of String)
   activeUser: undefined               // (plain Username topic)
 }
@@ -84,19 +83,6 @@ const actions = {
     })
   },
 
-  fetchAllUsers () {
-    if (!state.users.length) {
-      // console.log('fetchAllUsers')
-      return http.get('/zukunftswerk/admin/users').then(response => {
-        state.users = response.data.sort(
-          (u1, u2) => u1.value.localeCompare(u2.value)
-        )
-      })
-    } else {
-      return Promise.resolve()
-    }
-  },
-
   fetchMemberships (_, workspaceId) {
     const workspace = findWorkspace(workspaceId)
     if (!workspace.memberships) {
@@ -109,8 +95,8 @@ const actions = {
     }
   },
 
-  fetchZWWorkspacesOfUser (_, username) {
-    const usernameTopic = findUser(username)
+  fetchZWWorkspacesOfUser ({rootState}, username) {
+    const usernameTopic = rootState.getUser(username)
     if (!usernameTopic.memberships) {
       return http.get(`/zukunftswerk/admin/user/${username}/workspaces`).then(response => {
         const workspaces = response.data
@@ -175,10 +161,6 @@ export default {
 
 function findWorkspace (id) {
   return state.workspaces.find(ws => ws.id === id)
-}
-
-function findUser (username) {
-  return state.users.find(ws => ws.value === username)
 }
 
 // helper

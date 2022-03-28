@@ -2,7 +2,7 @@
   <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
     <div class="heading">
       <div>
-        <span class="creator">{{creator}}</span>
+        <span class="creator">{{displayName}}</span>
         <span class="date label">{{date}}</span>
         <span class="edit-flag label">
           (<zw-string>label.translation</zw-string>:
@@ -130,6 +130,11 @@ export default {
 
     creator () {
       return this.topic.children['dmx.accesscontrol.creator'].value
+    },
+
+    displayName () {
+      const user = this.$store.state.getUser(this.creator)
+      return user.children['zukunftswerk.display_name'].value
     },
 
     editFlag () {

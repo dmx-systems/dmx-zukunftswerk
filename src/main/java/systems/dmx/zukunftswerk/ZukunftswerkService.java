@@ -11,7 +11,8 @@ import java.util.List;
 public interface ZukunftswerkService {
 
     /**
-     * Retrieves the ZW shared workspaces of the current user.
+     * Retrieves the ZW shared workspaces of the current user plus the "Team" workspace, if the
+     * current user is a Team member.
      */
     List<RelatedTopic> getZWWorkspaces();
 

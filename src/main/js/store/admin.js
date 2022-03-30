@@ -136,7 +136,7 @@ const actions = {
   /**
    * @param   userModel   object w/ "displayName" and "emailAddress" props.
    */
-  createUser (_, userModel) {
+  createUser ({rootState}, userModel) {
     let p
     if (DEV) {
       p = dmx.rpc.createUserAccount(userModel.emailAddress, encodePassword('123'))
@@ -152,7 +152,7 @@ const actions = {
     }
     p.then(user => {
       console.log('createUser', user)
-      state.users.push(user)
+      rootState.users.push(user)
     })
   }
 }

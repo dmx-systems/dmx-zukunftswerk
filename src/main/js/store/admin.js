@@ -137,16 +137,22 @@ const actions = {
    * @param   userModel   object w/ "displayName" and "emailAddress" props.
    */
   createUser (_, userModel) {
-    const mailbox = userModel.emailAddress
-    const displayName = userModel.displayName
-    const password = btoa(newPassword())
-    http.get(`/sign-up/custom-handle/${mailbox}/${displayName}/${password}`/*, {
-      headers: {
-        ACCEPT: 'application/json'
-      }
-    }*/).then(response => {
-      console.log('createUser', response.data)
-      state.users.push(response.data)
+    let p
+    if (DEV) {
+      p = dmx.rpc.createUserAccount(userModel.emailAddress, encodePassword('123'))
+    } else {
+      const mailbox = userModel.emailAddress
+      const displayName = userModel.displayName
+      const password = btoa(newPassword())
+      p = http.get(`/sign-up/custom-handle/${mailbox}/${displayName}/${password}`/*, {
+        headers: {
+          Accept: 'application/json'
+        }
+      }*/).then(response => response.data)
+    }
+    p.then(user => {
+      console.log('createUser', user)
+      state.users.push(user)
     })
   }
 }

@@ -6,7 +6,9 @@
         <span class="date label">{{date}}</span>
         <span class="edit-flag label">
           (<zw-string>label.translation</zw-string>:
-          <zw-string v-if="!editFlag" key="automatic">label.automatic</zw-string><zw-string v-if="editFlag" key="edited">label.edited</zw-string>)
+             <zw-string v-if="automatic" key="automatic">label.automatic</zw-string><!--
+          --><zw-string v-if="edited" key="edited">label.edited</zw-string><!--
+          --><zw-string v-if="none" key="none">label.none</zw-string>)
         </span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
@@ -137,6 +139,18 @@ export default {
     displayName () {
       const user = this.$store.state.getUser(this.creator)
       return user.children['zukunftswerk.display_name']?.value || '?'     // TODO
+    },
+
+    automatic () {
+      return this.origLang && !this.editFlag
+    },
+
+    edited () {
+      return this.origLang && this.editFlag
+    },
+
+    none () {
+      return !this.origLang
     },
 
     editFlag () {

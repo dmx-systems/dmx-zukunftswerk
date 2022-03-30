@@ -43,6 +43,8 @@ export default {
   'label.automatic.fr': 'automatique',
   'label.edited.de': 'bearbeitet',
   'label.edited.fr': 'édité',
+  'label.none.de': 'keine',
+  'label.none.fr': 'pas de',
   'label.new_comment.de': 'Neuer Diskussionsbeitrag',
   'label.new_comment.fr': 'Nouvel article de discussion',
   'label.new_note.de': 'Neue Notiz',

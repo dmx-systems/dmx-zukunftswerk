@@ -82,6 +82,8 @@ export default {
   'action.cancel.fr': 'Annuler',
   'action.reply.de': 'Antworten',
   'action.reply.fr': 'Réponse',
+  'action.create.de': 'Erstellen',
+  'action.create.fr': 'Créer',
   'action.edit.de': 'Ändern',
   'action.edit.fr': 'Éditer',
   'action.delete.de': 'Löschen',
@@ -112,5 +114,13 @@ export default {
   'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',
   'warning.delete_comment.de': 'Sie sind im Begriff diesen Kommentar zu löschen',
-  'warning.delete_comment.fr': 'Vous êtes sur le point de supprimer ce commentaire'
+  'warning.delete_comment.fr': 'Vous êtes sur le point de supprimer ce commentaire',
+  'warning.translation_failed.de': 'Automatische Übersetzung fehlgeschlagen',
+  'warning.translation_failed.fr': 'Échec de la traduction automatique',
+  'warning.confirm_create_comment.de': `Dein Kommentar konnte nicht übersetzt werden. Klicke "Abbrechen" um ihn zu
+    ändern oder "Erstellen", um ihn ohne Übersetzung zu erstellen. Tipp: Wähle nach dem Erstellen "Ändern", um eine
+    manuelle Übersetzung zu ergänzen.`,
+  'warning.confirm_create_comment.fr': `Ton commentaire n'a pas pu être traduit. Clique sur "Annuler" pour le modifier
+    ou sur "Créer" pour le créer sans traduction. Conseil: choisis "Éditer" après la création pour ajouter une
+    traduction manuelle.`
 }

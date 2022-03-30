@@ -160,10 +160,15 @@ export default {
     },
 
     confirmCreate (e) {
-      const message = /java\.lang\.RuntimeException: Unsupported original language: "(..)" \(detected\)/
-      const match = e.response.data.cause.match(message)
-      if (match) {
-        return this.$confirm(`Detected language ("${match[1]}") is not translatable. Create comment anyways?`)
+      const message = /java\.lang\.RuntimeException: Unsupported original language: ".." \(detected\)/
+      if (e.response.data.cause.match(message)) {
+        return this.$confirm(this.$store.state.getString('warning.confirm_create_comment'), {
+          title:             this.$store.state.getString('warning.translation_failed'),
+          type: 'warning',
+          confirmButtonText: this.$store.state.getString('action.create'),
+          cancelButtonText:  this.$store.state.getString('action.cancel'),
+          showClose: false,
+        })
       }
     },
 

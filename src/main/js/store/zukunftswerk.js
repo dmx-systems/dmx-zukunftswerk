@@ -20,6 +20,7 @@ const state = {
   // User state
   username: '',                 // username of current user (String), empty/undefined if not logged in
   workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics)
+                                // Note: the "Team" workspace is not included.
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
   users: [],                    // all users in the system (array of plain Username topics)
 
@@ -99,15 +100,11 @@ const actions = {
   },
 
   getInitialWorkspaceId () {
-    return dmx.isAdmin().then(isAdmin => {
-      if (isAdmin) {
-        return state.teamWorkspace.then(workspace => {
-          return workspace.id
-        })
-      } else {
-        return state.workspaces[0].id
-      }
-    })
+    if (state.isTeam) {
+      return state.teamWorkspace.then(workspace => workspace.id)
+    } else {
+      return state.workspaces[0].id
+    }
   },
 
   setLang (_, lang) {
@@ -425,10 +422,11 @@ export default store
 // state helper
 
 /**
- * Initialzes 3 states:
+ * Initialzes 4 states:
  *   "username"
  *   "workspaces"
  *   "isTeam"
+ *   "users"
  *
  * @param   username  the username or empty/undefined if not logged in
  *

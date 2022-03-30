@@ -11,12 +11,15 @@ import java.util.List;
 public interface ZukunftswerkService {
 
     /**
-     * Retrieves the ZW shared workspaces of the current user.
+     * Fetches the ZW shared workspaces of the current user.
+     *
+     * @return  the workspaces as a list of RelatedTopics. Their "relating associations" are the Memberships.
+     *          Note: the "Team" workspace is not included.
      */
     List<RelatedTopic> getZWWorkspaces();
 
     /**
-     * Retrieves the comments of the current workspace (according to workspace cookie).
+     * Fetches the comments of the current workspace (according to workspace cookie).
      */
     List<Topic> getDiscussion();
 
@@ -36,12 +39,12 @@ public interface ZukunftswerkService {
     // --- Admin ---
 
     /**
-     * Retrieves all ZW shared workspaces.
+     * Fetches all ZW shared workspaces.
      */
     List<RelatedTopic> getAllZWWorkspaces();
 
     /**
-     * Retrieves the ZW shared workspaces of the given user plus the "Team" workspace, if the
+     * Fetches the ZW shared workspaces of the given user plus the "Team" workspace, if the
      * given user is a Team member.
      */
     List<RelatedTopic> getZWWorkspacesOfUser(String username);

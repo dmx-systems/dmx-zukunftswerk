@@ -1,8 +1,8 @@
 <template>
   <div class="zw-admin">
     <div class="nav-bar">
-      <el-button :class="['fa', 'fa-list', {'zw-selected': area1}]" type="text" @click="goWorkspaces"></el-button>
-      <el-button :class="['fa', 'fa-users', {'zw-selected': area2}]" type="text" @click="goUsers"></el-button>
+      <el-button :class="['fa', 'fa-list', {'zw-selected': area1}]" type="text" @click="goArea1"></el-button>
+      <el-button :class="['fa', 'fa-users', {'zw-selected': area2}]" type="text" @click="goArea2"></el-button>
       <div class="gap"></div>
       <el-button class="close-button fa fa-times-circle-o" v-if="showClose" type="text" @click="close"></el-button>
     </div>
@@ -51,11 +51,11 @@ export default {
 
   methods: {
 
-    goWorkspaces () {
+    goArea1 () {
       this.$store.dispatch('admin/setPrimaryPanel', 'zw-workspace-list')
     },
 
-    goUsers () {
+    goArea2 () {
       this.$store.dispatch('admin/setPrimaryPanel', 'zw-user-list')
     },
 
@@ -94,7 +94,7 @@ export default {
   flex-direction: column;
   background-color: var(--discussion-color);
   padding: 20px 6px 6px 6px;
-  flex-basis: 32px;
+  flex-basis: 30px;
 }
 
 .zw-admin .nav-bar .el-button {

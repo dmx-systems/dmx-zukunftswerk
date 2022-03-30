@@ -78,10 +78,13 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public void postUpdateTopic(Topic topic, ChangeReport report, TopicModel updateModel) {
         if (topic.getTypeUri().equals(COMMENT)) {
-            String origLang = topic.getChildTopics().getString(LANGUAGE + "#" + ORIGINAL_LANGUAGE);
-            List<Change> changes = report.getChanges(COMMENT + "." + targetLang(origLang));
-            if (changes != null) {
-                topic.update(mf.newChildTopicsModel().set(TRANSLATION_EDITED, true));
+            // Note: a monolingual comment has no "Original Language"
+            String origLang = topic.getChildTopics().getString(LANGUAGE + "#" + ORIGINAL_LANGUAGE, null);
+            if (origLang != null) {
+                List<Change> changes = report.getChanges(COMMENT + "." + targetLang(origLang));
+                if (changes != null) {
+                    topic.update(mf.newChildTopicsModel().set(TRANSLATION_EDITED, true));
+                }
             }
         }
     }
@@ -169,29 +172,39 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public Topic createComment(String comment, @QueryParam("refTopicIds") IdList refTopicIds,
                                                @QueryParam("fileTopicIds") IdList fileTopicIds) {
         try {
-            TopicModel commentModel = createBilingualTopicModel(COMMENT, comment);
-            // add comment/document ref
-            if (refTopicIds != null) {
-                for (long refTopicId : refTopicIds) {
-                    String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
-                    commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
-                }
-            }
-            // add attachments
-            if (fileTopicIds != null) {
-                for (long fileTopicId : fileTopicIds) {
-                    commentModel.getChildTopics().addRef(FILE + "#" + ATTACHMENT, fileTopicId);
-                }
-            }
-            //
-            Topic commentTopic = dmx.createTopic(commentModel);
-            acs.enrichWithUserInfo(commentTopic);
-            ts.enrichWithTimestamps(commentTopic);
-            me.addComment(workspaceId(), commentTopic);
-            return commentTopic;
+            return _createComment(createBilingualTopicModel(COMMENT, comment), refTopicIds, fileTopicIds);
         } catch (Exception e) {
-            throw new RuntimeException("Creating comment failed, refTopicIds=" + refTopicIds + ", fileTopicIds=" +
-                fileTopicIds, e);
+            throw new RuntimeException("Creating comment failed, comment=\"" + comment + "\", refTopicIds=" +
+                refTopicIds + ", fileTopicIds=" + fileTopicIds, e);
+        }
+    }
+
+    @POST
+    @Path("/comment/monolingual")
+    @Consumes("text/plain")
+    @Transactional
+    @Override
+    public Topic createMonolingualComment(String comment, @QueryParam("refTopicIds") IdList refTopicIds,
+                                                          @QueryParam("fileTopicIds") IdList fileTopicIds) {
+        try {
+            // Note: a monolingual comment is stored in "de". "fr" and "Original Language" are not set.
+            return _createComment(mf.newTopicModel(COMMENT, mf.newChildTopicsModel()
+                .set(COMMENT_DE, comment)
+            ), refTopicIds, fileTopicIds);
+        } catch (Exception e) {
+            throw new RuntimeException("Creating monolingual comment failed, comment=\"" + comment +
+                "\", refTopicIds=" + refTopicIds + ", fileTopicIds=" + fileTopicIds, e);
+        }
+    }
+
+    @GET
+    @Path("/users")
+    @Override
+    public List<Topic> getAllUsers() {
+        try {
+            return dmx.getTopicsByType(USERNAME);
+        } catch (Exception e) {
+            throw new RuntimeException("Retrieving all ZW users failed", e);
         }
     }
 
@@ -227,17 +240,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             return workspaces;
         } catch (Exception e) {
             throw new RuntimeException("Retrieving ZW workspaces of user \"" + username + "\" failed", e);
-        }
-    }
-
-    @GET
-    @Path("/admin/users")
-    @Override
-    public List<Topic> getAllUsers() {
-        try {
-            return dmx.getTopicsByType(USERNAME);
-        } catch (Exception e) {
-            throw new RuntimeException("Retrieving all ZW users failed", e);
         }
     }
 
@@ -291,6 +293,28 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         } else {
             throw new RuntimeException("Unsupported original language: \"" + origLang + "\" (detected)");
         }
+    }
+
+    private Topic _createComment(TopicModel commentModel, IdList refTopicIds, IdList fileTopicIds) {
+        // add comment/document ref
+        if (refTopicIds != null) {
+            for (long refTopicId : refTopicIds) {
+                String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
+                commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
+            }
+        }
+        // add attachments
+        if (fileTopicIds != null) {
+            for (long fileTopicId : fileTopicIds) {
+                commentModel.getChildTopics().addRef(FILE + "#" + ATTACHMENT, fileTopicId);
+            }
+        }
+        //
+        Topic commentTopic = dmx.createTopic(commentModel);
+        acs.enrichWithUserInfo(commentTopic);
+        ts.enrichWithTimestamps(commentTopic);
+        me.addComment(workspaceId(), commentTopic);
+        return commentTopic;
     }
 
     private List<RelatedTopic> getZWWorkspaces(Topic username) {

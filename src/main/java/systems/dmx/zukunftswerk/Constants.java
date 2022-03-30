@@ -13,6 +13,8 @@ public class Constants {
     public static final String LABEL              = "zukunftswerk.label";
     public static final String ARROW              = "zukunftswerk.arrow";
     public static final String COMMENT            = "zukunftswerk.comment";
+    public static final String COMMENT_DE         = "zukunftswerk.comment.de";
+    public static final String COMMENT_FR         = "zukunftswerk.comment.fr";
     public static final String LANGUAGE           = "zukunftswerk.language";
     public static final String TRANSLATION_EDITED = "zukunftswerk.translation_edited";
     public static final String DISPLAY_NAME       = "zukunftswerk.display_name";        // synthetic

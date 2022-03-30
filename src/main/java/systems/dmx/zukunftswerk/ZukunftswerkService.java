@@ -24,11 +24,14 @@ public interface ZukunftswerkService {
 
     Topic createLabel(String label);
 
-    Topic createComment(String comment, IdList refTopicIds, IdList fileTopicIds);
+    Topic createComment           (String comment, IdList refTopicIds, IdList fileTopicIds);
+    Topic createMonolingualComment(String comment, IdList refTopicIds, IdList fileTopicIds);
 
     // Note: there are no createDocument() or createArrow() calls here.
     // Documents and arrows are created by generic createTopic() calls.
     // No auto-translation is involved.
+
+    List<Topic> getAllUsers();
 
     // --- Admin ---
 
@@ -38,12 +41,10 @@ public interface ZukunftswerkService {
     List<RelatedTopic> getAllZWWorkspaces();
 
     /**
-     * Retrieves the ZW shared workspaces of the current user plus the "Team" workspace, if the
-     * current user is a Team member.
+     * Retrieves the ZW shared workspaces of the given user plus the "Team" workspace, if the
+     * given user is a Team member.
      */
     List<RelatedTopic> getZWWorkspacesOfUser(String username);
-
-    List<Topic> getAllUsers();
 
     Topic createZWWorkspace(String nameDe, String nameFr);
 }

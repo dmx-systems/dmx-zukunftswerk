@@ -281,7 +281,9 @@ const actions = {
    * @param   monolingual     Optional: if truish a monolingual comment is created (no auto-translation)
    */
   createComment (_, {comment, refTopicIds, fileTopicIds, monolingual}) {
-    return http.post(`/zukunftswerk/comment${monolingual ? '/monolingual' : ''}`, comment, {
+    const __http = monolingual ? http : dmx.rpc._http
+    const suffix = monolingual ? '/monolingual' : ''
+    return __http.post(`/zukunftswerk/comment${suffix}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
       },

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {MessageBox} from 'element-ui'
 import http from 'axios'
 import dmx from 'dmx-api'
 import adminStore from './admin'
@@ -89,7 +88,7 @@ const actions = {
 
   fetchAllUsers () {
     if (!state.users.length) {
-      return http.get('/zukunftswerk/admin/users').then(response => {
+      return http.get('/zukunftswerk/users').then(response => {
         state.users = response.data.sort(
           (u1, u2) => u1.value.localeCompare(u2.value)
         )
@@ -278,10 +277,11 @@ const actions = {
   },
 
   /**
-   * @param   refTopicIds    array: a Comment ID, or a Document ID, or both
+   * @param   refTopicIds     array: a Comment ID, or a Document ID, or both
+   * @param   monolingual     Optional: if truish a monolingual comment is created (no auto-translation)
    */
-  createComment (_, {comment, refTopicIds, fileTopicIds}) {
-    return http.post('/zukunftswerk/comment', comment, {
+  createComment (_, {comment, refTopicIds, fileTopicIds, monolingual}) {
+    return http.post(`/zukunftswerk/comment${monolingual ? '/monolingual' : ''}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
       },
@@ -542,7 +542,7 @@ function filerepoUrl (repoPath) {
 }
 
 function confirmDeletion (textKey = 'warning.delete') {
-  return MessageBox.confirm(getString(textKey), 'Warning', {
+  return Vue.prototype.$confirm(getString(textKey), 'Warning', {
     type: 'warning',
     confirmButtonText: getString('action.delete'),
     confirmButtonClass: 'el-button--danger',

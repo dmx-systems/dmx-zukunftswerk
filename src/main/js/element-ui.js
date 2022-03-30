@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import {
-  Button, Input, Checkbox, Select, Option, Dropdown, DropdownMenu, DropdownItem, Dialog, Upload, Collapse, CollapseItem,
-  Loading
+  Button, Input, Checkbox, Select, Option, Dropdown, DropdownMenu, DropdownItem, Dialog, Upload,
+  Collapse, CollapseItem, Loading, MessageBox, Notification
 } from 'element-ui'
 import locale from 'element-ui/lib/locale'
 import DialogDraggable from 'vue-element-dialog-draggable'
@@ -25,3 +25,10 @@ Vue.use(Collapse)
 Vue.use(CollapseItem)
 
 Vue.use(Loading.directive)
+
+Vue.prototype.$msgbox  = MessageBox
+Vue.prototype.$alert   = MessageBox.alert
+Vue.prototype.$confirm = MessageBox.confirm
+Vue.prototype.$prompt  = MessageBox.prompt
+
+Vue.prototype.$notify = Notification

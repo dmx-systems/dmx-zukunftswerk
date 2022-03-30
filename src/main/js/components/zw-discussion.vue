@@ -134,23 +134,45 @@ export default {
     },
 
     createComment () {
-      this.submitting = true
-      this.$store.dispatch('createComment', {
+      const commentModel = {
         comment: this.newComment,
         refTopicIds: this.refTopicIds,
         fileTopicIds: this.fileTopicIds
+      }
+      this.submitting = true
+      this.$store.dispatch('createComment', commentModel).then(comment => {
+        this.resetNewCommentPanel(comment)
+      }).catch(e => {
+        return this.confirmCreate(e)
+      }).then(result => {
+        if (result === 'confirm') {
+          commentModel.monolingual = true
+          return this.$store.dispatch('createComment', commentModel)
+        }
       }).then(comment => {
-        this.newComment = ''
-        this.$refs.newComment.setHTML('')     // why does binding not work here?
-        this.refComment = undefined
-        this.attachments = []
-        this.jumpTo(comment, isChrome ? 'auto' : undefined)
-      }).catch(() => {
-        // silence browser console
+        this.resetNewCommentPanel(comment)
+      }).catch(result => {
+        // console.log('cancel', result)
       }).finally(() => {
         this.submitting = false
         this.focus()
       })
+    },
+
+    confirmCreate (e) {
+      const message = /java\.lang\.RuntimeException: Unsupported original language: "(..)" \(detected\)/
+      const match = e.response.data.cause.match(message)
+      if (match) {
+        return this.$confirm(`Detected language ("${match[1]}") is not translatable. Create comment anyways?`)
+      }
+    },
+
+    resetNewCommentPanel (comment) {
+      this.newComment = ''
+      this.$refs.newComment.setHTML('')     // why does binding not work here?
+      this.refComment = undefined
+      this.attachments = []
+      this.jumpTo(comment, isChrome ? 'auto' : undefined)
     },
 
     reply (comment) {

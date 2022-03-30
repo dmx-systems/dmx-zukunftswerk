@@ -24,15 +24,16 @@
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
       <template v-if="infoMode">
-        <div class="dmx-html-field info left" v-html="comment[origLang]"></div>
-        <div class="dmx-html-field info right" v-html="comment[translatedLang]"></div>
+        <div class="dmx-html-field info left" v-html="comment[origLang || 'de']"></div>
+        <div class="dmx-html-field info right" v-html="comment[translatedLang || 'fr']"></div>
       </template>
       <template v-else>
         <div class="dmx-html-field left">
-          <quill v-model="commentModel[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+          <quill v-model="commentModel[origLang || 'de']" :options="quillOptions" @quill-ready="focus" ref="quill">
+          </quill>
         </div>
         <div class="dmx-html-field right">
-          <quill v-model="commentModel[translatedLang]" :options="quillOptions"></quill>
+          <quill v-model="commentModel[translatedLang || 'fr']" :options="quillOptions"></quill>
         </div>
       </template>
     </div>
@@ -76,8 +77,9 @@ export default {
 
     comment () {
       return {
+        // Note: in a monolingual comment "fr" is not defined
         de: this.topic.children['zukunftswerk.comment.de'].value,
-        fr: this.topic.children['zukunftswerk.comment.fr'].value
+        fr: this.topic.children['zukunftswerk.comment.fr']?.value
       }
     },
 
@@ -190,6 +192,10 @@ export default {
     edit () {
       this.mode = 'form'
       this.topicBuffer = this.topic.clone()
+      // Note: in a monolingual comment "fr" is not defined
+      if (!this.topicBuffer.children['zukunftswerk.comment.fr']) {
+        this.topicBuffer.children['zukunftswerk.comment.fr'] = {value: ""}
+      }
     },
 
     // Note: can't be named "delete"

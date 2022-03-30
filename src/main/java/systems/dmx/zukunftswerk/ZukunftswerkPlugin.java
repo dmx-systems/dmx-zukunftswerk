@@ -291,6 +291,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         } else if (origLang.equals("fr")) {
             return "de";
         } else {
+            // Note: the regex in confirmCreate() (zw-discussion.vue) must match this message
             throw new RuntimeException("Unsupported original language: \"" + origLang + "\" (detected)");
         }
     }

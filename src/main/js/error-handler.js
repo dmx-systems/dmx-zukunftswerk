@@ -1,9 +1,9 @@
-import {Notification} from 'element-ui'
+import Vue from 'vue'
 
 export default function onHttpError (error) {
   const report = error.response.data
   const level = report.level || 'ERROR'
-  Notification({
+  Vue.prototype.$notify({
     title: level,
     type: level.toLowerCase(),
     message: '<p>' + report.error + '</p>' +

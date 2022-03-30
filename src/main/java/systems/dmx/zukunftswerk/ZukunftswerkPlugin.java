@@ -232,7 +232,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             if (usernameTopic == null) {
                 throw new IllegalArgumentException("No such user: \"" + username + "\"");
             }
-            return getZWWorkspaces(usernameTopic);
+            List<RelatedTopic> workspaces = getZWWorkspaces(usernameTopic);
+            Assoc membership = acs.getMembership(username, teamWorkspace.getId());
+            if (membership != null) {
+                workspaces.add(membership.getDMXObjectByType(WORKSPACE));
+            }
+            return workspaces;
         } catch (Exception e) {
             throw new RuntimeException("Retrieving ZW workspaces of user \"" + username + "\" failed", e);
         }
@@ -313,17 +318,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         return commentTopic;
     }
 
-    private List<RelatedTopic> getZWWorkspaces(Topic usernameTopic) {
-        List<RelatedTopic> workspaces = DMXUtils.loadChildTopics(
-            usernameTopic.getRelatedTopics(MEMBERSHIP, DEFAULT, DEFAULT, WORKSPACE)
+    private List<RelatedTopic> getZWWorkspaces(Topic username) {
+        return DMXUtils.loadChildTopics(
+            username.getRelatedTopics(MEMBERSHIP, DEFAULT, DEFAULT, WORKSPACE)
                     .stream().filter(this::isZWWorkspace).collect(Collectors.toList())
         );
-        String username = usernameTopic.getSimpleValue().toString();
-        Assoc membership = acs.getMembership(username, teamWorkspace.getId());
-        if (membership != null) {
-            workspaces.add(membership.getDMXObjectByType(WORKSPACE));
-        }
-        return workspaces;
     }
 
     private boolean isZWWorkspace(Topic workspace) {

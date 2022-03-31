@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import errorHandler from '../error-handler'
+
 const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
 console.log('[ZW] isChrome', isChrome)
 
@@ -142,15 +144,17 @@ export default {
       this.submitting = true
       this.$store.dispatch('createComment', commentModel).then(comment => {
         this.resetNewCommentPanel(comment)
-      }).catch(e => {
-        return this.confirmCreate(e)
+      }).catch(error => {
+        return this.handleError(error)
       }).then(result => {
         if (result === 'confirm') {
           commentModel.monolingual = true
-          return this.$store.dispatch('createComment', commentModel)
+          this.$store.dispatch('createComment', commentModel).then(comment => {
+            this.resetNewCommentPanel(comment)
+          }).catch(error => {
+            errorHandler(error)     // generic error handler
+          })
         }
-      }).then(comment => {
-        this.resetNewCommentPanel(comment)
       }).catch(result => {
         // console.log('cancel', result)
       }).finally(() => {
@@ -159,9 +163,9 @@ export default {
       })
     },
 
-    confirmCreate (e) {
+    handleError (error) {
       const message = /java\.lang\.RuntimeException: Unsupported original language: ".." \(detected\)/
-      if (e.response.data.cause.match(message)) {
+      if (error.response.data.cause.match(message)) {
         return this.$confirm(this.$store.state.getString('warning.confirm_create_comment'), {
           title:             this.$store.state.getString('warning.translation_failed'),
           type: 'warning',
@@ -169,6 +173,8 @@ export default {
           cancelButtonText:  this.$store.state.getString('action.cancel'),
           showClose: false,
         })
+      } else {
+        errorHandler(error)         // fallback to generic error handler
       }
     },
 

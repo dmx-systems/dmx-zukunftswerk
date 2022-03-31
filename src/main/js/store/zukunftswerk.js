@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import http from 'axios'
 import dmx from 'dmx-api'
 import adminStore from './admin'
+import errorHandler from '../error-handler'
 
 window.addEventListener('focus', updateWorkspaceCookie)
 
@@ -80,8 +81,10 @@ const actions = {
         state.loginMessage = ''
       })
     }).catch(error => {
-      console.error(error)
       state.loginMessage = 'Login failed'
+      if (error.response.status !== 401) {
+        errorHandler(error)     // generic error handler
+      }
     })
   },
 

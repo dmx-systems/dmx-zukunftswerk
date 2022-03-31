@@ -336,7 +336,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         String workspace = dmx.getTopic(workspaceId()).getSimpleValue().toString();
         String creator   = comment.getModel().getChildTopics().getString(CREATOR);    // synthetic, so operate on model
         String message = "NEW COMMENT\r\rWorkspace: " + workspace + "\r\rAuthor: " + creator +
-            "\r\r----------------" + commentDe + "\r----------------" + commentFr;
+            "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
         sendmail.doEmailRecipient("ZW Activity", message, "jri@dmx.berlin");
     }
 

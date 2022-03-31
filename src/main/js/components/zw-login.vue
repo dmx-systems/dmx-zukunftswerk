@@ -59,7 +59,6 @@ export default {
         username: '',
         password: ''
       },
-      message: '',
       // Password-reset Dialog
       visible: false,
       emailAddress: ''
@@ -67,6 +66,11 @@ export default {
   },
 
   computed: {
+
+    message () {
+      return this.$store.state.loginMessage
+    },
+
     lang () {
       return this.$store.state.lang
     }
@@ -75,11 +79,7 @@ export default {
   methods: {
 
     login () {
-      this.$store.dispatch('login', this.credentials).then(() => {
-        this.message = 'Login OK'
-      }).catch(error => {
-        this.message = 'Login failed'
-      }).finally(() => {
+      this.$store.dispatch('login', this.credentials).finally(() => {
         this.credentials.password = ''
       })
     },

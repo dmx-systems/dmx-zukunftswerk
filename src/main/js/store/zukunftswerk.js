@@ -45,13 +45,14 @@ const state = {
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
+  loginMessage: '',             // the status message shown besides Login button
+  lang: 'de',                   // UI language ('de'/'fr')
+  uiStrings:    require('../ui-strings').default,
+  quillOptions: require('../quill-options').default,
   logo: {
     de: require('../../resources/logo.de.png'),
     fr: require('../../resources/logo.fr.png')
   },
-  lang: 'de',                   // UI language ('de'/'fr')
-  uiStrings:    require('../ui-strings').default,
-  quillOptions: require('../quill-options').default,
 
   getUser,
   getString,
@@ -66,19 +67,27 @@ const actions = {
     const authMethod = DEV || credentials.username === 'admin' ? 'Basic' : 'LDAP'
     return dmx.rpc.login(credentials, authMethod).then(username => {
       DEV && console.log('[ZW] Login', username)
-      return initUserState(username)
-    }).then(() =>
-      dispatch('getInitialWorkspaceId')
-    ).then(workspaceId =>
-      dispatch('callWorkspaceRoute', workspaceId)
-    )
+      state.loginMessage = 'Login OK'
+      return initUserState(username).then(() =>
+        dispatch('getInitialWorkspaceId')
+      ).then(workspaceId =>
+        dispatch('callWorkspaceRoute', workspaceId)
+      ).catch(error =>
+        Vue.prototype.$alert(error).then(() =>
+          dispatch('logout')
+        )
+      ).finally(() => {
+        state.loginMessage = ''
+      })
+    }).catch(error => {
+      console.error(error)
+      state.loginMessage = 'Login failed'
+    })
   },
 
   logout ({dispatch}) {
     DEV && console.log('[ZW] Logout', state.username)
-    dmx.rpc.logout()
-    initUserState()
-    dispatch('callLoginRoute')
+    return dmx.rpc.logout().then(initUserState)
   },
 
   resetPassword (_, emailAddress) {
@@ -99,11 +108,19 @@ const actions = {
     }
   },
 
+  /**
+   * Depends on up-to-date User state.
+   */
   getInitialWorkspaceId () {
     if (state.isTeam) {
       return state.teamWorkspace.then(workspace => workspace.id)
     } else {
-      return state.workspaces[0].id
+      const workspaceId = state.workspaces[0]?.id
+      if (!workspaceId) {
+        throw Error("No Workspace. User \"" + state.username + "\" has no workspaces assigned, " +
+          "and is not a \"Team\" member.")
+      }
+      return workspaceId
     }
   },
 

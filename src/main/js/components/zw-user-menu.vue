@@ -25,7 +25,11 @@ export default {
 
   methods: {
     handle (command) {
-      this.$store.dispatch(command)
+      if (command === 'logout') {
+        this.$store.dispatch('logout').then(() =>
+          this.$store.dispatch('callRootRoute')
+        )
+      }
     }
   }
 }

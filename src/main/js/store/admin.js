@@ -144,11 +144,7 @@ const actions = {
       const mailbox = userModel.emailAddress
       const displayName = userModel.displayName
       const password = btoa(newPassword())
-      p = http.get(`/sign-up/custom-handle/${mailbox}/${displayName}/${password}`/*, {
-        headers: {
-          Accept: 'application/json'
-        }
-      }*/).then(response => response.data)
+      p = http.get(`/sign-up/custom-handle/${mailbox}/${displayName}/${password}`).then(response => response.data)
     }
     p.then(user => {
       console.log('createUser', user)

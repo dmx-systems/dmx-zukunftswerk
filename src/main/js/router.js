@@ -55,6 +55,12 @@ router.beforeEach((to, from, next) => {
     } else {
       next({name: 'login'})
     }
+  }).catch(error => {
+    Vue.prototype.$alert(error).then(() =>
+      store.dispatch('logout')
+    ).then(() => {
+      next({name: 'root'})
+    })
   })
 })
 
@@ -73,6 +79,10 @@ const actions = {
       name: 'workspace',
       params: {workspaceId: id}
     })
+  },
+
+  callRootRoute () {
+    router.push({name: 'root'})
   },
 
   callLoginRoute () {

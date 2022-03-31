@@ -24,6 +24,7 @@ import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
 import systems.dmx.deepl.Translation;
+import systems.dmx.sendmail.SendmailService;
 import systems.dmx.signup.SignupService;
 import systems.dmx.timestamps.TimestampsService;
 import systems.dmx.workspaces.WorkspacesService;
@@ -55,6 +56,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Inject private WorkspacesService ws;
     @Inject private AccessControlService acs;
     @Inject private SignupService signup;
+    @Inject private SendmailService sendmail;
 
     private Topic zwPluginTopic;
     private Topic teamWorkspace;
@@ -78,8 +80,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public void postUpdateTopic(Topic topic, ChangeReport report, TopicModel updateModel) {
         if (topic.getTypeUri().equals(COMMENT)) {
-            // Note: a monolingual comment has no "Original Language"
             String origLang = topic.getChildTopics().getString(LANGUAGE + "#" + ORIGINAL_LANGUAGE, null);
+            // Note: a monolingual comment has no "Original Language"
             if (origLang != null) {
                 List<Change> changes = report.getChanges(COMMENT + "." + targetLang(origLang));
                 if (changes != null) {
@@ -315,7 +317,18 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         acs.enrichWithUserInfo(commentTopic);
         ts.enrichWithTimestamps(commentTopic);
         me.addComment(workspaceId(), commentTopic);
+        sendNotificationMail(commentTopic);
         return commentTopic;
+    }
+
+    private void sendNotificationMail(Topic comment) {
+        String commentDe = comment.getChildTopics().getString(COMMENT_DE);
+        String commentFr = comment.getChildTopics().getString(COMMENT_FR, "");
+        String workspace = dmx.getTopic(workspaceId()).getSimpleValue().toString();
+        String creator   = comment.getChildTopics().getString(CREATOR);
+        String message = "NEW COMMENT\r\rWorkspace: " + workspace + "\r\rAuthor: " + creator +
+            "\r\r----------------" + commentDe + "\r----------------" + commentFr;
+        sendmail.doEmailRecipient("ZW Activity", message, "jri@dmx.berlin");
     }
 
     private List<RelatedTopic> getZWWorkspaces(Topic username) {

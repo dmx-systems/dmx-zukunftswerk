@@ -48,7 +48,11 @@ router.beforeEach((to, from, next) => {
       if (to.name === 'workspace') {
         next()
       } else if (to.name === 'admin') {
-        next()    // FIXME
+        if (store.state.isTeam) {
+          next()
+        } else {
+          next(false)
+        }
       } else {
         store.dispatch('getInitialWorkspaceId').then(workspaceId => {
           next({name: 'workspace', params: {workspaceId}})

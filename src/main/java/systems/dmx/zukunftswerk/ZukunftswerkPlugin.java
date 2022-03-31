@@ -251,19 +251,20 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public Topic createZWWorkspace(@QueryParam("nameDe") String nameDe, @QueryParam("nameFr") String nameFr) {
         try {
+            // 1) Create workspace
             Topic workspace = ws.createWorkspace(nameDe, null, SharingMode.COLLABORATIVE);
             workspace.update(mf.newChildTopicsModel()
                 .set(WORKSPACE_NAME + "#" + DE, nameDe)
                 .set(WORKSPACE_NAME + "#" + FR, nameFr)
             );
-            // Mark is as "ZW Shared Workspace"
+            // 2) Mark it as "ZW Shared Workspace"
             long workspaceId = workspace.getId();
             dmx.createAssoc(mf.newAssocModel(
                 SHARED_WORKSPACE,
                 mf.newTopicPlayerModel(ZW_PLUGIN_URI, DEFAULT),
                 mf.newTopicPlayerModel(workspaceId, DEFAULT)
             ));
-            // Give "admin" control
+            // 3) Give "admin" control
             String owner = acs.getWorkspaceOwner(workspaceId);
             if (owner == null) {
                 acs.setWorkspaceOwner(workspace, ADMIN_USERNAME);
@@ -335,15 +336,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         String commentFr = comment.getChildTopics().getString(COMMENT_FR, "");
         String workspace = dmx.getTopic(workspaceId()).getSimpleValue().toString();
         String creator   = comment.getModel().getChildTopics().getString(CREATOR);    // synthetic, so operate on model
-        String message = "NEW COMMENT\r\rWorkspace: " + workspace + "\r\rAuthor: " + creator +
+        String message = "\rNEW COMMENT\r\rWorkspace: " + workspace + "\rAuthor: " + creator +
             "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
-        sendmail.doEmailRecipient("ZW Activity", message, "jri@dmx.berlin");
+        for (Topic username : acs.getMemberships(teamWorkspace.getId())) {
+            sendmail.doEmailRecipient("ZW Activity", message, username.getSimpleValue().toString());
+        }
     }
 
     private List<RelatedTopic> getZWWorkspaces(Topic username) {
         return DMXUtils.loadChildTopics(
             username.getRelatedTopics(MEMBERSHIP, DEFAULT, DEFAULT, WORKSPACE)
-                    .stream().filter(this::isZWWorkspace).collect(Collectors.toList())
+                .stream().filter(this::isZWWorkspace).collect(Collectors.toList())
         );
     }
 

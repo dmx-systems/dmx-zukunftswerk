@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import zw from '../zw-globals'
 import errorHandler from '../error-handler'
 
 const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
@@ -59,8 +60,8 @@ export default {
       uploadDialogVisible: false,     // upload dialog visibility (for comment attachments)
       submitting: false,              // true while submitting new comment
       quillOptions: {                 // options for new-comment quill editor
-        placeholder: this.$store.state.getString('label.new_comment'),    // FIXME: once Quill instance is created
-        ...this.$store.state.quillOptions                                 // ... placeholder is not lang-reactive
+        placeholder: zw.getString('label.new_comment'),     // FIXME: once Quill instance is created
+        ...this.$store.state.quillOptions                   // ... placeholder is not lang-reactive
       }
     }
   },
@@ -109,7 +110,7 @@ export default {
     },
 
     attachButtonTitle () {
-      return this.$store.state.getString('action.attach_files')
+      return zw.getString('action.attach_files')
     }
   },
 
@@ -166,11 +167,11 @@ export default {
     handleError (error) {
       const message = /java\.lang\.RuntimeException: Unsupported original language: ".." \(detected\)/
       if (error.response.data.cause.match(message)) {
-        return this.$confirm(this.$store.state.getString('warning.confirm_create_comment'), {
-          title:             this.$store.state.getString('warning.translation_failed'),
+        return this.$confirm(zw.getString('warning.confirm_create_comment'), {
+          title:             zw.getString('warning.translation_failed'),
           type: 'warning',
-          confirmButtonText: this.$store.state.getString('action.create'),
-          cancelButtonText:  this.$store.state.getString('action.cancel'),
+          confirmButtonText: zw.getString('action.create'),
+          cancelButtonText:  zw.getString('action.cancel'),
           showClose: false,
         })
       } else {

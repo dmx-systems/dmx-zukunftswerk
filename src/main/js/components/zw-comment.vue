@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import zw from '../zw-globals'
+
 export default {
 
   mixins: [
@@ -137,8 +139,7 @@ export default {
     },
 
     displayName () {
-      const user = this.$store.state.getUser(this.creator)
-      return user.children['zukunftswerk.display_name']?.value || '?'     // TODO
+      return zw.getUser(this.creator).children['zukunftswerk.display_name']?.value || '?'     // TODO
     },
 
     automatic () {

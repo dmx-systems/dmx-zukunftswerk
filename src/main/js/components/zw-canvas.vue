@@ -18,6 +18,7 @@
 
 <script>
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 
 let HEADER_HEIGHT
 
@@ -149,8 +150,8 @@ export default {
 
     viewProps (typeUri)  {
       return {
-        'dmx.topicmaps.x': (this.$store.state.NEW_POS_X - this.pan.x) / this.zoom,
-        'dmx.topicmaps.y': (this.$store.state.NEW_POS_Y - this.pan.y) / this.zoom,
+        'dmx.topicmaps.x': (zw.NEW_POS_X - this.pan.x) / this.zoom,
+        'dmx.topicmaps.y': (zw.NEW_POS_Y - this.pan.y) / this.zoom,
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false,
         'dmx.topicmaps.width': typeUri === 'zukunftswerk.arrow' ? 200 : 384

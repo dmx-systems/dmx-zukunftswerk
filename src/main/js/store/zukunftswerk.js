@@ -4,6 +4,7 @@ import http from 'axios'
 import dmx from 'dmx-api'
 import adminStore from './admin'
 import errorHandler from '../error-handler'
+import zw from '../zw-globals'
 
 window.addEventListener('focus', updateWorkspaceCookie)
 
@@ -53,13 +54,7 @@ const state = {
   logo: {
     de: require('../../resources/logo.de.png'),
     fr: require('../../resources/logo.fr.png')
-  },
-
-  getUser,
-  getString,
-
-  NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
-  NEW_POS_Y: 42
+  }
 }
 
 const actions = {
@@ -359,8 +354,8 @@ const actions = {
     const topic = state.topicmap.getTopic(document.id)
     dispatch('setTopic', topic)
     dispatch('setPan', {
-      x: -topic.pos.x * state.zoom + state.NEW_POS_X,
-      y: -topic.pos.y * state.zoom + state.NEW_POS_Y
+      x: -topic.pos.x * state.zoom + zw.NEW_POS_X,
+      y: -topic.pos.y * state.zoom + zw.NEW_POS_Y
     })
     // 2) set doc filter
     dispatch('setRefDocument', document)
@@ -451,7 +446,7 @@ export default store
  * @return  a promise, resolved once the state is initialized.
  */
 function initUserState (username) {
-  console.log(username)
+  console.log('initUserState', username)
   if (username) {
     return Promise.all([
       teamWorkspace
@@ -545,14 +540,6 @@ function setTopicmapViewport() {
   }
 }
 
-function getUser (username) {
-  return state.users.find(ws => ws.value === username)
-}
-
-function getString (key) {
-  return state.uiStrings[`${key}.${state.lang}`]
-}
-
 // util
 
 function filerepoUrl (repoPath) {
@@ -560,9 +547,9 @@ function filerepoUrl (repoPath) {
 }
 
 function confirmDeletion (textKey = 'warning.delete') {
-  return Vue.prototype.$confirm(getString(textKey), 'Warning', {
+  return Vue.prototype.$confirm(zw.getString(textKey), 'Warning', {
     type: 'warning',
-    confirmButtonText: getString('action.delete'),
+    confirmButtonText: zw.getString('action.delete'),
     confirmButtonClass: 'el-button--danger',
     showClose: false
   })

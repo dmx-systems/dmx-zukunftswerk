@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import http from 'axios'
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 import SHA256 from '../lib/sha256'
 
 const ENCODED_PASSWORD_PREFIX = '-SHA256-'
@@ -93,8 +94,8 @@ const actions = {
     }
   },
 
-  fetchZWWorkspacesOfUser ({rootState}, username) {
-    const usernameTopic = rootState.getUser(username)
+  fetchZWWorkspacesOfUser (_, username) {
+    const usernameTopic = zw.getUser(username)
     if (!usernameTopic.memberships) {
       return http.get(`/zukunftswerk/admin/user/${username}/workspaces`).then(response => {
         const workspaces = response.data

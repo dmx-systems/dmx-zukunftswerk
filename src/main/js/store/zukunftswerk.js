@@ -103,8 +103,6 @@ const actions = {
           (u1, u2) => u1.value.localeCompare(u2.value)
         )
       })
-    } else {
-      return Promise.resolve()
     }
   },
 

@@ -90,8 +90,6 @@ const actions = {
         // console.log('fetchMemberships', workspaceId, usernames)
         Vue.set(workspace, 'memberships', usernames)          // ad-hoc property is not reactive by default
       })
-    } else {
-      return Promise.resolve()
     }
   },
 
@@ -102,8 +100,6 @@ const actions = {
         const workspaces = response.data
         Vue.set(usernameTopic, 'memberships', workspaces)     // ad-hoc property is not reactive by default
       })
-    } else {
-      return Promise.resolve()
     }
   },
 

@@ -44,16 +44,22 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   store.state.ready.then(() => {
-    if (store.state.username || to.name === 'login') {
-      if (to.name === 'root') {
+    if (store.state.username) {
+      if (to.name === 'workspace') {
+        next()
+      } else if (to.name === 'admin') {
+        next()    // FIXME
+      } else {
         store.dispatch('getInitialWorkspaceId').then(workspaceId => {
           next({name: 'workspace', params: {workspaceId}})
         })
-      } else {
-        next()
       }
     } else {
-      next({name: 'login'})
+      if (to.name === 'login') {
+        next()
+      } else {
+        next({name: 'login'})
+      }
     }
   }).catch(error => {
     Vue.prototype.$alert(error).then(() =>

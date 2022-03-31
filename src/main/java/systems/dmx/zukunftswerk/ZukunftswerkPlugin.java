@@ -256,11 +256,20 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 .set(WORKSPACE_NAME + "#" + DE, nameDe)
                 .set(WORKSPACE_NAME + "#" + FR, nameFr)
             );
+            // Mark is as "ZW Shared Workspace"
+            long workspaceId = workspace.getId();
             dmx.createAssoc(mf.newAssocModel(
                 SHARED_WORKSPACE,
                 mf.newTopicPlayerModel(ZW_PLUGIN_URI, DEFAULT),
-                mf.newTopicPlayerModel(workspace.getId(), DEFAULT)
+                mf.newTopicPlayerModel(workspaceId, DEFAULT)
             ));
+            // Give "admin" control
+            String owner = acs.getWorkspaceOwner(workspaceId);
+            if (owner == null) {
+                acs.setWorkspaceOwner(workspace, ADMIN_USERNAME);
+            } else if (!owner.equals(ADMIN_USERNAME)) {
+                acs.createMembership(ADMIN_USERNAME, workspaceId);
+            }
             return workspace;
         } catch (Exception e) {
             throw new RuntimeException("Creating a ZW workspace failed", e);

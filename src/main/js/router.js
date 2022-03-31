@@ -66,7 +66,10 @@ router.beforeEach((to, from, next) => {
       }
     }
   }).catch(error => {
-    Vue.prototype.$alert(error).then(() =>
+    Vue.prototype.$alert(error.message, {
+      type: 'error',
+      showClose: false
+    }).then(() =>
       store.dispatch('logout')
     ).then(() => {
       next({name: 'root'})

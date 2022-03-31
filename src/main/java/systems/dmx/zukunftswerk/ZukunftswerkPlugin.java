@@ -339,7 +339,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         String message = "\rNEW COMMENT\r\rWorkspace: " + workspace + "\rAuthor: " + creator +
             "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
         for (Topic username : acs.getMemberships(teamWorkspace.getId())) {
-            sendmail.doEmailRecipient("ZW Activity", message, username.getSimpleValue().toString());
+            sendmail.doEmailRecipient("ZW Platform Activity", message, username.getSimpleValue().toString());
         }
     }
 

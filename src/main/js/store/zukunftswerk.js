@@ -69,7 +69,10 @@ const actions = {
       ).then(workspaceId =>
         dispatch('callWorkspaceRoute', workspaceId)
       ).catch(error =>
-        Vue.prototype.$alert(error).then(() =>
+        Vue.prototype.$alert(error.message, {
+          type: 'error',
+          showClose: false
+        }).then(() =>
           dispatch('logout')
         )
       ).finally(() => {
@@ -113,8 +116,9 @@ const actions = {
     } else {
       const workspaceId = state.workspaces[0]?.id
       if (!workspaceId) {
-        throw Error("No Workspace. User \"" + state.username + "\" has no workspaces assigned, " +
-          "and is not a \"Team\" member.")
+        throw Error("Benutzer \"" + state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte nimm " +
+          "Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + state.username + "\" n'a pas encore été " +
+          "affecté à un domaine d'activité. Veuillez prendre contact avec l'équipe de Zukunftswerk.")
       }
       return workspaceId
     }

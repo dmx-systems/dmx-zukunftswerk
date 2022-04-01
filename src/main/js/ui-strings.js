@@ -1,3 +1,5 @@
+import legal from './legal'
+
 export default {
 
   'item.document.de': 'Dokument',
@@ -126,5 +128,7 @@ export default {
     manuelle Übersetzung zu ergänzen.`,
   'warning.confirm_create_comment.fr': `Ton commentaire n'a pas pu être traduit. Clique sur "Annuler" pour le modifier
     ou sur "Créer" pour le créer sans traduction. Conseil: choisis "Éditer" après la création pour ajouter une
-    traduction manuelle.`
+    traduction manuelle.`,
+
+  ...legal
 }

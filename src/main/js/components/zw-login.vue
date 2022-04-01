@@ -47,6 +47,7 @@
 
 <script>
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 
 export default {
 
@@ -108,11 +109,17 @@ export default {
     },
 
     openImprint () {
-      // TODO
+      this.$alert(zw.getString('imprint'), {
+        type: 'info',
+        showClose: false
+      })
     },
 
     openPrivacyPolicy () {
-      // TODO
+      this.$alert(zw.getString('privacy_policy'), {
+        type: 'info',
+        showClose: false
+      })
     }
   }
 }

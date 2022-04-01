@@ -10,6 +10,7 @@ import systems.dmx.accesscontrol.AccessControlService;
 import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
+import systems.dmx.core.model.AssocModel;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
 import systems.dmx.core.service.ChangeReport;
@@ -18,6 +19,8 @@ import systems.dmx.core.service.Cookies;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.service.accesscontrol.SharingMode;
+import systems.dmx.core.service.event.PostCreateAssoc;
+import systems.dmx.core.service.event.PostDeleteAssoc;
 import systems.dmx.core.service.event.PostUpdateTopic;
 import systems.dmx.core.service.event.PreSendTopic;
 import systems.dmx.core.util.DMXUtils;
@@ -47,7 +50,10 @@ import java.util.stream.Collectors;
 
 @Path("/zukunftswerk")
 @Produces("application/json")
-public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, PostUpdateTopic, PreSendTopic {
+public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, PostCreateAssoc,
+                                                                                        PostDeleteAssoc,
+                                                                                        PostUpdateTopic,
+                                                                                        PreSendTopic {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
@@ -76,6 +82,23 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     // Listeners
+
+    @Override
+    public void postCreateAssoc(Assoc assoc) {
+        if (assoc.getTypeUri().equals(MEMBERSHIP)) {
+            Topic workspace = assoc.getDMXObjectByType(WORKSPACE);
+            if (workspace.getUri().equals(TEAM_WORKSPACE_URI)) {
+                String username = assoc.getDMXObjectByType(USERNAME).getSimpleValue().toString();
+                logger.info("### Creating \"System\" membership for user \"" + username + "\"");
+                acs.createMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId());
+            }
+        }
+    }
+
+    @Override
+    public void postDeleteAssoc(AssocModel assoc) {
+        // TODO
+    }
 
     @Override
     public void postUpdateTopic(Topic topic, ChangeReport report, TopicModel updateModel) {

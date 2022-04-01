@@ -47,13 +47,13 @@ const state = {
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
-  loginMessage: '',             // the status message shown besides Login button
   lang: 'de',                   // UI language ('de'/'fr')
-  uiStrings:    require('../ui-strings').default,
-  quillOptions: require('../quill-options').default,
-  logo: {
-    de: require('../../resources/logo.de.png'),
-    fr: require('../../resources/logo.fr.png')
+  loginMessage: '',             // the status message shown besides Login button
+  uiStrings:    require('../ui-strings').default,       // TODO: move to zw-globals
+  quillOptions: require('../quill-options').default,    // TODO: move to zw-globals
+  logo: {                                               // TODO: move to zw-globals
+    de: require('../../resources/zw-logo.de.png'),
+    fr: require('../../resources/zw-logo.fr.png')
   }
 }
 

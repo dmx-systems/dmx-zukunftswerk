@@ -132,11 +132,14 @@ export default {
   height: 100%;
   box-sizing: border-box;
   background-color: black;
+  background-image: url("../../resources/zw-snake.png");
+  background-position: bottom right;
+  background-repeat: no-repeat;
   padding: 60px 0 10px 160px;
 }
 
 .zw-login .header {
-  margin-left: -80px;
+  margin-left: -81px;
 }
 
 .zw-login .header img {
@@ -166,9 +169,9 @@ export default {
   margin-top: 6px;
 }
 
-.zw-login .password-reset .el-button,
-.zw-login .footer .el-button {
+.zw-login .password-reset .el-button {
   font-size: var(--secondary-font-size);
+  margin-left: 2px;
 }
 
 .zw-login .message {
@@ -186,5 +189,13 @@ export default {
 
 .zw-login .gap {
   flex-grow: 1;
+}
+
+.zw-login .footer .el-button {
+  font-size: var(--secondary-font-size);
+}
+
+.zw-login .footer .el-button:nth-child(2) {
+  margin-left: 15px;
 }
 </style>

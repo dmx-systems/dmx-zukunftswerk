@@ -56,12 +56,12 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>app.css</exclude>
                     <exclude>favicon.png</exclude>
                     <exclude>grid.png</exclude>
                     <exclude>index.html</exclude>
-                    <exclude>logo.de.png</exclude>
-                    <exclude>logo.fr.png</exclude>
+                    <exclude>zw-logo.de.png</exclude>
+                    <exclude>zw-logo.fr.png</exclude>
+                    <exclude>zw-snake.png</exclude>
                     <exclude>js/</exclude>
                 </excludes>
             </resource>

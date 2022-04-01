@@ -200,12 +200,10 @@ const actions = {
   },
 
   dragStart () {
-    // console.log('dragStart')
     state.isDragging = true
   },
 
   dragStop () {
-    // console.log('dragStop')
     state.isDragging = false
   },
 
@@ -450,7 +448,6 @@ export default store
  * @return  a promise, resolved once the state is initialized.
  */
 function initUserState (username) {
-  console.log('initUserState', username)
   if (username) {
     return Promise.all([
       teamWorkspace

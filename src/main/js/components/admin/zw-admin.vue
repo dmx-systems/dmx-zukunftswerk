@@ -87,6 +87,7 @@ export default {
 .zw-admin {
   display: flex;
   flex-grow: 1;
+  min-height: 0;
 }
 
 .zw-admin .nav-bar {
@@ -120,6 +121,8 @@ export default {
 }
 
 .zw-admin .primary-panel {
+  display: flex;
+  flex-direction: column;
   flex-basis: 50%;
   padding: 35px;
 }
@@ -129,8 +132,13 @@ export default {
   margin-bottom: 28px;
 }
 
+.zw-admin .primary-panel .scroll-container {
+  overflow: auto;
+}
+
 .zw-admin .primary-panel .add-button {
   margin-top: 34px;
+  align-self: flex-start;
 }
 
 .zw-admin .secondary-panel {

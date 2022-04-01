@@ -327,7 +327,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         acs.enrichWithUserInfo(commentTopic);
         ts.enrichWithTimestamps(commentTopic);
         me.addComment(workspaceId(), commentTopic);
-        sendNotificationMail(commentTopic);
+        // sendNotificationMail(commentTopic);
         return commentTopic;
     }
 

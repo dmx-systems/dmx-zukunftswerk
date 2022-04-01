@@ -26,6 +26,12 @@
       <el-button class="submit-button" type="primary" @click="login">Login</el-button>
       <span class="message">{{message}}</span>
     </div>
+    <div class="gap">
+    </div>
+    <div class="footer">
+      <el-button type="text" @click="openImprint"><zw-string>label.imprint</zw-string></el-button>
+      <el-button type="text" @click="openPrivacyPolicy"><zw-string>label.privacy_policy</zw-string></el-button>
+    </div>
     <el-dialog :visible.sync="visible" width="350px">
       <zw-string slot="title">label.reset_password</zw-string>
       <div class="field">
@@ -100,25 +106,35 @@ export default {
       this.$store.dispatch('resetPassword', this.emailAddress)
       this.closeDialog()
     },
+
+    openImprint () {
+      // TODO
+    },
+
+    openPrivacyPolicy () {
+      // TODO
+    }
   }
 }
 </script>
 
 <style>
 .zw-login {
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  box-sizing: border-box;
   background-color: black;
-  padding-left: 80px;
-  padding-top: 60px;
+  padding: 60px 0 10px 160px;
+}
+
+.zw-login .header {
+  margin-left: -80px;
 }
 
 .zw-login .header img {
   vertical-align: top;
   margin-right: 180px;
-}
-
-.zw-login .login-form {
-  padding-left: 80px;
 }
 
 .zw-login .login-form .el-input {
@@ -143,7 +159,8 @@ export default {
   margin-top: 6px;
 }
 
-.zw-login .password-reset .el-button {
+.zw-login .password-reset .el-button,
+.zw-login .footer .el-button {
   font-size: var(--secondary-font-size);
 }
 
@@ -157,5 +174,10 @@ export default {
 .zw-login .reset-button {
   font-size: 16px;
   margin-top: 26px;
+  margin-bottom: 36px;
+}
+
+.zw-login .gap {
+  flex-grow: 1;
 }
 </style>

@@ -1,26 +1,25 @@
 <template>
-  <span class="zw-string">{{langString}}</span>
+  <div v-if="html" class="zw-string" v-html="string"></div>
+  <span v-else class="zw-string">{{string}}</span>
 </template>
 
 <script>
+import zw from '../zw-globals'
+
 export default {
+
+  props: {
+    html: Boolean
+  },
 
   computed: {
 
-    lang () {
-      return this.$store.state.lang
-    },
-
-    uiStrings () {
-      return this.$store.state.uiStrings
+    string () {
+      return zw.getString(this.key)
     },
 
     key () {
       return this.$slots.default[0].text
-    },
-
-    langString () {
-      return this.uiStrings[this.key + '.' + this.lang]
     }
   }
 }

@@ -1,16 +1,10 @@
 <template>
   <div class="zw-legal">
-    <div class="header">
-      <img :src="logoSrc">
-      <zw-language-switch></zw-language-switch>
-    </div>
-    <div>
-      <div class="heading">
-        <zw-string>{{heading}}</zw-string>
-      </div>
-      <div class="text">
-        <zw-string>{{text}}</zw-string>
-      </div>
+    <zw-language-switch></zw-language-switch>
+    <img :src="logoSrc">
+    <zw-string class="heading">{{heading}}</zw-string>
+    <div class="scroll-container">
+      <zw-string class="text" :html="true">{{text}}</zw-string>
     </div>
   </div>
 </template>
@@ -53,16 +47,18 @@ export default {
   background-image: url("../../resources/zw-snake.png");
   background-position: bottom right;
   background-repeat: no-repeat;
-  padding: 60px 0 10px 160px;
+  padding: 50px 0 0 120px;
 }
 
-.zw-legal .header {
+.zw-legal img {
+  align-self: flex-start;
   margin-left: -81px;
 }
 
-.zw-legal .header img {
-  vertical-align: top;
-  margin-right: 180px;
+.zw-legal .zw-language-switch {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
 .zw-legal .heading {
@@ -71,8 +67,14 @@ export default {
   margin-top: 42px;
 }
 
+.zw-legal .scroll-container {
+  overflow: auto;
+  flex-grow: 1;
+  margin-top: 24px;
+  padding-right: 36%;
+}
+
 .zw-legal .text {
   color: white;
-  margin-top: 16px;
 }
 </style>

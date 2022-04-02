@@ -10,7 +10,6 @@ import systems.dmx.accesscontrol.AccessControlService;
 import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
-import systems.dmx.core.model.AssocModel;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.osgi.PluginActivator;
 import systems.dmx.core.service.ChangeReport;
@@ -20,8 +19,8 @@ import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.service.accesscontrol.SharingMode;
 import systems.dmx.core.service.event.PostCreateAssoc;
-import systems.dmx.core.service.event.PostDeleteAssoc;
 import systems.dmx.core.service.event.PostUpdateTopic;
+import systems.dmx.core.service.event.PreDeleteAssoc;
 import systems.dmx.core.service.event.PreSendTopic;
 import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
@@ -51,8 +50,8 @@ import java.util.stream.Collectors;
 @Path("/zukunftswerk")
 @Produces("application/json")
 public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, PostCreateAssoc,
-                                                                                        PostDeleteAssoc,
                                                                                         PostUpdateTopic,
+                                                                                        PreDeleteAssoc,
                                                                                         PreSendTopic {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
@@ -81,7 +80,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         me = new Messenger(dmx.getWebSocketService());
     }
 
-    // Listeners
+    // Listeners (TODO: unify the following 2 with lambdas)
 
     @Override
     public void postCreateAssoc(Assoc assoc) {
@@ -96,8 +95,15 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @Override
-    public void postDeleteAssoc(AssocModel assoc) {
-        // TODO
+    public void preDeleteAssoc(Assoc assoc) {
+        if (assoc.getTypeUri().equals(MEMBERSHIP)) {
+            Topic workspace = assoc.getDMXObjectByType(WORKSPACE);
+            if (workspace.getUri().equals(TEAM_WORKSPACE_URI)) {
+                String username = assoc.getDMXObjectByType(USERNAME).getSimpleValue().toString();
+                logger.info("### Removing \"System\" membership from user \"" + username + "\"");
+                acs.getMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId()).delete();
+            }
+        }
     }
 
     @Override

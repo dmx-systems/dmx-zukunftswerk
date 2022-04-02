@@ -135,7 +135,6 @@ body.fixed {
 
 .dmx-html-field a {
   color: var(--highlight-color);
-  text-decoration: none;
 }
 
 .dmx-html-field a:hover {

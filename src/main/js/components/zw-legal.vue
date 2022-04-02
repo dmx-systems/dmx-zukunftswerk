@@ -3,7 +3,7 @@
     <zw-language-switch></zw-language-switch>
     <img :src="logoSrc">
     <zw-string class="heading">{{heading}}</zw-string>
-    <div class="scroll-container">
+    <div class="scroll-container dmx-html-field">
       <zw-string class="text" :html="true">{{text}}</zw-string>
     </div>
   </div>
@@ -76,5 +76,6 @@ export default {
 
 .zw-legal .text {
   color: white;
+  margin-bottom: 24px;
 }
 </style>

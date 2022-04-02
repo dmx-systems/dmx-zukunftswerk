@@ -73,17 +73,14 @@ export default {
   },
 
   computed: {
-
     message () {
       return this.$store.state.loginMessage
-    },
-
-    lang () {
-      return this.$store.state.lang
     }
   },
 
   methods: {
+
+    // Login
 
     login () {
       this.$store.dispatch('login', this.credentials).finally(() => {
@@ -94,6 +91,8 @@ export default {
     advance () {
       this.$refs.password.focus()
     },
+
+    // Reset Password
 
     openDialog () {
       this.visible = true
@@ -108,18 +107,14 @@ export default {
       this.closeDialog()
     },
 
+    // Legal
+
     openImprint () {
-      this.$alert(zw.getString('imprint'), {
-        type: 'info',
-        showClose: false
-      })
+      this.$store.dispatch('callImprintRoute')
     },
 
     openPrivacyPolicy () {
-      this.$alert(zw.getString('privacy_policy'), {
-        type: 'info',
-        showClose: false
-      })
+      this.$store.dispatch('callPrivacyPolicyRoute')
     }
   }
 }

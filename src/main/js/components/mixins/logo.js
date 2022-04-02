@@ -8,6 +8,10 @@ export default {
 
     logo () {
       return this.$store.state.logo
+    },
+
+    lang () {
+      return this.$store.state.lang
     }
   }
 }

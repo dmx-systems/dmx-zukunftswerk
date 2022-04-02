@@ -20,7 +20,7 @@ export default {
   'label.reset_password.de': 'Passwort zurücksetzen',
   'label.reset_password.fr': 'Réinitialiser le mot de passe',
   'label.imprint.de': 'Impressum',
-  'label.imprint.fr': 'Mentions légales',
+  'label.imprint.fr': 'Impressum',
   'label.privacy_policy.de': 'Datenschutzerklärung',
   'label.privacy_policy.fr': 'Déclaration de confidentialité',
   'label.shared_workspace.de': 'Gemeinsamer Arbeitsbereich',

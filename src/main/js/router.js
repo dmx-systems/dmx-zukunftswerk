@@ -1,12 +1,11 @@
 /**
- * The router.
- * - Initializes app state according to start URL.
- * - Adapts app state when URL changes.
+ * The router: when URL changes adapt app state accordingly.
  */
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './components/zw-login'
+import Legal from './components/zw-legal'
 import Webclient from './components/zw-webclient'
 import Workspace from './components/zw-workspace'
 import Admin from './components/admin/zw-admin'
@@ -38,13 +37,25 @@ const router = new VueRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/imprint',
+      name: 'imprint',
+      component: Legal
+    },
+    {
+      path: '/privacy_policy',
+      name: 'privacy_policy',
+      component: Legal
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
   store.state.ready.then(() => {
-    if (store.state.username) {
+    if (['imprint', 'privacy_policy'].includes(to.name)) {
+      next()
+    } else if (store.state.username) {
       if (to.name === 'workspace') {
         next()
       } else if (to.name === 'admin') {
@@ -102,6 +113,14 @@ const actions = {
     router.push({name: 'login'})
   },
 
+  callImprintRoute () {
+    router.push({name: 'imprint'})
+  },
+
+  callPrivacyPolicyRoute () {
+    router.push({name: 'privacy_policy'})
+  },
+
   callAdminRoute () {
     router.push({name: 'admin'})
   }
@@ -146,6 +165,6 @@ function id (v) {
   } else if (typeof v === 'string') {
     return Number(v)
   } else if (v !== undefined && v !== null) {
-    throw Error(`id() expects one of [number|string|undefined|null], got ${v}`)
+    throw Error(`Expecting one of [number|string|undefined|null], got ${v}`)
   }
 }

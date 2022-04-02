@@ -42,6 +42,7 @@ import javax.ws.rs.Consumes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -80,30 +81,27 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         me = new Messenger(dmx.getWebSocketService());
     }
 
-    // Listeners (TODO: unify the following 2 with lambdas)
+    // Listeners
 
     @Override
     public void postCreateAssoc(Assoc assoc) {
-        if (assoc.getTypeUri().equals(MEMBERSHIP)) {
-            Topic workspace = assoc.getDMXObjectByType(WORKSPACE);
-            if (workspace.getUri().equals(TEAM_WORKSPACE_URI)) {
-                String username = assoc.getDMXObjectByType(USERNAME).getSimpleValue().toString();
-                logger.info("### Creating \"System\" membership for user \"" + username + "\"");
-                acs.createMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId());
-            }
-        }
+        processTeamMembership(assoc, username -> {
+            logger.info("### Creating \"System\" membership of user \"" + username + "\"");
+            acs.createMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId());
+            List<RelatedTopic> workspaces = getAllZWWorkspaces();
+            logger.info("### Creating " + workspaces.size() + " ZW workspace memberships of user \"" + username + "\"");
+            workspaces.stream().forEach(workspace -> acs.createMembership(username, workspace.getId()));
+        });
     }
 
     @Override
     public void preDeleteAssoc(Assoc assoc) {
-        if (assoc.getTypeUri().equals(MEMBERSHIP)) {
-            Topic workspace = assoc.getDMXObjectByType(WORKSPACE);
-            if (workspace.getUri().equals(TEAM_WORKSPACE_URI)) {
-                String username = assoc.getDMXObjectByType(USERNAME).getSimpleValue().toString();
-                logger.info("### Removing \"System\" membership from user \"" + username + "\"");
-                acs.getMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId()).delete();
-            }
-        }
+        processTeamMembership(assoc, username -> {
+            logger.info("### Removing \"System\" membership of user \"" + username + "\"");
+            acs.getMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId()).delete();
+            // Note: when a user looses Team status we don't know in which ZW workspaces she stays.
+            // We leave all memberships intact.
+        });
     }
 
     @Override
@@ -369,6 +367,16 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
         for (Topic username : acs.getMemberships(teamWorkspace.getId())) {
             sendmail.doEmailRecipient("ZW Platform Activity", message, username.getSimpleValue().toString());
+        }
+    }
+
+    private void processTeamMembership(Assoc assoc, Consumer<String> consumer) {
+        if (assoc.getTypeUri().equals(MEMBERSHIP)) {
+            Topic workspace = assoc.getDMXObjectByType(WORKSPACE);
+            if (workspace.getUri().equals(TEAM_WORKSPACE_URI)) {
+                String username = assoc.getDMXObjectByType(USERNAME).getSimpleValue().toString();
+                consumer.accept(username);
+            }
         }
     }
 

@@ -86,17 +86,20 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public void postCreateAssoc(Assoc assoc) {
         processTeamMembership(assoc, username -> {
+            // 1) Create "System" membership
             logger.info("### Creating \"System\" membership of user \"" + username + "\"");
             acs.createMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId());
+            // 2) Create ZW event workspace memberships
             List<RelatedTopic> workspaces = getAllZWWorkspaces();
             logger.info("### Creating " + workspaces.size() + " ZW workspace memberships of user \"" + username + "\"");
-            workspaces.stream().forEach(workspace -> acs.createMembership(username, workspace.getId()));
+            acs.bulkUpdateMemberships(username, new IdList(workspaces), null);
         });
     }
 
     @Override
     public void preDeleteAssoc(Assoc assoc) {
         processTeamMembership(assoc, username -> {
+            // Delete "System" membership
             logger.info("### Removing \"System\" membership of user \"" + username + "\"");
             acs.getMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId()).delete();
             // Note: when a user looses Team status we don't know in which ZW workspaces she stays.

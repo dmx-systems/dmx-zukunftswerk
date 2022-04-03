@@ -38,8 +38,14 @@ export default {
     createUser () {
       this.$emit('loading')
       this.$store.dispatch('admin/createUser', this.model).then(() => {
-        this.$emit('complete')
         this.clearSecondaryPanel()
+      }).catch(error => {
+        this.$alert(error.message, {
+          type: 'error',
+          showClose: false
+        })
+      }).finally(() => {
+        this.$emit('complete')
       })
     }
   }

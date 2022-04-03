@@ -142,12 +142,21 @@ const actions = {
       p = dmx.rpc.createUserAccount(userModel.emailAddress, encodePassword('123'))
     } else {
       const mailbox = userModel.emailAddress
-      const displayName = userModel.displayName
-      const password = btoa(newPassword())
-      p = http.get(`/sign-up/custom-handle/${mailbox}/${displayName}/${password}`).then(response => response.data)
+      p = http.get(`/sign-up/check/${mailbox}`).then(response => {
+        console.log('isAvailable', response.data)
+        if (response.data.isAvailable) {
+          return mailbox
+        } else {
+          return Promise.reject(new Error(`Username "${mailbox}" is already taken`))
+        }
+      }).then(username => {
+        const displayName = userModel.displayName
+        const password = btoa(newPassword())
+        return http.get(`/sign-up/custom-handle/${username}/${displayName}/${password}`).then(response => response.data)
+      })
     }
-    p.then(user => {
-      console.log('createUser', user)
+    return p.then(user => {
+      console.log('push user', user)
       rootState.users.push(user)
     })
   }

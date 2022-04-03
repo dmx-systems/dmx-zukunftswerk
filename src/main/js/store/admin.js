@@ -108,7 +108,9 @@ const actions = {
     const workspace = state.activeWorkspace
     dispatch('expandWorkspace', workspace.id)
     return dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
-      workspace.memberships = usernames
+      workspace.memberships = usernames.sort(
+        (u1, u2) => u1.value.localeCompare(u2.value)
+      )
     })
   },
 
@@ -121,7 +123,9 @@ const actions = {
         removeWorkspaceIds: removeWorkspaceIds.join(',')
       }
     }).then(response => {
-      username.memberships = response.data
+      username.memberships = response.data.sort(
+        (w1, w2) => w1.value.localeCompare(w2.value)
+      )
     })
   },
 
@@ -130,6 +134,9 @@ const actions = {
       params: {nameDe, nameFr}
     }).then(response => {
       state.workspaces.push(response.data)
+      state.workspaces.sort(
+        (w1, w2) => w1.value.localeCompare(w2.value)
+      )
     })
   },
 
@@ -158,6 +165,9 @@ const actions = {
     return p.then(user => {
       console.log('push user', user)
       rootState.users.push(user)
+      rootState.users.sort(
+        (u1, u2) => u1.value.localeCompare(u2.value)
+      )
     })
   }
 }

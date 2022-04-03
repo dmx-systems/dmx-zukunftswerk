@@ -38,14 +38,15 @@ export default {
     createUser () {
       this.$emit('loading')
       this.$store.dispatch('admin/createUser', this.model).then(() => {
+        this.$emit('complete')    // must emit *before* removing this panel
         this.clearSecondaryPanel()
       }).catch(error => {
         this.$alert(error.message, {
           type: 'error',
           showClose: false
+        }).then(() => {
+          this.$emit('complete')
         })
-      }).finally(() => {
-        this.$emit('complete')
       })
     }
   }

@@ -105,7 +105,6 @@ const actions = {
   },
 
   updateWorkspaceMemberships ({dispatch}, {addUserIds, removeUserIds}) {
-    // console.log('updateWorkspaceMemberships', addUserIds, removeUserIds)
     const workspace = state.activeWorkspace
     dispatch('expandWorkspace', workspace.id)
     return dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
@@ -114,11 +113,15 @@ const actions = {
   },
 
   updateUserMemberships ({dispatch}, {addWorkspaceIds, removeWorkspaceIds}) {
-    // console.log('updateUserMemberships', addWorkspaceIds, removeWorkspaceIds)
     const username = state.activeUser
     dispatch('expandUser', username.value)
-    return dmx.rpc.bulkUpdateUserMemberships(username.value, addWorkspaceIds, removeWorkspaceIds).then(workspaces => {
-      username.memberships = workspaces
+    return http.put(`/zukunftswerk/admin/user/${username.value}`, undefined, {
+      params: {
+        addWorkspaceIds: addWorkspaceIds.join(','),
+        removeWorkspaceIds: removeWorkspaceIds.join(',')
+      }
+    }).then(response => {
+      username.memberships = response.data
     })
   },
 

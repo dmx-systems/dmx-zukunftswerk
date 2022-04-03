@@ -29,7 +29,6 @@ export default {
   ],
 
   created () {
-    // console.log('zw-user-memberships')
     this.initModel()
   },
 
@@ -56,7 +55,6 @@ export default {
 
   watch: {
     activeUser () {
-      // console.log('watch activeUser', this.activeUser.id, this.memberships)
       this.initModel()
     }
   },
@@ -64,7 +62,6 @@ export default {
   methods: {
 
     initModel () {
-      // console.log('initModel')
       Promise.all([
         this.$store.dispatch('admin/fetchAllZWWorkspaces'),
         this.$store.dispatch('admin/fetchZWWorkspacesOfUser', this.activeUser.value)

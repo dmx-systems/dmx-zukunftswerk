@@ -139,7 +139,7 @@ export default {
     },
 
     displayName () {
-      return zw.getUser(this.creator).children['zukunftswerk.display_name']?.value || '?'     // TODO
+      return zw.getDisplayName(this.creator)
     },
 
     automatic () {

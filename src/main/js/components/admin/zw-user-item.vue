@@ -17,11 +17,15 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <div v-for="workspace in user.memberships">{{workspace.value}}</div>
+    <ul>
+      <li v-for="workspace in user.memberships">{{workspace.value}}</li>
+    </ul>
   </el-collapse-item>
 </template>
 
 <script>
+import zw from '../../zw-globals'
+
 export default {
 
   props: {
@@ -33,16 +37,16 @@ export default {
 
   computed: {
 
-    displayName () {
-      return this.user.children['zukunftswerk.display_name']?.value || '?'     // TODO
-    },
-
     activeUser () {
       return this.$store.state.admin.activeUser
     },
 
     selected () {
       return this.activeUser?.id === this.user.id
+    },
+
+    displayName () {
+      return zw.getDisplayName(this.user.value)
     }
   },
 

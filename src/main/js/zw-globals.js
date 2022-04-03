@@ -16,11 +16,16 @@ export default {
   quillOptions,
   quillOptions2,
 
+  getDisplayName,
   getUser,
   getString,
 
   NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
   NEW_POS_Y: 42
+}
+
+function getDisplayName (username) {
+  return getUser(username).children['zukunftswerk.display_name']?.value || '?'     // TODO
 }
 
 function getUser (username) {

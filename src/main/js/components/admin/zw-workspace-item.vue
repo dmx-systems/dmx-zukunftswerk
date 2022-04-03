@@ -20,11 +20,15 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <div v-for="username in workspace.memberships">{{username.value}}</div>
+    <ul>
+      <li v-for="(username, i) in workspace.memberships">{{displayNames[i]}} ({{username.value}})</li>
+    </ul>
   </el-collapse-item>
 </template>
 
 <script>
+import zw from '../../zw-globals'
+
 export default {
 
   mixins: [
@@ -46,6 +50,10 @@ export default {
 
     selected () {
       return this.activeWorkspace?.id === this.workspace.id
+    },
+
+    displayNames () {
+      return this.workspace.memberships.map(username => zw.getDisplayName(username.value))
     }
   },
 

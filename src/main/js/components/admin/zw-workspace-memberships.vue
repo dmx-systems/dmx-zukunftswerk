@@ -1,23 +1,27 @@
 <template>
   <div class="zw-workspace-memberships">
     <div class="heading"><zw-string>label.edit_memberships</zw-string></div>
-    <table>
-      <tr>
-        <td><zw-string>label.user</zw-string></td>
-        <td><zw-string>label.member</zw-string></td>
-        <td><zw-string>label.editor</zw-string></td>
-      </tr>
-      <tr v-for="(user, i) in users">
-        <td>{{user.value}}</td>
-        <td><el-checkbox v-model="model[i]"></el-checkbox></td>
-      </tr>
-    </table>
-    <el-button class="submit-button" type="primary" size="medium" @click="updateMemberships">
-      <zw-string>action.submit</zw-string>
-    </el-button>
-    <el-button size="medium" @click="clearSecondaryPanel">
-      <zw-string>action.cancel</zw-string>
-    </el-button>
+    <div class="scroll-container">
+      <table>
+        <tr>
+          <td><zw-string>label.user</zw-string></td>
+          <td><zw-string>label.member</zw-string></td>
+          <td><zw-string>label.editor</zw-string></td>
+        </tr>
+        <tr v-for="(user, i) in users">
+          <td>{{user.value}}</td>
+          <td><el-checkbox v-model="model[i]"></el-checkbox></td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <el-button class="submit-button" type="primary" size="medium" @click="updateMemberships">
+        <zw-string>action.submit</zw-string>
+      </el-button>
+      <el-button size="medium" @click="clearSecondaryPanel">
+        <zw-string>action.cancel</zw-string>
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -89,6 +93,17 @@ export default {
 </script>
 
 <style>
+.zw-workspace-memberships {
+  display: flex;
+  flex-direction: column;
+  padding-right: 0 !important;
+}
+
+.zw-workspace-memberships .scroll-container {
+  overflow: auto;
+  flex-grow: 1;
+}
+
 .zw-workspace-memberships table {
   width: 100%;
 }

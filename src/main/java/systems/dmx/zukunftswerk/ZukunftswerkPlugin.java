@@ -275,6 +275,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
+    @PUT
+    @Path("/admin/user/{username}")
+    @Transactional
+    @Override
+    public List<RelatedTopic> bulkUpdateMemberships(@PathParam("username") String username,
+                                                    @QueryParam("addWorkspaceIds") IdList addWorkspaceIds,
+                                                    @QueryParam("removeWorkspaceIds") IdList removeWorkspaceIds) {
+        acs.bulkUpdateMemberships(username, addWorkspaceIds, removeWorkspaceIds);
+        return getZWWorkspacesOfUser(username);
+    }
+
     @POST
     @Path("/admin/workspace")
     @Transactional

@@ -49,5 +49,7 @@ public interface ZukunftswerkService {
      */
     List<RelatedTopic> getZWWorkspacesOfUser(String username);
 
+    List<RelatedTopic> bulkUpdateMemberships(String username, IdList addWorkspaceIds, IdList removeWorkspaceIds);
+
     Topic createZWWorkspace(String nameDe, String nameFr);
 }

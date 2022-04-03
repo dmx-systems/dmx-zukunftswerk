@@ -1,7 +1,7 @@
 <template>
   <el-collapse-item :class="['zw-user-item', {'zw-selected': selected}]" :name="user.value">
     <div class="user" slot="title">
-      <div class="name">{{displayName}} ({{user.value}})</div>
+      <div class="name"><span class="fa fa-fw fa-user"></span> {{displayName}} ({{user.value}})</div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
         <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
         <el-dropdown-menu slot="dropdown">
@@ -17,9 +17,10 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <ul>
-      <li v-for="workspace in user.memberships">{{workspace.value}}</li>
-    </ul>
+    <div v-for="workspace in user.memberships">
+      <span class="fa fa-fw fa-list"></span>
+      {{workspace.value}}
+    </div>
   </el-collapse-item>
 </template>
 

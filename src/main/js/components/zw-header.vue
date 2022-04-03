@@ -1,6 +1,6 @@
 <template>
   <div class="zw-header">
-    <img class="logo" :src="logoSrc">
+    <img class="logo" :src="logo">
     <div class="workspace">
       <zw-string v-if="isAdmin" class="name" key="admin">label.admin</zw-string>
       <template v-else>

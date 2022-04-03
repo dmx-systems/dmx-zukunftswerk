@@ -171,7 +171,7 @@ export default {
     },
 
     quillOptions () {
-      return this.$store.state.quillOptions2
+      return zw.quillOptions2
     }
   },
 

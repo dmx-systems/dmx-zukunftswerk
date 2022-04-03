@@ -48,13 +48,7 @@ const state = {
 
   // Misc state
   lang: 'de',                   // UI language ('de'/'fr')
-  loginMessage: '',             // the status message shown besides Login button
-  uiStrings:    require('../ui-strings').default,       // TODO: move to zw-globals
-  quillOptions: require('../quill-options').default,    // TODO: move to zw-globals
-  logo: {                                               // TODO: move to zw-globals
-    de: require('../../resources/zw-logo.de.png'),
-    fr: require('../../resources/zw-logo.fr.png')
-  }
+  loginMessage: ''              // the status message shown besides Login button
 }
 
 const actions = {
@@ -421,9 +415,6 @@ const actions = {
       .then(response => response.data)
   }
 }
-
-// Quill instances inside comments-list need special options
-state.quillOptions2 = {bounds: '.zw-discussion .comments', ...state.quillOptions}
 
 const store = new Vuex.Store({
   state,

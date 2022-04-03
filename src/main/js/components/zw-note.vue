@@ -32,6 +32,7 @@
 
 <script>
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 
 export default {
 
@@ -108,7 +109,7 @@ export default {
     },
 
     quillOptions () {
-      return this.$store.state.quillOptions
+      return zw.quillOptions
     }
   },
 

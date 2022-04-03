@@ -61,7 +61,7 @@ export default {
       submitting: false,              // true while submitting new comment
       quillOptions: {                 // options for new-comment quill editor
         placeholder: zw.getString('label.new_comment'),     // FIXME: once Quill instance is created
-        ...this.$store.state.quillOptions                   // ... placeholder is not lang-reactive
+        ...zw.quillOptions                                  // ... placeholder is not lang-reactive
       }
     }
   },

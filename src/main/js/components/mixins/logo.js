@@ -1,13 +1,11 @@
+import zw from '../../zw-globals'
+
 export default {
 
   computed: {
 
-    logoSrc () {
-      return this.logo[this.lang]
-    },
-
     logo () {
-      return this.$store.state.logo
+      return zw.logo[this.lang]
     },
 
     lang () {

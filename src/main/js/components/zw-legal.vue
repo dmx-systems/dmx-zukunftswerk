@@ -1,7 +1,7 @@
 <template>
   <div class="zw-legal">
     <zw-language-switch></zw-language-switch>
-    <img :src="logoSrc">
+    <img :src="logo">
     <zw-string class="heading">{{heading}}</zw-string>
     <div class="scroll-container dmx-html-field">
       <zw-string class="text" :html="true">{{text}}</zw-string>

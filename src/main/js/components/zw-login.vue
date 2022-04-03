@@ -1,7 +1,7 @@
 <template>
   <div class="zw-login">
     <div class="header">
-      <img :src="logoSrc">
+      <img :src="logo">
       <zw-language-switch></zw-language-switch>
     </div>
     <div class="login-form">

@@ -19,6 +19,8 @@ export default {
   'label.forgot_password.fr': 'Mot de passe actuel oublié?',
   'label.reset_password.de': 'Passwort zurücksetzen',
   'label.reset_password.fr': 'Réinitialiser le mot de passe',
+  'label.register.de': 'Noch nicht registriert?',
+  'label.register.fr': 'Pas encore inscrit?',
   'label.imprint.de': 'Impressum',
   'label.imprint.fr': 'Impressum',
   'label.privacy_policy.de': 'Datenschutzerklärung',

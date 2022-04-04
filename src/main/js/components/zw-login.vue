@@ -23,7 +23,7 @@
         <zw-string class="label">label.forgot_password</zw-string>
         <el-button type="text" @click="openDialog"><zw-string>action.reset_password</zw-string></el-button>
       </div>
-      <el-button class="submit-button" type="primary" @click="login">Login</el-button>
+      <el-button class="login-button" type="primary" @click="login">Login</el-button>
       <span class="message">{{message}}</span>
     </div>
     <div class="gap">
@@ -141,7 +141,7 @@ export default {
   background-image: url("../../resources/zw-snake.png");
   background-position: bottom right;
   background-repeat: no-repeat;
-  padding: 60px 0 10px 160px;
+  padding: 60px 0 18px 160px;
 }
 
 .zw-login .header {
@@ -186,10 +186,13 @@ export default {
   margin-left: 24px;
 }
 
-.zw-login .submit-button,
+.zw-login .login-button,
 .zw-login .reset-button {
   font-size: 16px;
   margin-top: 26px;
+}
+
+.zw-login .login-button {
   margin-bottom: 36px;
 }
 

@@ -198,7 +198,7 @@ export default {
 .zw-login .register {
   font-size: var(--secondary-font-size);
   margin-top: 26px;
-  margin-bottom: 26px;
+  margin-bottom: 36px;
 }
 
 .zw-login .gap {

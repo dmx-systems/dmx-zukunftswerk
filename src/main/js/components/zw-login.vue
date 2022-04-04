@@ -103,8 +103,17 @@ export default {
     },
 
     resetPassword () {
-      this.$store.dispatch('resetPassword', this.emailAddress)
-      this.closeDialog()
+      this.$store.dispatch('resetPassword', this.emailAddress).then(() => {
+        this.$notify({
+          message: `Mail was sent to ${this.emailAddress}`
+        })
+        this.closeDialog()
+      }).catch(error => {
+        this.$alert('An error occurred while sending the password reset mail', {
+          type: 'error',
+          showClose: false
+        })
+      })
     },
 
     // Legal

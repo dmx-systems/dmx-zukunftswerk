@@ -86,9 +86,7 @@ const actions = {
   },
 
   resetPassword (_, emailAddress) {
-    http.get(`/sign-up/password-token/${emailAddress}/%2f`).then(response => {    // redirectUrl=/ (%2f)
-      console.log('resetPassword', response.data)
-    })
+    return http.get(`/sign-up/password-token/${emailAddress}/%2f`)      // redirectUrl=/ (%2f)
   },
 
   fetchAllUsers () {

@@ -67,15 +67,6 @@ body.fixed {
   position: fixed;
 }
 
-a,
-a:visited {
-  color: var(--highlight-color);
-}
-
-a:hover {
-  color: var(--highlight-color-2);
-}
-
 /* Reusable classes */
 
 .secondary {

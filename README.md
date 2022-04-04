@@ -20,7 +20,7 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
         * Password reset dialog
     * Users are pseudonymized via "Display Name" (email addresses are never shown)
     * Comments which are not auto-translatable can be stored anyways (and manually translated later on)
-    * Comment translation status is shown: "automatic"/"edited"/"none"
+    * Comment auto-translation status is shown: "automatic"/"edited"/"none"
     * Workspace selector (in case the user has more than one workspace memberships)
     * "Imprint" & "Privacy Policy" shown on to Login page (linkable)
 * Design:

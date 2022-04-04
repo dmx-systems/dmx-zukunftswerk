@@ -106,6 +106,8 @@ export default {
       this.$store.dispatch('resetPassword', this.emailAddress).then(() => {
         this.$notify({
           message: `Mail was sent to ${this.emailAddress}`
+          type: 'success',
+          showClose: false
         })
         this.closeDialog()
       }).catch(error => {

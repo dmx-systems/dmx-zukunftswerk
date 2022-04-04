@@ -7,6 +7,11 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.0.1** -- Apr 4, 2022
+
+* Improvements:
+    * Show notification once password reset mail is sent
+
 **1.0** -- Apr 4, 2022
 
 * Features:

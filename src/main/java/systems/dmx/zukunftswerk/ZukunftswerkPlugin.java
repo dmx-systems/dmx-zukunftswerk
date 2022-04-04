@@ -83,30 +83,39 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     // Listeners
 
+    /**
+     * Creates required memberships for new Team members.
+     */
     @Override
     public void postCreateAssoc(Assoc assoc) {
         processTeamMembership(assoc, username -> {
             // 1) Create "System" membership
-            logger.info("### Creating \"System\" membership of user \"" + username + "\"");
+            logger.info("### Inviting user \"" + username + "\" to \"System\" workspace");
             acs.createMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId());
             // 2) Create ZW event workspace memberships
             List<RelatedTopic> workspaces = getAllZWWorkspaces();
-            logger.info("### Creating " + workspaces.size() + " ZW workspace memberships of user \"" + username + "\"");
+            logger.info("### Inviting user \"" + username + "\" to " + workspaces.size() + " ZW workspaces");
             acs.bulkUpdateMemberships(username, new IdList(workspaces), null);
         });
     }
 
+    /**
+     * Deletes "System" membership for users who loose Team status.
+     */
     @Override
     public void preDeleteAssoc(Assoc assoc) {
         processTeamMembership(assoc, username -> {
             // Delete "System" membership
-            logger.info("### Removing \"System\" membership of user \"" + username + "\"");
+            logger.info("### Removing \"System\" membership from user \"" + username + "\"");
             acs.getMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId()).delete();
             // Note: when a user looses Team status we don't know in which ZW workspaces she stays.
             // We leave all memberships intact.
         });
     }
 
+    /**
+     * Sets "Translation Edited" flag once auto-translated text is edited.
+     */
     @Override
     public void postUpdateTopic(Topic topic, ChangeReport report, TopicModel updateModel) {
         if (topic.getTypeUri().equals(COMMENT)) {
@@ -121,6 +130,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
+    /**
+     * Enriches:
+     * - Comments with "Creator" information
+     * - Usernames with "Display Name" information
+     */
     @Override
     public void preSendTopic(Topic topic) {
         if (topic.getTypeUri().equals(COMMENT)) {
@@ -275,6 +289,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
+    @Override
+    public List<RelatedTopic> getZWTeamMembers() {
+        return acs.getMemberships(teamWorkspace.getId());
+    }
+
     @PUT
     @Path("/admin/user/{username}")
     @Transactional
@@ -300,18 +319,19 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             );
             // 2) Mark it as "ZW Shared Workspace"
             long workspaceId = workspace.getId();
-            dmx.createAssoc(mf.newAssocModel(
-                SHARED_WORKSPACE,
-                mf.newTopicPlayerModel(ZW_PLUGIN_URI, DEFAULT),
-                mf.newTopicPlayerModel(workspaceId, DEFAULT)
-            ));
-            // 3) Give "admin" control
-            String owner = acs.getWorkspaceOwner(workspaceId);
-            if (owner == null) {
-                acs.setWorkspaceOwner(workspace, ADMIN_USERNAME);
-            } else if (!owner.equals(ADMIN_USERNAME)) {
-                acs.createMembership(ADMIN_USERNAME, workspaceId);
-            }
+            dmx.getPrivilegedAccess().runInWorkspaceContext(workspaceId, () -> {
+                dmx.createAssoc(mf.newAssocModel(
+                    SHARED_WORKSPACE,
+                    mf.newTopicPlayerModel(ZW_PLUGIN_URI, DEFAULT),
+                    mf.newTopicPlayerModel(workspaceId, DEFAULT)
+                ));
+                return null;
+            });
+            // 3) Give all "Team" members access
+            List<RelatedTopic> usernames = getZWTeamMembers();
+            logger.info("### Inviting " + usernames.size() + " Team members to workspace \"" +
+                workspace.getSimpleValue() + "\"");
+            acs.bulkUpdateMemberships(workspaceId, new IdList(usernames), null);
             return workspace;
         } catch (Exception e) {
             throw new RuntimeException("Creating a ZW workspace failed", e);
@@ -379,9 +399,15 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         String creator   = comment.getModel().getChildTopics().getString(CREATOR);    // synthetic, so operate on model
         String message = "\rNEW COMMENT\r\rWorkspace: " + workspace + "\rAuthor: " + creator +
             "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
-        for (Topic username : acs.getMemberships(teamWorkspace.getId())) {
-            sendmail.doEmailRecipient("ZW Platform Activity", message, username.getSimpleValue().toString());
-        }
+        forEachTeamMember(username -> {
+          sendmail.doEmailRecipient("ZW Platform Activity", message, username.getSimpleValue().toString());
+        });
+    }
+
+    private void forEachTeamMember(Consumer<Topic> consumer) {
+        getZWTeamMembers().stream().forEach(username -> {
+            consumer.accept(username);
+        });
     }
 
     private void processTeamMembership(Assoc assoc, Consumer<String> consumer) {

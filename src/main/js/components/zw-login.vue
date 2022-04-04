@@ -105,7 +105,7 @@ export default {
     resetPassword () {
       this.$store.dispatch('resetPassword', this.emailAddress).then(() => {
         this.$notify({
-          message: `Mail was sent to ${this.emailAddress}`
+          message: `Mail was sent to ${this.emailAddress}`,
           type: 'success',
           showClose: false
         })

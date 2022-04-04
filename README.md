@@ -7,22 +7,43 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.0** -- Apr 4, 2022
+
+* Features:
+    * Admin area (for ZW team members)
+        * Create users and workspaces
+        * Manage memberships
+    * Notification mails (team members are notified via email about new comments)
+    * PDF read mode (the entire canvas is used)
+* Improvements:
+    * Login page (no public access anymore)
+        * Password reset dialog
+    * Users are pseudonymized via "Display Name" (email addresses are never shown)
+    * Comments which are not auto-translatable can be stored anyways (and manually translated later on)
+    * Comment translation status is shown: "automatic"/"edited"/"none"
+    * Workspace selector (in case the user has more than one workspace memberships)
+    * "Imprint" & "Privacy Policy" shown on to Login page (linkable)
+* Design:
+    * ZW corporate style guide is applied (not yet complete)
+* Fixes:
+    * Only team members can move canvas items
+* Compatible with DMX 5.3-SNAPSHOT
+
 **0.9.1** -- Mar 1, 2022
 
-* Bug fixes:
+* Fixes:
     * PDF viewer and language switch
     * Edit/Delete and non-team members
 * Compatible with DMX 5.3-SNAPSHOT
 
 **0.9** -- Mar 1, 2022
 
-* Actions:
-    * Edit and Delete for all types
-    * Reply works also when doc-filter is set
-* UI improvements:
+* Improvements:
     * UI-less PDF viewer
     * Discussion panel: chat metaphor
+    * Reply works also when doc-filter is set
     * Canvas zooms around mouse position
+    * Edit and Delete functions for all types (Notes, Documents, Comments, Labels)
     * All forms have a Cancel button
 * Design:
     * Redesigned discussion panel

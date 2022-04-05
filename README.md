@@ -7,6 +7,17 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.0.3** -- Apr 6, 2022
+
+* Improvements:
+    * Login page has a "beta" stamp
+* Fixes (admin area):
+    * Also the 2nd level of workspaces/users lists is sorted
+    * Workspaces and Users areas are consistent after updates
+    * Disable create-user button when user input is missing
+
+**1.0.2** -- *rejected*
+
 **1.0.1** -- Apr 4, 2022
 
 * Improvements:

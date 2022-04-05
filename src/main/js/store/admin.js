@@ -56,14 +56,12 @@ const actions = {
   },
 
   expandWorkspace (_, workspaceId) {
-    // console.log('expandWorkspace', workspaceId, state.expandedWorkspaceIds)
     if (!state.expandedWorkspaceIds.includes(workspaceId)) {
       state.expandedWorkspaceIds.push(workspaceId)
     }
   },
 
   expandUser (_, username) {
-    // console.log('expandUser', username, state.expandedUsernames)
     if (!state.expandedUsernames.includes(username)) {
       state.expandedUsernames.push(username)
     }
@@ -75,12 +73,11 @@ const actions = {
 
   fetchAllZWWorkspaces ({rootState}) {
     http.get('/zukunftswerk/admin/workspaces').then(response => {
-      state.workspaces = response.data.sort(
-        (w1, w2) => w1.value.localeCompare(w2.value)
-      )
+      state.workspaces = response.data
       return rootState.teamWorkspace
     }).then(workspace => {
       state.workspaces.push(workspace)
+      state.workspaces.sort(zw.topicSort)
     })
   },
 
@@ -88,8 +85,7 @@ const actions = {
     const workspace = findWorkspace(workspaceId)
     if (!workspace.memberships) {
       return dmx.rpc.getMemberships(workspaceId).then(usernames => {
-        // console.log('fetchMemberships', workspaceId, usernames)
-        Vue.set(workspace, 'memberships', usernames)          // ad-hoc property is not reactive by default
+        Vue.set(workspace, 'memberships', usernames.sort(zw.topicSort))   // ad-hoc property is not reactive by default
       })
     }
   },
@@ -98,8 +94,8 @@ const actions = {
     const usernameTopic = zw.getUser(username)
     if (!usernameTopic.memberships) {
       return http.get(`/zukunftswerk/admin/user/${username}/workspaces`).then(response => {
-        const workspaces = response.data
-        Vue.set(usernameTopic, 'memberships', workspaces)     // ad-hoc property is not reactive by default
+        const workspaces = response.data.sort(zw.topicSort)
+        Vue.set(usernameTopic, 'memberships', workspaces)                 // ad-hoc property is not reactive by default
       })
     }
   },
@@ -108,9 +104,7 @@ const actions = {
     const workspace = state.activeWorkspace
     dispatch('expandWorkspace', workspace.id)
     return dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
-      workspace.memberships = usernames.sort(
-        (u1, u2) => u1.value.localeCompare(u2.value)
-      )
+      workspace.memberships = usernames.sort(zw.topicSort)
       rootState.users.forEach(username => {
         delete username.memberships                 // force refetch once needed
         dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
@@ -127,9 +121,7 @@ const actions = {
         removeWorkspaceIds: removeWorkspaceIds.join(',')
       }
     }).then(response => {
-      username.memberships = response.data.sort(
-        (w1, w2) => w1.value.localeCompare(w2.value)
-      )
+      username.memberships = response.data.sort(zw.topicSort)
       state.workspaces.forEach(workspace => {
         delete workspace.memberships                // force refetch once needed
         dispatch('setExpandedWorkspaceIds', [])     // TODO: don't collapse but refetch later on when needed
@@ -142,9 +134,7 @@ const actions = {
       params: {nameDe, nameFr}
     }).then(response => {
       state.workspaces.push(response.data)
-      state.workspaces.sort(
-        (w1, w2) => w1.value.localeCompare(w2.value)
-      )
+      state.workspaces.sort(zw.topicSort)
       // team members are invited automatically, so we need to reset the User area
       rootState.users.forEach(username => {
         delete username.memberships                 // force refetch once needed
@@ -178,9 +168,7 @@ const actions = {
     return p.then(user => {
       console.log('push user', user)
       rootState.users.push(user)
-      rootState.users.sort(
-        (u1, u2) => u1.value.localeCompare(u2.value)
-      )
+      rootState.users.sort(zw.topicSort)
     })
   }
 }

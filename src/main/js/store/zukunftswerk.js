@@ -92,9 +92,7 @@ const actions = {
   fetchAllUsers () {
     if (!state.users.length) {
       return http.get('/zukunftswerk/users').then(response => {
-        state.users = response.data.sort(
-          (u1, u2) => u1.value.localeCompare(u2.value)
-        )
+        state.users = response.data.sort(zw.topicSort)
       })
     }
   },

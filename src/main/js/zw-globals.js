@@ -2,23 +2,26 @@
 
 import store from './store/zukunftswerk'
 
-const logo = {
-  de: require('../resources/zw-logo.de.png'),
-  fr: require('../resources/zw-logo.fr.png')
-}
 const uiStrings = require('./ui-strings').default
 const quillOptions = require('./quill-options').default
 const quillOptions2 = {bounds: '.zw-discussion .comments', ...quillOptions}   // Quill instances inside comments-list
                                                                               // need special options
-export default {
+const logo = {
+  de: require('../resources/zw-logo.de.png'),
+  fr: require('../resources/zw-logo.fr.png')
+}
 
-  logo,
-  quillOptions,
-  quillOptions2,
+export default {
 
   getDisplayName,
   getUser,
   getString,
+  getLogo,
+
+  topicSort,
+
+  quillOptions,
+  quillOptions2,
 
   NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
   NEW_POS_Y: 42
@@ -34,4 +37,12 @@ function getUser (username) {
 
 function getString (key) {
   return uiStrings[`${key}.${store.state.lang}`]
+}
+
+function getLogo () {
+  return logo[store.state.lang]
+}
+
+function topicSort (t1, t2) {
+  return t1.value.localeCompare(t2.value)
 }

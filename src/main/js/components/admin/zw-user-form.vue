@@ -9,7 +9,7 @@
       <div class="field-label"><zw-string>label.email_address</zw-string></div>
       <el-input v-model="model.emailAddress"></el-input>
     </div>
-    <el-button class="submit-button" type="primary" size="medium" @click="createUser">
+    <el-button class="submit-button" type="primary" size="medium" :disabled="disabled" @click="createUser">
       <zw-string>action.submit</zw-string>
     </el-button>
     <el-button size="medium" @click="clearSecondaryPanel">
@@ -31,6 +31,12 @@ export default {
         displayName: '',
         emailAddress: ''
       }
+    }
+  },
+
+  computed: {
+    disabled () {
+      return !this.model.displayName || !this.model.emailAddress
     }
   },
 

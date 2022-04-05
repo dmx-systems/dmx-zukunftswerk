@@ -1,9 +1,8 @@
 <template>
   <div class="zw-login">
-    <div class="header">
-      <img :src="logo">
-      <zw-language-switch></zw-language-switch>
-    </div>
+    <zw-language-switch></zw-language-switch>
+    <div class="stamp">beta</div>
+    <img :src="logo">
     <div class="login-form">
       <div class="welcome">
         <zw-string>label.welcome</zw-string>
@@ -144,13 +143,26 @@ export default {
   padding: 60px 0 18px 160px;
 }
 
-.zw-login .header {
-  margin-left: -81px;
+.zw-login .zw-language-switch {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
-.zw-login .header img {
-  vertical-align: top;
-  margin-right: 180px;
+.zw-login .stamp {
+  position: absolute;
+  top: 201px;
+  left: 402px;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 1px 10px;
+  transform: rotate(-25deg);
+  background-color: var(--primary-color);
+}
+
+.zw-login img {
+  align-self: flex-start;
+  margin-left: -81px;
 }
 
 .zw-login .login-form .el-input {

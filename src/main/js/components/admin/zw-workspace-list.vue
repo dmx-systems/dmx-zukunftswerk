@@ -35,7 +35,6 @@ export default {
         return this.$store.state.admin.expandedWorkspaceIds
       },
       set (ids) {
-        // console.log('expandedWorkspaceIds set', ids)
         this.$store.dispatch('admin/setExpandedWorkspaceIds', ids)
       }
     }

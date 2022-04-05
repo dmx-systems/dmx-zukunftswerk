@@ -137,7 +137,7 @@ const actions = {
     })
   },
 
-  createZWWorkspace (_, {nameDe, nameFr}) {
+  createZWWorkspace ({rootState, dispatch}, {nameDe, nameFr}) {
     return http.post('/zukunftswerk/admin/workspace', undefined, {
       params: {nameDe, nameFr}
     }).then(response => {
@@ -145,6 +145,11 @@ const actions = {
       state.workspaces.sort(
         (w1, w2) => w1.value.localeCompare(w2.value)
       )
+      // team members are invited automatically, so we need to reset the User area
+      rootState.users.forEach(username => {
+        delete username.memberships                 // force refetch once needed
+        dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
+      })
     })
   },
 

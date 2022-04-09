@@ -7,8 +7,8 @@ const quillOptions = require('./quill-options').default
 const quillOptions2 = {bounds: '.zw-discussion .comments', ...quillOptions}   // Quill instances inside comments-list
                                                                               // need special options
 const logo = {
-  de: require('../resources/zw-logo.de.png'),
-  fr: require('../resources/zw-logo.fr.png')
+  de: require('../resources-build/zw-logo.de.png'),
+  fr: require('../resources-build/zw-logo.fr.png')
 }
 
 export default {

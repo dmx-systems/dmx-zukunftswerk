@@ -16,7 +16,7 @@
 
 <script>
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.js'
-pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/js/pdf.worker.js'
+pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/pdfjs/pdf.worker.js'
 
 export default {
 

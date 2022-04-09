@@ -181,7 +181,7 @@ function newArrowId () {
 <style>
 .zw-canvas {
   flex-grow: 1;
-  background-image: url("../../resources/grid.png");
+  background-image: url("../../resources-build/grid.png");
   min-width: 0;
 }
 

@@ -44,7 +44,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
   background-color: black;
-  background-image: url("../../resources/zw-snake.png");
+  background-image: url("../../resources-build/zw-snake.png");
   background-position: bottom right;
   background-repeat: no-repeat;
   padding: 50px 0 0 120px;

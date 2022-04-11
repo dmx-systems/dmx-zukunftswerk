@@ -96,7 +96,7 @@ export default {
   'action.delete.fr': 'Supprimer',
   'action.attach_files.de': 'Dateien anhängen',
   'action.attach_files.fr': 'Joindre des fichiers',
-  'action.add_workspace.de': 'Arbeitsbereich hinuzfügen',
+  'action.add_workspace.de': 'Arbeitsbereich hinzufügen',
   'action.add_workspace.fr': 'Ajouter un espace de travail',
   'action.show_workspace.de': 'Arbeitsbereich anzeigen',
   'action.show_workspace.fr': 'Afficher l\'espace de travail',

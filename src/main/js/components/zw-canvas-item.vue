@@ -1,7 +1,7 @@
 <template>
-  <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h" :handles="handles"
-      :scale="zoom" :draggable="isTeam" :resizable="isTeam" @activated="select" @dragstop="setPos" @resizestop="setSize"
-      @dragging="dragging" @resizing="resizing">
+  <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h" :scale="zoom"
+      :draggable="isTeam" :resizable="resizable" :handles="handles" @activated="select" @dragstop="setPos"
+      @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @mousedown.native="mousedown" @resize-style="setResizeStyle">
     </component>
@@ -42,7 +42,7 @@ export default {
   data () {
     return {
       w: this.topic.viewProps['dmx.topicmaps.width'],
-      resizeStyle: 'x',         // 'x'/'xy'
+      resizeStyle: 'x',         // 'x'/'xy'/'none'
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
                                 // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
@@ -54,6 +54,10 @@ export default {
 
     h () {
       return this.resizeStyle === 'x' ? 'auto' : this.topic.viewProps['dmx.topicmaps.height']
+    },
+
+    resizable () {
+      return this.resizeStyle !== 'none' && this.isTeam
     },
 
     handles () {

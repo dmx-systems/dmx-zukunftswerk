@@ -126,13 +126,20 @@ export default {
     },
 
     viewProps (typeUri)  {
+      const x = (zw.NEW_POS_X - this.pan.x) / this.zoom
+      const y = (zw.NEW_POS_Y - this.pan.y) / this.zoom
       return {
-        'dmx.topicmaps.x': (zw.NEW_POS_X - this.pan.x) / this.zoom,
-        'dmx.topicmaps.y': (zw.NEW_POS_Y - this.pan.y) / this.zoom,
+        'dmx.topicmaps.x': x,
+        'dmx.topicmaps.y': y,
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false,
-        'dmx.topicmaps.width': typeUri === 'zukunftswerk.arrow' ? 200 : 384
-        // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
+        ...typeUri === 'zukunftswerk.arrow' ? {
+          'dmx.topicmaps.width': 200,
+          'zukunftswerk.x2': x + 200,
+          'zukunftswerk.y2': y,
+        } : {
+          'dmx.topicmaps.width': 384    // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
+        }
       }
     },
 

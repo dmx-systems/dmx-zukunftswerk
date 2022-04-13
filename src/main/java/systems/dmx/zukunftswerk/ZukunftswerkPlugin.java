@@ -11,6 +11,7 @@ import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.model.TopicModel;
+import systems.dmx.core.model.topicmaps.ViewProps;
 import systems.dmx.core.osgi.PluginActivator;
 import systems.dmx.core.service.ChangeReport;
 import systems.dmx.core.service.ChangeReport.Change;
@@ -29,6 +30,8 @@ import systems.dmx.deepl.Translation;
 import systems.dmx.sendmail.SendmailService;
 import systems.dmx.signup.SignupService;
 import systems.dmx.timestamps.TimestampsService;
+import systems.dmx.topicmaps.TopicmapCustomizer;
+import systems.dmx.topicmaps.TopicmapsService;
 import systems.dmx.workspaces.WorkspacesService;
 
 import javax.ws.rs.GET;
@@ -50,7 +53,8 @@ import java.util.stream.Collectors;
 
 @Path("/zukunftswerk")
 @Produces("application/json")
-public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, PostCreateAssoc,
+public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, TopicmapCustomizer,
+                                                                                        PostCreateAssoc,
                                                                                         PostUpdateTopic,
                                                                                         PreDeleteAssoc,
                                                                                         PreSendTopic {
@@ -58,7 +62,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
     @Inject private DeepLService deepls;
-    @Inject private TimestampsService ts;
+    @Inject private TimestampsService tss;
+    @Inject private TopicmapsService tms;
     @Inject private WorkspacesService ws;
     @Inject private AccessControlService acs;
     @Inject private SignupService signup;
@@ -79,6 +84,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         zwPluginTopic = dmx.getTopicByUri(ZW_PLUGIN_URI);
         teamWorkspace = dmx.getTopicByUri(TEAM_WORKSPACE_URI);
         me = new Messenger(dmx.getWebSocketService());
+        tms.registerTopicmapCustomizer(this);
+    }
+
+    @Override
+    public void shutdown() {
+        tms.unregisterTopicmapCustomizer(this);
     }
 
     // Listeners
@@ -149,6 +160,20 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             if (displayName != null) {
                 topic.getChildTopics().getModel().set(DISPLAY_NAME, displayName);
             }
+        }
+    }
+
+    // Note: as Topicmap is not a DMXObject no PRE_SEND event is fired, so we use a TopicmapCustomizer.
+
+    /**
+     * For arrows load the x2/y2 view props.
+     */
+    @Override
+    public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {
+        if (topic.getTypeUri().equals(ARROW)) {
+            Assoc assoc = topic.getRelatingAssoc();
+            viewProps.set(X2, assoc.getProperty(X2))
+                     .set(Y2, assoc.getProperty(Y2));
         }
     }
 
@@ -386,7 +411,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         //
         Topic commentTopic = dmx.createTopic(commentModel);
         acs.enrichWithUserInfo(commentTopic);
-        ts.enrichWithTimestamps(commentTopic);
+        tss.enrichWithTimestamps(commentTopic);
         me.addComment(workspaceId(), commentTopic);
         sendNotificationMail(commentTopic);
         return commentTopic;

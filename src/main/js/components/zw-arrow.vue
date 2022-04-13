@@ -13,10 +13,26 @@
 import dmx from 'dmx-api'
 
 export default {
+
+  created () {
+    console.log('zw-arrow', this.pos)
+  },
+
   props: {
     topic: {                  // the Arrow topic (dmx.ViewTopic)
       type: dmx.ViewTopic,
       required: true
+    }
+  },
+
+  computed: {
+    pos () {
+      return {
+        x:  this.topic.viewProps['dmx.topicmaps.x'],
+        y:  this.topic.viewProps['dmx.topicmaps.y'],
+        x2: this.topic.viewProps['zukunftswerk.x2'],
+        y2: this.topic.viewProps['zukunftswerk.y2']
+      }
     }
   }
 }

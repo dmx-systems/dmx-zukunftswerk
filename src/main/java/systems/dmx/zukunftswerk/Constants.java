@@ -25,4 +25,8 @@ public class Constants {
     public static final String ORIGINAL_LANGUAGE  = "zukunftswerk.original_language";
     public static final String DE                 = "zukunftswerk.de";
     public static final String FR                 = "zukunftswerk.fr";
+
+    // Props (arrow)
+    public static final String X2                 = "zukunftswerk.x2";
+    public static final String Y2                 = "zukunftswerk.y2";
 }

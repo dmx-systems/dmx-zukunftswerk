@@ -111,31 +111,8 @@ export default {
     },
 
     newDocumentViewTopic () {
-      // TODO: use newFormModel()
       return new dmx.ViewTopic({
-        typeUri: 'zukunftswerk.document',
-        children: {
-          'zukunftswerk.document_name.de': {
-            value: ''
-          },
-          'zukunftswerk.document_name.fr': {
-            value: ''
-          },
-          'dmx.files.file#zukunftswerk.de': {
-            children: {
-              'dmx.files.path': {
-                value: ''
-              }
-            }
-          },
-          'dmx.files.file#zukunftswerk.fr': {
-            children: {
-              'dmx.files.path': {
-                value: ''
-              }
-            }
-          }
-        },
+        ...dmx.typeCache.getTopicType('zukunftswerk.document').newFormModel(),
         viewProps: this.viewProps('zukunftswerk.document')
       })
     },

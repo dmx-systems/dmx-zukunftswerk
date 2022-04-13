@@ -61,7 +61,7 @@ export default {
   ],
 
   created () {
-    // console.log('zw-document')
+    // console.log('zw-document', this.topic, this.topicBuffer, this.isNew)
     this.initText()
   },
 
@@ -199,7 +199,7 @@ export default {
     },
 
     isNew () {
-      return !this.topic.id
+      return this.topic.id === -1
     },
 
     isRefDocument () {

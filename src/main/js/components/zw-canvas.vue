@@ -135,8 +135,10 @@ export default {
         'dmx.topicmaps.pinned': false,
         ...typeUri === 'zukunftswerk.arrow' ? {
           'dmx.topicmaps.width': 200,
-          'zukunftswerk.x2': x + 200,
-          'zukunftswerk.y2': y
+          'zukunftswerk.x1': 0,
+          'zukunftswerk.y1': 0,
+          'zukunftswerk.x2': 200,
+          'zukunftswerk.y2': 0
         } : {
           'dmx.topicmaps.width': 384    // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
         }

@@ -1,6 +1,6 @@
 <template>
   <div class="zw-arrow">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 100" class="zw-arrow">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 100">
       <defs>
         <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
           <polygon points="0 0, 8 3, 0 6" fill="#909399" />
@@ -33,8 +33,8 @@ export default {
   computed: {
     pos () {
       return {
-        x:  this.topic.viewProps['dmx.topicmaps.x'],
-        y:  this.topic.viewProps['dmx.topicmaps.y'],
+        x1: this.topic.viewProps['zukunftswerk.x1'],
+        y1: this.topic.viewProps['zukunftswerk.y1'],
         x2: this.topic.viewProps['zukunftswerk.x2'],
         y2: this.topic.viewProps['zukunftswerk.y2']
       }

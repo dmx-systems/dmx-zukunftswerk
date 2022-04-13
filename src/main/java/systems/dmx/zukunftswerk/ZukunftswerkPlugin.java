@@ -172,7 +172,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {
         if (topic.getTypeUri().equals(ARROW)) {
             Assoc assoc = topic.getRelatingAssoc();
-            viewProps.set(X2, assoc.getProperty(X2))
+            viewProps.set(X1, assoc.getProperty(X1))
+                     .set(Y1, assoc.getProperty(Y1))
+                     .set(X2, assoc.getProperty(X2))
                      .set(Y2, assoc.getProperty(Y2));
         }
     }

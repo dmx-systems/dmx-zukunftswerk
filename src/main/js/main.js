@@ -8,7 +8,7 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2022/04/14')
+console.log('[ZW] 2022/04/14-2')
 
 // 1) Init dmx library
 dmx.init({
@@ -25,13 +25,14 @@ dmx.init({
 new DMXWebSocket('systems.dmx.webclient', messageHandler)
 
 // 3) Global component registrations (used in several components)
-Vue.component('zw-language-switch', require('./components/zw-language-switch').default)
-Vue.component('zw-string',          require('./components/zw-string').default)
-Vue.component('zw-truncate',        require('./components/zw-truncate').default)
-Vue.component('zw-comment-ref',     require('./components/zw-comment-ref').default)
-Vue.component('zw-document-ref',    require('./components/zw-document-ref').default)
-Vue.component('zw-attachment',      require('./components/zw-attachment').default)
-Vue.component('zw-pdf-viewer',      require('./components/zw-pdf-viewer').default)
+Vue.component('zw-language-switch',      require('./components/zw-language-switch').default)
+Vue.component('zw-string',               require('./components/zw-string').default)
+Vue.component('zw-truncate',             require('./components/zw-truncate').default)
+Vue.component('zw-comment-ref',          require('./components/zw-comment-ref').default)
+Vue.component('zw-document-ref',         require('./components/zw-document-ref').default)
+Vue.component('zw-attachment',           require('./components/zw-attachment').default)
+Vue.component('zw-pdf-viewer',           require('./components/zw-pdf-viewer').default)
+Vue.component('vue-draggable-resizable', require('vue-draggable-resizable'))
 
 // 4) Create Vue root instance
 new Vue({

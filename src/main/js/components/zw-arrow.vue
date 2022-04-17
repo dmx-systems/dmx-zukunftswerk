@@ -30,8 +30,9 @@ export default {
   ],
 
   created () {
-    console.log('zw-arrow', this.topic.pos, this.pos)
+    console.log('zw-arrow', this.topic.pos, this.pos, this.size)
     this.$emit('resize-style', 'none')
+    this.$emit('get-size', () => this.size)
   },
 
   props: {
@@ -64,8 +65,8 @@ export default {
     size () {
       // console.log('size', Math.abs(this.pos.x1 - this.pos.x2))
       return {
-        w: Math.abs(this.pos.x1 - this.pos.x2),
-        h: Math.abs(this.pos.y1 - this.pos.y2) + 30     // FIXME
+        w: Math.abs(this.pos.x1 - this.pos.x2) + 30,    // +30 FIXME
+        h: Math.abs(this.pos.y1 - this.pos.y2) + 30
       }
     },
 
@@ -101,7 +102,7 @@ export default {
         }
         const cx = this.dragPos.x - this.topic.pos.x
         const cy = this.dragPos.y - this.topic.pos.y
-        console.log(cx, cy)
+        // console.log(cx, cy)
         const otherX = this.pos[`x${3 - handle}`]
         const otherY = this.pos[`y${3 - handle}`]
         const left = Math.min(x + cx, otherX)

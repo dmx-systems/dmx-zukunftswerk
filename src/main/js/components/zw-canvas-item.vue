@@ -1,9 +1,9 @@
 <template>
-  <vue-draggable-resizable class="zw-canvas-item" :x="topic.pos.x" :y="topic.pos.y" :w="w" :h="h" :scale="zoom"
-      :draggable="isTeam" :resizable="resizable" :handles="handles" @activated="select" @dragstop="setPos"
-      @resizestop="setSize" @dragging="dragging" @resizing="resizing">
+  <vue-draggable-resizable class="zw-canvas-item" :x="x" :y="y" :w="w" :h="h" :scale="zoom"
+      :draggable="isTeam" :resizable="resizable" :handles="handles" @activated="select"
+      @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
-      @mousedown.native="mousedown" @resize-style="setResizeStyle">
+      @mousedown.native="mousedown" @resize-style="setResizeStyle" @get-size="setGetSizeHandler">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
@@ -42,6 +42,7 @@ export default {
   data () {
     return {
       resizeStyle: 'x',         // 'x'/'xy'/'none'
+      getSize: undefined,       // Custom handler supplied by child component (Function)
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
                                 // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
@@ -51,12 +52,21 @@ export default {
 
   computed: {
 
+    x () {
+      return this.topic.pos.x
+    },
+
+    y () {
+      return this.topic.pos.y
+    },
+
     w () {
-      return this.topic.viewProps['dmx.topicmaps.width']
+      return this.getSize && this.getSize().w || this.topic.viewProps['dmx.topicmaps.width']
     },
 
     h () {
-      return this.resizeStyle === 'x' ? 'auto' : this.topic.viewProps['dmx.topicmaps.height']
+      return this.getSize && this.getSize().h || this.resizeStyle === 'x' ? 'auto' :
+                                                 this.topic.viewProps['dmx.topicmaps.height']
     },
 
     resizable () {
@@ -157,6 +167,10 @@ export default {
 
     setResizeStyle (style) {
       this.resizeStyle = style
+    },
+
+    setGetSizeHandler (handler) {
+      this.getSize = handler
     },
 
     adjustHandles () {

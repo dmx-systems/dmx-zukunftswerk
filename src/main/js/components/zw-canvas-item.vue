@@ -41,7 +41,6 @@ export default {
 
   data () {
     return {
-      w: this.topic.viewProps['dmx.topicmaps.width'],
       resizeStyle: 'x',         // 'x'/'xy'/'none'
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
@@ -51,6 +50,10 @@ export default {
   },
 
   computed: {
+
+    w () {
+      return this.topic.viewProps['dmx.topicmaps.width']
+    },
 
     h () {
       return this.resizeStyle === 'x' ? 'auto' : this.topic.viewProps['dmx.topicmaps.height']
@@ -126,6 +129,20 @@ export default {
       }
     },
 
+    dragging () {
+      if (!this.hasDragStarted) {
+        this.hasDragStarted = true
+        this.dragStart()
+      }
+    },
+
+    resizing () {
+      this.dragging()
+      if (this.resizeStyle === 'x') {
+        this.$el.style.height = 'auto'
+      }
+    },
+
     setPos (x, y) {
       this.dragStop()
       this.hasDragStarted = false
@@ -140,22 +157,6 @@ export default {
 
     setResizeStyle (style) {
       this.resizeStyle = style
-    },
-
-    dragging () {
-      if (!this.hasDragStarted) {
-        this.hasDragStarted = true
-        this.dragStart()
-      }
-    },
-
-    resizing () {
-      this.dragging()
-      //
-      // console.log('resizing')
-      if (this.resizeStyle === 'x') {
-        this.$el.style.height = 'auto'
-      }
     },
 
     adjustHandles () {

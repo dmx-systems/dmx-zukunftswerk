@@ -2,8 +2,8 @@
   <div class="zw-arrow">
     <svg xmlns="http://www.w3.org/2000/svg" :viewBox="viewBox" class="svg">
       <defs>
-        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#909399" />
+        <marker id="arrowhead" markerWidth="7" markerHeight="5" refX="5" refY="2.5" orient="auto">
+          <polygon points="0 0, 6 2.5, 0 5" fill="#909399" />
         </marker>
       </defs>
       <line :x1="pos.x1" :y1="pos.y1" :x2="pos.x2" :y2="pos.y2" stroke="#909399" stroke-width="8"
@@ -11,10 +11,10 @@
     </svg>
     <div class="handles" v-if="selected">
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x1" :y="pos.y1" :w="10" :h="10" :scale="zoom"
-        @mousedown.native.stop>
+        @dragging="dragging1" @dragstop="setHandlePos1" @mousedown.native.stop>
       </vue-draggable-resizable>
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x2" :y="pos.y2" :w="10" :h="10" :scale="zoom"
-        @mousedown.native.stop>
+        @dragging="dragging2" @dragstop="setHandlePos2" @mousedown.native.stop>
       </vue-draggable-resizable>
     </div>
   </div>
@@ -24,6 +24,10 @@
 import dmx from 'dmx-api'
 
 export default {
+
+  mixins: [
+    require('./mixins/dragging').default
+  ],
 
   created () {
     console.log('zw-arrow', this.topic.pos, this.pos)
@@ -37,18 +41,28 @@ export default {
     }
   },
 
+  data () {
+    return {
+      setHandlePos1: this.handler(1),
+      setHandlePos2: this.handler(2),
+      dragging1: this.draggingHandler(1),
+      dragging2: this.draggingHandler(2),
+      hasDragStarted: false,    // Tracks if a handle is actually dragged after mousedown. If not we don't dispatch
+                                // any "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
+                                // "dragStop".
+      dragPos: this.topic.pos
+    }
+  },
+
   computed: {
 
-    selected () {
-      return this.selectedTopic?.id === this.topic.id
-    },
-
     viewBox () {
-      console.log(`0 0 ${this.size.w} ${this.size.h}`)
+      // console.log('viewBox', `0 0 ${this.size.w} ${this.size.h}`)
       return `0 0 ${this.size.w} ${this.size.h}`
     },
 
     size () {
+      // console.log('size', Math.abs(this.pos.x1 - this.pos.x2))
       return {
         w: Math.abs(this.pos.x1 - this.pos.x2),
         h: Math.abs(this.pos.y1 - this.pos.y2) + 30     // FIXME
@@ -64,12 +78,51 @@ export default {
       }
     },
 
+    selected () {
+      return this.selectedTopic?.id === this.topic.id
+    },
+
     selectedTopic () {
       return this.$store.state.topic
     },
 
     zoom () {
       return this.$store.state.zoom
+    }
+  },
+
+  methods: {
+
+    draggingHandler (handle) {
+      return (x, y) => {
+        if (!this.hasDragStarted) {
+          this.hasDragStarted = true
+          this.dragStart()
+        }
+        const cx = this.dragPos.x - this.topic.pos.x
+        const cy = this.dragPos.y - this.topic.pos.y
+        console.log(cx, cy)
+        const otherX = this.pos[`x${3 - handle}`]
+        const otherY = this.pos[`y${3 - handle}`]
+        const left = Math.min(x + cx, otherX)
+        const top  = Math.min(y + cy, otherY)
+        this.topic.setViewProp(`zukunftswerk.x${handle}`, x - left)      // update client state
+        this.topic.setViewProp(`zukunftswerk.y${handle}`, y - top)
+        this.topic.setViewProp(`zukunftswerk.x${3 - handle}`, otherX - left)
+        this.topic.setViewProp(`zukunftswerk.y${3 - handle}`, otherY - top)
+        this.topic.setViewProp('dmx.topicmaps.width', Math.abs(x - otherX))
+        const pos = this.topic.pos
+        this.topic.setPosition({x: pos.x + left, y: pos.y + top})
+      }
+    },
+
+    handler (handle) {
+      return (x, y) => {
+        // console.log('setArrowHandlePos', handle, x, y)
+        this.dragStop()
+        this.hasDragStarted = false
+        // this.$store.dispatch('setArrowHandlePos', {topic: this.topic, handle, x, y})   // TODO
+      }
     }
   }
 }
@@ -81,6 +134,8 @@ export default {
 }
 
 .zw-arrow .handle {
+  top: 0;
+  left: 0;
   margin-top: -6px;
   margin-left: -6px;
 }

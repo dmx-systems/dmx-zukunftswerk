@@ -11,10 +11,10 @@
     </svg>
     <div class="handles" v-if="selected">
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x1" :y="pos.y1" :w="10" :h="10" :scale="zoom"
-        @dragging="dragging1" @dragstop="setHandlePos1" @mousedown.native.stop>
+        @dragging="dragging1" @dragstop="handlerMoved" @mousedown.native.stop>
       </vue-draggable-resizable>
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x2" :y="pos.y2" :w="10" :h="10" :scale="zoom"
-        @dragging="dragging2" @dragstop="setHandlePos2" @mousedown.native.stop>
+        @dragging="dragging2" @dragstop="handlerMoved" @mousedown.native.stop>
       </vue-draggable-resizable>
     </div>
   </div>
@@ -44,14 +44,12 @@ export default {
 
   data () {
     return {
-      setHandlePos1: this.handler(1),
-      setHandlePos2: this.handler(2),
       dragging1: this.draggingHandler(1),
       dragging2: this.draggingHandler(2),
       hasDragStarted: false,    // Tracks if a handle is actually dragged after mousedown. If not we don't dispatch
                                 // any "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
                                 // "dragStop".
-      dragPos: this.topic.pos
+      dragPos: undefined
     }
   },
 
@@ -96,34 +94,34 @@ export default {
 
     draggingHandler (handle) {
       return (x, y) => {
+        const pos = this.topic.pos
         if (!this.hasDragStarted) {
           this.hasDragStarted = true
+          this.dragPos = pos
           this.dragStart()
         }
-        const cx = this.dragPos.x - this.topic.pos.x
-        const cy = this.dragPos.y - this.topic.pos.y
+        const cx = this.dragPos.x - pos.x
+        const cy = this.dragPos.y - pos.y
         // console.log(cx, cy)
         const otherX = this.pos[`x${3 - handle}`]
         const otherY = this.pos[`y${3 - handle}`]
         const left = Math.min(x + cx, otherX)
         const top  = Math.min(y + cy, otherY)
-        this.topic.setViewProp(`zukunftswerk.x${handle}`, x - left)      // update client state
+        // update client state
+        this.topic.setViewProp(`zukunftswerk.x${handle}`, x - left)
         this.topic.setViewProp(`zukunftswerk.y${handle}`, y - top)
         this.topic.setViewProp(`zukunftswerk.x${3 - handle}`, otherX - left)
         this.topic.setViewProp(`zukunftswerk.y${3 - handle}`, otherY - top)
         this.topic.setViewProp('dmx.topicmaps.width', Math.abs(x - otherX))
-        const pos = this.topic.pos
         this.topic.setPosition({x: pos.x + left, y: pos.y + top})
       }
     },
 
-    handler (handle) {
-      return (x, y) => {
-        // console.log('setArrowHandlePos', handle, x, y)
-        this.dragStop()
-        this.hasDragStarted = false
-        // this.$store.dispatch('setArrowHandlePos', {topic: this.topic, handle, x, y})   // TODO
-      }
+    handlerMoved (x, y) {
+      // console.log('handlerMoved', x, y)
+      this.dragStop()
+      this.hasDragStarted = false
+      this.$store.dispatch('storeTopicViewProps', this.topic)
     }
   }
 }

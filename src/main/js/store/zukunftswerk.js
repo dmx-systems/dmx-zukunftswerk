@@ -155,6 +155,16 @@ const actions = {
     }
   },
 
+  /**
+   * Persists all of the given topic's view props.
+   *
+   * @param   topic   the topic (dmx.ViewTopic)
+   */
+  storeTopicViewProps (_, topic) {
+    // console.log('storeTopicViewProps', topic.viewProps)
+    dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, topic.viewProps)
+  },
+
   setTopicSize (_, {topic, width, height}) {
     if (topic.id >= 0) {
       dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {

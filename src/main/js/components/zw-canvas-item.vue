@@ -1,9 +1,10 @@
 <template>
-  <vue-draggable-resizable class="zw-canvas-item" :x="x" :y="y" :w="w" :h="h" :scale="zoom"
+  <vue-draggable-resizable :class="['zw-canvas-item', customClass]" :x="x" :y="y" :w="w" :h="h" :scale="zoom"
       :draggable="isTeam" :resizable="resizable" :handles="handles" @activated="select"
       @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
-      @mousedown.native="mousedown" @resize-style="setResizeStyle" @get-size="setGetSizeHandler">
+      @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
+      @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
@@ -41,8 +42,10 @@ export default {
 
   data () {
     return {
-      resizeStyle: 'x',         // 'x'/'xy'/'none'
+      resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
       getSize: undefined,       // Custom handler supplied by child component (Function)
+      customClass: undefined,   // Custom class supplied by child component (String)
+      //
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
                                 // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
@@ -165,6 +168,10 @@ export default {
       this.$store.dispatch('setTopicSize', {topic: this.topic, width, height})
     },
 
+    setCustomClass (classname) {
+      this.customClass = classname
+    },
+
     setResizeStyle (style) {
       this.resizeStyle = style
     },
@@ -190,7 +197,8 @@ export default {
 </script>
 
 <style>
-.zw-canvas-item.vdr {                       /* "vdr" class is added by vdr */
+.zw-canvas-item.vdr,                        /* "vdr" class is added by vdr */
+.zw-canvas-item.vdr.zw-arrow {              /* arrows get no border (but 2 handles) */
   border: 1px solid transparent;            /* vdr default border is "1px dashed #000" */
 }
 

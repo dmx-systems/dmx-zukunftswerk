@@ -1,9 +1,9 @@
 <template>
-  <div class="zw-arrow">
+  <div><!-- Note: class "zw-arrow" is located at parent -->
     <svg xmlns="http://www.w3.org/2000/svg" :viewBox="viewBox" class="svg">
       <defs>
-        <marker id="arrowhead" markerWidth="7" markerHeight="5" refX="5" refY="2.5" orient="auto">
-          <polygon points="0 0, 6 2.5, 0 5" fill="#909399" />
+        <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+          <polygon points="0 0, 6 2, 0 4" fill="#909399" />
         </marker>
       </defs>
       <line :x1="pos.x1" :y1="pos.y1" :x2="pos.x2" :y2="pos.y2" stroke="#909399" stroke-width="8"
@@ -11,10 +11,10 @@
     </svg>
     <div class="handles" v-if="selected">
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x1" :y="pos.y1" :w="10" :h="10" :scale="zoom"
-        @dragging="dragging1" @dragstop="handlerMoved" @mousedown.native.stop>
+        @dragging="dragging1" @dragstop="handleMoved" @mousedown.native.stop>
       </vue-draggable-resizable>
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x2" :y="pos.y2" :w="10" :h="10" :scale="zoom"
-        @dragging="dragging2" @dragstop="handlerMoved" @mousedown.native.stop>
+        @dragging="dragging2" @dragstop="handleMoved" @mousedown.native.stop>
       </vue-draggable-resizable>
     </div>
   </div>
@@ -30,7 +30,8 @@ export default {
   ],
 
   created () {
-    console.log('zw-arrow', this.topic.pos, this.pos, this.size)
+    // console.log('zw-arrow', this.topic.pos, this.pos, this.size)
+    this.$emit('custom-class', 'zw-arrow')
     this.$emit('resize-style', 'none')
     this.$emit('get-size', () => this.size)
   },
@@ -117,8 +118,8 @@ export default {
       }
     },
 
-    handlerMoved (x, y) {
-      // console.log('handlerMoved', x, y)
+    handleMoved (x, y) {
+      // console.log('handleMoved', x, y)
       this.dragStop()
       this.hasDragStarted = false
       this.$store.dispatch('storeTopicViewProps', this.topic)

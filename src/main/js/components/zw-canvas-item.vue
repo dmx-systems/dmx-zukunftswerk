@@ -4,10 +4,10 @@
       @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
-      @mousedown.native="mousedown">
+      @edit-enabled="setEditEnabled" @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
-      <el-button type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
+      <el-button v-if="editEnabled" type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
         <zw-string>action.edit</zw-string>
       </el-button>
       <el-button type="text" :style="buttonStyle" @click="deleteItem" @mousedown.native.stop>
@@ -42,9 +42,10 @@ export default {
 
   data () {
     return {
-      resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
-      getSize: undefined,       // Custom handler supplied by child component (Function)
       customClass: undefined,   // Custom class supplied by child component (String)
+      editEnabled: true,        // Edit button visibility, can be overwritten by child component
+      resizeStyle: 'x',         // 'x'/'xy'/'none' (String), can be overwritten by child component
+      getSize: undefined,       // Custom handler supplied by child component (Function)
       //
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
@@ -170,6 +171,10 @@ export default {
 
     setCustomClass (classname) {
       this.customClass = classname
+    },
+
+    setEditEnabled (enabled) {
+      this.editEnabled = enabled
     },
 
     setResizeStyle (style) {

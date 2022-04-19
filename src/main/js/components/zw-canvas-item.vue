@@ -78,7 +78,10 @@ export default {
     },
 
     handles () {
-      return this.resizeStyle === 'x' ? ['mr'] : ['mr', 'bm', 'br']
+      switch (this.resizeStyle) {
+        case 'x':  return ['mr']
+        case 'xy': return ['mr', 'bm', 'br']
+      }
     },
 
     buttonPanelVisibility () {
@@ -117,8 +120,10 @@ export default {
   methods: {
 
     select (e) {
-      this.adjustHandles()
       this.$store.dispatch('setTopic', this.topic)
+      this.$nextTick(() => {
+        this.adjustHandles()
+      })
     },
 
     edit () {
@@ -187,7 +192,16 @@ export default {
 
     adjustHandles () {
       document.querySelectorAll('.handle').forEach(handle => {
-        handle.style.transform = `scale(${1 / this.zoom}) translate(${1 / this.zoom}px, ${1 / this.zoom}px)`
+        const x = Number(handle.dataset.x)
+        const y = Number(handle.dataset.y)
+        console.log(x, y)
+        if (isNaN(x) || isNaN(y)) {
+          // regular vdr handle
+          handle.style.transform = `scale(${1 / this.zoom}) translate(${1 / this.zoom}px, 0)`
+        } else {
+          // custom zw-arrow handle
+          handle.style.transform = `scale(${1 / this.zoom}) translate(${x * this.zoom}px, ${y * this.zoom}px)`
+        }
       })
     }
   },

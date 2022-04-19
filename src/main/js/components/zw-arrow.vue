@@ -11,10 +11,10 @@
     </svg>
     <div class="handles" v-if="selected">
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x1" :y="pos.y1" :w="10" :h="10" :scale="zoom"
-        @dragging="dragging1" @dragstop="handleMoved" @mousedown.native.stop>
+        :data-x="pos.x1" :data-y="pos.y1" @dragging="dragging1" @dragstop="handleMoved" @mousedown.native.stop>
       </vue-draggable-resizable>
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x2" :y="pos.y2" :w="10" :h="10" :scale="zoom"
-        @dragging="dragging2" @dragstop="handleMoved" @mousedown.native.stop>
+        :data-x="pos.x2" :data-y="pos.y2" @dragging="dragging2" @dragstop="handleMoved" @mousedown.native.stop>
       </vue-draggable-resizable>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <vue-draggable-resizable :class="['zw-canvas-item', customClass]" :x="x" :y="y" :w="w" :h="h" :scale="zoom"
-      :draggable="isTeam" :resizable="resizable" :handles="handles" @activated="select"
+      :draggable="isTeam" :resizable="resizable" :handles="handles" @activated="select" @deactivated="deselect"
       @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
@@ -124,6 +124,10 @@ export default {
       this.$nextTick(() => {
         this.adjustHandles()
       })
+    },
+
+    deselect (e) {
+      this.$store.dispatch('setTopic', undefined)
     },
 
     edit () {

@@ -4,7 +4,7 @@
       @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
-      @edit-enabled="setEditEnabled" @mousedown.native="mousedown">
+      @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles" @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button v-if="editEnabled" type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
@@ -194,7 +194,6 @@ export default {
       document.querySelectorAll('.handle').forEach(handle => {
         const x = Number(handle.dataset.x)
         const y = Number(handle.dataset.y)
-        console.log(x, y)
         if (isNaN(x) || isNaN(y)) {
           // regular vdr handle
           handle.style.transform = `scale(${1 / this.zoom}) translate(${1 / this.zoom}px, 0)`

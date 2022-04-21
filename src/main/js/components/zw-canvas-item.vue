@@ -6,7 +6,7 @@
       @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
       @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles" @mousedown.native="mousedown">
     </component>
-    <div class="button-panel" v-if="buttonPanelVisibility">
+    <div class="button-panel" v-if="infoMode && isTeam">
       <el-button v-if="editEnabled" type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
         <zw-string>action.edit</zw-string>
       </el-button>
@@ -84,14 +84,14 @@ export default {
       }
     },
 
-    buttonPanelVisibility () {
-      return this.infoMode && this.isTeam
-    },
-
     buttonStyle () {
       return {
         'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
       }
+    },
+
+    infoMode () {
+      return this.mode === 'info'
     },
 
     isTeam () {
@@ -104,10 +104,6 @@ export default {
 
     zoom () {
       return this.$store.state.zoom
-    },
-
-    infoMode () {
-      return this.mode === 'info'
     }
   },
 

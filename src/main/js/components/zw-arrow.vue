@@ -1,6 +1,6 @@
 <template>
   <div><!-- Note: class "zw-arrow" is located at parent -->
-    <svg xmlns="http://www.w3.org/2000/svg" :viewBox="viewBox" class="svg">
+    <svg class="svg" xmlns="http://www.w3.org/2000/svg" :viewBox="viewBox">
       <defs>
         <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
           <polygon points="0 0, 6 2.5, 0 5" fill="#909399" />
@@ -60,12 +60,10 @@ export default {
   computed: {
 
     viewBox () {
-      // console.log('viewBox', `0 0 ${this.size.w} ${this.size.h}`)
       return `0 0 ${this.size.w} ${this.size.h}`
     },
 
     size () {
-      // console.log('size', Math.abs(this.pos.x1 - this.pos.x2))
       return {
         w: Math.abs(this.pos.x1 - this.pos.x2) + 30,    // +30 FIXME
         h: Math.abs(this.pos.y1 - this.pos.y2) + 30
@@ -119,11 +117,17 @@ export default {
         this.topic.setViewProp(`zukunftswerk.y${handle}`, y - top)
         this.topic.setViewProp(`zukunftswerk.x${3 - handle}`, otherX - left)
         this.topic.setViewProp(`zukunftswerk.y${3 - handle}`, otherY - top)
-        // FIXME: "x" should actually be "x + cx", that is applying the correction. The arrow would properly follow the
-        // mouse pointer then, but not so the handle. This is because we've no way to make vdr applying the correction
-        // as well when calculating the dragging position (the "transform" attribute's "translate" value). The solution
-        // would be not utilizing vdr for the arrow handles but implement the dragging on our own. vdr does not work
-        // well when the container moves while dragging.
+        // FIXME 1: "x" should actually be "x + cx", that is applying the correction, same for "y". The arrow would
+        // properly follow the mouse pointer then, but not so the handle. This is because there is no way to make vdr
+        // applying that correction when calculating the dragging position (the "transform" attribute's "translate"
+        // value). The solution would be not utilizing vdr for the arrow handles but implement the dragging on our own.
+        // vdr does not work well when the container moves while dragging.
+        // FIXME 2: when dragging a handler in a zoomed view the handlers appear too big/too small. This is because
+        // while a drag vdr overrides the handle's "transform" attribute (for translation), and thus removes the zoom
+        // compensation (scale transform) as added by adjustHandles() (zw-canvas-item.vue). Again the solution would
+        // be not utilizing vdr for the handles in order to gain full control over the transformations. vdr does not
+        // work well when the app adds custom transformations to the item-to-be-dragged.
+        //
         // update view
         // this.$emit('adjust-handles')   // TODO
       }

@@ -1,5 +1,6 @@
-// Global values which are not reactive state
+// Global functions and values (not reactive)
 
+import Vue from 'vue'
 import store from './store/zukunftswerk'
 
 const uiStrings = require('./ui-strings').default
@@ -19,6 +20,7 @@ export default {
   getLogo,
 
   topicSort,
+  confirmDeletion,
 
   quillOptions,
   quillOptions2,
@@ -45,4 +47,13 @@ function getLogo () {
 
 function topicSort (t1, t2) {
   return t1.value.localeCompare(t2.value)
+}
+
+function confirmDeletion (textKey = 'warning.delete') {
+  return Vue.prototype.$confirm(getString(textKey), 'Warning', {
+    type: 'warning',
+    confirmButtonText: getString('action.delete'),
+    confirmButtonClass: 'el-button--danger',
+    showClose: false
+  })
 }

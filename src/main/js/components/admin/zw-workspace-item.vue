@@ -73,7 +73,7 @@ export default {
     },
 
     delete () {
-      // TODO
+      this.$store.dispatch('admin/deleteWorkspace', this.workspace.id)
     },
 
     editMemberships () {

@@ -121,6 +121,8 @@ export default {
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',
   'warning.delete_comment.de': 'Sie sind im Begriff diesen Kommentar zu löschen',
   'warning.delete_comment.fr': 'Vous êtes sur le point de supprimer ce commentaire',
+  'warning.delete_workspace.de': 'Sie sind im Begriff diesen Arbeitsbereich zu löschen',
+  'warning.delete_workspace.fr': 'Vous êtes sur le point de supprimer cet espace de travail',
   'warning.translation_failed.de': 'Automatische Übersetzung fehlgeschlagen',
   'warning.translation_failed.fr': 'Échec de la traduction automatique',
   'warning.confirm_create_comment.de': `Dein Kommentar konnte nicht übersetzt werden. Klicke "Abbrechen" um ihn zu

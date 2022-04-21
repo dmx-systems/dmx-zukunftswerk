@@ -143,6 +143,14 @@ const actions = {
     })
   },
 
+  deleteWorkspace (_, workspaceId) {
+    zw.confirmDeletion('warning.delete_workspace').then(() => {
+      return dmx.rpc.deleteTopic(workspaceId)       // update server state
+    }).then(() => {
+      removeWorkspace(workspaceId)                  // update client state
+    }).catch(() => {})                              // suppress unhandled rejection on cancel
+  },
+
   /**
    * @param   userModel   object w/ "displayName" and "emailAddress" props.
    */
@@ -166,7 +174,6 @@ const actions = {
       })
     }
     return p.then(user => {
-      console.log('push user', user)
       rootState.users.push(user)
       rootState.users.sort(zw.topicSort)
     })
@@ -183,6 +190,14 @@ export default {
 
 function findWorkspace (id) {
   return state.workspaces.find(ws => ws.id === id)
+}
+
+function removeWorkspace (id) {
+  const i = state.workspaces.findIndex(ws => ws.id === id)
+  if (i === -1) {
+    throw Error('removeWorkspace')
+  }
+  state.workspaces.splice(i, 1)
 }
 
 // helper

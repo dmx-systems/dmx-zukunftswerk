@@ -377,17 +377,17 @@ const actions = {
 
   delete ({dispatch}, topic) {
     dispatch('setTopic', topic)   // select programmatically
-    confirmDeletion().then(() => {
+    zw.confirmDeletion().then(() => {
       state.topicmap.removeTopic(topic.id)        // update client state
       dmx.rpc.deleteTopic(topic.id)               // update server state
-    }).catch(() => {})  // suppress unhandled rejection on cancel
+    }).catch(() => {})            // suppress unhandled rejection on cancel
   },
 
   deleteComment ({dispatch}, comment) {
-    confirmDeletion('warning.delete_comment').then(() => {
+    zw.confirmDeletion('warning.delete_comment').then(() => {
       removeComment(comment)                      // update client state
       dmx.rpc.deleteTopic(comment.id)             // update server state
-    }).catch(() => {})  // suppress unhandled rejection on cancel
+    }).catch(() => {})            // suppress unhandled rejection on cancel
   },
 
   /**
@@ -542,15 +542,6 @@ function setTopicmapViewport() {
 
 function filerepoUrl (repoPath) {
   return '/filerepo/' + encodeURIComponent(repoPath)
-}
-
-function confirmDeletion (textKey = 'warning.delete') {
-  return Vue.prototype.$confirm(zw.getString(textKey), 'Warning', {
-    type: 'warning',
-    confirmButtonText: zw.getString('action.delete'),
-    confirmButtonClass: 'el-button--danger',
-    showClose: false
-  })
 }
 
 function getWorkspaceTopicmap (workspaceId) {

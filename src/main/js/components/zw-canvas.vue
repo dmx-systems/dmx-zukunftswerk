@@ -171,11 +171,11 @@ function newArrowId () {
   min-width: 0;
 }
 
-.zw-canvas .el-dropdown {
+.zw-canvas > .el-dropdown {
   position: absolute;   /* don't consume canvas space */
 }
 
-.zw-canvas .add-button {
+.zw-canvas > .el-dropdown .add-button {
   position: relative;   /* only positioned elements have a z-index; "absolute" would displace dropdown menu */
   z-index: 1;           /* place button above canvas items */
   font-size: 24px;

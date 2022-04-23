@@ -20,6 +20,22 @@
         </div>
         <quill v-model="noteModel[translatedLang]" :options="quillOptions"></quill>
       </div>
+      <div class="field">
+        <div class="field-label">
+          <zw-string>label.color</zw-string>
+        </div>
+        <el-dropdown size="medium" trigger="click" @command="setColor">
+          <el-button type="text">
+            <div class="color-box" :style="{'background-color': color}"></div><!--
+            --><span class="el-icon-arrow-down el-icon--right"></span>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="col in colors" :command="col" :key="col">
+              <div class="color-box" :style="{'background-color': col}"></div>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>action.submit</zw-string>
@@ -43,6 +59,8 @@ export default {
 
   data () {
     return {
+      colors: zw.NOTE_COLORS,
+      color: this.topic.viewProps['zw.color'] || zw.NOTE_COLORS[0],
       saving: false                   // true while note is saved
     }
   },
@@ -147,6 +165,10 @@ export default {
     setNote (lang) {
       const compDefUri = 'zukunftswerk.note.' + lang
       this.topic.children[compDefUri].value = this.noteModel[lang]
+    },
+
+    setColor (color) {
+      this.color = color
     }
   },
 
@@ -163,6 +185,22 @@ export default {
 .zw-note {
   padding: 12px;
   background-color: rgb(255, 250, 109);
+}
+
+.zw-note .el-icon-arrow-down {
+  vertical-align: top;
+}
+
+/* dropdown menus are body mounted */
+.color-box {
+  display: inline-block;
+  width: 40px;
+  height: 30px;
+}
+
+/* dropdown menus are body mounted */
+body > .el-dropdown-menu .color-box {
+  margin-top: 9px;
 }
 
 .zw-note.form .save-button {

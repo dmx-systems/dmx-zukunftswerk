@@ -81,6 +81,8 @@ export default {
   'label.email_address.fr': 'E-mail',
   'label.password.de': 'Passwort',
   'label.password.fr': 'Mot de passe',
+  'label.color.de': 'Farbe',
+  'label.color.fr': 'Couleur',
 
   'action.submit.de': 'OK',
   'action.submit.fr': 'OK',

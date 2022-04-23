@@ -25,6 +25,14 @@ export default {
   quillOptions,
   quillOptions2,
 
+  NOTE_COLORS: [
+    'rgb(238, 232, 234)',
+    'rgb(248, 195, 213)',
+    'rgb(228, 214, 166)',
+    'rgb(162, 190, 168)',
+    'rgb(145, 187, 205)'
+  ],
+
   NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
   NEW_POS_Y: 42
 }

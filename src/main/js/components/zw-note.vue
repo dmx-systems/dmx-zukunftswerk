@@ -1,6 +1,6 @@
 <template>
-  <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml"></div>
-  <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving">
+  <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml" :style="style"></div>
+  <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving" :style="style">
     <template v-if="isNew">
       <div class="field-label">
         <zw-string>label.new_note</zw-string>
@@ -26,7 +26,7 @@
         </div>
         <el-dropdown size="medium" trigger="click" @command="setColor">
           <el-button type="text">
-            <div class="color-box" :style="{'background-color': color}"></div><!--
+            <div class="color-box" :style="style"></div><!--
             --><span class="el-icon-arrow-down el-icon--right"></span>
           </el-button>
           <el-dropdown-menu slot="dropdown">
@@ -52,15 +52,20 @@ import zw from '../zw-globals'
 
 export default {
 
+  created () {
+    // console.log('zw-note', this.initColor)
+    this.color = this.initColor
+  },
+
   mixins: [
-    require('./mixins/orig-lang').default,
-    require('./mixins/cancel').default
+    require('./mixins/orig-lang').default
   ],
 
   data () {
     return {
-      colors: zw.NOTE_COLORS,
-      color: this.topic.viewProps['zw.color'] || zw.NOTE_COLORS[0],
+      initColor: this.topic.viewProps['zw.color'] || zw.NOTE_COLORS[0],
+      color: undefined,               // selected color
+      colors: zw.NOTE_COLORS,         // all colors
       saving: false                   // true while note is saved
     }
   },
@@ -81,6 +86,12 @@ export default {
   },
 
   computed: {
+
+    style () {
+      return {
+        'background-color': this.color
+      }
+    },
 
     note () {
       return {
@@ -155,6 +166,11 @@ export default {
       })
     },
 
+    cancel () {
+      this.color = this.initColor
+      this.$store.dispatch('cancel', this.topic)
+    },
+
     html (lang) {
       const html = this.topic.children['zukunftswerk.note.' + lang].value
       if (html !== '<p><br></p>') {
@@ -184,23 +200,24 @@ export default {
 <style>
 .zw-note {
   padding: 12px;
-  background-color: rgb(255, 250, 109);
 }
 
-.zw-note .el-icon-arrow-down {
+.zw-note.form .el-icon-arrow-down {
   vertical-align: top;
 }
 
-/* dropdown menus are body mounted */
-.color-box {
+.zw-note.form .color-box {
   display: inline-block;
   width: 40px;
   height: 30px;
+  border: 1px dashed var(--highlight-color);
 }
 
 /* dropdown menus are body mounted */
 body > .el-dropdown-menu .color-box {
   margin-top: 9px;
+  width: 40px;
+  height: 30px;
 }
 
 .zw-note.form .save-button {

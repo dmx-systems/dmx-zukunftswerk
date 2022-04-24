@@ -266,6 +266,16 @@ const actions = {
   /**
    * @param   topic   a dmx.ViewTopic
    */
+  updateNote ({dispatch}, topic) {
+    dispatch('update', topic)
+    dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
+      'zukunftswerk.color': topic.viewProps['zukunftswerk.color'],
+    })
+  },
+
+  /**
+   * @param   topic   a dmx.ViewTopic
+   */
   createLabel (_, topic) {
     return http.post('/zukunftswerk/label', topic.value, {
       headers: {

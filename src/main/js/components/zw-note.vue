@@ -2,10 +2,12 @@
   <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml" :style="style"></div>
   <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving" :style="style">
     <template v-if="isNew">
-      <div class="field-label">
-        <zw-string>label.new_note</zw-string>
+      <div class="field">
+        <div class="field-label">
+          <zw-string>label.new_note</zw-string>
+        </div>
+        <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
-      <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
     </template>
     <template v-else>
       <div class="field">
@@ -20,23 +22,23 @@
         </div>
         <quill v-model="noteModel[translatedLang]" :options="quillOptions"></quill>
       </div>
-      <div class="field">
-        <div class="field-label">
-          <zw-string>label.color</zw-string>
-        </div>
-        <el-dropdown size="medium" trigger="click" @command="setColor">
-          <el-button type="text">
-            <div class="color-box" :style="style"></div><!--
-            --><span class="el-icon-arrow-down el-icon--right"></span>
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item v-for="col in colors" :command="col" :key="col">
-              <div class="color-box" :style="{'background-color': col}"></div>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
     </template>
+    <div class="field">
+      <div class="field-label">
+        <zw-string>label.color</zw-string>
+      </div>
+      <el-dropdown size="medium" trigger="click" @command="setColor">
+        <el-button type="text">
+          <div class="color-box" :style="style"></div><!--
+          --><span class="el-icon-arrow-down el-icon--right"></span>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item v-for="col in colors" :command="col" :key="col">
+            <div class="color-box" :style="{'background-color': col}"></div>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>action.submit</zw-string>
     </el-button>
@@ -63,7 +65,7 @@ export default {
 
   data () {
     return {
-      initColor: this.topic.viewProps['zw.color'] || zw.NOTE_COLORS[0],
+      initColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[0],
       color: undefined,               // selected color
       colors: zw.NOTE_COLORS,         // all colors
       saving: false                   // true while note is saved
@@ -154,11 +156,12 @@ export default {
       if (this.isNew) {
         action = 'createNote'
       } else {
-        action = 'update'
+        action = 'updateNote'
         // transfer edit buffer to topic model
         this.setNote('de')
         this.setNote('fr')
       }
+      this.topic.setViewProp('zukunftswerk.color', this.color)
       this.$store.dispatch(action, this.topic).catch(() => {
         // silence browser console
       }).finally(() => {
@@ -222,9 +225,5 @@ body > .el-dropdown-menu .color-box {
 
 .zw-note.form .save-button {
   margin-top: var(--field-spacing);
-}
-
-.zw-note.form.new .save-button {
-  margin-top: 6px;
 }
 </style>

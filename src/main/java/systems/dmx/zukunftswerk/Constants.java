@@ -9,7 +9,7 @@ public class Constants {
 
     // Topic Types
     public static final String DOCUMENT           = "zukunftswerk.document";
-    public static final String NOTE               = "zukunftswerk.note";
+    public static final String ZW_NOTE            = "zukunftswerk.note";    // "NOTE" is already used by Notes module
     public static final String LABEL              = "zukunftswerk.label";
     public static final String ARROW              = "zukunftswerk.arrow";
     public static final String COMMENT            = "zukunftswerk.comment";
@@ -26,7 +26,11 @@ public class Constants {
     public static final String DE                 = "zukunftswerk.de";
     public static final String FR                 = "zukunftswerk.fr";
 
-    // Props (arrow)
+    // Props (Note)
+    public static final String ZW_COLOR           = "zukunftswerk.color";   // Note: COLOR is already used by Webclient,
+                                                                            // but as type URI; here we have a prop URI
+
+    // Props (Arrow)
     public static final String X1                 = "zukunftswerk.x1";
     public static final String Y1                 = "zukunftswerk.y1";
     public static final String X2                 = "zukunftswerk.x2";

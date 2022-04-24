@@ -170,12 +170,16 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
      */
     @Override
     public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {
+        Assoc assoc = topic.getRelatingAssoc();
         if (topic.getTypeUri().equals(ARROW)) {
-            Assoc assoc = topic.getRelatingAssoc();
             viewProps.set(X1, assoc.getProperty(X1))
                      .set(Y1, assoc.getProperty(Y1))
                      .set(X2, assoc.getProperty(X2))
                      .set(Y2, assoc.getProperty(Y2));
+        } else if (topic.getTypeUri().equals(ZW_NOTE)) {
+            if (assoc.hasProperty(ZW_COLOR)) {      // Color is regarded an optional view prop
+                viewProps.set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
+            }
         }
     }
 
@@ -218,7 +222,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public Topic createNote(String note) {
         try {
-            return dmx.createTopic(createBilingualTopicModel(NOTE, note));
+            return dmx.createTopic(createBilingualTopicModel(ZW_NOTE, note));
         } catch (Exception e) {
             throw new RuntimeException("Creating note failed, note=\"" + note + "\"", e);
         }

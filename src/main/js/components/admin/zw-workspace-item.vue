@@ -69,7 +69,7 @@ export default {
     },
 
     edit () {
-      // TODO
+      this.$store.dispatch('admin/showWorkspaceForm', this.workspace)
     },
 
     delete () {

@@ -269,7 +269,7 @@ const actions = {
   updateNote ({dispatch}, topic) {
     dispatch('update', topic)
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
-      'zukunftswerk.color': topic.viewProps['zukunftswerk.color'],
+      'zukunftswerk.color': topic.viewProps['zukunftswerk.color']
     })
   },
 

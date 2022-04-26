@@ -25,12 +25,28 @@ export default {
     require('./mixins/admin-util').default
   ],
 
+  created () {
+    console.log('zw-workspace-form')
+    this.model = {
+      de: this.editBuffer.children['dmx.workspaces.workspace_name#zukunftswerk.de'].value,
+      fr: this.editBuffer.children['dmx.workspaces.workspace_name#zukunftswerk.fr'].value
+    }
+  },
+
   data () {
     return {
-      model: {
-        de: '',
-        fr: ''
-      }
+      model: undefined
+    }
+  },
+
+  computed: {
+
+    formMode () {
+      return this.$store.state.admin.formMode
+    },
+
+    editBuffer () {
+      return this.$store.state.admin.editBuffer
     }
   },
 

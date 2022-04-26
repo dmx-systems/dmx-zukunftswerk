@@ -10,16 +10,32 @@ const state = {
 
   primaryPanel: 'zw-workspace-list',  // 'zw-workspace-list'/'zw-user-list'
   secondaryPanel: undefined,          // 'zw-workspace-form'/... or undefined if secondary panel is not engaged
+  formMode: undefined,                // 'create'/'update' (String), relevant only for secondary panel forms
+  editBuffer: undefined,
 
   workspaces: [],                     // all ZW shared workspaces+the "Team" workspace (array of plain Workspace topics)
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
   activeWorkspace: undefined,         // (plain Workspace topic)
 
+  // Note: "users" is found in root state (see zukunftswerk.js) as it also holds the user display names
   expandedUsernames: [],              // usernames of the users that are expanded (array of String)
   activeUser: undefined               // (plain Username topic)
 }
 
 const actions = {
+
+  showWorkspaceForm ({dispatch}, topic) {
+    if (topic) {
+      state.formMode = 'update'
+      state.editBuffer = topic.type.newFormModel(topic.clone())
+      dispatch('setActiveWorkspace', topic)
+    } else {
+      state.formMode = 'create'
+      state.editBuffer = dmx.typeCache.getTopicType('dmx.workspaces.workspace').newFormModel()
+      // console.log('editBuffer', state.editBuffer)
+    }
+    dispatch('setSecondaryPanel', 'zw-workspace-form')
+  },
 
   setPrimaryPanel (_, panel) {
     state.primaryPanel = panel
@@ -32,9 +48,9 @@ const actions = {
 
   setSecondaryPanel (_, panel) {
     state.secondaryPanel = panel
-    if (panel === 'zw-workspace-form' || !panel) {
+    /* if (panel === 'zw-workspace-form' || !panel) {
       state.activeWorkspace = undefined
-    }
+    } */    // TODO
   },
 
   setActiveWorkspace (_, workspace) {
@@ -144,7 +160,7 @@ const actions = {
   },
 
   deleteWorkspace (_, workspaceId) {
-    zw.confirmDeletion('warning.delete_workspace').then(() => {
+    return zw.confirmDeletion('warning.delete_workspace').then(() => {
       return dmx.rpc.deleteTopic(workspaceId)       // update server state
     }).then(() => {
       removeWorkspace(workspaceId)                  // update client state

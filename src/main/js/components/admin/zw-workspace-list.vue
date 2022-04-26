@@ -42,7 +42,7 @@ export default {
 
   methods: {
     addWorkspace () {
-      this.$store.dispatch('admin/setSecondaryPanel', 'zw-workspace-form')
+      this.$store.dispatch('admin/showWorkspaceForm')
     }
   },
 

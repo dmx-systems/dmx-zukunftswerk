@@ -8,14 +8,15 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2022/04/24-2')
+console.log('[ZW] 2022/04/26')
 
 // 1) Init dmx library
 dmx.init({
-  topicTypes: [       // needed e.g. for form generator
+  topicTypes: [       // needed e.g. for dmx-api form generator (type.newFormModel())
     'zukunftswerk.document',
     'zukunftswerk.note',
-    'zukunftswerk.label'
+    'zukunftswerk.label',
+    'dmx.workspaces.workspace'    // needed by admin interface
   ],
   store,
   onHttpError

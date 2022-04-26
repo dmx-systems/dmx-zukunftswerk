@@ -13,7 +13,7 @@ const state = {
   formMode: undefined,                // 'create'/'update' (String), relevant only for secondary panel forms
   editBuffer: undefined,
 
-  workspaces: [],                     // all ZW shared workspaces+the "Team" workspace (array of plain Workspace topics)
+  workspaces: [],                     // all ZW shared workspaces+the "Team" workspace (array of Workspace dmx.Topics)
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
   activeWorkspace: undefined,         // (plain Workspace topic)
 
@@ -25,13 +25,14 @@ const state = {
 const actions = {
 
   showWorkspaceForm ({dispatch}, topic) {
+    const type = dmx.typeCache.getTopicType('dmx.workspaces.workspace')
     if (topic) {
       state.formMode = 'update'
-      state.editBuffer = topic.type.newFormModel(topic.clone())
+      state.editBuffer = type.newFormModel(topic.clone())
       dispatch('setActiveWorkspace', topic)
     } else {
       state.formMode = 'create'
-      state.editBuffer = dmx.typeCache.getTopicType('dmx.workspaces.workspace').newFormModel()
+      state.editBuffer = type.newFormModel()
       // console.log('editBuffer', state.editBuffer)
     }
     dispatch('setSecondaryPanel', 'zw-workspace-form')
@@ -89,7 +90,7 @@ const actions = {
 
   fetchAllZWWorkspaces ({rootState}) {
     http.get('/zukunftswerk/admin/workspaces').then(response => {
-      state.workspaces = response.data
+      state.workspaces = dmx.utils.instantiateMany(response.data, dmx.Topic)
       return rootState.teamWorkspace
     }).then(workspace => {
       state.workspaces.push(workspace)
@@ -149,13 +150,20 @@ const actions = {
     return http.post('/zukunftswerk/admin/workspace', undefined, {
       params: {nameDe, nameFr}
     }).then(response => {
-      state.workspaces.push(response.data)
+      state.workspaces.push(new dmx.Topic(response.data))
       state.workspaces.sort(zw.topicSort)
       // team members are invited automatically, so we need to reset the User area
       rootState.users.forEach(username => {
         delete username.memberships                 // force refetch once needed
         dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
       })
+    })
+  },
+
+  updateWorkspace (_, workspace) {
+    return dmx.rpc.updateTopic(workspace).then(workspace => {
+      replaceWorkspace(workspace)   // TODO: fetch memberships
+      state.workspaces.sort(zw.topicSort)
     })
   },
 
@@ -214,6 +222,14 @@ function removeWorkspace (id) {
     throw Error('removeWorkspace')
   }
   state.workspaces.splice(i, 1)
+}
+
+function replaceWorkspace (workspace) {
+  const i = state.workspaces.findIndex(ws => ws.id === workspace.id)
+  if (i === -1) {
+    throw Error('replaceWorkspace')
+  }
+  state.workspaces[i] = workspace
 }
 
 // helper

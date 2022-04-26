@@ -3,13 +3,13 @@
     <div class="heading"><zw-string>label.new_workspace</zw-string></div>
     <div class="field">
       <div class="field-label"><zw-string>label.workspace_name</zw-string> (de)</div>
-      <el-input v-model="model.de"></el-input>
+      <el-input v-model="de.value"></el-input>
     </div>
     <div class="field">
       <div class="field-label"><zw-string>label.workspace_name</zw-string> (fr)</div>
-      <el-input v-model="model.fr"></el-input>
+      <el-input v-model="fr.value"></el-input>
     </div>
-    <el-button class="submit-button" type="primary" size="medium" @click="createWorkspace">
+    <el-button class="submit-button" type="primary" size="medium" @click="submit">
       <zw-string>action.submit</zw-string>
     </el-button>
     <el-button size="medium" @click="clearSecondaryPanel">
@@ -25,21 +25,15 @@ export default {
     require('./mixins/admin-util').default
   ],
 
-  created () {
-    console.log('zw-workspace-form')
-    this.model = {
-      de: this.editBuffer.children['dmx.workspaces.workspace_name#zukunftswerk.de'].value,
-      fr: this.editBuffer.children['dmx.workspaces.workspace_name#zukunftswerk.fr'].value
-    }
-  },
-
-  data () {
-    return {
-      model: undefined
-    }
-  },
-
   computed: {
+
+    de () {
+      return this.editBuffer.children['dmx.workspaces.workspace_name#zukunftswerk.de']
+    },
+
+    fr () {
+      return this.editBuffer.children['dmx.workspaces.workspace_name#zukunftswerk.fr']
+    },
 
     formMode () {
       return this.$store.state.admin.formMode
@@ -51,12 +45,18 @@ export default {
   },
 
   methods: {
-    createWorkspace () {
+    submit () {
+      let p
       this.$emit('loading')
-      this.$store.dispatch('admin/createZWWorkspace', {
-        nameDe: this.model.de,
-        nameFr: this.model.fr
-      }).then(() => {
+      if (this.formMode === 'create') {
+        p = this.$store.dispatch('admin/createZWWorkspace', {
+          nameDe: this.de.value,
+          nameFr: this.fr.value
+        })
+      } else if (this.formMode === 'update') {
+        p = this.$store.dispatch('admin/updateWorkspace', this.editBuffer)
+      }
+      p.then(() => {
         this.$emit('complete')
         this.clearSecondaryPanel()
       })

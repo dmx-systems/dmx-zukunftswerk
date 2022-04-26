@@ -37,7 +37,7 @@ export default {
 
   methods: {
     addUser () {
-      this.$store.dispatch('admin/setSecondaryPanel', 'zw-user-form')
+      this.$store.dispatch('admin/showUserForm')
     }
   },
 

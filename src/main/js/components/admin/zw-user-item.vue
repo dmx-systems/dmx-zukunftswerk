@@ -58,7 +58,7 @@ export default {
     },
 
     edit () {
-      // TODO
+      this.$store.dispatch('admin/showUserForm', this.user)
     },
 
     delete () {

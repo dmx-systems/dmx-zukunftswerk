@@ -7,9 +7,9 @@
     </div>
     <div class="field">
       <div class="field-label"><zw-string>label.email_address</zw-string></div>
-      <el-input v-model="model.emailAddress"></el-input>
+      <el-input v-model="model.emailAddress" :disabled="!isNew"></el-input>
     </div>
-    <el-button class="submit-button" type="primary" size="medium" :disabled="disabled" @click="createUser">
+    <el-button class="submit-button" type="primary" size="medium" :disabled="disabled" @click="submit">
       <zw-string>action.submit</zw-string>
     </el-button>
     <el-button size="medium" @click="clearSecondaryPanel">
@@ -35,25 +35,42 @@ export default {
   },
 
   computed: {
+
+    isNew () {
+      return this.formMode === 'create'
+    },
+
     disabled () {
       return !this.model.displayName || !this.model.emailAddress
+    },
+
+    formMode () {
+      return this.$store.state.admin.formMode
+    },
+
+    activeUser () {
+      return this.$store.state.admin.activeUser
     }
   },
 
   methods: {
-    createUser () {
+    submit () {
       this.$emit('loading')
-      this.$store.dispatch('admin/createUser', this.model).then(() => {
-        this.$emit('complete')    // must emit *before* removing this panel
-        this.clearSecondaryPanel()
-      }).catch(error => {
-        this.$alert(error.message, {
-          type: 'error',
-          showClose: false
-        }).then(() => {
-          this.$emit('complete')
+      if (this.formMode === 'create') {
+        this.$store.dispatch('admin/createUser', this.model).then(() => {
+          this.$emit('complete')    // must emit *before* removing this panel
+          this.clearSecondaryPanel()
+        }).catch(error => {
+          this.$alert(error.message, {
+            type: 'error',
+            showClose: false
+          }).then(() => {
+            this.$emit('complete')
+          })
         })
-      })
+      } else if (this.formMode === 'update') {
+        // TODO
+      }
     }
   }
 }

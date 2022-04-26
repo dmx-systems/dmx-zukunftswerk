@@ -24,18 +24,28 @@ const state = {
 
 const actions = {
 
-  showWorkspaceForm ({dispatch}, topic) {
+  showWorkspaceForm ({dispatch}, workspace) {
     const type = dmx.typeCache.getTopicType('dmx.workspaces.workspace')
-    if (topic) {
+    if (workspace) {
       state.formMode = 'update'
-      state.editBuffer = type.newFormModel(topic.clone())
-      dispatch('setActiveWorkspace', topic)
+      state.editBuffer = type.newFormModel(workspace.clone())
+      dispatch('setActiveWorkspace', workspace)
     } else {
       state.formMode = 'create'
       state.editBuffer = type.newFormModel()
       // console.log('editBuffer', state.editBuffer)
     }
     dispatch('setSecondaryPanel', 'zw-workspace-form')
+  },
+
+  showUserForm ({dispatch}, user) {
+    if (user) {
+      state.formMode = 'update'
+      dispatch('setActiveUser', user)
+    } else {
+      state.formMode = 'create'
+    }
+    dispatch('setSecondaryPanel', 'zw-user-form')
   },
 
   setPrimaryPanel (_, panel) {
@@ -229,7 +239,7 @@ function replaceWorkspace (workspace) {
   if (i === -1) {
     throw Error('replaceWorkspace')
   }
-  state.workspaces[i] = workspace
+  Vue.set(state.workspaces, i, workspace)
 }
 
 // helper

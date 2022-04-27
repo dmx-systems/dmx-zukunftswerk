@@ -8,7 +8,7 @@
           <el-dropdown-item command="edit">
             <i class="fa fa-fw fa-pencil"></i><zw-string>action.edit_user</zw-string>
           </el-dropdown-item>
-          <el-dropdown-item command="delete">
+          <el-dropdown-item command="delete" :disabled="true">
             <i class="fa fa-fw fa-trash"></i><zw-string>action.delete_user</zw-string>
           </el-dropdown-item>
           <el-dropdown-item command="editAffiliations" divided>

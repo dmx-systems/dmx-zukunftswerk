@@ -1,6 +1,6 @@
 <template>
   <div class="zw-workspace-form">
-    <div class="heading"><zw-string>label.new_workspace</zw-string></div>
+    <div class="heading"><zw-string>{{heading}}</zw-string></div>
     <div class="field">
       <div class="field-label"><zw-string>label.workspace_name</zw-string> (de)</div>
       <el-input v-model="de.value"></el-input>
@@ -33,6 +33,14 @@ export default {
 
     fr () {
       return this.editBuffer.children['dmx.workspaces.workspace_name#zukunftswerk.fr']
+    },
+
+    heading () {
+      return this.isUpdate ? 'label.edit_workspace' : 'label.new_workspace'
+    },
+
+    isUpdate () {
+      return this.formMode === 'update'
     },
 
     formMode () {

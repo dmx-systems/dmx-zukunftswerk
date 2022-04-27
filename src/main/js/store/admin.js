@@ -209,7 +209,18 @@ const actions = {
     }
     return p.then(user => {
       rootState.users.push(user)
-      rootState.users.sort(zw.topicSort)
+      rootState.users.sort(zw.topicSort)    // TODO: sort by display name (email address at the moment)
+    })
+  },
+
+  updateUser ({rootState}, userModel) {
+    const username = userModel.emailAddress
+    const displayName = userModel.displayName
+    return http.put(`/sign-up/display-name/${username}`, undefined, {
+      params: {displayName}
+    }).then(() => {
+      updateUser(username, displayName)
+      // rootState.users.sort(zw.topicSort)   // TODO: sort by display name (email address at the moment)
     })
   }
 }
@@ -240,6 +251,14 @@ function replaceWorkspace (workspace) {
     throw Error('replaceWorkspace')
   }
   Vue.set(state.workspaces, i, workspace)
+}
+
+function updateUser(username, displayName) {
+  const children = zw.getUser(username).children
+  if (!children['zukunftswerk.display_name']) {
+    Vue.set(children, 'zukunftswerk.display_name', {})
+  }
+  children['zukunftswerk.display_name'].value = displayName
 }
 
 // helper

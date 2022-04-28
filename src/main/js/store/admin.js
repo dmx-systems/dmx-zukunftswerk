@@ -209,7 +209,7 @@ const actions = {
     }
     return p.then(user => {
       rootState.users.push(user)
-      rootState.users.sort(zw.topicSort)    // TODO: sort by display name (email address at the moment)
+      rootState.users.sort(zw.topicSort)              // TODO: sort by display name (email address at the moment)
     })
   },
 
@@ -220,8 +220,16 @@ const actions = {
       params: {displayName}
     }).then(() => {
       updateUser(username, displayName)
-      // rootState.users.sort(zw.topicSort)   // TODO: sort by display name (email address at the moment)
+      // rootState.users.sort(zw.topicSort)           // TODO: sort by display name (email address at the moment)
     })
+  },
+
+  deleteUser ({rootState}, user) {
+    return zw.confirmDeletion('warning.delete_user').then(() => {
+      return http.delete(`/ldap/user/${user.value}`)  // update server state
+    }).then(() => {
+      removeUser(user.id, rootState)                  // update client state
+    }).catch(() => {})                                // suppress unhandled rejection on cancel
   }
 }
 
@@ -245,6 +253,14 @@ function removeWorkspace (id) {
   state.workspaces.splice(i, 1)
 }
 
+function removeUser (id, rootState) {
+  const i = rootState.users.findIndex(u => u.id === id)
+  if (i === -1) {
+    throw Error('removeUser')
+  }
+  rootState.users.splice(i, 1)
+}
+
 function replaceWorkspace (workspace) {
   const i = state.workspaces.findIndex(ws => ws.id === workspace.id)
   if (i === -1) {
@@ -255,7 +271,7 @@ function replaceWorkspace (workspace) {
 
 function updateUser(username, displayName) {
   const children = zw.getUser(username).children
-  if (!children['zukunftswerk.display_name']) {
+  if (!children['zukunftswerk.display_name']) {   // TODO: refactor
     Vue.set(children, 'zukunftswerk.display_name', {})
   }
   children['zukunftswerk.display_name'].value = displayName

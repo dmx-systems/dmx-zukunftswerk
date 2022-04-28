@@ -8,7 +8,7 @@
           <el-dropdown-item command="edit">
             <i class="fa fa-fw fa-pencil"></i><zw-string>action.edit_user</zw-string>
           </el-dropdown-item>
-          <el-dropdown-item command="delete" :disabled="true">
+          <el-dropdown-item command="delete">
             <i class="fa fa-fw fa-trash"></i><zw-string>action.delete_user</zw-string>
           </el-dropdown-item>
           <el-dropdown-item command="editAffiliations" divided>
@@ -62,7 +62,8 @@ export default {
     },
 
     delete () {
-      // TODO
+      this.$store.dispatch('admin/setActiveUser', this.user)
+      this.$store.dispatch('admin/deleteUser', this.user)
     },
 
     editAffiliations () {

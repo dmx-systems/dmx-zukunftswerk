@@ -54,7 +54,7 @@ export default {
     },
 
     displayNames () {
-      return this.workspace.memberships.map(username => zw.getDisplayName(username.value))
+      return this.workspace.memberships.map(user => zw.getDisplayName(user.value))
     }
   },
 
@@ -73,6 +73,7 @@ export default {
     },
 
     delete () {
+      this.$store.dispatch('admin/setActiveWorkspace', this.workspace)
       this.$store.dispatch('admin/deleteWorkspace', this.workspace.id)
     },
 

@@ -111,8 +111,8 @@ const actions = {
   fetchMemberships (_, workspaceId) {
     const workspace = findWorkspace(workspaceId)
     if (!workspace.memberships) {
-      return dmx.rpc.getMemberships(workspaceId).then(usernames => {
-        Vue.set(workspace, 'memberships', usernames.sort(zw.topicSort))   // ad-hoc property is not reactive by default
+      return dmx.rpc.getMemberships(workspaceId).then(users => {
+        Vue.set(workspace, 'memberships', users.sort(zw.topicSort))       // ad-hoc property is not reactive by default
       })
     }
   },

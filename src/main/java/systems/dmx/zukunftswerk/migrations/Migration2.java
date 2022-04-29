@@ -14,8 +14,8 @@ import systems.dmx.workspaces.WorkspacesService;
 
 
 /**
- * Extends "Workspace" by 2 more "Workspace Name"s (de+fr).
- * Creates "Team" workspaces.
+ * Extends topic type "Workspace" by 2 more "Workspace Name"s (de+fr).
+ * Creates the "Team" workspace.
  * <p>
  * Part of Zukunftswerk 1.0
  * Runs ALWAYS.

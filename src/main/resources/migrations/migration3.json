@@ -1,0 +1,21 @@
+// Part of Zukunftswerk 1.1
+{
+  "topic_types": [
+    {
+      "value":       "Editor",
+      "uri":         "zukunftswerk.editor",
+      "dataTypeUri": "dmx.core.boolean"
+    },
+    {
+      "value":       "Editor Facet",
+      "uri":         "zukunftswerk.editor_facet",
+      "dataTypeUri": "dmx.core.entity",
+      "compDefs": [
+        {
+          "childTypeUri":        "zukunftswerk.editor",
+          "childCardinalityUri": "dmx.core.one"
+        }
+      ]
+    }
+  ]
+}

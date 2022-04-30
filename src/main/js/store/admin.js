@@ -127,11 +127,19 @@ const actions = {
     }
   },
 
-  updateWorkspaceMemberships ({rootState, dispatch}, {addUserIds, removeUserIds}) {
+  updateWorkspaceMemberships ({rootState, dispatch}, {addUserIds1, removeUserIds1, addUserIds2, removeUserIds2}) {
     const workspace = state.activeWorkspace
     dispatch('expandWorkspace', workspace.id)
-    return dmx.rpc.bulkUpdateWorkspaceMemberships(workspace.id, addUserIds, removeUserIds).then(usernames => {
-      workspace.memberships = usernames.sort(zw.topicSort)
+    return http.put(`/zukunftswerk/admin/workspace/${workspace.id}`, undefined, {
+      params: {
+        addUserIds1: addUserIds1.join(','),
+        removeUserIds1: removeUserIds1.join(','),
+        addUserIds2: addUserIds2.join(','),
+        removeUserIds2: removeUserIds2.join(',')
+      }
+    }).then(response => {
+      const users = response.data
+      workspace.memberships = users.sort(zw.topicSort)
       rootState.users.forEach(username => {
         delete username.memberships                 // force refetch once needed
         dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
@@ -144,8 +152,8 @@ const actions = {
     dispatch('expandUser', username.value)
     return http.put(`/zukunftswerk/admin/user/${username.value}`, undefined, {
       params: {
-        addWorkspaceIds: addWorkspaceIds.join(','),
-        removeWorkspaceIds: removeWorkspaceIds.join(',')
+        addWorkspaceIds1: addWorkspaceIds.join(','),
+        removeWorkspaceIds1: removeWorkspaceIds.join(',')
       }
     }).then(response => {
       username.memberships = response.data.sort(zw.topicSort)

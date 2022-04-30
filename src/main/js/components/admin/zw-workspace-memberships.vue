@@ -10,7 +10,8 @@
         </tr>
         <tr v-for="(user, i) in users">
           <td>{{user.value}}</td>
-          <td><el-checkbox v-model="model[i]"></el-checkbox></td>
+          <td><el-checkbox v-model="model1[i]"></el-checkbox></td>
+          <td><el-checkbox v-model="model2[i]"></el-checkbox></td>
         </tr>
       </table>
     </div>
@@ -39,7 +40,8 @@ export default {
 
   data () {
     return {
-      model: []       // membership model: a flag for every user, true=member
+      model1: [],      // column1 checkbox model (membership): a flag for every user, true=member
+      model2: []       // column2 checkbox model (editor): a flag for every user, true=editor
     }
   },
 
@@ -71,19 +73,32 @@ export default {
         this.$store.dispatch('fetchAllUsers'),
         this.$store.dispatch('admin/fetchMemberships', this.activeWorkspace.id)
       ]).then(() => {
-        this.model = this.users.map(user => this.isMember(user))
+        this.model1 = this.users.map(user => this.isMember(user))
+        this.model2 = this.users.map(user => this.isEditor(user))
       })
     },
 
     isMember (user) {
-      return this.memberships?.find(_user => _user.id === user.id) !== undefined
+      return this.findUser(user) !== undefined
+    },
+
+    isEditor (user) {
+      return this.findUser(user)?.assoc.children['zukunftswerk.editor']?.value
+    },
+
+    findUser (user) {
+      return this.memberships?.find(u => u.id === user.id)
     },
 
     updateMemberships () {
-      let i = 0; const addUserIds    = this.users.filter(user =>  this.model[i++]).map(user => user.id)
-          i = 0; const removeUserIds = this.users.filter(user => !this.model[i++]).map(user => user.id)
+      let i = 0; const addUserIds1    = this.users.filter(user =>  this.model1[i++]).map(user => user.id)
+          i = 0; const removeUserIds1 = this.users.filter(user => !this.model1[i++]).map(user => user.id)
+          i = 0; const addUserIds2    = this.users.filter(user =>  this.model2[i++]).map(user => user.id)
+          i = 0; const removeUserIds2 = this.users.filter(user => !this.model2[i++]).map(user => user.id)
       this.$emit('loading')
-      this.$store.dispatch('admin/updateWorkspaceMemberships', {addUserIds, removeUserIds}).then(() => {
+      this.$store.dispatch('admin/updateWorkspaceMemberships', {
+        addUserIds1, removeUserIds1, addUserIds2, removeUserIds2
+      }).then(() => {
         this.$emit('complete')
         this.clearSecondaryPanel()
       })

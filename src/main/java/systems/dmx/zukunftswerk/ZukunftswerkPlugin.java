@@ -27,6 +27,7 @@ import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
 import systems.dmx.deepl.Translation;
+import systems.dmx.facets.FacetsService;
 import systems.dmx.sendmail.SendmailService;
 import systems.dmx.signup.SignupService;
 import systems.dmx.timestamps.TimestampsService;
@@ -66,6 +67,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Inject private TopicmapsService tms;
     @Inject private WorkspacesService ws;
     @Inject private AccessControlService acs;
+    @Inject private FacetsService facets;
     @Inject private SignupService signup;
     @Inject private SendmailService sendmail;
 
@@ -143,8 +145,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     /**
      * Enriches:
-     * - Comments with "Creator" information
-     * - Usernames with "Display Name" information
+     * - Comments by "Creator"
+     * - Usernames by "Display Name"
+     * - Memberships by "Editor" flag
      */
     @Override
     public void preSendTopic(Topic topic) {
@@ -159,6 +162,16 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             String displayName = signup.getDisplayName(username);
             if (displayName != null) {
                 topic.getChildTopics().getModel().set(DISPLAY_NAME, displayName);
+            }
+        }
+        // Note: in a Related Username Topic w/ a Membership *both* are enriched
+        if (topic instanceof RelatedTopic) {
+            Assoc assoc = ((RelatedTopic) topic).getRelatingAssoc();
+            if (assoc.getTypeUri().equals(MEMBERSHIP)) {
+                Topic editor = facets.getFacet(assoc, EDITOR_FACET);
+                if (editor != null) {
+                    assoc.getChildTopics().getModel().set(EDITOR, editor.getModel());
+                }
             }
         }
     }
@@ -326,13 +339,53 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @PUT
+    @Path("/admin/workspace/{workspaceId}")
+    @Transactional
+    @Override
+    public List<RelatedTopic> bulkUpdateWorkspaceMemberships(@PathParam("workspaceId") long workspaceId,
+                                                             @QueryParam("addUserIds1") IdList addUserIds1,
+                                                             @QueryParam("removeUserIds1") IdList removeUserIds1,
+                                                             @QueryParam("addUserIds2") IdList addUserIds2,
+                                                             @QueryParam("removeUserIds2") IdList removeUserIds2) {
+        try {
+            // 1) Update Memberships
+            List<RelatedTopic> users = acs.bulkUpdateMemberships(workspaceId, addUserIds1, removeUserIds1);
+            // 2) Update Editor role
+            if (removeUserIds2 != null) {
+                for (long userId : removeUserIds2) {
+                    String username = getUsername(userId);
+                    Assoc assoc = acs.getMembership(username, workspaceId);
+                    if (assoc != null) {
+                        facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(false));
+                    }
+                }
+            }
+            if (addUserIds2 != null) {
+                for (long userId : addUserIds2) {
+                    String username = getUsername(userId);
+                    Assoc assoc = acs.getMembership(username, workspaceId);
+                    if (assoc != null) {
+                        facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(true));
+                    }
+                }
+            }
+            return users;
+        } catch (Exception e) {
+            throw new RuntimeException("Bulk membership update for ZW workspace " + workspaceId + " failed", e);
+        }
+    }
+
+    @PUT
     @Path("/admin/user/{username}")
     @Transactional
     @Override
-    public List<RelatedTopic> bulkUpdateMemberships(@PathParam("username") String username,
-                                                    @QueryParam("addWorkspaceIds") IdList addWorkspaceIds,
-                                                    @QueryParam("removeWorkspaceIds") IdList removeWorkspaceIds) {
-        acs.bulkUpdateMemberships(username, addWorkspaceIds, removeWorkspaceIds);
+    public List<RelatedTopic> bulkUpdateUserMemberships(@PathParam("username") String username,
+                                                        @QueryParam("addWorkspaceIds1") IdList addWorkspaceIds1,
+                                                        @QueryParam("removeWorkspaceIds1") IdList removeWorkspaceIds1,
+                                                        @QueryParam("addWorkspaceIds2") IdList addWorkspaceIds2,
+                                                        @QueryParam("removeWorkspaceIds2") IdList removeWorkspaceIds2) {
+        acs.bulkUpdateMemberships(username, addWorkspaceIds1, removeWorkspaceIds1);
+        // TODO: editor role
         return getZWWorkspacesOfUser(username);
     }
 
@@ -466,5 +519,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     private long workspaceId() {
         return Cookies.get().getLong("dmx_workspace_id");
+    }
+
+    /**
+     * @param   id      ID of an Username topic
+     */
+    private String getUsername(long id) {       // ### Copied from AccessControlPlugin.java
+        Topic username = dmx.getTopic(id);
+        String typeUri = username.getTypeUri();
+        if (!typeUri.equals(USERNAME)) {
+            throw new IllegalArgumentException("Topic " + id + " is not a Username (but a \"" + typeUri + "\")");
+        }
+        return username.getSimpleValue().toString();
     }
 }

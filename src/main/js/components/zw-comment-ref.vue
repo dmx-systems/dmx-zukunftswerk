@@ -1,12 +1,14 @@
 <template>
   <div class="zw-comment-ref" v-if="comment" @click="click">
-    <div class="creator label">{{creator}}</div>
+    <div class="creator label">{{displayName}}</div>
     <zw-truncate class="comment label" :html="html[lang]"></zw-truncate>
     <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="remove"></el-button>
   </div>
 </template>
 
 <script>
+import zw from '../zw-globals'
+
 export default {
 
   props: {
@@ -25,6 +27,10 @@ export default {
 
     creator () {
       return this.comment.children['dmx.accesscontrol.creator'].value
+    },
+
+    displayName () {
+      return zw.getDisplayName(this.creator)
     },
 
     lang () {

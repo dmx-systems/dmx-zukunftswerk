@@ -141,6 +141,7 @@ store.watch(
  * Adapts app state when route changes.
  */
 function navigate (to, from) {
+  // console.log('navigate', to, from)
   if (to.name === 'workspace') {
     const workspaceId = id(to.params.workspaceId)
     if (workspaceId !== store.state.workspace?.id) {

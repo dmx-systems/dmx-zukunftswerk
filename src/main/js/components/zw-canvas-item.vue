@@ -1,12 +1,12 @@
 <template>
   <vue-draggable-resizable :class="['zw-canvas-item', customClass]" :x="x" :y="y" :w="w" :h="h" :scale="zoom"
-      :draggable="isTeam" :resizable="resizable" :handles="handles" @activated="select" @deactivated="deselect"
+      :draggable="draggable" :resizable="resizable" :handles="handles" @activated="select" @deactivated="deselect"
       @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
       @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles" @mousedown.native="mousedown">
     </component>
-    <div class="button-panel" v-if="infoMode && isTeam">
+    <div class="button-panel" v-if="editable">
       <el-button v-if="editEnabled" type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
         <zw-string>action.edit</zw-string>
       </el-button>
@@ -73,8 +73,16 @@ export default {
                                                  this.topic.viewProps['dmx.topicmaps.height']
     },
 
+    draggable () {
+      return this.isTeam || this.isEditor
+    },
+
     resizable () {
-      return this.resizeStyle !== 'none' && this.isTeam
+      return this.resizeStyle !== 'none' && (this.isTeam || this.isEditor)
+    },
+
+    editable () {
+      return this.infoMode && (this.isTeam || this.isEditor)
     },
 
     handles () {
@@ -96,6 +104,10 @@ export default {
 
     isTeam () {
       return this.$store.state.isTeam
+    },
+
+    isEditor () {
+      return this.$store.state.isEditor
     },
 
     topicmap () {

@@ -1,6 +1,6 @@
 <template>
   <div class="zw-canvas" :style="style" @wheel="wheel">
-    <el-dropdown v-if="isTeam" trigger="click" @command="handle">
+    <el-dropdown v-if="isTeam || isEditor" trigger="click" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="newDocument"><zw-string>item.document</zw-string></el-dropdown-item>
@@ -32,6 +32,10 @@ export default {
 
     isTeam () {
       return this.$store.state.isTeam
+    },
+
+    isEditor () {
+      return this.$store.state.isEditor
     },
 
     topicmap () {

@@ -118,12 +118,16 @@ export default {
       return this.$store.state.isTeam
     },
 
+    isEditor () {
+      return this.$store.state.isEditor
+    },
+
     isWritable () {
       return this.$store.state.isWritable
     },
 
     commentIsWritable () {
-      return this.isWritable && (this.username === this.creator || this.isTeam)
+      return this.isWritable && (this.username === this.creator || this.isTeam || this.isEditor)
     },
 
     lang () {

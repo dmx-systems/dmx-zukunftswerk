@@ -9,7 +9,7 @@
       <line :x1="pos.x1" :y1="pos.y1" :x2="pos.x2" :y2="pos.y2" stroke="#909399" stroke-width="6"
         marker-end="url(#arrowhead)" />
     </svg>
-    <div class="handles" v-if="selected && isTeam">
+    <div class="handles" v-if="editable">
       <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x1" :y="pos.y1" :w="10" :h="10" :scale="zoom"
         :data-x="pos.x1" :data-y="pos.y1" @dragging="dragging1" @dragstop="dragstop1" @mousedown.native.stop>
       </vue-draggable-resizable>
@@ -79,12 +79,20 @@ export default {
       }
     },
 
+    editable () {
+      return this.selected && (this.isTeam || this.isEditor)
+    },
+
     selected () {
       return this.selectedTopic?.id === this.topic.id
     },
 
     isTeam () {
       return this.$store.state.isTeam
+    },
+
+    isEditor () {
+      return this.$store.state.isEditor
     },
 
     selectedTopic () {

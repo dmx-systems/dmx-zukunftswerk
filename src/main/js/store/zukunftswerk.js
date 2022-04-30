@@ -27,9 +27,10 @@ const state = {
   users: [],                    // all users in the system (array of plain Username topics)
 
   // Workspace state
+  workspace: undefined,         // the selected workspace (dmx.Topic)
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
-  workspace: undefined,         // the workspace the topicmap belongs to (dmx.Topic)
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
+  isEditor: false,              // true if the current user is an editor of the selected workspace (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
   isEditActive: [],             // IDs of topics being edited (array)     // ### TODO: drop this, query model ID instead
@@ -128,7 +129,7 @@ const actions = {
       }
       state.workspace = workspace
       updateWorkspaceCookie()
-      updateIsWritable()
+      updateWorkspaceState()
       fetchDiscussion()
       return getWorkspaceTopicmap(workspaceId)
     }).then(topicmap => {
@@ -485,10 +486,24 @@ function updateWorkspaceCookie () {
   }
 }
 
-function updateIsWritable () {
+function updateWorkspaceState () {
   state.workspace.isWritable().then(isWritable => {
     state.isWritable = isWritable
   })
+  teamWorkspace.then(workspace => {
+    if (state.workspace.id !== workspace.id) {
+      state.isEditor = findWorkspace(state.workspace.id).assoc.children['zukunftswerk.editor']?.value
+      console.log('isEditor', state.workspace.id, state.isEditor)
+    }
+  })
+}
+
+function findWorkspace (id) {
+  const workspace = state.workspaces.find(ws => ws.id === id)
+  if (!workspace) {
+    throw Error(`Workspace ${id} not found in ${state.workspaces} (${state.workspaces.length})`)
+  }
+  return workspace
 }
 
 function fetchDiscussion () {
@@ -546,7 +561,7 @@ function replaceComment (comment) {
 }
 
 function setTopicmapViewport() {
-  if (state.isTeam) {
+  if (state.isTeam || state.isEditor) {
     dmx.rpc.setTopicmapViewport(state.topicmap.id, state.pan, state.zoom)           // update server state
   }
 }

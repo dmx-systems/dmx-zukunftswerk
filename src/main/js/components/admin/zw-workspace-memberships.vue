@@ -40,8 +40,8 @@ export default {
 
   data () {
     return {
-      model1: [],      // column1 checkbox model (membership): a flag for every user, true=member
-      model2: []       // column2 checkbox model (editor): a flag for every user, true=editor
+      model1: [],      // column1 checkbox model: a flag for every user, true=member
+      model2: []       // column2 checkbox model: a flag for every user, true=editor
     }
   },
 

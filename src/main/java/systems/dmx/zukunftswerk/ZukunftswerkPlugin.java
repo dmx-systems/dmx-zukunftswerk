@@ -353,25 +353,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             // 2) Update Editor role
             if (removeUserIds2 != null) {
                 for (long userId : removeUserIds2) {
-                    String username = getUsername(userId);
-                    Assoc assoc = acs.getMembership(username, workspaceId);
-                    if (assoc != null) {
-                        facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(false));
-                    }
+                    updateEditorFacet(userId, workspaceId, false);
                 }
             }
             if (addUserIds2 != null) {
                 for (long userId : addUserIds2) {
-                    String username = getUsername(userId);
-                    Assoc assoc = acs.getMembership(username, workspaceId);
-                    if (assoc != null) {
-                        facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(true));
-                    }
+                    updateEditorFacet(userId, workspaceId, true);
                 }
             }
             return users;
         } catch (Exception e) {
-            throw new RuntimeException("Bulk membership update for ZW workspace " + workspaceId + " failed", e);
+            throw new RuntimeException("Editor role bulk update for ZW workspace " + workspaceId + " failed", e);
         }
     }
 
@@ -519,6 +511,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     private long workspaceId() {
         return Cookies.get().getLong("dmx_workspace_id");
+    }
+
+    private void updateEditorFacet(long userId, long workspaceId, boolean editor) throws Exception {
+        dmx.getPrivilegedAccess().runInWorkspaceContext(workspaceId, () -> {
+            String username = getUsername(userId);
+            Assoc assoc = acs.getMembership(username, workspaceId);
+            if (assoc != null) {
+                facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(editor));
+            }
+            return null;
+        });
     }
 
     /**

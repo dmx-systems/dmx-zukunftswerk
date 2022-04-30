@@ -196,7 +196,10 @@ const actions = {
   },
 
   readPanelXFromView () {
-    state.panelX = document.querySelector('.left-panel').clientWidth
+    const panel = document.querySelector('.left-panel')
+    if (panel) {    // only available for workspace view (not e.g. for login page or admin area)
+      state.panelX = panel.clientWidth
+    }
   },
 
   dragStart () {

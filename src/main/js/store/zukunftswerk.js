@@ -410,7 +410,7 @@ const actions = {
   },
 
   cancel (_, topic) {
-    if (!topic.id) {
+    if (topic.id === -1 || topic.id === undefined) {
       // abort creation
       removeNewTopic(topic)                       // update client state
     } else {

@@ -147,13 +147,15 @@ const actions = {
     })
   },
 
-  updateUserMemberships ({dispatch}, {addWorkspaceIds, removeWorkspaceIds}) {
+  updateUserMemberships ({dispatch}, {addWorkspaceIds1, removeWorkspaceIds1, addWorkspaceIds2, removeWorkspaceIds2}) {
     const username = state.activeUser
     dispatch('expandUser', username.value)
     return http.put(`/zukunftswerk/admin/user/${username.value}`, undefined, {
       params: {
-        addWorkspaceIds1: addWorkspaceIds.join(','),
-        removeWorkspaceIds1: removeWorkspaceIds.join(',')
+        addWorkspaceIds1: addWorkspaceIds1.join(','),
+        removeWorkspaceIds1: removeWorkspaceIds1.join(','),
+        addWorkspaceIds2: addWorkspaceIds2.join(','),
+        removeWorkspaceIds2: removeWorkspaceIds2.join(',')
       }
     }).then(response => {
       username.memberships = response.data.sort(zw.topicSort)

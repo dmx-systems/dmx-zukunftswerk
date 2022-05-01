@@ -10,7 +10,8 @@
         </tr>
         <tr v-for="(workspace, i) in workspaces">
           <td>{{workspace.value}}</td>
-          <td><el-checkbox v-model="model[i]"></el-checkbox></td>
+          <td><el-checkbox v-model="model1[i]"></el-checkbox></td>
+          <td><el-checkbox v-model="model2[i]"></el-checkbox></td>
         </tr>
       </table>
     </div>
@@ -38,7 +39,8 @@ export default {
 
   data () {
     return {
-      model: []       // membership model: a flag for every workspace, true=member
+      model1: [],      // column1 checkbox model: a flag for every workspace, true=member
+      model2: []       // column2 checkbox model: a flag for every workspace, true=editor
     }
   },
 
@@ -70,19 +72,32 @@ export default {
         this.$store.dispatch('admin/fetchAllZWWorkspaces'),
         this.$store.dispatch('admin/fetchZWWorkspacesOfUser', this.activeUser.value)
       ]).then(() => {
-        this.model = this.workspaces.map(workspace => this.isMember(workspace))
+        this.model1 = this.workspaces.map(workspace => this.isMember(workspace))
+        this.model2 = this.workspaces.map(workspace => this.isEditor(workspace))
       })
     },
 
     isMember (workspace) {
-      return this.memberships?.find(_workspace => _workspace.id === workspace.id) !== undefined
+      return this.findUser(workspace) !== undefined
+    },
+
+    isEditor (workspace) {
+      return this.findUser(workspace)?.assoc.children['zukunftswerk.editor']?.value
+    },
+
+    findUser (workspace) {
+      return this.memberships?.find(ws => ws.id === workspace.id)
     },
 
     updateMemberships () {
-      let i = 0; const addWorkspaceIds    = this.workspaces.filter(ws =>  this.model[i++]).map(ws => ws.id)
-          i = 0; const removeWorkspaceIds = this.workspaces.filter(ws => !this.model[i++]).map(ws => ws.id)
+      let i = 0; const addWorkspaceIds1    = this.workspaces.filter(ws =>  this.model1[i++]).map(ws => ws.id)
+          i = 0; const removeWorkspaceIds1 = this.workspaces.filter(ws => !this.model1[i++]).map(ws => ws.id)
+          i = 0; const addWorkspaceIds2    = this.workspaces.filter(ws =>  this.model2[i++]).map(ws => ws.id)
+          i = 0; const removeWorkspaceIds2 = this.workspaces.filter(ws => !this.model2[i++]).map(ws => ws.id)
       this.$emit('loading')
-      this.$store.dispatch('admin/updateUserMemberships', {addWorkspaceIds, removeWorkspaceIds}).then(() => {
+      this.$store.dispatch('admin/updateUserMemberships', {
+        addWorkspaceIds1, removeWorkspaceIds1, addWorkspaceIds2, removeWorkspaceIds2
+      }).then(() => {
         this.$emit('complete')
         this.clearSecondaryPanel()
       })

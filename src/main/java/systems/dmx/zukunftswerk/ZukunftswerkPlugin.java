@@ -376,9 +376,24 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                                                         @QueryParam("removeWorkspaceIds1") IdList removeWorkspaceIds1,
                                                         @QueryParam("addWorkspaceIds2") IdList addWorkspaceIds2,
                                                         @QueryParam("removeWorkspaceIds2") IdList removeWorkspaceIds2) {
-        acs.bulkUpdateMemberships(username, addWorkspaceIds1, removeWorkspaceIds1);
-        // TODO: editor role
-        return getZWWorkspacesOfUser(username);
+        try {
+            // 1) Update Memberships
+            acs.bulkUpdateMemberships(username, addWorkspaceIds1, removeWorkspaceIds1);
+            // 2) Update Editor role
+            if (removeWorkspaceIds2 != null) {
+                for (long wsId : removeWorkspaceIds2) {
+                    updateEditorFacet(username, wsId, false);
+                }
+            }
+            if (addWorkspaceIds2 != null) {
+                for (long wsId : addWorkspaceIds2) {
+                    updateEditorFacet(username, wsId, true);
+                }
+            }
+            return getZWWorkspacesOfUser(username);
+        } catch (Exception e) {
+            throw new RuntimeException("Editor role bulk update for user \"" + username + "\" failed", e);
+        }
     }
 
     @POST
@@ -513,9 +528,13 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         return Cookies.get().getLong("dmx_workspace_id");
     }
 
+    // convenience
     private void updateEditorFacet(long userId, long workspaceId, boolean editor) throws Exception {
+        updateEditorFacet(getUsername(userId), workspaceId, editor);
+    }
+
+    private void updateEditorFacet(String username, long workspaceId, boolean editor) throws Exception {
         dmx.getPrivilegedAccess().runInWorkspaceContext(workspaceId, () -> {
-            String username = getUsername(userId);
             Assoc assoc = acs.getMembership(username, workspaceId);
             if (assoc != null) {
                 facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(editor));

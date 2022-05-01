@@ -335,7 +335,6 @@ export default {
 }
 
 .zw-discussion .new-comment .ql-editor.ql-blank::before {
-  color: var(--secondary-color);
   font-style: unset;
   left: unset;
   right: unset;

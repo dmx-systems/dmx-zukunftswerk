@@ -199,6 +199,10 @@ body.fixed {
   background-color: white;
 }
 
+.ql-container .ql-editor.ql-blank::before {
+  color: rgba(0, 0, 0, 0.4);                              /* Quill default is rgba(0, 0, 0, 0.6)
+}
+
 .ql-container .ql-editor h1 {
   margin-top: 0.67em;                                     /* Restore user agent style; Quill default is 0 */
   margin-bottom: 0.67em;                                  /* Restore user agent style; Quill default is 0 */

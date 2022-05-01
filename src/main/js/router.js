@@ -132,7 +132,6 @@ store.registerModule('routerModule', {state, actions})
 store.watch(
   state => state.routerModule.router.currentRoute,
   (to, from) => {
-    // console.log('Route watcher', to, from)
     navigate(to, from)
   }
 )
@@ -141,7 +140,6 @@ store.watch(
  * Adapts app state when route changes.
  */
 function navigate (to, from) {
-  // console.log('navigate', to, from)
   if (to.name === 'workspace') {
     const workspaceId = id(to.params.workspaceId)
     if (workspaceId !== store.state.workspace?.id) {

@@ -141,10 +141,7 @@ store.watch(
  */
 function navigate (to, from) {
   if (to.name === 'workspace') {
-    const workspaceId = id(to.params.workspaceId)
-    if (workspaceId !== store.state.workspace?.id) {
-      store.dispatch('setWorkspace', workspaceId)
-    }
+    store.dispatch('setWorkspace', id(to.params.workspaceId))
   }
 }
 

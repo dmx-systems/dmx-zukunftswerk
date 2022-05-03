@@ -3,15 +3,13 @@
       :draggable="draggable" :resizable="resizable" :handles="handles" @activated="select" @deactivated="deselect"
       @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
-      @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
+      @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @actions="setActions"
       @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles" @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="editable">
-      <el-button v-if="editEnabled" type="text" :style="buttonStyle" @click="edit" @mousedown.native.stop>
-        <zw-string>action.edit</zw-string>
-      </el-button>
-      <el-button type="text" :style="buttonStyle" @click="deleteItem" @mousedown.native.stop>
-        <zw-string>action.delete</zw-string>
+      <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
+          :key="action.action" @click="action.handler" @mousedown.native.stop>
+        <zw-string>{{action.action}}</zw-string>
       </el-button>
     </div>
   </vue-draggable-resizable>
@@ -42,6 +40,10 @@ export default {
 
   data () {
     return {
+      actions: [                // Actions appearing in the button panel, can be overwritten by child component
+        {action: 'action.edit', handler: this.edit},
+        {action: 'action.delete', handler: this.deleteItem}
+      ],
       customClass: undefined,   // Custom class supplied by child component (String)
       editEnabled: true,        // Edit button visibility, can be overwritten by child component
       resizeStyle: 'x',         // 'x'/'xy'/'none' (String), can be overwritten by child component
@@ -190,6 +192,14 @@ export default {
 
     setCustomClass (classname) {
       this.customClass = classname
+    },
+
+    buttonVisibility (action) {
+      return action.action !== 'action.edit' || this.editEnabled
+    },
+
+    setActions (actions) {
+      this.actions = actions
     },
 
     setEditEnabled (enabled) {

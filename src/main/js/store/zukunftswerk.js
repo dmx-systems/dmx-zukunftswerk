@@ -573,7 +573,7 @@ function initViewport () {
     x: -viewport.pos.x,
     y: -viewport.pos.y
   }
-  state.zoom = topicmap.zoom    // TODO
+  state.zoom = viewport.viewProps['dmx.topicmaps.zoom']
 }
 
 function setTopicmapViewport() {

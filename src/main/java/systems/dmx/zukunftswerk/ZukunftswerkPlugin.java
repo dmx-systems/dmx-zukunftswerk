@@ -188,15 +188,18 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Override
     public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {
         Assoc assoc = topic.getRelatingAssoc();
-        if (topic.getTypeUri().equals(ARROW)) {
+        String typeUri = topic.getTypeUri();
+        if (typeUri.equals(ARROW)) {
             viewProps.set(X1, assoc.getProperty(X1))
                      .set(Y1, assoc.getProperty(Y1))
                      .set(X2, assoc.getProperty(X2))
                      .set(Y2, assoc.getProperty(Y2));
-        } else if (topic.getTypeUri().equals(ZW_NOTE)) {
+        } else if (typeUri.equals(ZW_NOTE)) {
             if (assoc.hasProperty(ZW_COLOR)) {      // Color is regarded an optional view prop
                 viewProps.set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
             }
+        } else if (typeUri.equals(VIEWPORT)) {
+            viewProps.set(ZOOM, assoc.getProperty(ZOOM));
         }
     }
 

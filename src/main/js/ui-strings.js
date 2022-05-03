@@ -100,6 +100,8 @@ export default {
   'action.edit.fr': 'Éditer',
   'action.delete.de': 'Löschen',
   'action.delete.fr': 'Supprimer',
+  'action.set_zoom.de': 'Aktuellen Zoom-Wert speichern',
+  'action.set_zoom.fr': 'Enregistrer la valeur actuelle du zoom',
   'action.attach_files.de': 'Dateien anhängen',
   'action.attach_files.fr': 'Joindre des fichiers',
   'action.add_workspace.de': 'Arbeitsbereich hinzufügen',

@@ -18,6 +18,7 @@ public class Constants {
     public static final String LANGUAGE           = "zukunftswerk.language";
     public static final String TRANSLATION_EDITED = "zukunftswerk.translation_edited";
     public static final String DISPLAY_NAME       = "zukunftswerk.display_name";        // synthetic
+    public static final String VIEWPORT           = "zukunftswerk.viewport";
     public static final String EDITOR             = "zukunftswerk.editor";
     public static final String EDITOR_FACET       = "zukunftswerk.editor_facet";
 

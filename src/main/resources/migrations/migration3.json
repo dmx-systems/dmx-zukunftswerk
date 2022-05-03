@@ -1,6 +1,13 @@
 // Part of Zukunftswerk 1.1
 {
   "topic_types": [
+    // Viewport
+    {
+      "value":       "Viewport",
+      "uri":         "zukunftswerk.viewport",
+      "dataTypeUri": "dmx.core.text"
+    },
+    // Editor / Editor Facet
     {
       "value":       "Editor",
       "uri":         "zukunftswerk.editor",

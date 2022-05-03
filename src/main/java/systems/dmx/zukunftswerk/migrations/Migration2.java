@@ -6,6 +6,7 @@ import static systems.dmx.workspaces.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.accesscontrol.AccessControlService;
+import systems.dmx.core.Topic;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Migration;
 import systems.dmx.core.service.accesscontrol.SharingMode;
@@ -24,11 +25,8 @@ public class Migration2 extends Migration {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
-    @Inject
-    private AccessControlService acs;
-
-    @Inject
-    private WorkspacesService ws;
+    @Inject private AccessControlService acs;
+    @Inject private WorkspacesService wss;
 
     // -------------------------------------------------------------------------------------------------- Public Methods
 
@@ -40,10 +38,8 @@ public class Migration2 extends Migration {
             .addCompDefBefore(mf.newCompDefModel(DE, false, false, WORKSPACE, WORKSPACE_NAME, ONE), SHARING_MODE)
             .addCompDefBefore(mf.newCompDefModel(FR, false, false, WORKSPACE, WORKSPACE_NAME, ONE), SHARING_MODE);
         //
-        // Create "Team" workspace
-        acs.setWorkspaceOwner(
-            ws.createWorkspace("Team", TEAM_WORKSPACE_URI, SharingMode.PUBLIC), ADMIN_USERNAME
-            // FIXME: at the moment the frontend relies on a public team workspace
-        );
+        // Create "Team" workspace ### FIXME: at the moment the frontend relies on a public team workspace
+        Topic team = wss.createWorkspace("Team", TEAM_WORKSPACE_URI, SharingMode.PUBLIC);
+        acs.setWorkspaceOwner(team, ADMIN_USERNAME);
     }
 }

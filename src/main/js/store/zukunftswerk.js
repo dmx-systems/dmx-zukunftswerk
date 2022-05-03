@@ -131,14 +131,10 @@ const actions = {
       updateWorkspaceCookie()
       updateWorkspaceState()
       fetchDiscussion()
-      return getWorkspaceTopicmap(workspaceId)
+      return fetchTopicmap()
     }).then(topicmap => {
       state.topicmap = topicmap
-      state.pan = {
-        x: topicmap.panX,
-        y: topicmap.panY
-      }
-      state.zoom = topicmap.zoom
+      initViewport()
     }).catch(error => {
       console.warn(`Workspace ${workspaceId} check failed`, error)
     })
@@ -560,6 +556,26 @@ function replaceComment (comment) {
   state.discussion.splice(i, 1, comment)
 }
 
+function initViewport () {
+  const topicmap = state.topicmap
+  const viewport = topicmap.topics.find(t => t.typeUri === 'zukunftswerk.viewport')
+  if (!viewport) {
+    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
+    // fallback
+    state.pan = {
+      x: topicmap.panX,
+      y: topicmap.panY
+    }
+    state.zoom = topicmap.zoom
+    return
+  }
+  state.pan = {
+    x: -viewport.pos.x,
+    y: -viewport.pos.y
+  }
+  state.zoom = topicmap.zoom    // TODO
+}
+
 function setTopicmapViewport() {
   if (state.isTeam || state.isEditor) {
     dmx.rpc.setTopicmapViewport(state.topicmap.id, state.pan, state.zoom)           // update server state
@@ -572,8 +588,8 @@ function filerepoUrl (repoPath) {
   return '/filerepo/' + encodeURIComponent(repoPath)
 }
 
-function getWorkspaceTopicmap (workspaceId) {
-  return dmx.rpc.getAssignedTopics(workspaceId, 'dmx.topicmaps.topicmap').then(topics => {
+function fetchTopicmap () {
+  return dmx.rpc.getAssignedTopics(state.workspace.id, 'dmx.topicmaps.topicmap').then(topics => {
     // TODO: show warning if there are more than one topicmaps
     return dmx.rpc.getTopicmap(topics[0].id, true)      // includeChildren=true
   })

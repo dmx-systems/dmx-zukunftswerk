@@ -325,7 +325,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public List<RelatedTopic> getAllZWWorkspaces() {
         try {
             return DMXUtils.loadChildTopics(
-                zwPluginTopic.getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE)
+                // We retrieve the Plugin topic on-the-fly to allow this method to be called from a migration.
+                // Note: migrations run *before* the plugin's init hook is triggered, so we can't rely on
+                // "zwPluginTopic" here as it is not yet initialized.
+                dmx.getTopicByUri(ZW_PLUGIN_URI).getRelatedTopics(SHARED_WORKSPACE, DEFAULT, DEFAULT, WORKSPACE)
             );
         } catch (Exception e) {
             throw new RuntimeException("Retrieving all ZW workspaces failed", e);
@@ -437,7 +440,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 ));
                 return null;
             });
-            // 3) Give all "Team" members access
+            // 3)
+            createViewport(workspaceId);
+            // 4) Give all "Team" members access
             List<RelatedTopic> usernames = getZWTeamMembers();
             logger.info("### Inviting " + usernames.size() + " Team members to workspace \"" +
                 workspace.getSimpleValue() + "\"");

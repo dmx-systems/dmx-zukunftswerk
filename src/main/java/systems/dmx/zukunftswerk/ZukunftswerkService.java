@@ -44,7 +44,7 @@ public interface ZukunftswerkService {
     // --- Admin ---
 
     /**
-     * Returns all ZW shared workspaces.
+     * Returns all ZW shared workspaces. Note: the "Team" workspace is not included.
      */
     List<RelatedTopic> getAllZWWorkspaces();
 

@@ -1,10 +1,11 @@
 <template>
-  <vue-draggable-resizable :class="['zw-canvas-item', customClass]" :x="x" :y="y" :w="w" :h="h" :scale="zoom"
-      :draggable="draggable" :resizable="resizable" :handles="handles" @activated="select" @deactivated="deselect"
-      @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
+  <vue-draggable-resizable :class="['zw-canvas-item', customClass]" v-if="visibilty" :x="x" :y="y" :w="w" :h="h"
+      :scale="zoom" :draggable="draggable" :resizable="resizable" :handles="handles" @activated="select"
+      @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
-      @custom-class="setCustomClass" @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @actions="setActions"
-      @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles" @mousedown.native="mousedown">
+      @visibility="setVisibility" @custom-class="setCustomClass" @resize-style="setResizeStyle"
+      @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles"
+      @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="editable">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
@@ -40,15 +41,18 @@ export default {
 
   data () {
     return {
-      actions: [                // Actions appearing in the button panel, can be overwritten by child component
+      // Configuration, can be supplied by child component
+      visibilty: true,          // Is this item visible? (Boolean)
+      actions: [                // Actions appearing in the button panel
         {action: 'action.edit', handler: this.edit},
         {action: 'action.delete', handler: this.deleteItem}
       ],
-      customClass: undefined,   // Custom class supplied by child component (String)
-      editEnabled: true,        // Edit button visibility, can be overwritten by child component
-      resizeStyle: 'x',         // 'x'/'xy'/'none' (String), can be overwritten by child component
-      getSize: undefined,       // Custom handler supplied by child component (Function)
+      customClass: undefined,   // Custom class (String)
+      editEnabled: true,        // Edit button visibility (Boolean)
+      resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
+      getSize: undefined,       // Custom get-size function (Function)
       //
+      // Misc
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
                                 // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
@@ -188,6 +192,10 @@ export default {
       this.dragStop()
       this.hasDragStarted = false
       this.$store.dispatch('setTopicSize', {topic: this.topic, width, height})
+    },
+
+    setVisibility (visibilty) {
+      this.visibilty = visibilty
     },
 
     setCustomClass (classname) {

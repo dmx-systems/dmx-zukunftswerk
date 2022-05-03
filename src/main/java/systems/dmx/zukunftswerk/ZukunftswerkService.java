@@ -34,6 +34,11 @@ public interface ZukunftswerkService {
     // Documents and arrows are created by generic createTopic() calls.
     // No auto-translation is involved.
 
+    /**
+     * Needed by migration 4.
+     */
+    Topic createViewport(long workspaceId);
+
     List<Topic> getAllUsers();
 
     // --- Admin ---

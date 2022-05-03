@@ -3,6 +3,7 @@ package systems.dmx.zukunftswerk;
 import static systems.dmx.accesscontrol.Constants.*;
 import static systems.dmx.core.Constants.*;
 import static systems.dmx.files.Constants.*;
+import static systems.dmx.topicmaps.Constants.*;
 import static systems.dmx.workspaces.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
@@ -10,6 +11,7 @@ import systems.dmx.accesscontrol.AccessControlService;
 import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
+import systems.dmx.core.model.SimpleValue;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.model.topicmaps.ViewProps;
 import systems.dmx.core.osgi.PluginActivator;
@@ -46,6 +48,7 @@ import javax.ws.rs.Consumes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -74,6 +77,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     private Topic zwPluginTopic;
     private Topic teamWorkspace;
     private Messenger me;
+    private Random random = new Random();
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -285,6 +289,21 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             throw new RuntimeException("Creating monolingual comment failed, comment=\"" + comment +
                 "\", refTopicIds=" + refTopicIds + ", fileTopicIds=" + fileTopicIds, e);
         }
+    }
+
+    @Override
+    public Topic createViewport(long workspaceId) {
+        List<Topic> topicmaps = ws.getAssignedTopics(workspaceId, TOPICMAP);
+        if (topicmaps.size() != 1) {
+            throw new RuntimeException("Workspace " + workspaceId + " has " + topicmaps.size() +
+                " topicmaps (expected is 1)");
+        }
+        long topicmapId = topicmaps.get(0).getId();
+        Topic viewport = dmx.createTopic(mf.newTopicModel(VIEWPORT, new SimpleValue("Viewport " + random.nextLong())));
+        ViewProps viewProps = mf.newViewProps(0, 0, true, false);
+        viewProps.set(ZOOM, 1);
+        tms.addTopicToTopicmap(topicmapId, viewport.getId(), viewProps);
+        return viewport;
     }
 
     @GET

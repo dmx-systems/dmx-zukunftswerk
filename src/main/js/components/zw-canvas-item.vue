@@ -65,10 +65,12 @@ export default {
     },
 
     w () {
+      // console.log('w', this.getSize, this.getSize && this.getSize().h)
       return this.getSize && this.getSize().w || this.topic.viewProps['dmx.topicmaps.width']
     },
 
     h () {
+      // console.log('h', this.getSize, this.getSize && this.getSize().h)
       return this.getSize && this.getSize().h || this.resizeStyle === 'x' ? 'auto' :
                                                  this.topic.viewProps['dmx.topicmaps.height']
     },
@@ -221,7 +223,8 @@ export default {
     'zukunftswerk.document': require('./zw-document').default,
     'zukunftswerk.note': require('./zw-note').default,
     'zukunftswerk.label': require('./zw-label').default,
-    'zukunftswerk.arrow': require('./zw-arrow').default
+    'zukunftswerk.arrow': require('./zw-arrow').default,
+    'zukunftswerk.viewport': require('./zw-viewport').default
   }
 }
 </script>

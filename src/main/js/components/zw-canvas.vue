@@ -85,7 +85,8 @@ export default {
       return topic.typeUri === 'zukunftswerk.document' ||
              topic.typeUri === 'zukunftswerk.note'     ||
              topic.typeUri === 'zukunftswerk.label'    ||
-             topic.typeUri === 'zukunftswerk.arrow'
+             topic.typeUri === 'zukunftswerk.arrow'    ||
+             topic.typeUri === 'zukunftswerk.viewport'
     },
 
     mode (topic) {

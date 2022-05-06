@@ -569,11 +569,12 @@ function initViewport () {
     state.zoom = topicmap.zoom
     return
   }
+  const zoom = viewport.viewProps['dmx.topicmaps.zoom']
   state.pan = {
-    x: -viewport.pos.x,
-    y: -viewport.pos.y
+    x: -viewport.pos.x * zoom,
+    y: -viewport.pos.y * zoom
   }
-  state.zoom = viewport.viewProps['dmx.topicmaps.zoom']
+  state.zoom = zoom
 }
 
 function setTopicmapViewport() {

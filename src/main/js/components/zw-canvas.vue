@@ -21,6 +21,7 @@ import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
 let HEADER_HEIGHT
+const GRID_SIZE = 20    // 20x20 = size of grid.png
 
 export default {
 
@@ -60,7 +61,8 @@ export default {
 
     style () {
       return {
-        'background-position': `${this.bgPos.x}px ${this.bgPos.y}px`
+        'background-position': `${this.bgPos.x}px ${this.bgPos.y}px`,
+        'background-size': `${GRID_SIZE * this.zoom}px`
       }
     },
 
@@ -73,8 +75,8 @@ export default {
 
     bgPos () {
       return  {
-        x: this.pan.x % 20,     // 20x20 = size of grid.png
-        y: this.pan.y % 20
+        x: this.pan.x % (GRID_SIZE * this.zoom),
+        y: this.pan.y % (GRID_SIZE * this.zoom)
       }
     }
   },

@@ -1,6 +1,6 @@
 <template>
-  <vue-draggable-resizable :class="['zw-canvas-item', customClass, {draggable}]" v-if="visibilty" :x="x" :y="y"
-      :w="w" :h="h" :scale="zoom" :draggable="draggable" :resizable="resizable" :handles="handles" @activated="select"
+  <vue-draggable-resizable :class="['zw-canvas-item', customClass]" v-if="visibilty" :x="x" :y="y" :w="w" :h="h"
+      :scale="zoom" :draggable="draggable" :resizable="resizable" :handles="handles" @activated="select"
       @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @resize-style="setResizeStyle"
@@ -257,7 +257,7 @@ export default {
   border: 1px dashed #aaa;
 }
 
-.zw-canvas-item.draggable {
+.zw-canvas-item.draggable {                 /* "draggable" class is added by vdr */
   cursor: grab;
 }
 

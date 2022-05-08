@@ -1,12 +1,15 @@
 // Global functions and values (not reactive)
 
 import Vue from 'vue'
+import dmx from 'dmx-api'
 import store from './store/zukunftswerk'
 
 const uiStrings = require('./ui-strings').default
-const quillOptions = require('./quill-options').default
-const quillOptions2 = {bounds: '.zw-discussion .comments', ...quillOptions}   // Quill instances inside comments-list
-                                                                              // need special options
+const quillOptions = require('./quill-options').default   // Quill config for canvas
+const quillOptions2 = dmx.utils.clone(quillOptions)       // Quill config for discussion panel
+quillOptions2.bounds = '.zw-discussion .comments'
+quillOptions2.modules.toolbar.container[4].splice(2, 1)   // strip "video" button
+
 const logo = {
   de: require('../resources-build/zw-logo.de.png'),
   fr: require('../resources-build/zw-logo.fr.png')

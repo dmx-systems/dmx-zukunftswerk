@@ -36,6 +36,7 @@ import dmx from 'dmx-api'
 export default {
 
   mixins: [
+    require('./mixins/mode').default,
     require('./mixins/orig-lang').default,
     require('./mixins/cancel').default
   ],
@@ -81,14 +82,6 @@ export default {
         de: this.topicBuffer.children['zukunftswerk.label.de'],
         fr: this.topicBuffer.children['zukunftswerk.label.fr']
       }
-    },
-
-    infoMode () {
-      return this.mode === 'info'
-    },
-
-    formMode () {
-      return this.mode === 'form'
     },
 
     isNew () {

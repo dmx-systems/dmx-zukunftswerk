@@ -59,7 +59,8 @@ import zw from '../zw-globals'
 export default {
 
   mixins: [
-    require('./mixins/orig-lang').default,
+    require('./mixins/mode').default,
+    require('./mixins/orig-lang').default
   ],
 
   props: {
@@ -164,14 +165,6 @@ export default {
 
     date () {
       return new Date(this.created).toLocaleString()
-    },
-
-    infoMode () {
-      return this.mode === 'info'
-    },
-
-    formMode () {
-      return this.mode === 'form'
     },
 
     quillOptions () {

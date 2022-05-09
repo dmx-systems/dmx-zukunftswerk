@@ -56,6 +56,7 @@ import dmx from 'dmx-api'
 export default {
 
   mixins: [
+    require('./mixins/mode').default,
     require('./mixins/doc-util').default,
     require('./mixins/cancel').default
   ],
@@ -188,14 +189,6 @@ export default {
 
     isPDF () {
       return this.mediaType === 'application/pdf'
-    },
-
-    infoMode () {
-      return this.mode === 'info'
-    },
-
-    formMode () {
-      return this.mode === 'form'
     },
 
     isNew () {

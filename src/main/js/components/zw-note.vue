@@ -60,6 +60,7 @@ export default {
   },
 
   mixins: [
+    require('./mixins/mode').default,
     require('./mixins/orig-lang').default
   ],
 
@@ -125,10 +126,6 @@ export default {
         // console.log(html && html.value)
         return html && html.value
       }
-    },
-
-    infoMode () {
-      return this.mode === 'info'
     },
 
     isNew () {

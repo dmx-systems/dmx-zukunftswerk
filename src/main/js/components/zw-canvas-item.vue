@@ -19,11 +19,13 @@
 
 <script>
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
 
   mixins: [
+    require('./mixins/mode').default,
     require('./mixins/selection').default,
     require('./mixins/dragging').default
   ],
@@ -73,8 +75,8 @@ export default {
     },
 
     w () {
-      // console.log('w', this.getSize, this.getSize && this.getSize().h)
-      return this.getSize && this.getSize().w || this.topic.viewProps['dmx.topicmaps.width']
+      // console.log('w', this.formMode)
+      return this.formMode && zw.FORM_WIDTH || this.getSize && this.getSize().w || this.topic.viewProps['dmx.topicmaps.width']
     },
 
     h () {
@@ -106,10 +108,6 @@ export default {
       return {
         'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
       }
-    },
-
-    infoMode () {
-      return this.mode === 'info'
     },
 
     isTeam () {

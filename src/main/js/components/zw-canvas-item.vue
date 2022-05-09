@@ -257,6 +257,7 @@ export default {
 
 .zw-canvas-item.active {                    /* "active" class is added by vdr */
   border: 1px dashed #aaa;
+  z-index: 1 !important;                    /* when selected, place item (and button panel) before other canvas items */
 }
 
 .zw-canvas-item.draggable {                 /* "draggable" class is added by vdr */
@@ -275,7 +276,6 @@ export default {
 .zw-canvas-item .button-panel {
   position: absolute;
   visibility: hidden;
-  z-index: 1;                               /* place button panel before other canvas items */
 }
 
 .zw-canvas-item:hover .button-panel {

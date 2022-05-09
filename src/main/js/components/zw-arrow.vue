@@ -26,6 +26,7 @@ import dmx from 'dmx-api'
 export default {
 
   mixins: [
+    require('./mixins/selection').default,
     require('./mixins/dragging').default
   ],
 
@@ -80,11 +81,7 @@ export default {
     },
 
     editable () {
-      return this.selected && (this.isTeam || this.isEditor)
-    },
-
-    selected () {
-      return this.selectedTopic?.id === this.topic.id
+      return this.isSelected && (this.isTeam || this.isEditor)
     },
 
     isTeam () {
@@ -93,10 +90,6 @@ export default {
 
     isEditor () {
       return this.$store.state.isEditor
-    },
-
-    selectedTopic () {
-      return this.$store.state.topic
     },
 
     zoom () {

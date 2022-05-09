@@ -1,7 +1,8 @@
 <template>
   <vue-draggable-resizable :class="['zw-canvas-item', customClass]" v-if="visibilty" :x="x" :y="y" :w="w" :h="h"
-      :scale="zoom" :draggable="draggable" :resizable="resizable" :handles="handles" @activated="select"
-      @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging" @resizing="resizing">
+      :scale="zoom" :active="isSelected" :draggable="draggable" :resizable="resizable" :handles="handles"
+      @activated="select" @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging"
+      @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @resize-style="setResizeStyle"
       @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles"
@@ -23,6 +24,7 @@ import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 export default {
 
   mixins: [
+    require('./mixins/selection').default,
     require('./mixins/dragging').default
   ],
 
@@ -44,7 +46,7 @@ export default {
       // Configuration, can be supplied by child component
       visibilty: true,          // Is this item visible? (Boolean)
       actions: [                // Actions appearing in the button panel
-        {action: 'action.edit', handler: this.edit},
+        {action: 'action.edit',   handler: this.edit},
         {action: 'action.delete', handler: this.deleteItem}
       ],
       customClass: undefined,   // Custom class (String)

@@ -33,8 +33,8 @@
           --><span class="el-icon-arrow-down el-icon--right"></span>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="col in colors" :command="col" :key="col">
-            <div class="color-box" :style="{'background-color': col}"></div>
+          <el-dropdown-item v-for="(col, i) in colors" :command="col" :key="col">
+            <div :class="colorBoxClass(col, i)" :style="{'background-color': col}"></div>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -66,7 +66,7 @@ export default {
 
   data () {
     return {
-      initColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[0],
+      initColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
       color: undefined,               // selected color
       colors: zw.NOTE_COLORS,         // all colors
       saving: false                   // true while note is saved
@@ -185,6 +185,14 @@ export default {
 
     setColor (color) {
       this.color = color
+    },
+
+    colorBoxClass (col, i) {
+      const classes = ['color-box']
+      if (i === 0 || i === 6) {
+        classes.push(col)
+      }
+      return classes
     }
   },
 
@@ -218,6 +226,17 @@ body > .el-dropdown-menu .color-box {
   margin-top: 9px;
   width: 40px;
   height: 30px;
+}
+
+body > .el-dropdown-menu .color-box.white,
+body > .el-dropdown-menu .color-box.transparent {
+  border: 1px solid var(--border-color-lighter);
+}
+
+body > .el-dropdown-menu .color-box.transparent {
+  background-image: url("../../resources-build/grid.png");
+  background-position: bottom right;
+  background-size: 12px;
 }
 
 .zw-note.form .save-button {

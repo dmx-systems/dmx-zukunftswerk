@@ -76,7 +76,8 @@ export default {
 
     w () {
       // console.log('w', this.formMode)
-      return this.formMode && zw.FORM_WIDTH || this.getSize && this.getSize().w || this.topic.viewProps['dmx.topicmaps.width']
+      return this.formMode && zw.FORM_WIDTH || this.getSize && this.getSize().w
+                                            || this.topic.viewProps['dmx.topicmaps.width']
     },
 
     h () {

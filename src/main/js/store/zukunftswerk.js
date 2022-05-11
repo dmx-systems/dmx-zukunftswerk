@@ -42,7 +42,7 @@ const state = {
 
   // Discussion Panel state
   panelVisibility: true,        // discussion panel visibility (Boolean)
-  panelX: 0.65 * width,         // x coordinate in pixel (Number)         // ### TODO: rename to "canvasWidth"?
+  panelX: 0.65 * width,         // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
@@ -163,7 +163,11 @@ const actions = {
   },
 
   setTopicSize (_, {topic, width, height}) {
-    if (topic.id >= 0) {
+    // update client state
+    topic.setViewProp('dmx.topicmaps.width', width)
+    topic.setViewProp('dmx.topicmaps.height', height)
+    // update server state
+    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
       dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
         'dmx.topicmaps.width': width,
         'dmx.topicmaps.height': height
@@ -172,13 +176,13 @@ const actions = {
   },
 
   setPan (_, pan) {
-    // FIXME: update topicmap model?
+    // FIXME: update client state (topicmap model)?
     state.pan = pan
     setTopicmapViewport()     // update server state (debounced)
   },
 
   setViewport (_, {pan, zoom}) {
-    // FIXME: update topicmap model?
+    // FIXME: update client state (topicmap model)?
     state.pan = pan
     state.zoom = zoom
     setTopicmapViewport()     // update server state (debounced)

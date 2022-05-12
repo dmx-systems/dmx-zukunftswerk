@@ -1,5 +1,5 @@
 <template>
-  <vue-draggable-resizable :class="['zw-canvas-item', customClass]" v-if="visibilty" :x="x" :y="y" :w="w" :h="h"
+  <vue-draggable-resizable :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :x="x" :y="y" :w="w" :h="h"
       :scale="zoom" :active="isSelected" :draggable="draggable" :resizable="resizable" :handles="handles"
       @activated="select" @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging"
       @resizing="resizing">
@@ -45,13 +45,13 @@ export default {
 
   data () {
     return {
-      // Configuration, can be supplied by child component
+      // Default configuration, can be (partially) supplied by child component
       visibilty: true,          // Is this item visible? (Boolean)
+      customClass: undefined,   // Custom class (String)
       actions: [                // Actions appearing in the button panel
         {action: 'action.edit',   handler: this.edit},
         {action: 'action.delete', handler: this.deleteItem}
       ],
-      customClass: undefined,   // Custom class (String)
       editEnabled: true,        // Edit button visibility (Boolean)
       resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
       getSize: undefined,       // Custom get-size function (Function)
@@ -260,8 +260,12 @@ export default {
 
 .zw-canvas-item.active {                    /* "active" class is added by vdr */
   border: 1px dashed #aaa;
-  z-index: 2 !important;                    /* when selected, place item (and button panel) before other */
-}                                           /* canvas items, before arrows in particular                 */
+}
+
+.zw-canvas-item.active,                     /* When selected, place item (and button panel) before other */
+.zw-canvas-item.form {                      /* canvas items, before arrows in particular.                */
+  z-index: 2 !important;                    /* Note: forms are always in front, regardless of selection. */
+}
 
 .zw-canvas-item.draggable {                 /* "draggable" class is added by vdr */
   cursor: grab;

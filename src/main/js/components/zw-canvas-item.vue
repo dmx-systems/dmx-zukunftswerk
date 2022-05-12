@@ -250,14 +250,18 @@ export default {
 
 <style>
 .zw-canvas-item.vdr,                        /* "vdr" class is added by vdr */
-.zw-canvas-item.vdr.zw-arrow {              /* arrows get no border (but 2 handles) */
+.zw-canvas-item.vdr.zw-arrow {              /* arrows never get a border (but 2 handles), even when active */
   border: 1px solid transparent;            /* vdr default border is "1px dashed #000" */
+}
+
+.zw-canvas-item.vdr.zw-arrow {
+  z-index: 1 !important;                    /* place arrows before other canvas items */
 }
 
 .zw-canvas-item.active {                    /* "active" class is added by vdr */
   border: 1px dashed #aaa;
-  z-index: 1 !important;                    /* when selected, place item (and button panel) before other canvas items */
-}
+  z-index: 2 !important;                    /* when selected, place item (and button panel) before other */
+}                                           /* canvas items, before arrows in particular                 */
 
 .zw-canvas-item.draggable {                 /* "draggable" class is added by vdr */
   cursor: grab;

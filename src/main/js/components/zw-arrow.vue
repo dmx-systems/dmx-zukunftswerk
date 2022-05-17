@@ -39,7 +39,7 @@ export default {
   },
 
   props: {
-    topic: {                  // the Arrow topic (dmx.ViewTopic)
+    topic: {                    // the Arrow topic (dmx.ViewTopic)
       type: dmx.ViewTopic,
       required: true
     }
@@ -136,7 +136,7 @@ export default {
 
     dragstopHandler (handle) {
       return (x, y) => {
-        console.log('dragstopHandler', x, y)
+        // console.log('dragstopHandler', x, y)
         this.dragStop()
         this.hasDragStarted = false
         this.$store.dispatch('storeTopicViewProps', this.topic)

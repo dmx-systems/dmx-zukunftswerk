@@ -9,18 +9,17 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 **1.1** -- May 6, 2022
 
-Features:
-- Freely editable arrows
-- Admin area: Edit/Delete of Users/Workspace
-- Editor role (selected users can create/edit canvas content of selected workspaces)
-- Colored notes
-- Persistent viewport
-
-Improvements:
-- Clicking on canvas deselects
-
-Fixes:
-- In comment-refs show Display Name (not email address)
+* Features:
+    * Freely editable arrows
+    * Admin area: Edit/Delete of Users/Workspace
+    * Editor role (selected users can create/edit canvas content of selected workspaces)
+    * Colored notes
+    * Persistent viewport
+* Improvements:
+    * Clicking on canvas deselects
+* Fixes:
+    * In comment-refs show Display Name (not email address)
+* Compatible with DMX 5.3-SNAPSHOT
 
 **1.0.3** -- Apr 6, 2022
 

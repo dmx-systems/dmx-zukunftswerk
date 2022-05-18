@@ -97,7 +97,10 @@ export default {
 
     fetchPDF () {
       this.$emit('loading')
-      return pdfjs.getDocument(this.src).promise.then(pdf => {
+      return pdfjs.getDocument({
+        url: this.src,
+        cMapUrl: 'cmaps/'
+      }).promise.then(pdf => {
         this.pdf = pdf
         this.pageNr = 1
         this.$emit('complete')

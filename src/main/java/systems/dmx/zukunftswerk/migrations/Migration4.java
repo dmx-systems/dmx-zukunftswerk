@@ -10,7 +10,7 @@ import systems.dmx.zukunftswerk.ZukunftswerkService;
 
 
 /**
- * Creates viewports for a) all ZW Shared Workspaces, and b) the "Team" workspace.
+ * Creates viewports for all the ZW Shared Workspaces, and for the "Team" workspace.
  * <p>
  * Part of Zukunftswerk 1.1
  * Runs ALWAYS.

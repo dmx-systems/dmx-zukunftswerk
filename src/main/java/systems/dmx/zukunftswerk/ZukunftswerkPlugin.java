@@ -174,7 +174,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             if (assoc.getTypeUri().equals(MEMBERSHIP)) {
                 Topic editor = facets.getFacet(assoc, EDITOR_FACET);
                 if (editor != null) {
-                    assoc.getChildTopics().getModel().set(EDITOR, editor.getModel());
+                    String[] a = editor.getSimpleValue().toString().split(":");
+                    boolean isEditor = Boolean.parseBoolean(a[1]);
+                    assoc.getChildTopics().getModel().set(EDITOR, isEditor);
                 }
             }
         }
@@ -564,7 +566,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         dmx.getPrivilegedAccess().runInWorkspaceContext(workspaceId, () -> {
             Assoc assoc = acs.getMembership(username, workspaceId);
             if (assoc != null) {
-                facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(editor));
+                facets.updateFacet(assoc, EDITOR_FACET, mf.newFacetValueModel(EDITOR).set(workspaceId + ":" + editor));
             }
             return null;
         });

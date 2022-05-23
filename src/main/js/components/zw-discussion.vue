@@ -52,9 +52,13 @@ console.log('[ZW] isChrome', isChrome)
 
 export default {
 
+  mixins: [
+    require('./mixins/translation').default
+  ],
+
   data () {
     return {
-      newComment: '',                 // new comment being entered by the user
+      newComment: '',                 // new comment being entered by the user (String)
       refComment: undefined,          // comment the new comment relates to (a Comment topic, plain object)
       attachments: [],                // attachments for the new comment (array of File topics)
       uploadDialogVisible: false,     // upload dialog visibility (for comment attachments)
@@ -164,21 +168,6 @@ export default {
       })
     },
 
-    handleError (error) {
-      const message = /java\.lang\.RuntimeException: Unsupported original language: ".." \(detected\)/
-      if (error.response.data.cause.match(message)) {
-        return this.$confirm(zw.getString('warning.confirm_create_comment'), {
-          title:             zw.getString('warning.translation_failed'),
-          type: 'warning',
-          confirmButtonText: zw.getString('action.create'),
-          cancelButtonText:  zw.getString('action.cancel'),
-          showClose: false,
-        })
-      } else {
-        errorHandler(error)         // fallback to generic error handler
-      }
-    },
-
     resetNewCommentPanel (comment) {
       this.newComment = ''
       this.$refs.newComment.setHTML('')     // why does binding not work here?
@@ -235,8 +224,7 @@ export default {
     },
 
     getDocumentId (comment) {
-      const doc = comment.children['zukunftswerk.document']
-      return doc && doc.id
+      return comment.children['zukunftswerk.document']?.id
     }
   },
 

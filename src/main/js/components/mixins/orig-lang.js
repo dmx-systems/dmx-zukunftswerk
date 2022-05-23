@@ -6,11 +6,11 @@ export default {
   computed: {
 
     origLang () {
-      // Note: a monolingual comment has no "Original Language", "origLang" is undefined then
+      // Note: a monolingual topic has no "Original Language", "origLang" is undefined then
       return this.topic.children['zukunftswerk.language#zukunftswerk.original_language']?.value
     },
 
-    // Note: for a monolingual comment "translatedLang" is undefined
+    // Note: for a monolingual topic "translatedLang" is undefined
     translatedLang () {
       if (this.origLang === 'de') {
         return 'fr'

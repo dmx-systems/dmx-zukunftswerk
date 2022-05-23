@@ -12,15 +12,15 @@
     <template v-else>
       <div class="field">
         <div class="field-label">
-          <zw-string>item.note</zw-string> ({{origLang}})
+          <zw-string>item.note</zw-string> ({{origLang || 'de'}})
         </div>
-        <quill v-model="noteModel[origLang]" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        <quill v-model="noteModel[origLang || 'de']" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
       <div class="field">
         <div class="field-label">
-          <zw-string>item.note</zw-string> ({{translatedLang}})
+          <zw-string>item.note</zw-string> ({{translatedLang || 'fr'}})
         </div>
-        <quill v-model="noteModel[translatedLang]" :options="quillOptions"></quill>
+        <quill v-model="noteModel[translatedLang || 'fr']" :options="quillOptions"></quill>
       </div>
     </template>
     <div class="field">
@@ -51,6 +51,7 @@
 <script>
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
+import errorHandler from '../error-handler'
 
 export default {
 
@@ -61,6 +62,7 @@ export default {
 
   mixins: [
     require('./mixins/mode').default,
+    require('./mixins/translation').default,
     require('./mixins/orig-lang').default
   ],
 
@@ -122,9 +124,7 @@ export default {
 
     noteHtml () {
       if (this.noteLang) {
-        const html = this.topic.children['zukunftswerk.note.' + this.noteLang]
-        // console.log(html && html.value)
-        return html && html.value
+        return this.topic.children['zukunftswerk.note.' + this.noteLang]?.value
       }
     },
 
@@ -149,18 +149,31 @@ export default {
 
     save () {
       this.saving = true
-      let action
+      let action, arg
       if (this.isNew) {
         action = 'createNote'
+        arg = {
+          note: this.topic
+        }
       } else {
         action = 'updateNote'
+        arg = this.topic
         // transfer edit buffer to topic model
         this.setNote('de')
         this.setNote('fr')
       }
       this.topic.setViewProp('zukunftswerk.color', this.color)
-      this.$store.dispatch(action, this.topic).catch(() => {
-        // silence browser console
+      this.$store.dispatch(action, arg).catch(error => {
+        return this.handleError(error)
+      }).then(result => {
+        if (result === 'confirm') {
+          arg.monolingual = true
+          this.$store.dispatch(action, arg).catch(error => {
+            errorHandler(error)     // generic error handler
+          })
+        }
+      }).catch(result => {
+        // console.log('cancel', result)
       }).finally(() => {
         this.saving = false
       })
@@ -172,13 +185,19 @@ export default {
     },
 
     html (lang) {
-      const html = this.topic.children['zukunftswerk.note.' + lang].value
+      // Note: in a monolingual note "fr" is not defined
+      const html = this.topic.children['zukunftswerk.note.' + lang]?.value
       if (html !== '<p><br></p>') {
         return html
       }
     },
 
     setNote (lang) {
+      // Note: in a monolingual note "fr" is not defined     // TODO: simplify
+      if (!this.topic.children['zukunftswerk.note.fr']) {
+        this.topic.children['zukunftswerk.note.fr'] = {}
+      }
+      //
       const compDefUri = 'zukunftswerk.note.' + lang
       this.topic.children[compDefUri].value = this.noteModel[lang]
     },

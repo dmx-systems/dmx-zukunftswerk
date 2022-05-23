@@ -106,7 +106,7 @@ export default {
   'action.attach_files.fr': 'Joindre des fichiers',
   'action.add_workspace.de': 'Arbeitsbereich hinzufügen',
   'action.add_workspace.fr': 'Ajouter un espace de travail',
-  'action.add_user.de': 'Benutzer hinuzfügen',
+  'action.add_user.de': 'Benutzer hinzufügen',
   'action.add_user.fr': 'Ajouter un utilisateur',
   'action.show_workspace.de': 'Arbeitsbereich anzeigen',
   'action.show_workspace.fr': 'Afficher l\'espace de travail',
@@ -135,12 +135,12 @@ export default {
   'warning.delete_user.fr': 'Vous êtes sur le point de supprimer cet utilisateur',
   'warning.translation_failed.de': 'Automatische Übersetzung fehlgeschlagen',
   'warning.translation_failed.fr': 'Échec de la traduction automatique',
-  'warning.confirm_create_comment.de': `Dein Kommentar konnte nicht übersetzt werden. Klicke "Abbrechen" um ihn zu
-    ändern oder "Erstellen", um ihn ohne Übersetzung zu erstellen. Tipp: Wähle nach dem Erstellen "Ändern", um eine
-    manuelle Übersetzung zu ergänzen.`,
-  'warning.confirm_create_comment.fr': `Ton commentaire n'a pas pu être traduit. Clique sur "Annuler" pour le modifier
-    ou sur "Créer" pour le créer sans traduction. Conseil: choisis "Éditer" après la création pour ajouter une
-    traduction manuelle.`,
+  'warning.confirm_create.de': `Deine Eingabe konnte nicht übersetzt werden. Klicke "Abbrechen", um weiter zu editieren
+    oder "Erstellen", um ohne Übersetzung zu speichern. Tipp: Wähle nach dem Erstellen "Ändern", um eine
+    Übersetzung hinzuzufügen.`,
+  'warning.confirm_create.fr': `Ta saisie n'a pas pu être traduite. Clique sur "Annuler" pour continuer à éditer ou sur
+    "Créer" pour enregistrer sans traduction. Conseil: après la création, choisis "Modifier" pour ajouter une
+    traduction.`,
 
   ...legal
 }

@@ -252,18 +252,29 @@ const actions = {
   },
 
   /**
-   * @param   topic   a dmx.ViewTopic
+   * @param   note          a dmx.ViewTopic of type "Note"
+   * @param   monolingual   Optional: if truish a monolingual note is created (no auto-translation)
    */
-  createNote (_, topic) {
-    return http.post('/zukunftswerk/note', topic.value, {
-      headers: {
-        'Content-Type': 'text/plain'
-      }
-    })
-    .then(response => response.data)
-    .then(_topic => {
-      addTopicToTopicmap(topic, _topic)
-      removeNewTopic(topic)
+  createNote (_, {note, monolingual}) {
+    let p
+    if (monolingual)  {
+      // Note: a monolingual note is stored in "de". "fr" and "Original Language" are not set.
+      p = dmx.rpc.createTopic({
+        typeUri: 'zukunftswerk.note',
+        children: {
+          'zukunftswerk.note.de': note.value
+        }
+      })
+    } else {
+      p = http.post('/zukunftswerk/note', note.value, {
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      }).then(response => response.data)
+    }
+    return p.then(topic => {
+      addTopicToTopicmap(note, topic)
+      removeNewTopic(note)
     })
   },
 
@@ -303,13 +314,14 @@ const actions = {
   },
 
   /**
+   * @param   comment         the comment (String)
    * @param   refTopicIds     array: a Comment ID, or a Document ID, or both
    * @param   monolingual     Optional: if truish a monolingual comment is created (no auto-translation)
    */
   createComment (_, {comment, refTopicIds, fileTopicIds, monolingual}) {
-    const __http = monolingual ? http : dmx.rpc._http
+    const _http = monolingual ? http : dmx.rpc._http
     const suffix = monolingual ? '/monolingual' : ''
-    return __http.post(`/zukunftswerk/comment${suffix}`, comment, {
+    return _http.post(`/zukunftswerk/comment${suffix}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
       },

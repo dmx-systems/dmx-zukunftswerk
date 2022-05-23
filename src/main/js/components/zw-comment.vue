@@ -204,7 +204,7 @@ export default {
     edit () {
       this.mode = 'form'
       this.topicBuffer = this.topic.clone()
-      // Note: in a monolingual comment "fr" is not defined
+      // Note: in a monolingual comment "fr" is not defined   // TODO: use newFormModel()? See zw-canvas-item edit()
       if (!this.topicBuffer.children['zukunftswerk.comment.fr']) {
         this.topicBuffer.children['zukunftswerk.comment.fr'] = {value: ""}
       }

@@ -237,6 +237,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
+    @GET
+    @Path("/users")
+    @Override
+    public List<Topic> getAllUsers() {
+        try {
+            return dmx.getTopicsByType(USERNAME);
+        } catch (Exception e) {
+            throw new RuntimeException("Retrieving all ZW users failed", e);
+        }
+    }
+
     @POST
     @Path("/note")
     @Consumes("text/plain")
@@ -311,15 +322,19 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         return viewport;
     }
 
-    @GET
-    @Path("/users")
+    @POST
+    @Path("/translate")
     @Override
-    public List<Topic> getAllUsers() {
-        try {
-            return dmx.getTopicsByType(USERNAME);
-        } catch (Exception e) {
-            throw new RuntimeException("Retrieving all ZW users failed", e);
+    public Translation translate(String text, @QueryParam("targetLang") String targetLang) {
+        if (targetLang == null) {
+            // "en" acts as dummy language, not used in this application.
+            // This translation's sole purpose is language detection for the original text.
+            Translation translation = deepls.translate(text, "en").get(0);
+            String origLang = translation.detectedSourceLang.toLowerCase();
+            targetLang = targetLang(origLang);
         }
+        // actual translation
+        return deepls.translate(text, targetLang).get(0);
     }
 
     // --- Admin ---
@@ -463,17 +478,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ------------------------------------------------------------------------------------------------- Private Methods
 
     private TopicModel createBilingualTopicModel(String topicTypeUri, String text) {
-        // "en" acts as dummy language, not used in this application.
-        // This translation's sole purpose is language detection for the original text.
-        Translation translation = deepls.translate(text, "en").get(0);
+        Translation translation = translate(text, null);
         String origLang = translation.detectedSourceLang.toLowerCase();
         String targetLang = targetLang(origLang);
-        // translate comment
-        String translatedComment = deepls.translate(text, targetLang).get(0).text;
-        //
         return mf.newTopicModel(topicTypeUri, mf.newChildTopicsModel()
             .set(topicTypeUri + "." + origLang, text)
-            .set(topicTypeUri + "." + targetLang, translatedComment)
+            .set(topicTypeUri + "." + targetLang, translation.text)
             .set(LANGUAGE + "#" + ORIGINAL_LANGUAGE, origLang)
         );
     }

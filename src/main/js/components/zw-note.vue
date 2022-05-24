@@ -124,7 +124,7 @@ export default {
 
     noteHtml () {
       if (this.noteLang) {
-        return this.topic.children['zukunftswerk.note.' + this.noteLang]?.value
+        return this.note[this.noteLang]
       }
     },
 

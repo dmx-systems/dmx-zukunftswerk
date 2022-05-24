@@ -98,7 +98,7 @@ export default {
 
     labelText () {
       if (this.labelLang) {
-        return this.topic.children['zukunftswerk.label.' + this.labelLang]?.value
+        return this.label[this.labelLang]
       }
     },
 

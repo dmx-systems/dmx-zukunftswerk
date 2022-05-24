@@ -3,6 +3,7 @@ package systems.dmx.zukunftswerk;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
 import systems.dmx.core.util.IdList;
+import systems.dmx.deepl.Translation;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public interface ZukunftswerkService {
 
     /**
-     * Returns the ZW shared workspaces of the current user.
+     * Returns the ZW shared workspaces of the current user (according to request authorization).
      *
      * @return  the workspaces as a list of RelatedTopics. Their "relating associations" are the Memberships.
      *          Note: the "Team" workspace is not included.
@@ -22,6 +23,8 @@ public interface ZukunftswerkService {
      * Returns the comments of the current workspace (according to workspace cookie).
      */
     List<Topic> getDiscussion();
+
+    List<Topic> getAllUsers();
 
     Topic createNote(String note);
 
@@ -39,7 +42,14 @@ public interface ZukunftswerkService {
      */
     Topic createViewport(long workspaceId);
 
-    List<Topic> getAllUsers();
+    /**
+     * @param       targetLang          "de", "fr", or null. If null the source lang, and thus the target lang,
+     *                                  is auto-detected (by the means of an extra request to the DeepL API).
+     *
+     * @throws      RuntimeException    if auto-detection was solicited and an unsupported language was detected.
+     *                                  Supported languages are "de" and "fr".
+     */
+    Translation translate(String text, String targetLang);
 
     // --- Admin ---
 

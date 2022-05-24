@@ -153,7 +153,7 @@ export default {
       if (this.isNew) {
         action = 'createNote'
         arg = {
-          note: this.topic
+          topic: this.topic
         }
       } else {
         action = 'updateNote'

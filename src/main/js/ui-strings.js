@@ -139,7 +139,7 @@ export default {
     oder "Erstellen", um ohne Übersetzung zu speichern. Tipp: Wähle nach dem Erstellen "Ändern", um eine
     Übersetzung hinzuzufügen.`,
   'warning.confirm_create.fr': `Ta saisie n'a pas pu être traduite. Clique sur "Annuler" pour continuer à éditer ou sur
-    "Créer" pour enregistrer sans traduction. Conseil: après la création, choisis "Modifier" pour ajouter une
+    "Créer" pour enregistrer sans traduction. Conseil: après la création, choisis "Éditer" pour ajouter une
     traduction.`,
 
   ...legal

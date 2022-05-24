@@ -1,5 +1,5 @@
 <template>
-  <div v-if="infoMode" class="zw-label info">{{label[lang]}}</div>
+  <div v-if="infoMode" class="zw-label info">{{labelText}}</div>
   <div v-else :class="['zw-label', 'form', {'new': isNew}]" v-loading="saving">
     <template v-if="isNew">
       <div class="field-label">
@@ -10,15 +10,15 @@
     <template v-else>
       <div class="field">
         <div class="field-label">
-          <zw-string>item.label</zw-string> ({{origLang}})
+          <zw-string>item.label</zw-string> ({{origLang || 'de'}})
         </div>
-        <el-input v-model="labelModel[origLang].value" ref="input"></el-input>
+        <el-input v-model="labelModel[origLang || 'de'].value" ref="input"></el-input>
       </div>
       <div class="field">
         <div class="field-label">
-          <zw-string>item.label</zw-string> ({{translatedLang}})
+          <zw-string>item.label</zw-string> ({{translatedLang || 'fr'}})
         </div>
-        <el-input v-model="labelModel[translatedLang].value"></el-input>
+        <el-input v-model="labelModel[translatedLang || 'fr'].value"></el-input>
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -37,6 +37,7 @@ export default {
 
   mixins: [
     require('./mixins/mode').default,
+    require('./mixins/translation').default,
     require('./mixins/orig-lang').default,
     require('./mixins/cancel').default
   ],
@@ -72,8 +73,9 @@ export default {
 
     label () {
       return {
+        // Note: in a monolingual label "fr" is not defined
         de: this.topic.children['zukunftswerk.label.de'].value,
-        fr: this.topic.children['zukunftswerk.label.fr'].value
+        fr: this.topic.children['zukunftswerk.label.fr']?.value
       }
     },
 
@@ -81,6 +83,22 @@ export default {
       return {
         de: this.topicBuffer.children['zukunftswerk.label.de'],
         fr: this.topicBuffer.children['zukunftswerk.label.fr']
+      }
+    },
+
+    labelLang () {
+      if (this.label.de && this.label.fr) {
+        return this.lang
+      } else if (this.label.de) {
+        return 'de'
+      } else if (this.label.fr) {
+        return 'fr'
+      }
+    },
+
+    labelText () {
+      if (this.labelLang) {
+        return this.topic.children['zukunftswerk.label.' + this.labelLang]?.value
       }
     },
 
@@ -97,23 +115,41 @@ export default {
 
     save () {
       this.saving = true
-      let action
+      let action, arg
       if (this.isNew) {
         action = 'createLabel'
+        arg = {
+          topic: this.topic
+        }
       } else {
         action = 'update'
+        arg = this.topic
         // transfer edit buffer to topic model
         this.setText('de')
         this.setText('fr')
       }
-      this.$store.dispatch(action, this.topic).catch(() => {
-        // silence browser console
+      this.$store.dispatch(action, arg).catch(error => {
+        return this.handleError(error)
+      }).then(result => {
+        if (result === 'confirm') {
+          arg.monolingual = true
+          this.$store.dispatch(action, arg).catch(error => {
+            errorHandler(error)     // generic error handler
+          })
+        }
+      }).catch(result => {
+        // console.log('cancel', result)
       }).finally(() => {
         this.saving = false
       })
     },
 
     setText (lang) {
+      // Note: in a monolingual label "fr" is not defined     // TODO: simplify
+      if (!this.topic.children['zukunftswerk.label.fr']) {
+        this.topic.children['zukunftswerk.label.fr'] = {}
+      }
+      //
       const compDefUri = 'zukunftswerk.label.' + lang
       this.topic.children[compDefUri].value = this.labelModel[lang].value
     }

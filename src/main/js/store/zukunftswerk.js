@@ -252,30 +252,11 @@ const actions = {
   },
 
   /**
-   * @param   note          a dmx.ViewTopic of type "Note"
+   * @param   topic         a dmx.ViewTopic of type "Note"
    * @param   monolingual   Optional: if truish a monolingual note is created (no auto-translation)
    */
-  createNote (_, {note, monolingual}) {
-    let p
-    if (monolingual)  {
-      // Note: a monolingual note is stored in "de". "fr" and "Original Language" are not set.
-      p = dmx.rpc.createTopic({
-        typeUri: 'zukunftswerk.note',
-        children: {
-          'zukunftswerk.note.de': note.value
-        }
-      })
-    } else {
-      p = http.post('/zukunftswerk/note', note.value, {
-        headers: {
-          'Content-Type': 'text/plain'
-        }
-      }).then(response => response.data)
-    }
-    return p.then(topic => {
-      addTopicToTopicmap(note, topic)
-      removeNewTopic(note)
-    })
+  createNote (_, {topic, monolingual}) {
+    return create('note', topic, monolingual)
   },
 
   /**
@@ -289,19 +270,11 @@ const actions = {
   },
 
   /**
-   * @param   topic   a dmx.ViewTopic
+   * @param   topic         a dmx.ViewTopic of type "Label"
+   * @param   monolingual   Optional: if truish a monolingual label is created (no auto-translation)
    */
-  createLabel (_, topic) {
-    return http.post('/zukunftswerk/label', topic.value, {
-      headers: {
-        'Content-Type': 'text/plain'
-      }
-    })
-    .then(response => response.data)
-    .then(_topic => {
-      addTopicToTopicmap(topic, _topic)
-      removeNewTopic(topic)
-    })
+  createLabel (_, {topic, monolingual}) {
+    return create('label', topic, monolingual)
   },
 
   /**
@@ -456,6 +429,32 @@ const store = new Vuex.Store({
 store.registerModule('admin', adminStore)
 
 export default store
+
+/**
+ * @param   type    'note'/'label'
+ */
+function create (type, topic, monolingual) {
+  let p
+  if (monolingual)  {
+    // Note: a monolingual note/label is stored in "de". "fr" and "Original Language" are not set.
+    p = dmx.rpc.createTopic({
+      typeUri: `zukunftswerk.${type}`,
+      children: {
+        [`zukunftswerk.${type}.de`]: topic.value
+      }
+    })
+  } else {
+    p = http.post(`/zukunftswerk/${type}`, topic.value, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    }).then(response => response.data)
+  }
+  return p.then(_topic => {
+    addTopicToTopicmap(topic, _topic)
+    removeNewTopic(topic)
+  })
+}
 
 // state helper
 

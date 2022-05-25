@@ -18,22 +18,8 @@ export default {
     getWorkspaceName (workspace) {
       const names = getWorkspaceNames(workspace)
       const lang = getWorkspaceNameLang(names, this.lang)
-      return getWorkspaceName(workspace, names, lang)
+      return names[lang]
     }
-  }
-}
-
-/**
- * @param     workspace   optional
- * @param     lang        optional
- *
- * @return    possibly undefined
- */
-function getWorkspaceName (workspace, names, lang) {
-  if (lang) {
-    return names[lang]
-  } else if (workspace) {
-    return workspace.children['dmx.workspaces.workspace_name'].value
   }
 }
 

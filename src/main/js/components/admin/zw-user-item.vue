@@ -19,7 +19,7 @@
     </div>
     <div v-for="workspace in user.memberships">
       <span class="fa fa-fw fa-list"></span>
-      {{workspace.value}}
+      {{getWorkspaceName(workspace)}}
     </div>
   </el-collapse-item>
 </template>
@@ -28,6 +28,10 @@
 import zw from '../../zw-globals'
 
 export default {
+
+  mixins: [
+    require('../mixins/workspace-name').default
+  ],
 
   props: {
     user: {      // plain Username topic

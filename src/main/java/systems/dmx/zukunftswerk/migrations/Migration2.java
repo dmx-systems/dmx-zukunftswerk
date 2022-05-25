@@ -39,7 +39,8 @@ public class Migration2 extends Migration {
             .addCompDefBefore(mf.newCompDefModel(FR, false, false, WORKSPACE, WORKSPACE_NAME, ONE), SHARING_MODE);
         //
         // Create "Team" workspace ### FIXME: at the moment the frontend relies on a public team workspace
-        Topic team = wss.createWorkspace("Team", TEAM_WORKSPACE_URI, SharingMode.PUBLIC);
+        // Note: language specific workspace name is set by migration 6.
+        Topic team = wss.createWorkspace(TEAM_WORKSPACE_NAME, TEAM_WORKSPACE_URI, SharingMode.PUBLIC);
         acs.setWorkspaceOwner(team, ADMIN_USERNAME);
     }
 }

@@ -367,7 +367,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             List<RelatedTopic> workspaces = getZWWorkspaces(usernameTopic);
             Assoc membership = acs.getMembership(username, teamWorkspace.getId());
             if (membership != null) {
-                workspaces.add(membership.getDMXObjectByType(WORKSPACE));
+                workspaces.add(membership.getDMXObjectByType(WORKSPACE).loadChildTopics());
             }
             return workspaces;
         } catch (Exception e) {

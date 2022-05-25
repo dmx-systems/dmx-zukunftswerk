@@ -11,10 +11,10 @@
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="workspace in workspaces" :command="workspace.id" :key="workspace.id">
-              {{workspace.value}}
+              {{getWorkspaceName(workspace)}}
             </el-dropdown-item>
             <el-dropdown-item v-if="isTeam && teamWorkspace" :command="teamWorkspace.id" :divided="divided">
-              {{teamWorkspace.value}}
+              {{getWorkspaceName(teamWorkspace)}}
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>

@@ -6,39 +6,56 @@ export default {
   computed: {
 
     workspaceName () {
-      if (this.workspaceNameLang) {
-        return this.workspaceNames[this.workspaceNameLang]
-      } else if (this.workspace) {
-        return this.workspace.children['dmx.workspaces.workspace_name'].value
-      }
-    },
-
-    workspaceNames () {
-      if (this.workspace) {
-        const de = this.workspace.children['dmx.workspaces.workspace_name#zukunftswerk.de']
-        const fr = this.workspace.children['dmx.workspaces.workspace_name#zukunftswerk.fr']
-        return {
-          de: de && de.value,
-          fr: fr && fr.value
-        }
-      }
-    },
-
-    workspaceNameLang () {
-      const names = this.workspaceNames
-      if (names) {
-        if (names.de && names.fr) {
-          return this.lang
-        } else if (names.de) {
-          return 'de'
-        } else if (names.fr) {
-          return 'fr'
-        }
-      }
+      return this.getWorkspaceName(this.workspace)
     },
 
     lang () {
       return this.$store.state.lang
     }
+  },
+
+  methods: {
+    getWorkspaceName (workspace) {
+      const names = getWorkspaceNames(workspace)
+      const lang = getWorkspaceNameLang(names, this.lang)
+      return getWorkspaceName(workspace, names, lang)
+    }
+  }
+}
+
+/**
+ * @param     workspace   optional
+ * @param     lang        optional
+ *
+ * @return    possibly undefined
+ */
+function getWorkspaceName (workspace, names, lang) {
+  if (lang) {
+    return names[lang]
+  } else if (workspace) {
+    return workspace.children['dmx.workspaces.workspace_name'].value
+  }
+}
+
+/**
+ * @return    possibly undefined
+ */
+function getWorkspaceNameLang (names, lang) {
+  if (names.de && names.fr) {
+    return lang
+  } else if (names.de) {
+    return 'de'
+  } else if (names.fr) {
+    return 'fr'
+  }
+}
+
+/**
+ * @param   workspace   optional
+ */
+function getWorkspaceNames (workspace) {
+  return {
+    de: workspace?.children['dmx.workspaces.workspace_name#zukunftswerk.de']?.value,
+    fr: workspace?.children['dmx.workspaces.workspace_name#zukunftswerk.fr']?.value
   }
 }

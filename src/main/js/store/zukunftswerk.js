@@ -444,7 +444,7 @@ function create (type, topic, monolingual) {
       }
     })
   } else {
-    p = http.post(`/zukunftswerk/${type}`, topic.value, {
+    p = dmx.rpc._http.post(`/zukunftswerk/${type}`, topic.value, {      // suppress standard HTTP error handler
       headers: {
         'Content-Type': 'text/plain'
       }

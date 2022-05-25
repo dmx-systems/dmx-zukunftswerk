@@ -140,10 +140,7 @@ const actions = {
     }).then(response => {
       const users = response.data
       workspace.memberships = users.sort(zw.topicSort)
-      rootState.users.forEach(username => {
-        delete username.memberships                 // force refetch once needed
-        dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
-      })
+      collapseUsers(rootState, dispatch)
     })
   },
 
@@ -159,10 +156,7 @@ const actions = {
       }
     }).then(response => {
       username.memberships = response.data.sort(zw.topicSort)
-      state.workspaces.forEach(workspace => {
-        delete workspace.memberships                // force refetch once needed
-        dispatch('setExpandedWorkspaceIds', [])     // TODO: don't collapse but refetch later on when needed
-      })
+      collapseWorkspaces(dispatch)
     })
   },
 
@@ -173,17 +167,15 @@ const actions = {
       state.workspaces.push(new dmx.Topic(response.data))
       state.workspaces.sort(zw.topicSort)
       // team members are invited automatically, so we need to reset the User area
-      rootState.users.forEach(username => {
-        delete username.memberships                 // force refetch once needed
-        dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
-      })
+      collapseUsers(rootState, dispatch)
     })
   },
 
-  updateWorkspace (_, workspace) {
+  updateWorkspace ({rootState, dispatch}, workspace) {
     return dmx.rpc.updateTopic(workspace).then(workspace => {
       replaceWorkspace(workspace)   // TODO: fetch memberships
       state.workspaces.sort(zw.topicSort)
+      collapseUsers(rootState, dispatch)
     })
   },
 
@@ -192,6 +184,7 @@ const actions = {
       return dmx.rpc.deleteTopic(workspaceId)       // update server state
     }).then(() => {
       removeWorkspace(workspaceId)                  // update client state
+      // TODO: collapse?
     }).catch(() => {})                              // suppress unhandled rejection on cancel
   },
 
@@ -285,6 +278,20 @@ function updateUser(username, displayName) {
     Vue.set(children, 'zukunftswerk.display_name', {})
   }
   children['zukunftswerk.display_name'].value = displayName
+}
+
+function collapseWorkspaces (dispatch) {
+  state.workspaces.forEach(workspace => {
+    delete workspace.memberships                // force refetch once needed
+    dispatch('setExpandedWorkspaceIds', [])     // TODO: don't collapse but refetch later on when needed
+  })
+}
+
+function collapseUsers (rootState, dispatch) {
+  rootState.users.forEach(username => {
+    delete username.memberships                 // force refetch once needed
+    dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
+  })
 }
 
 // helper

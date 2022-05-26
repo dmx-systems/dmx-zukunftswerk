@@ -14,13 +14,16 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{origLang || 'de'}})
         </div>
-        <quill v-model="noteModel[origLang || 'de']" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        <quill v-model="noteModel1.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        <el-button class="translate-button" type="text" @click="translate">
+          <zw-string>action.translate</zw-string>
+        </el-button>
       </div>
       <div class="field">
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{translatedLang || 'fr'}})
         </div>
-        <quill v-model="noteModel[translatedLang || 'fr']" :options="quillOptions"></quill>
+        <quill v-model="noteModel2.value" :options="quillOptions" ref="translation"></quill>
       </div>
     </template>
     <div class="field">
@@ -105,10 +108,18 @@ export default {
       }
     },
 
+    noteModel1 () {
+      return this.noteModel[this.origLang || 'de']
+    },
+
+    noteModel2 () {
+      return this.noteModel[this.translatedLang || 'fr']
+    },
+
     noteModel () {
       return {
-        de: this.topicBuffer.children['zukunftswerk.note.de'].value,
-        fr: this.topicBuffer.children['zukunftswerk.note.fr'].value
+        de: this.topicBuffer.children['zukunftswerk.note.de'],
+        fr: this.topicBuffer.children['zukunftswerk.note.fr']
       }
     },
 
@@ -184,6 +195,15 @@ export default {
       this.$store.dispatch('cancel', this.topic)
     },
 
+    translate () {
+      // TODO: send target lang if known
+      this.$store.dispatch('translate', this.noteModel1.value).then(translation => {
+        // TODO: process detected lang
+        this.topicBuffer.children[`zukunftswerk.note.${this.translatedLang || 'fr'}`].value = translation.text
+        this.$refs.translation.setHTML(translation.text)    // TODO: atm vue-quill-minimum does not react on model change
+      })
+    },
+
     html (lang) {
       // Note: in a monolingual note "fr" is not defined
       const html = this.topic.children['zukunftswerk.note.' + lang]?.value
@@ -199,7 +219,7 @@ export default {
       }
       //
       const compDefUri = 'zukunftswerk.note.' + lang
-      this.topic.children[compDefUri].value = this.noteModel[lang]
+      this.topic.children[compDefUri].value = this.noteModel[lang].value
     },
 
     setColor (color) {
@@ -227,6 +247,10 @@ export default {
 <style>
 .zw-note {
   padding: 12px;
+}
+
+.zw-note.form .translate-button {
+  margin-top: 6px;
 }
 
 .zw-note.form .el-icon-arrow-down {

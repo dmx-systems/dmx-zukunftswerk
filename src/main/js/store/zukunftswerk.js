@@ -408,6 +408,10 @@ const actions = {
     }
   },
 
+  translate (_, text) {
+    return http.post('/zukunftswerk/translate', text).then(response => response.data)
+  },
+
   downloadFile (_, repoPath) {
     state.downloadUrl = filerepoUrl(repoPath) + '?download'
     setTimeout(() => {

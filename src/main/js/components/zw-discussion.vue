@@ -170,7 +170,7 @@ export default {
 
     resetNewCommentPanel (comment) {
       this.newComment = ''
-      this.$refs.newComment.setHTML('')     // why does binding not work here?
+      this.$refs.newComment.setHTML('')     // TODO: atm vue-quill-minimum does not react on model change
       this.refComment = undefined
       this.attachments = []
       this.jumpTo(comment, isChrome ? 'auto' : undefined)

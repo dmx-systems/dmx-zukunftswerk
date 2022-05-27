@@ -23,7 +23,7 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{translatedLang || 'fr'}})
         </div>
-        <quill v-model="noteModel2.value" :options="quillOptions" ref="translation"></quill>
+        <quill v-model="noteModel2.value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
       </div>
     </template>
     <div class="field">
@@ -74,7 +74,8 @@ export default {
       initColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
       color: undefined,               // selected color
       colors: zw.NOTE_COLORS,         // all colors
-      saving: false                   // true while note is saved
+      saving: false,                  // true while note is saved
+      translating: false              // true while translation is in progress
     }
   },
 
@@ -197,10 +198,12 @@ export default {
 
     translate () {
       // TODO: send target lang if known
+      this.translating = true
       this.$store.dispatch('translate', this.noteModel1.value).then(translation => {
         // TODO: process detected lang
         this.topicBuffer.children[`zukunftswerk.note.${this.translatedLang || 'fr'}`].value = translation.text
-        this.$refs.translation.setHTML(translation.text)    // TODO: atm vue-quill-minimum does not react on model change
+        this.$refs.translation.setHTML(translation.text)   // TODO: atm vue-quill-minimum does not react on model change
+        this.translating = false
       })
     },
 

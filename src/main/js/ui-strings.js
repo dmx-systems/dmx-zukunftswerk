@@ -137,12 +137,14 @@ export default {
   'warning.delete_user.fr': 'Vous êtes sur le point de supprimer cet utilisateur',
   'warning.translation_failed.de': 'Automatische Übersetzung fehlgeschlagen',
   'warning.translation_failed.fr': 'Échec de la traduction automatique',
-  'warning.confirm_create.de': `Deine Eingabe konnte nicht übersetzt werden. Klicke "Abbrechen", um weiter zu editieren
-    oder "Erstellen", um ohne Übersetzung zu speichern. Tipp: Wähle nach dem Erstellen "Ändern", um eine
+  'warning.translation_confirm.de': `Deine Eingabe konnte nicht übersetzt werden. Klicke "Abbrechen", um weiter zu
+    editieren oder "Erstellen", um ohne Übersetzung zu speichern. Tipp: Wähle nach dem Erstellen "Ändern", um eine
     Übersetzung hinzuzufügen.`,
-  'warning.confirm_create.fr': `Ta saisie n'a pas pu être traduite. Clique sur "Annuler" pour continuer à éditer ou sur
-    "Créer" pour enregistrer sans traduction. Conseil: après la création, choisis "Éditer" pour ajouter une
+  'warning.translation_confirm.fr': `Ta saisie n'a pas pu être traduite. Clique sur "Annuler" pour continuer à éditer
+    ou sur "Créer" pour enregistrer sans traduction. Conseil: après la création, choisis "Éditer" pour ajouter une
     traduction.`,
+  'warning.translation_alert.de': `Deine Eingabe konnte nicht übersetzt werden.`,
+  'warning.translation_alert.fr': `Ta saisie n'a pas pu être traduite.`,
 
   ...legal
 }

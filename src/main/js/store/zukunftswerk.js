@@ -292,9 +292,8 @@ const actions = {
    * @param   monolingual     Optional: if truish a monolingual comment is created (no auto-translation)
    */
   createComment (_, {comment, refTopicIds, fileTopicIds, monolingual}) {
-    const _http = monolingual ? http : dmx.rpc._http
     const suffix = monolingual ? '/monolingual' : ''
-    return _http.post(`/zukunftswerk/comment${suffix}`, comment, {
+    return http.post(`/zukunftswerk/comment${suffix}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
       },
@@ -434,6 +433,8 @@ store.registerModule('admin', adminStore)
 
 export default store
 
+// action helper
+
 /**
  * @param   type    'note'/'label'
  */
@@ -448,7 +449,7 @@ function create (type, topic, monolingual) {
       }
     })
   } else {
-    p = dmx.rpc._http.post(`/zukunftswerk/${type}`, topic.value, {      // suppress standard HTTP error handler
+    p = http.post(`/zukunftswerk/${type}`, topic.value, {
       headers: {
         'Content-Type': 'text/plain'
       }

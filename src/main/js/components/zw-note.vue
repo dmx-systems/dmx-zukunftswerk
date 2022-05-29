@@ -161,12 +161,13 @@ export default {
 
     save () {
       this.saving = true
-      let action, arg
+      let action, arg, msgBox
       if (this.isNew) {
         action = 'createNote'
         arg = {
           topic: this.topic
         }
+        msgBox = 'confirm'
       } else {
         action = 'updateNote'
         arg = this.topic
@@ -176,7 +177,7 @@ export default {
       }
       this.topic.setViewProp('zukunftswerk.color', this.color)
       this.$store.dispatch(action, arg).catch(error => {
-        return this.handleError(error)
+        return this.handleError(error, msgBox)
       }).then(result => {
         if (result === 'confirm') {
           arg.monolingual = true
@@ -203,6 +204,9 @@ export default {
         // TODO: process detected lang
         this.topicBuffer.children[`zukunftswerk.note.${this.translatedLang || 'fr'}`].value = translation.text
         this.$refs.translation.setHTML(translation.text)   // TODO: atm vue-quill-minimum does not react on model change
+      }).catch(error => {
+        return this.handleError(error, 'alert')
+      }).finally(() => {
         this.translating = false
       })
     },

@@ -326,15 +326,19 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     @Path("/translate")
     @Override
     public Translation translate(String text, @QueryParam("targetLang") String targetLang) {
-        if (targetLang == null) {
-            // "en" acts as dummy language, not used in this application.
-            // This translation's sole purpose is language detection for the original text.
-            Translation translation = deepls.translate(text, "en").get(0);
-            String origLang = translation.detectedSourceLang.toLowerCase();
-            targetLang = targetLang(origLang);
+        try {
+            if (targetLang == null) {
+                // "en" acts as dummy language, not used in this application.
+                // This translation's sole purpose is language detection for the original text.
+                Translation translation = deepls.translate(text, "en").get(0);
+                String origLang = translation.detectedSourceLang.toLowerCase();
+                targetLang = targetLang(origLang);
+            }
+            // actual translation
+            return deepls.translate(text, targetLang).get(0);
+        } catch (Exception e) {
+            throw new RuntimeException("Translation failed, text=\"" + text + "\", targetLang=" + targetLang, e);
         }
-        // actual translation
-        return deepls.translate(text, targetLang).get(0);
     }
 
     // --- Admin ---

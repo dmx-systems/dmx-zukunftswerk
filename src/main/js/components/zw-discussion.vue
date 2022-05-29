@@ -150,7 +150,7 @@ export default {
       this.$store.dispatch('createComment', commentModel).then(comment => {
         this.resetNewCommentPanel(comment)
       }).catch(error => {
-        return this.handleError(error)
+        return this.handleError(error, 'confirm')
       }).then(result => {
         if (result === 'confirm') {
           commentModel.monolingual = true

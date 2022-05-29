@@ -115,12 +115,13 @@ export default {
 
     save () {
       this.saving = true
-      let action, arg
+      let action, arg, msgBox
       if (this.isNew) {
         action = 'createLabel'
         arg = {
           topic: this.topic
         }
+        msgBox = 'confirm'
       } else {
         action = 'update'
         arg = this.topic
@@ -129,7 +130,7 @@ export default {
         this.setText('fr')
       }
       this.$store.dispatch(action, arg).catch(error => {
-        return this.handleError(error)
+        return this.handleError(error, msgBox)
       }).then(result => {
         if (result === 'confirm') {
           arg.monolingual = true

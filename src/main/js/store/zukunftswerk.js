@@ -292,8 +292,9 @@ const actions = {
    * @param   monolingual     Optional: if truish a monolingual comment is created (no auto-translation)
    */
   createComment (_, {comment, refTopicIds, fileTopicIds, monolingual}) {
+    const _http = monolingual ? http : dmx.rpc._http
     const suffix = monolingual ? '/monolingual' : ''
-    return http.post(`/zukunftswerk/comment${suffix}`, comment, {
+    return _http.post(`/zukunftswerk/comment${suffix}`, comment, {
       headers: {
         'Content-Type': 'text/plain'
       },
@@ -408,7 +409,8 @@ const actions = {
   },
 
   translate (_, text) {
-    return http.post('/zukunftswerk/translate', text).then(response => response.data)
+    // suppress standard HTTP error handler
+    return dmx.rpc._http.post('/zukunftswerk/translate', text).then(response => response.data)
   },
 
   downloadFile (_, repoPath) {
@@ -449,7 +451,7 @@ function create (type, topic, monolingual) {
       }
     })
   } else {
-    p = http.post(`/zukunftswerk/${type}`, topic.value, {
+    p = dmx.rpc._http.post(`/zukunftswerk/${type}`, topic.value, {      // suppress standard HTTP error handler
       headers: {
         'Content-Type': 'text/plain'
       }

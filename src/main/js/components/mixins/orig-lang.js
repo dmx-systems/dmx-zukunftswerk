@@ -3,7 +3,20 @@
  */
 export default {
 
+  data () {
+    return {
+      translating: false      // true while translation is in progress
+    }
+  },
+
   computed: {
+
+    model () {
+      return {
+        de: this.topicBuffer.children[`${this.type}.de`],
+        fr: this.topicBuffer.children[`${this.type}.fr`]
+      }
+    },
 
     // lang to be rendered in left column
     lang1 () {
@@ -27,6 +40,22 @@ export default {
       } else if (this.origLang === 'fr') {
         return 'de'
       }
+    }
+  },
+
+  methods: {
+    translate () {
+      // TODO: send target lang if known
+      this.translating = true
+      return this.$store.dispatch('translate', this.model[this.lang1].value).then(translation => {
+        // TODO: process detected lang
+        this.model[this.lang2].value = translation.text
+        return translation
+      }).catch(error => {
+        return this.handleError(error, 'alert')
+      }).finally(() => {
+        this.translating = false
+      })
     }
   }
 }

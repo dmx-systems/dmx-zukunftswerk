@@ -12,7 +12,7 @@
         <div class="field-label">
           <zw-string>item.label</zw-string> ({{lang1}})
         </div>
-        <el-input v-model="labelModel[lang1].value" ref="input"></el-input>
+        <el-input v-model="model[lang1].value" ref="input"></el-input>
         <el-button class="translate-button" type="text" @click="translate">
           <zw-string>action.translate</zw-string>
         </el-button>
@@ -21,7 +21,7 @@
         <div class="field-label">
           <zw-string>item.label</zw-string> ({{lang2}})
         </div>
-        <el-input v-model="labelModel[lang2].value" v-loading="translating"></el-input>
+        <el-input v-model="model[lang2].value" v-loading="translating"></el-input>
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -53,8 +53,8 @@ export default {
 
   data () {
     return {
-      saving: false,                // true while label is saved
-      translating: false            // true while translation is in progress
+      type: 'zukunftswerk.label',
+      saving: false                 // true while label is saved
     }
   },
 
@@ -80,13 +80,6 @@ export default {
         // Note: in a monolingual label "fr" is not defined
         de: this.topic.children['zukunftswerk.label.de'].value,
         fr: this.topic.children['zukunftswerk.label.fr']?.value
-      }
-    },
-
-    labelModel () {
-      return {
-        de: this.topicBuffer.children['zukunftswerk.label.de'],
-        fr: this.topicBuffer.children['zukunftswerk.label.fr']
       }
     },
 
@@ -147,20 +140,6 @@ export default {
       })
     },
 
-    // TODO: refactor. Principle copy in zw-note.vue
-    translate () {
-      // TODO: send target lang if known
-      this.translating = true
-      this.$store.dispatch('translate', this.labelModel[this.lang1].value).then(translation => {
-        // TODO: process detected lang
-        this.labelModel[this.lang2].value = translation.text
-      }).catch(error => {
-        return this.handleError(error, 'alert')
-      }).finally(() => {
-        this.translating = false
-      })
-    },
-
     setText (lang) {
       // Note: in a monolingual label "fr" is not defined     // TODO: simplify
       if (!this.topic.children['zukunftswerk.label.fr']) {
@@ -168,7 +147,7 @@ export default {
       }
       //
       const compDefUri = 'zukunftswerk.label.' + lang
-      this.topic.children[compDefUri].value = this.labelModel[lang].value
+      this.topic.children[compDefUri].value = this.model[lang].value
     }
   }
 }

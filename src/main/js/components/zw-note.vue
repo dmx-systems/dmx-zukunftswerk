@@ -14,9 +14,9 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{lang1}})
         </div>
-        <quill v-model="noteModel[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill">
+        <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill">
         </quill>
-        <el-button class="translate-button" type="text" @click="translate">
+        <el-button class="translate-button" type="text" @click="doTranslate">
           <zw-string>action.translate</zw-string>
         </el-button>
       </div>
@@ -24,7 +24,7 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{lang2}})
         </div>
-        <quill v-model="noteModel[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
+        <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
         </quill>
       </div>
     </template>
@@ -73,11 +73,11 @@ export default {
 
   data () {
     return {
+      type: 'zukunftswerk.note',
       initColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
       color: undefined,               // selected color
       colors: zw.NOTE_COLORS,         // all colors
-      saving: false,                  // true while note is saved
-      translating: false              // true while translation is in progress
+      saving: false                   // true while note is saved
     }
   },
 
@@ -108,13 +108,6 @@ export default {
       return {
         de: this.html('de'),
         fr: this.html('fr')
-      }
-    },
-
-    noteModel () {
-      return {
-        de: this.topicBuffer.children['zukunftswerk.note.de'],
-        fr: this.topicBuffer.children['zukunftswerk.note.fr']
       }
     },
 
@@ -189,18 +182,9 @@ export default {
       this.$store.dispatch('cancel', this.topic)
     },
 
-    // TODO: refactor. Principle copy in zw-label.vue
-    translate () {
-      // TODO: send target lang if known
-      this.translating = true
-      this.$store.dispatch('translate', this.noteModel[this.lang1].value).then(translation => {
-        // TODO: process detected lang
-        this.noteModel[this.lang2].value = translation.text
+    doTranslate () {
+      this.translate().then(translation => {
         this.$refs.translation.setHTML(translation.text)   // TODO: atm vue-quill-minimum does not react on model change
-      }).catch(error => {
-        return this.handleError(error, 'alert')
-      }).finally(() => {
-        this.translating = false
       })
     },
 
@@ -219,7 +203,7 @@ export default {
       }
       //
       const compDefUri = 'zukunftswerk.note.' + lang
-      this.topic.children[compDefUri].value = this.noteModel[lang].value
+      this.topic.children[compDefUri].value = this.model[lang].value
     },
 
     setColor (color) {

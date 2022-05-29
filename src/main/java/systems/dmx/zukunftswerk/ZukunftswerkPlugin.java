@@ -44,7 +44,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -250,7 +249,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     @POST
     @Path("/note")
-    @Consumes("text/plain")
     @Transactional
     @Override
     public Topic createNote(String note) {
@@ -263,7 +261,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     @POST
     @Path("/label")
-    @Consumes("text/plain")
     @Transactional
     @Override
     public Topic createLabel(String label) {
@@ -276,7 +273,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     @POST
     @Path("/comment")
-    @Consumes("text/plain")
     @Transactional
     @Override
     public Topic createComment(String comment, @QueryParam("refTopicIds") IdList refTopicIds,
@@ -291,7 +287,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     @POST
     @Path("/comment/monolingual")
-    @Consumes("text/plain")
     @Transactional
     @Override
     public Topic createMonolingualComment(String comment, @QueryParam("refTopicIds") IdList refTopicIds,

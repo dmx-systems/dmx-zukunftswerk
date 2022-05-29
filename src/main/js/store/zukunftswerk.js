@@ -295,9 +295,6 @@ const actions = {
     const _http = monolingual ? http : dmx.rpc._http
     const suffix = monolingual ? '/monolingual' : ''
     return _http.post(`/zukunftswerk/comment${suffix}`, comment, {
-      headers: {
-        'Content-Type': 'text/plain'
-      },
       params: {
         refTopicIds: refTopicIds.join(','),
         fileTopicIds: fileTopicIds.join(',')
@@ -451,11 +448,8 @@ function create (type, topic, monolingual) {
       }
     })
   } else {
-    p = dmx.rpc._http.post(`/zukunftswerk/${type}`, topic.value, {      // suppress standard HTTP error handler
-      headers: {
-        'Content-Type': 'text/plain'
-      }
-    }).then(response => response.data)
+    // suppress standard HTTP error handler
+    p = dmx.rpc._http.post(`/zukunftswerk/${type}`, topic.value).then(response => response.data)
   }
   return p.then(_topic => {
     addTopicToTopicmap(topic, _topic)

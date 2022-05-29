@@ -19,8 +19,8 @@ export default {
             showClose: false,
           })
         case 'alert':
-          return this.$alert(zw.getString('warning.translation_alert'), {
-            title:           zw.getString('warning.translation_failed'),
+          return this.$alert(  zw.getString('warning.translation_alert'), {
+            title:             zw.getString('warning.translation_failed'),
             type: 'warning',
             showClose: false,
           })

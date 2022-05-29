@@ -8,17 +8,20 @@
       <el-input v-model="topic.value" ref="input"></el-input>
     </template>
     <template v-else>
-      <div class="field">
+      <div class="field left-col">
         <div class="field-label">
-          <zw-string>item.label</zw-string> ({{origLang || 'de'}})
+          <zw-string>item.label</zw-string> ({{lang1}})
         </div>
-        <el-input v-model="labelModel[origLang || 'de'].value" ref="input"></el-input>
+        <el-input v-model="labelModel[lang1].value" ref="input"></el-input>
+        <el-button class="translate-button" type="text" @click="translate">
+          <zw-string>action.translate</zw-string>
+        </el-button>
       </div>
       <div class="field">
         <div class="field-label">
-          <zw-string>item.label</zw-string> ({{translatedLang || 'fr'}})
+          <zw-string>item.label</zw-string> ({{lang2}})
         </div>
-        <el-input v-model="labelModel[translatedLang || 'fr'].value"></el-input>
+        <el-input v-model="labelModel[lang2].value" v-loading="translating"></el-input>
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -50,7 +53,8 @@ export default {
 
   data () {
     return {
-      saving: false                 // true while label is saved
+      saving: false,                // true while label is saved
+      translating: false            // true while translation is in progress
     }
   },
 
@@ -97,9 +101,7 @@ export default {
     },
 
     labelText () {
-      if (this.labelLang) {
-        return this.label[this.labelLang]
-      }
+      return this.label[this.labelLang]
     },
 
     isNew () {
@@ -145,6 +147,20 @@ export default {
       })
     },
 
+    // TODO: refactor. Principle copy in zw-note.vue
+    translate () {
+      // TODO: send target lang if known
+      this.translating = true
+      this.$store.dispatch('translate', this.labelModel[this.lang1].value).then(translation => {
+        // TODO: process detected lang
+        this.labelModel[this.lang2].value = translation.text
+      }).catch(error => {
+        return this.handleError(error, 'alert')
+      }).finally(() => {
+        this.translating = false
+      })
+    },
+
     setText (lang) {
       // Note: in a monolingual label "fr" is not defined     // TODO: simplify
       if (!this.topic.children['zukunftswerk.label.fr']) {
@@ -179,5 +195,16 @@ export default {
 
 .zw-label.form.new .save-button {
   margin-top: 6px;
+}
+
+.zw-label.form .translate-button {
+  position: absolute;
+  display: block;
+  visibility: hidden;
+  margin-top: 1px;
+}
+
+.zw-label.form .left-col:hover .translate-button {
+  visibility: visible;
 }
 </style>

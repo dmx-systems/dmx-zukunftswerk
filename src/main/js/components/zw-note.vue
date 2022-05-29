@@ -189,6 +189,7 @@ export default {
       this.$store.dispatch('cancel', this.topic)
     },
 
+    // TODO: refactor. Principle copy in zw-label.vue
     translate () {
       // TODO: send target lang if known
       this.translating = true

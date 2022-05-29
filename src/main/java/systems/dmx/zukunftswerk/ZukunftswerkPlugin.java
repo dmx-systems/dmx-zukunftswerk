@@ -326,7 +326,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 // "en" acts as dummy language, not used in this application.
                 // This translation's sole purpose is language detection for the original text.
                 Translation translation = deepls.translate(text, "en").get(0);
-                String origLang = translation.detectedSourceLang.toLowerCase();
+                String origLang = translation.detectedSourceLang;
                 targetLang = targetLang(origLang);
             }
             // actual translation
@@ -478,7 +478,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     private TopicModel createBilingualTopicModel(String topicTypeUri, String text) {
         Translation translation = translate(text, null);
-        String origLang = translation.detectedSourceLang.toLowerCase();
+        String origLang = translation.detectedSourceLang;
         String targetLang = targetLang(origLang);
         return mf.newTopicModel(topicTypeUri, mf.newChildTopicsModel()
             .set(topicTypeUri + "." + origLang, text)

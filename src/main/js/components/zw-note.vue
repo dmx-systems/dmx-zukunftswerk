@@ -10,20 +10,22 @@
       </div>
     </template>
     <template v-else>
-      <div class="field">
+      <div class="field left-col">
         <div class="field-label">
-          <zw-string>item.note</zw-string> ({{origLang || 'de'}})
+          <zw-string>item.note</zw-string> ({{lang1}})
         </div>
-        <quill v-model="noteModel1.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        <quill v-model="noteModel[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill">
+        </quill>
         <el-button class="translate-button" type="text" @click="translate">
           <zw-string>action.translate</zw-string>
         </el-button>
       </div>
       <div class="field">
         <div class="field-label">
-          <zw-string>item.note</zw-string> ({{translatedLang || 'fr'}})
+          <zw-string>item.note</zw-string> ({{lang2}})
         </div>
-        <quill v-model="noteModel2.value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
+        <quill v-model="noteModel[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
+        </quill>
       </div>
     </template>
     <div class="field">
@@ -109,14 +111,6 @@ export default {
       }
     },
 
-    noteModel1 () {
-      return this.noteModel[this.origLang || 'de']
-    },
-
-    noteModel2 () {
-      return this.noteModel[this.translatedLang || 'fr']
-    },
-
     noteModel () {
       return {
         de: this.topicBuffer.children['zukunftswerk.note.de'],
@@ -135,9 +129,7 @@ export default {
     },
 
     noteHtml () {
-      if (this.noteLang) {
-        return this.note[this.noteLang]
-      }
+      return this.note[this.noteLang]
     },
 
     isNew () {
@@ -200,9 +192,9 @@ export default {
     translate () {
       // TODO: send target lang if known
       this.translating = true
-      this.$store.dispatch('translate', this.noteModel1.value).then(translation => {
+      this.$store.dispatch('translate', this.noteModel[this.lang1].value).then(translation => {
         // TODO: process detected lang
-        this.topicBuffer.children[`zukunftswerk.note.${this.translatedLang || 'fr'}`].value = translation.text
+        this.noteModel[this.lang2].value = translation.text
         this.$refs.translation.setHTML(translation.text)   // TODO: atm vue-quill-minimum does not react on model change
       }).catch(error => {
         return this.handleError(error, 'alert')
@@ -257,7 +249,13 @@ export default {
 }
 
 .zw-note.form .translate-button {
-  margin-top: 6px;
+  position: absolute;
+  visibility: hidden;
+  margin-top: 1px;
+}
+
+.zw-note.form .left-col:hover .translate-button {
+  visibility: visible;
 }
 
 .zw-note.form .el-icon-arrow-down {

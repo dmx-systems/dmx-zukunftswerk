@@ -67,8 +67,7 @@ export default {
 
   mixins: [
     require('./mixins/mode').default,
-    require('./mixins/translation').default,
-    require('./mixins/orig-lang').default
+    require('./mixins/translation').default
   ],
 
   data () {
@@ -184,7 +183,10 @@ export default {
 
     doTranslate () {
       this.translate().then(translation => {
-        this.$refs.translation.setHTML(translation.text)   // TODO: atm vue-quill-minimum does not react on model change
+        // Note: in case of translation error 'confirm' is passed (String)
+        if (translation instanceof Object) {
+          this.$refs.translation.setHTML(translation.text) // TODO: atm vue-quill-minimum does not react on model change
+        }
       })
     },
 

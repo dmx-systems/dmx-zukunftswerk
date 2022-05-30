@@ -26,16 +26,21 @@
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <div class="columns">
       <template v-if="infoMode">
-        <div class="dmx-html-field info left" v-html="comment[origLang || 'de']"></div>
-        <div class="dmx-html-field info right" v-html="comment[translatedLang || 'fr']"></div>
+        <div class="dmx-html-field info left" v-html="comment[lang1]"></div>
+        <div class="dmx-html-field info right" v-html="comment[lang2]"></div>
       </template>
       <template v-else>
         <div class="dmx-html-field left">
-          <quill v-model="commentModel[origLang || 'de']" :options="quillOptions" @quill-ready="focus" ref="quill">
+          <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill">
           </quill>
+          <el-button class="translate-button" type="text" @click="doTranslate">
+            <zw-string>action.translate</zw-string>
+          </el-button>
         </div>
         <div class="dmx-html-field right">
-          <quill v-model="commentModel[translatedLang || 'fr']" :options="quillOptions"></quill>
+          <quill v-model="model[lang2].value" :options="quillOptions" ref="translation"
+            v-loading="translating">
+          </quill>
         </div>
       </template>
     </div>
@@ -60,7 +65,7 @@ export default {
 
   mixins: [
     require('./mixins/mode').default,
-    require('./mixins/orig-lang').default
+    require('./mixins/translation').default
   ],
 
   props: {
@@ -72,6 +77,7 @@ export default {
 
   data () {
     return {
+      type: 'zukunftswerk.comment',
       mode: 'info',             // 'info'/'form'
       topicBuffer: undefined,   // the edit buffer (dmx.Topic)
       saving: false             // true while comment is saved
@@ -85,13 +91,6 @@ export default {
         // Note: in a monolingual comment "fr" is not defined
         de: this.topic.children['zukunftswerk.comment.de'].value,
         fr: this.topic.children['zukunftswerk.comment.fr']?.value
-      }
-    },
-
-    commentModel () {
-      return {
-        de: this.topicBuffer.children['zukunftswerk.comment.de'].value,
-        fr: this.topicBuffer.children['zukunftswerk.comment.fr'].value
       }
     },
 
@@ -182,7 +181,7 @@ export default {
       this.saving = true
       this.$store.dispatch('updateComment', {
         commentId: this.topic.id,
-        commentModel: this.commentModel
+        commentModel: this.model
       }).then(() => {
         this.mode = 'info'
         this.saving = false
@@ -208,6 +207,15 @@ export default {
       if (!this.topicBuffer.children['zukunftswerk.comment.fr']) {
         this.topicBuffer.children['zukunftswerk.comment.fr'] = {value: ""}
       }
+    },
+
+    doTranslate () {
+      this.translate().then(translation => {
+        // Note: in case of translation error 'confirm' is passed (String)
+        if (translation instanceof Object) {
+          this.$refs.translation.setHTML(translation.text) // TODO: atm vue-quill-minimum does not react on model change
+        }
+      })
     },
 
     // Note: can't be named "delete"
@@ -308,6 +316,16 @@ export default {
 
 .zw-comment .columns > .right .ql-editor {
   padding: 0 0 0 15px !important;
+}
+
+.zw-comment .columns > .left .translate-button {
+  position: absolute;
+  visibility: hidden;
+  margin-top: -2px;
+}
+
+.zw-comment .columns > .left:hover .translate-button {
+  visibility: visible;
 }
 
 .zw-comment .columns.glow {

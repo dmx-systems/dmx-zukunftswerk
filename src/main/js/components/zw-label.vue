@@ -41,7 +41,6 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
-    require('./mixins/orig-lang').default,
     require('./mixins/cancel').default
   ],
 

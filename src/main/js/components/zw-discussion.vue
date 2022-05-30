@@ -53,7 +53,7 @@ console.log('[ZW] isChrome', isChrome)
 export default {
 
   mixins: [
-    require('./mixins/translation').default
+    require('./mixins/error-handling').default
   ],
 
   data () {
@@ -290,6 +290,7 @@ export default {
 
 .zw-discussion .comments {
   overflow: auto;
+  position: relative;     /* scroll absolute positioned childs along, e.g. the "Translate" button */
 }
 
 .zw-discussion .comments .zw-comment {

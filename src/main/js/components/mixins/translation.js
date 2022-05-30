@@ -1,32 +1,68 @@
-import zw from '../../zw-globals'
-import errorHandler from '../../error-handler'
-
+/**
+ * Note: the host component is expected to hold
+ * - topic        any topic which has an "Original Language" field (dmx.ViewTopic)
+ * - type         base URI of topic's type, e.g. 'zukunftswerk.note'
+ * - topicBuffer  the buffer used for topic editing (dmx.ViewTopic)
+ */
 export default {
-  methods: {
-    /**
-     * @param   msgBox    Optional: 'confirm'/'alert'
-     */
-    handleError (error, msgBox) {
-      const message = /java\.lang\.RuntimeException: Unsupported original language: ".." \(detected\)/
-      if (error.response.data.cause.match(message)) {
-        switch (msgBox) {
-        case 'confirm':
-          return this.$confirm(zw.getString('warning.translation_confirm'), {
-            title:             zw.getString('warning.translation_failed'),
-            type: 'warning',
-            confirmButtonText: zw.getString('action.create'),
-            cancelButtonText:  zw.getString('action.cancel'),
-            showClose: false,
-          })
-        case 'alert':
-          return this.$alert(  zw.getString('warning.translation_alert'), {
-            title:             zw.getString('warning.translation_failed'),
-            type: 'warning',
-            showClose: false,
-          })
-        }
+
+  mixins: [
+    require('./error-handling').default
+  ],
+
+  data () {
+    return {
+      translating: false      // true while translation is in progress
+    }
+  },
+
+  computed: {
+
+    model () {
+      return {
+        de: this.topicBuffer.children[`${this.type}.de`],
+        fr: this.topicBuffer.children[`${this.type}.fr`]
       }
-      errorHandler(error)         // fallback to generic error handler
+    },
+
+    // lang to be rendered in left column
+    lang1 () {
+      return this.origLang || 'de'
+    },
+
+    // lang to be rendered in right column
+    lang2 () {
+      return this.translatedLang || 'fr'
+    },
+
+    origLang () {
+      // Note: a monolingual topic has no "Original Language", "origLang" is undefined then
+      return this.topic.children['zukunftswerk.language#zukunftswerk.original_language']?.value
+    },
+
+    // Note: for a monolingual topic "translatedLang" is undefined
+    translatedLang () {
+      if (this.origLang === 'de') {
+        return 'fr'
+      } else if (this.origLang === 'fr') {
+        return 'de'
+      }
+    }
+  },
+
+  methods: {
+    translate () {
+      // TODO: send target lang if known
+      this.translating = true
+      return this.$store.dispatch('translate', this.model[this.lang1].value).then(translation => {
+        // TODO: process detected lang
+        this.model[this.lang2].value = translation.text
+        return translation
+      }).catch(error => {
+        return this.handleError(error, 'alert')
+      }).finally(() => {
+        this.translating = false
+      })
     }
   }
 }

@@ -23,6 +23,7 @@ export default {
   getLogo,
 
   topicSort,
+  canvasFilter,
   confirmDeletion,
 
   quillOptions,
@@ -60,6 +61,14 @@ function getLogo () {
 
 function topicSort (t1, t2) {
   return t1.value.localeCompare(t2.value)
+}
+
+function canvasFilter (topic) {
+  return topic.typeUri === 'zukunftswerk.document' ||
+         topic.typeUri === 'zukunftswerk.note'     ||
+         topic.typeUri === 'zukunftswerk.label'    ||
+         topic.typeUri === 'zukunftswerk.arrow'    ||
+         topic.typeUri === 'zukunftswerk.viewport'
 }
 
 function confirmDeletion (textKey = 'warning.delete') {

@@ -52,7 +52,7 @@ export default {
     },
 
     topics () {
-      return this.topicmap ? this.topicmap.topics.filter(this.canvasFilter) : []
+      return this.topicmap ? this.topicmap.topics.filter(zw.canvasFilter) : []
     },
 
     newTopics () {
@@ -82,14 +82,6 @@ export default {
   },
 
   methods: {
-
-    canvasFilter (topic) {
-      return topic.typeUri === 'zukunftswerk.document' ||
-             topic.typeUri === 'zukunftswerk.note'     ||
-             topic.typeUri === 'zukunftswerk.label'    ||
-             topic.typeUri === 'zukunftswerk.arrow'    ||
-             topic.typeUri === 'zukunftswerk.viewport'
-    },
 
     mode (topic) {
       return this.$store.state.isEditActive.includes(topic.id) ? 'form' : 'info'

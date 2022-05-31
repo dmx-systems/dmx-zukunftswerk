@@ -22,5 +22,10 @@ export default message => {
       }
     }
     break
+  case 'setTopicPosition':
+    const topicmap = store.state.topicmap
+    if (message.args.topicmapId === topicmap.id) {
+      topicmap.getTopic(message.args.topicId).setPosition(message.args.pos)
+    }
   }
 }

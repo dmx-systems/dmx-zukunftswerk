@@ -27,5 +27,14 @@ export default message => {
     if (message.args.topicmapId === topicmap.id) {
       topicmap.getTopic(message.args.topicId).setPosition(message.args.pos)
     }
+    break
+  case 'processDirectives':
+    message.args.forEach(directive => {
+      switch (directive.type) {
+      case 'DELETE_TOPIC':
+        store.state.topicmap.removeTopic(directive.arg.id)
+      }
+    })
+    break
   }
 }

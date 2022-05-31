@@ -7,6 +7,32 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.2** -- upcoming
+
+* Features:
+    * Client-sync for canvas items
+        * Notes, Documents, Arrows, Headings, Viewport Topic
+        * Operations: Create, Move, Delete
+* Improvements:
+    * Auto-translation:
+        * Untranslatable notes and headings can be saved as well
+        * Notes, headings, and comments can be auto-translated afterwards
+    * Canvas:
+        * Add "white" and "transparent" as Note colors
+        * Slightly more prominent grid in the background. The grid now zooms along with canvas.
+        * Arrows:
+            * Arrows appear before other items (except selected items and forms)
+            * Different mouse cursors for move-arrow vs. move-arrow-handle
+        * Draggable items show hand cursor.
+    * Discussion panel: strip "video" button from text editor (Quill) toolbar.
+* Fixes:
+    * Login of users who are not Team members
+    * Set initial viewport in zoomed topicmaps. "Persistent Viewport" feature is now complete.
+    * Header: show workspace names in dropdown bilingually
+    * Admin area: user list shows workspace names bilingually
+    * Admin area: user area is up-to-date once workspace edited
+    * PDF viewer works with Chinese
+
 **1.1** -- May 6, 2022
 
 * Features:

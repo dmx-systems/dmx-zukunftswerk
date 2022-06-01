@@ -4,7 +4,9 @@ import dmx from 'dmx-api'
 import Vue from 'vue'
 
 export default message => {
+  const topicmap = store.state.topicmap
   switch (message.type) {
+  // Discussion panel
   case 'addComment':
     if (message.args.workspaceId === store.state.workspace.id) {
       const comment = message.args.comment
@@ -14,16 +16,16 @@ export default message => {
       })
     }
     break
+  // Canvas
   case 'addTopicToTopicmap':
-    if (message.args.topicmapId === store.state.topicmap.id) {
+    if (message.args.topicmapId === topicmap.id) {
       const topic = message.args.viewTopic
       if (zw.canvasFilter(topic)) {
-        store.dispatch('addTopicToTopicmap', new dmx.ViewTopic(topic))
+        topicmap.addTopic(new dmx.ViewTopic(topic))
       }
     }
     break
   case 'setTopicPosition':
-    const topicmap = store.state.topicmap
     if (message.args.topicmapId === topicmap.id) {
       topicmap.getTopic(message.args.topicId).setPosition(message.args.pos)
     }
@@ -31,8 +33,14 @@ export default message => {
   case 'processDirectives':
     message.args.forEach(directive => {
       switch (directive.type) {
+      case 'UPDATE_TOPIC':
+        const topic = directive.arg
+        topic.viewProps = topicmap.getTopic(topic.id).viewProps
+        topicmap.addTopic(new dmx.ViewTopic(topic))
+        break
       case 'DELETE_TOPIC':
-        store.state.topicmap.removeTopic(directive.arg.id)
+        topicmap.removeTopic(directive.arg.id)
+        break
       }
     })
     break

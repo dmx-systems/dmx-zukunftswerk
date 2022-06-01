@@ -287,13 +287,6 @@ const actions = {
   },
 
   /**
-   * @param   topic   a dmx.ViewTopic
-   */
-  addTopicToTopicmap (_, topic) {
-    state.topicmap.addTopic(topic)
-  },
-
-  /**
    * @param   comment         the comment (String)
    * @param   refTopicIds     array: a Comment ID, or a Document ID, or both
    * @param   monolingual     Optional: if truish a monolingual comment is created (no auto-translation)

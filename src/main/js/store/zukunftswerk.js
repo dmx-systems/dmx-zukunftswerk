@@ -491,7 +491,7 @@ function initUserState (username) {
           state.isTeam = isWritable
         }),
       http.get('/zukunftswerk/workspaces').then(response => {
-        state.workspaces = response.data
+        state.workspaces = response.data  // TODO: sort
       }),
       store.dispatch('fetchAllUsers')     // needed for accessing display names
     ])

@@ -34,7 +34,7 @@
             </zw-attachment>
           </div>
         </div>
-        <el-button class="submit-button" type="text" icon="el-icon-circle-plus" size="medium" @click="createComment">
+        <el-button class="submit-button" type="text" icon="el-icon-s-promotion" size="medium" @click="createComment">
         </el-button>
       </div>
     </template>
@@ -351,6 +351,6 @@ export default {
 
 .zw-discussion .new-comment-container .submit-button {
   font-size: 30px;
-  margin: 0 10px 6px 10px;
+  margin: 0 10px 7px 10px;
 }
 </style>

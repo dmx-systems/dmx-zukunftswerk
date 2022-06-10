@@ -102,21 +102,28 @@ const actions = {
    * Precondition: User state is up-to-date.
    */
   getInitialWorkspaceId () {
-    const workspaceId = state.routerModule.router.currentRoute.query.workspaceId
+    // 1) take from URL
+    let workspaceId = state.routerModule.router.currentRoute.query.workspaceId
     if (workspaceId) {
       return workspaceId
-    // TODO: read workspace ID from cookie
-    } else if (state.isTeam) {
-      return state.teamWorkspace.then(workspace => workspace.id)
-    } else {
-      workspaceId = state.workspaces[0]?.id
-      if (!workspaceId) {
-        throw Error("Benutzer \"" + state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte nimm " +
-          "Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + state.username + "\" n'a pas encore été " +
-          "affecté à un domaine d'activité. Veuillez prendre contact avec l'équipe de Zukunftswerk.")
-      }
+    }
+    // 2) take from cookie
+    workspaceId = dmx.utils.getCookie('dmx_workspace_id')
+    if (workspaceId) {
       return workspaceId
     }
+    // 3) team members land in "Team" workspace
+    if (state.isTeam) {
+      return state.teamWorkspace.then(workspace => workspace.id)
+    }
+    // 4) take first workspace (based on memberships)
+    workspaceId = state.workspaces[0]?.id
+    if (!workspaceId) {
+      throw Error("Benutzer \"" + state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte nimm " +
+        "Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + state.username + "\" n'a pas encore été " +
+        "affecté à un domaine d'activité. Veuillez prendre contact avec l'équipe de Zukunftswerk.")
+    }
+    return workspaceId
   },
 
   setLang (_, lang) {

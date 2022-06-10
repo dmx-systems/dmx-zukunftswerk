@@ -99,13 +99,17 @@ const actions = {
   },
 
   /**
-   * Depends on up-to-date User state.
+   * Precondition: User state is up-to-date.
    */
   getInitialWorkspaceId () {
-    if (state.isTeam) {
+    const workspaceId = state.routerModule.router.currentRoute.query.workspaceId
+    if (workspaceId) {
+      return workspaceId
+    // TODO: read workspace ID from cookie
+    } else if (state.isTeam) {
       return state.teamWorkspace.then(workspace => workspace.id)
     } else {
-      const workspaceId = state.workspaces[0]?.id
+      workspaceId = state.workspaces[0]?.id
       if (!workspaceId) {
         throw Error("Benutzer \"" + state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte nimm " +
           "Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + state.username + "\" n'a pas encore été " +

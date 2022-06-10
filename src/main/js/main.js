@@ -8,7 +8,7 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2022/06/05')
+console.log('[ZW] 2022/06/10')
 
 // 1) Init dmx library
 dmx.init({

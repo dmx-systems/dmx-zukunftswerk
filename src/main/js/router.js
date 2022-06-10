@@ -73,7 +73,11 @@ router.beforeEach((to, from, next) => {
       if (to.name === 'login') {
         next()
       } else {
-        next({name: 'login'})
+        const loc = {name: 'login', query: {}}
+        if (to.name === 'workspace') {
+          loc.query.workspaceId = to.params.workspaceId
+        }
+        next(loc)
       }
     }
   }).catch(error => {

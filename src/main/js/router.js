@@ -56,15 +56,23 @@ router.beforeEach((to, from, next) => {
     if (['imprint', 'privacy_policy'].includes(to.name)) {
       next()
     } else if (store.state.username) {
+      let init = false
       if (to.name === 'workspace') {
         next()
       } else if (to.name === 'admin') {
         if (store.state.isTeam) {
           next()
         } else {
-          next(false)
+          if (from.name) {
+            next(false)
+          } else {
+            init = true
+          }
         }
       } else {
+        init = true
+      }
+      if (init) {
         store.dispatch('getInitialWorkspaceId').then(workspaceId => {
           next({name: 'workspace', params: {workspaceId}})
         })

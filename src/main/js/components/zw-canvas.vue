@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-canvas" :style="style" @wheel="wheel">
+  <div class="zw-canvas" :style="style" ref="canvas" @wheel="wheelZoom">
     <el-dropdown v-if="isTeam || isEditor" trigger="click" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -9,6 +9,10 @@
         <el-dropdown-item command="newArrow"><zw-string>item.arrow</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+    <div class="zoom-panel">
+      <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
+      <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
+    </div>
     <div class="content-layer" :style="contentLayerStyle">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
@@ -143,11 +147,20 @@ export default {
       }
     },
 
-    wheel (e) {
-      const zoom = Math.min(Math.max(this.zoom - .003 * e.deltaY, .2), 2)
+    stepZoom (delta) {
+      const c = this.$refs.canvas
+      this.setZoom(this.zoom + delta, c.clientWidth / 2, c.clientHeight / 2)
+    },
+
+    wheelZoom (e) {
+      this.setZoom(this.zoom - .003 * e.deltaY, e.clientX, e.clientY - HEADER_HEIGHT)
+    },
+
+    setZoom (zoom, cx, cy) {
+      zoom = Math.min(Math.max(zoom, .2), 2)
       const zoomChange = zoom - this.zoom
-      const px = (e.clientX - this.pan.x) / this.zoom * zoomChange
-      const py = (e.clientY - this.pan.y - HEADER_HEIGHT) / this.zoom * zoomChange
+      const px = (cx - this.pan.x) / this.zoom * zoomChange
+      const py = (cy - this.pan.y) / this.zoom * zoomChange
       this.$store.dispatch('setViewport', {pan: {x: this.pan.x - px, y: this.pan.y - py}, zoom})
     }
   },
@@ -164,6 +177,7 @@ function newArrowId () {
 
 <style>
 .zw-canvas {
+  position: relative;
   flex-grow: 1;
   background-image: url("../../resources-build/grid.png");
   min-width: 0;
@@ -178,6 +192,17 @@ function newArrowId () {
   z-index: 1;           /* place button above canvas items */
   font-size: 24px;
   margin: 8px;
+}
+
+.zw-canvas .zoom-panel {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  z-index: 1;           /* place zoom buttons above canvas items */
+}
+
+.zw-canvas .zoom-panel .el-button {
+  font-size: 24px;
 }
 
 .zw-canvas .content-layer {

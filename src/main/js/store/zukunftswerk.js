@@ -187,13 +187,13 @@ const actions = {
   },
 
   setPan (_, pan) {
-    // FIXME: update client state (topicmap model)?
+    // TODO: update client state (topicmap model)?
     state.pan = pan
     setTopicmapViewport()     // update server state (debounced)
   },
 
   setViewport (_, {pan, zoom}) {
-    // FIXME: update client state (topicmap model)?
+    // TODO: update client state (topicmap model)?
     state.pan = pan
     state.zoom = zoom
     setTopicmapViewport()     // update server state (debounced)

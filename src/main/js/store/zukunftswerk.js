@@ -112,7 +112,7 @@ const actions = {
     if (workspaceId) {
       return workspaceId
     }
-    // 3) team members land in "Team" workspace
+    // 3) team members land in "Team" workspace (at first login there are no ZW event workspaces)
     if (state.isTeam) {
       return state.teamWorkspace.then(workspace => workspace.id)
     }
@@ -499,6 +499,8 @@ function initUserState (username) {
     state.username = ''
     state.workspaces = []
     state.isTeam = false
+    state.workspace = undefined
+    updateWorkspaceCookie()
     return Promise.resolve()
   }
 }
@@ -506,6 +508,8 @@ function initUserState (username) {
 function updateWorkspaceCookie () {
   if (state.workspace) {
     dmx.utils.setCookie('dmx_workspace_id', state.workspace.id)
+  } else {
+    dmx.utils.deleteCookie('dmx_workspace_id')
   }
 }
 

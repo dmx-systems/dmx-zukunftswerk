@@ -11,7 +11,7 @@
         <tr v-for="(user, i) in users">
           <td>{{user.value}}</td>
           <td><el-checkbox v-model="model1[i]"></el-checkbox></td>
-          <td><el-checkbox v-model="model2[i]"></el-checkbox></td>
+          <td><el-checkbox v-model="model2[i]" :disabled="!model1[i]"></el-checkbox></td>
         </tr>
       </table>
     </div>
@@ -34,7 +34,6 @@ export default {
   ],
 
   created () {
-    // console.log('zw-workspace-memberships')
     this.initModel()
   },
 

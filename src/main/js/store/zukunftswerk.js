@@ -81,7 +81,7 @@ const actions = {
     })
   },
 
-  logout ({dispatch}) {
+  logout () {
     DEV && console.log('[ZW] Logout', state.username)
     return dmx.rpc.logout().then(initUserState)
   },
@@ -130,10 +130,11 @@ const actions = {
     state.lang = lang
   },
 
-  setWorkspace (_, workspaceId) {
+  setWorkspace ({dispatch}, workspaceId) {
     if (!workspaceId) {
       throw Error(`${workspaceId} is not a workspace ID`)
     }
+    dispatch('setRefDocument', undefined)
     dmx.rpc.getTopic(workspaceId, true).then(workspace => {           // includeChildren=true
       if (workspace.typeUri !== 'dmx.workspaces.workspace') {
         throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)
@@ -222,7 +223,7 @@ const actions = {
     state.isDragging = false
   },
 
-  setFullscreen ({dispatch}, fullscreen) {
+  setFullscreen (_, fullscreen) {
     state.fullscreen = fullscreen
     if (!fullscreen) {
       Vue.nextTick(() => {
@@ -356,23 +357,26 @@ const actions = {
   },
 
   /**
-   * @param   document    a Document topic (plain object)
+   * @param   doc     a Document topic (plain object)
    */
-  revealDocument ({dispatch}, document) {
+  revealDocument ({dispatch}, doc) {
     // 1) select and pan
-    const topic = state.topicmap.getTopic(document.id)
+    const topic = state.topicmap.getTopic(doc.id)
     dispatch('setTopic', topic)
     dispatch('setPan', {
       x: -topic.pos.x * state.zoom + zw.NEW_POS_X,
       y: -topic.pos.y * state.zoom + zw.NEW_POS_Y
     })
     // 2) set doc filter
-    dispatch('setRefDocument', document)
+    dispatch('setRefDocument', doc)
   },
 
-  setRefDocument ({dispatch}, document) {
-    state.refDocument = document
-    if (document) {
+  /**
+   * @param   doc     optional: a Document topic (plain object)
+   */
+  setRefDocument ({dispatch}, doc) {
+    state.refDocument = doc
+    if (doc) {
       dispatch('setPanelVisibility', true)
     }
   },
@@ -390,7 +394,7 @@ const actions = {
     }).catch(() => {})            // suppress unhandled rejection on cancel
   },
 
-  deleteComment ({dispatch}, comment) {
+  deleteComment (_, comment) {
     zw.confirmDeletion('warning.delete_comment').then(() => {
       removeComment(comment)                      // update client state
       dmx.rpc.deleteTopic(comment.id)             // update server state

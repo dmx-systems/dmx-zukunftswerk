@@ -173,7 +173,7 @@ const actions = {
 
   updateWorkspace ({rootState, dispatch}, workspace) {
     return dmx.rpc.updateTopic(workspace).then(workspace => {
-      replaceWorkspace(workspace)   // TODO: fetch memberships
+      replaceWorkspace(workspace, rootState)        // TODO: fetch memberships
       state.workspaces.sort(zw.topicSort)
       collapseUsers(rootState, dispatch)
     })
@@ -264,12 +264,19 @@ function removeUser (id, rootState) {
   rootState.users.splice(i, 1)
 }
 
-function replaceWorkspace (workspace) {
-  const i = state.workspaces.findIndex(ws => ws.id === workspace.id)
+function replaceWorkspace (workspace, rootState) {
+  // admin state
+  let i = state.workspaces.findIndex(ws => ws.id === workspace.id)
   if (i === -1) {
     throw Error('replaceWorkspace')
   }
   Vue.set(state.workspaces, i, workspace)
+  // root state
+  i = rootState.workspaces.findIndex(ws => ws.id === workspace.id)
+  if (i >= 0) {
+    workspace.assoc = rootState.workspaces[i].assoc     // transfer membership of current user
+    Vue.set(rootState.workspaces, i, workspace)
+  }
 }
 
 function updateUser(username, displayName) {

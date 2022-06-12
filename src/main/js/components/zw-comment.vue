@@ -127,7 +127,7 @@ export default {
     },
 
     commentIsWritable () {
-      return this.isWritable && (this.username === this.creator || this.isTeam || this.isEditor)
+      return this.isWritable && (this.username === this.creator || this.isTeam)
     },
 
     lang () {

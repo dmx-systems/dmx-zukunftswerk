@@ -1,5 +1,5 @@
 <template>
-  <vue-draggable-resizable :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :x="x" :y="y" :w="w" :h="h"
+  <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style" :x="x" :y="y" :w="w" :h="h"
       :scale="zoom" :active="isSelected" :draggable="draggable" :resizable="resizable" :handles="handles"
       @activated="select" @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging"
       @resizing="resizing">
@@ -14,13 +14,14 @@
         <zw-string>{{action.action}}</zw-string>
       </el-button>
     </div>
-  </vue-draggable-resizable>
+  </div>
 </template>
 
 <script>
+import Moveable from 'moveable'
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+// import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
 
@@ -29,6 +30,12 @@ export default {
     require('./mixins/selection').default,
     require('./mixins/dragging').default
   ],
+
+  mounted () {
+    const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
+      target: this.$el
+    })
+  },
 
   props: {
 
@@ -65,6 +72,13 @@ export default {
   },
 
   computed: {
+
+    style () {
+      return {
+        top: `${this.y}px`,
+        left: `${this.x}px`
+      }
+    },
 
     x () {
       return this.topic.pos.x
@@ -249,6 +263,10 @@ export default {
 </script>
 
 <style>
+.zw-canvas-item {
+  position: absolute;
+}
+
 .zw-canvas-item.vdr,                        /* "vdr" class is added by vdr */
 .zw-canvas-item.vdr.zw-arrow {              /* arrows never get a border (but 2 handles), even when active */
   border: 1px solid transparent;            /* vdr default border is "1px dashed #000" */

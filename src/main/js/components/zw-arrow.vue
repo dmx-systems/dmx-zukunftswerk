@@ -1,23 +1,14 @@
 <template>
-  <div><!-- Note: class "zw-arrow" is located at parent -->
-    <svg class="svg" xmlns="http://www.w3.org/2000/svg" :viewBox="viewBox">
-      <defs>
-        <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
-          <polygon points="0 0, 6 2.5, 0 5" fill="#909399" />
-        </marker>
-      </defs>
-      <line :x1="pos.x1" :y1="pos.y1" :x2="pos.x2" :y2="pos.y2" stroke="#909399" stroke-width="6"
-        marker-end="url(#arrowhead)" />
-    </svg>
-    <div class="handles" v-if="editable">
-      <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x1" :y="pos.y1" :w="10" :h="10" :scale="zoom"
-        :data-x="pos.x1" :data-y="pos.y1" @dragging="dragging1" @dragstop="dragstop1" @mousedown.native.stop>
-      </vue-draggable-resizable>
-      <vue-draggable-resizable class="handle" :resizable="false" :x="pos.x2" :y="pos.y2" :w="10" :h="10" :scale="zoom"
-        :data-x="pos.x2" :data-y="pos.y2" @dragging="dragging2" @dragstop="dragstop2" @mousedown.native.stop>
-      </vue-draggable-resizable>
-    </div>
-  </div>
+  <!-- Note: class "zw-arrow" is located at parent -->
+  <svg class="svg" xmlns="http://www.w3.org/2000/svg" :viewBox="viewBox">
+    <defs>
+      <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+        <polygon points="0 0, 6 2.5, 0 5" fill="#909399" />
+      </marker>
+    </defs>
+    <line :x1="pos.x1" :y1="pos.y1" :x2="pos.x2" :y2="pos.y2" stroke="#909399" stroke-width="6"
+      marker-end="url(#arrowhead)" />
+  </svg>
 </template>
 
 <script>

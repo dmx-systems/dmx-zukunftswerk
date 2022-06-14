@@ -1,8 +1,7 @@
 <template>
-  <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style" :x="x" :y="y" :w="w" :h="h"
+  <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style"
       :scale="zoom" :active="isSelected" :draggable="draggable" :resizable="resizable" :handles="handles"
-      @activated="select" @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging"
-      @resizing="resizing">
+      @activated="select" @deactivated="deselect" @resizestop="setSize" @resizing="resizing">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @resize-style="setResizeStyle"
       @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles"
@@ -33,9 +32,27 @@ export default {
 
   mounted () {
     const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
-      target: this.$el
+      target: this.$el,
+      draggable: true
     })
-  },
+    moveable.on("dragStart", ({target, clientX, clientY}) => {
+      console.log("onDragStart")
+    }).on("drag", ({
+      target, transform,
+      left, top, right, bottom,
+      beforeDelta, beforeDist, delta, dist,
+      clientX, clientY,
+    }) => {
+      // console.log("onDrag left, top, transform", left, top, transform);
+      this.dragging()
+      this.topic.setPosition({x: left, y: top})     // update client state
+      // console.log("onDrag translate", dist);
+      // target!.style.transform = transform;
+    }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
+      console.log("onDragEnd", isDrag)
+      this.setPos(clientX, clientY)
+    })
+},
 
   props: {
 
@@ -137,6 +154,11 @@ export default {
       return this.$store.state.topicmap
     },
 
+    // needed?
+    pan () {
+      return this.$store.state.pan
+    },
+
     zoom () {
       return this.$store.state.zoom
     }
@@ -185,6 +207,7 @@ export default {
 
     dragging () {
       if (!this.hasDragStarted) {
+        console.log('hasDragStarted')
         this.hasDragStarted = true
         this.dragStart()
       }

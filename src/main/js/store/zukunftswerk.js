@@ -156,11 +156,18 @@ const actions = {
     state.topic = topic
   },
 
-  setTopicPos (_, {topic, x, y}) {
-    const pos = {x, y}
-    topic.setPosition(pos)                                            // update client state
+  storeTopicPos (_, topic) {
     if (topic.id >= 0) {
-      dmx.rpc.setTopicPosition(state.topicmap.id, topic.id, pos)      // update server state
+      dmx.rpc.setTopicPosition(state.topicmap.id, topic.id, topic.pos)      // update server state
+    }
+  },
+
+  storeTopicSize (_, topic) {
+    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
+      dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
+        'dmx.topicmaps.width': topic.viewProps['dmx.topicmaps.width'],
+        'dmx.topicmaps.height': topic.viewProps['dmx.topicmaps.height']
+      })
     }
   },
 
@@ -172,19 +179,6 @@ const actions = {
   storeTopicViewProps (_, topic) {
     // console.log('storeTopicViewProps', topic.viewProps)
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, topic.viewProps)
-  },
-
-  setTopicSize (_, {topic, width, height}) {
-    // update client state
-    topic.setViewProp('dmx.topicmaps.width', width)
-    topic.setViewProp('dmx.topicmaps.height', height)
-    // update server state
-    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
-      dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
-        'dmx.topicmaps.width': width,
-        'dmx.topicmaps.height': height
-      })
-    }
   },
 
   setPan (_, pan) {

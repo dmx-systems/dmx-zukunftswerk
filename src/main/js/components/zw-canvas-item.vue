@@ -1,7 +1,7 @@
 <template>
   <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style"
-      :scale="zoom" :active="isSelected" :draggable="draggable" :resizable="resizable" :handles="handles"
-      @activated="select" @deactivated="deselect" @resizestop="setSize" @resizing="resizing">
+      :scale="zoom" :active="isSelected" :draggable="draggable" :resizable="resizable"
+      @activated="select" @deactivated="deselect">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @resize-style="setResizeStyle"
       @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles"
@@ -33,15 +33,15 @@ export default {
   mounted () {
     const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
       target: this.$el,
-      draggable: true
+      draggable: true,    // TODO
+      resizable: true     // TODO
     })
+    moveable.renderDirections = this.handles
+    /* draggable */
     moveable.on("dragStart", ({target, clientX, clientY}) => {
-      console.log("onDragStart")
+      // console.log("onDragStart")
     }).on("drag", ({
-      target, transform,
-      left, top, right, bottom,
-      beforeDelta, beforeDist, delta, dist,
-      clientX, clientY,
+      target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
     }) => {
       // console.log("onDrag left, top, transform", left, top, transform);
       this.dragging()
@@ -49,9 +49,25 @@ export default {
       // console.log("onDrag translate", dist);
       // target!.style.transform = transform;
     }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
-      console.log("onDragEnd", isDrag)
-      this.setPos(clientX, clientY)
+      // console.log("onDragEnd", isDrag)
+      this.setPos()
     })
+    /* resizable */
+    moveable.on("resizeStart", ({target, clientX, clientY}) => {
+        // console.log("onResizeStart");
+    }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
+        // console.log("onResize", width, height, dist, delta);
+        this.resizing()
+        // Note: for width measurement "moveable" relies on an up-to-date *view*.
+        // In contrast updating the *model* (view props) updates the view asynchronously.
+        this.$el.style.width = `${width}px`
+        this.topic.setViewProp('dmx.topicmaps.width', width)
+        // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
+        // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
+    }).on("resizeEnd", ({target, isDrag, clientX, clientY}) => {
+        // console.log("onResizeEnd", isDrag)
+        this.setSize()
+    });
 },
 
   props: {
@@ -93,7 +109,9 @@ export default {
     style () {
       return {
         top: `${this.y}px`,
-        left: `${this.x}px`
+        left: `${this.x}px`,
+        width: `${this.w}px`,
+        height: `${this.h}${this.h !== 'auto' ? 'px' : ''}`,
       }
     },
 
@@ -106,7 +124,7 @@ export default {
     },
 
     w () {
-      // console.log('w', this.formMode)
+      // console.log('w', this.formMode, this.topic.viewProps['dmx.topicmaps.width'])
       return this.formMode && zw.FORM_WIDTH || this.getSize && this.getSize().w
                                             || this.topic.viewProps['dmx.topicmaps.width']
     },
@@ -131,8 +149,8 @@ export default {
 
     handles () {
       switch (this.resizeStyle) {
-        case 'x':  return ['mr']
-        case 'xy': return ['mr', 'bm', 'br']
+        case 'x':  return ['e']
+        case 'xy': return ['e', 's', 'se']
       }
     },
 
@@ -207,7 +225,6 @@ export default {
 
     dragging () {
       if (!this.hasDragStarted) {
-        console.log('hasDragStarted')
         this.hasDragStarted = true
         this.dragStart()
       }
@@ -215,21 +232,21 @@ export default {
 
     resizing () {
       this.dragging()
-      if (this.resizeStyle === 'x') {
+      /* if (this.resizeStyle === 'x') {
         this.$el.style.height = 'auto'
-      }
+      } */
     },
 
-    setPos (x, y) {
+    setPos () {
       this.dragStop()
       this.hasDragStarted = false
-      this.$store.dispatch('setTopicPos', {topic: this.topic, x, y})
+      this.$store.dispatch('storeTopicPos', this.topic)
     },
 
-    setSize (x, y, width, height) {
+    setSize () {
       this.dragStop()
       this.hasDragStarted = false
-      this.$store.dispatch('setTopicSize', {topic: this.topic, width, height})
+      this.$store.dispatch('storeTopicSize', this.topic)
     },
 
     setVisibility (visibilty) {

@@ -33,8 +33,9 @@ public class Constants {
     // Props (Note)
     public static final String ZW_COLOR            = "zukunftswerk.color";  // Note: COLOR is already used by Webclient,
                                                                             // but as type URI; here we have a prop URI
-
-    // Props (Arrow)
+    // Props (Note, Document, Label, Arrow)
+    public static final String ANGLE               = "zukunftswerk.angle";
+    // TODO: drop these 4
     public static final String X1                  = "zukunftswerk.x1";
     public static final String Y1                  = "zukunftswerk.y1";
     public static final String X2                  = "zukunftswerk.x2";

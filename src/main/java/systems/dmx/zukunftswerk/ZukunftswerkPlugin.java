@@ -190,7 +190,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {
         Assoc assoc = topic.getRelatingAssoc();
         String typeUri = topic.getTypeUri();
-        if (typeUri.equals(ARROW)) {
+        if (typeUri.equals(ZW_NOTE) || typeUri.equals(DOCUMENT) || typeUri.equals(LABEL) || typeUri.equals(ARROW)) {
+            if (assoc.hasProperty(ANGLE)) {         // Angle is regarded an optional view prop
+                viewProps.set(ANGLE, assoc.getProperty(ANGLE));
+            }
+        }
+        if (typeUri.equals(ARROW)) {    // TODO: drop
             viewProps.set(X1, assoc.getProperty(X1))
                      .set(Y1, assoc.getProperty(Y1))
                      .set(X2, assoc.getProperty(X2))

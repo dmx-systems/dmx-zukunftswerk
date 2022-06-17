@@ -171,6 +171,14 @@ const actions = {
     }
   },
 
+  storeTopicAngle (_, topic) {
+    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
+      dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
+        'zukunftswerk.angle': topic.viewProps['zukunftswerk.angle']
+      })
+    }
+  },
+
   /**
    * Persists all of the given topic's view props.
    *

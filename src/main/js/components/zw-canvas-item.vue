@@ -34,7 +34,8 @@ export default {
     const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
       target: this.$el,
       draggable: true,    // TODO
-      resizable: true     // TODO
+      resizable: true,    // TODO
+      rotatable: true     // TODO
     })
     moveable.renderDirections = this.handles
     /* draggable */
@@ -57,16 +58,30 @@ export default {
         // console.log("onResizeStart");
     }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
         // console.log("onResize", width, height, dist, delta);
-        this.resizing()
+        this.dragging()
         // Note: for width measurement "moveable" relies on an up-to-date *view*.
         // In contrast updating the *model* (view props) updates the view asynchronously.
-        this.$el.style.width = `${width}px`
+        target.style.width = `${width}px`
         this.topic.setViewProp('dmx.topicmaps.width', width)
         // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
         // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
     }).on("resizeEnd", ({target, isDrag, clientX, clientY}) => {
         // console.log("onResizeEnd", isDrag)
         this.setSize()
+    });
+    /* rotatable */
+    moveable.on("rotateStart", ({target, clientX, clientY}) => {
+        // console.log("onRotateStart");
+        this.dragging()
+    }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
+        // console.log("onRotate", transform, beforeDelta, delta, dist);
+        target.style.transform = transform;
+        const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
+        // console.log(angle)
+        this.topic.setViewProp('zukunftswerk.angle', angle)
+    }).on("rotateEnd", ({target, isDrag, clientX, clientY}) => {
+        // console.log("onRotateEnd", isDrag);
+        this.setAngle()
     });
 },
 
@@ -112,6 +127,7 @@ export default {
         left: `${this.x}px`,
         width: `${this.w}px`,
         height: `${this.h}${this.h !== 'auto' ? 'px' : ''}`,
+        transform: `rotate(${this.angle}deg)`
       }
     },
 
@@ -133,6 +149,10 @@ export default {
       // console.log('h', this.getSize, this.getSize && this.getSize().h)
       return this.getSize && this.getSize().h || this.resizeStyle === 'x' ? 'auto' :
                                                  this.topic.viewProps['dmx.topicmaps.height']
+    },
+
+    angle () {
+      return this.topic.viewProps['zukunftswerk.angle'] || 0
     },
 
     draggable () {
@@ -230,13 +250,6 @@ export default {
       }
     },
 
-    resizing () {
-      this.dragging()
-      /* if (this.resizeStyle === 'x') {
-        this.$el.style.height = 'auto'
-      } */
-    },
-
     setPos () {
       this.dragStop()
       this.hasDragStarted = false
@@ -247,6 +260,12 @@ export default {
       this.dragStop()
       this.hasDragStarted = false
       this.$store.dispatch('storeTopicSize', this.topic)
+    },
+
+    setAngle () {
+      this.dragStop()
+      this.hasDragStarted = false
+      this.$store.dispatch('storeTopicAngle', this.topic)
     },
 
     setVisibility (visibilty) {

@@ -137,10 +137,8 @@ export default {
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false,
         ...typeUri === 'zukunftswerk.arrow' ? {
-          'zukunftswerk.x1': 0,
-          'zukunftswerk.y1': 0,
-          'zukunftswerk.x2': 200,
-          'zukunftswerk.y2': 0
+          'zukunftswerk.angle': 0,
+          'dmx.topicmaps.width': zw.ARROW_LENGTH
         } : {
           'dmx.topicmaps.width': zw.FORM_WIDTH
         }

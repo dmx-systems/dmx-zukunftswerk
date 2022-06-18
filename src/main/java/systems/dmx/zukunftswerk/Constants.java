@@ -35,9 +35,4 @@ public class Constants {
                                                                             // but as type URI; here we have a prop URI
     // Props (Note, Document, Label, Arrow)
     public static final String ANGLE               = "zukunftswerk.angle";
-    // TODO: drop these 4
-    public static final String X1                  = "zukunftswerk.x1";
-    public static final String Y1                  = "zukunftswerk.y1";
-    public static final String X2                  = "zukunftswerk.x2";
-    public static final String Y2                  = "zukunftswerk.y2";
 }

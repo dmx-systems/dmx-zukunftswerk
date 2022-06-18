@@ -195,12 +195,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 viewProps.set(ANGLE, assoc.getProperty(ANGLE));
             }
         }
-        if (typeUri.equals(ARROW)) {    // TODO: drop
-            viewProps.set(X1, assoc.getProperty(X1))
-                     .set(Y1, assoc.getProperty(Y1))
-                     .set(X2, assoc.getProperty(X2))
-                     .set(Y2, assoc.getProperty(Y2));
-        } else if (typeUri.equals(ZW_NOTE)) {
+        if (typeUri.equals(ZW_NOTE)) {
             if (assoc.hasProperty(ZW_COLOR)) {      // Color is regarded an optional view prop
                 viewProps.set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
             }

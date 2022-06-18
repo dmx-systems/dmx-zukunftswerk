@@ -40,7 +40,8 @@ export default {
   ],
   NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
   NEW_POS_Y: 42,
-  FORM_WIDTH: 384               // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
+  FORM_WIDTH: 384,              // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
+  ARROW_LENGTH: 200
 }
 
 function getDisplayName (username) {

@@ -74,7 +74,7 @@ export default {
         // console.log("onRotateStart");
         this.dragging()
     }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
-        // console.log("onRotate", transform, beforeDelta, delta, dist);
+        // console.log("onRotate", transform);
         target.style.transform = transform;
         const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
         // console.log(angle)

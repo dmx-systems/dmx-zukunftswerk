@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-canvas" :style="style" ref="canvas" @wheel="wheelZoom">
+  <div class="zw-canvas" :style="style" ref="canvas" @click="deselect" @wheel="wheelZoom">
     <el-dropdown v-if="isTeam || isEditor" trigger="click" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -143,6 +143,10 @@ export default {
           'dmx.topicmaps.width': zw.FORM_WIDTH
         }
       }
+    },
+
+    deselect () {
+      this.$store.dispatch('deselect')
     },
 
     stepZoom (delta) {

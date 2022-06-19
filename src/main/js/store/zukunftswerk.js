@@ -152,8 +152,17 @@ const actions = {
     })
   },
 
-  setTopic (_, topic) {
+  setTopic ({dispatch}, topic) {
+    dispatch('deselect')
     state.topic = topic
+    document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
+  },
+
+  deselect () {
+    if (state.topic) {
+      state.topic = undefined
+      document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
+    }
   },
 
   storeTopicPos (_, topic) {

@@ -41,6 +41,7 @@ export default {
     /* draggable */
     moveable.on("dragStart", ({target, clientX, clientY}) => {
       // console.log("onDragStart")
+      this.select()     // programmatic selection
     }).on("drag", ({
       target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
     }) => {
@@ -57,6 +58,7 @@ export default {
     /* resizable */
     moveable.on("resizeStart", ({target, clientX, clientY}) => {
       // console.log("onResizeStart");
+      this.select()     // programmatic selection
     }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
       // console.log("onResize", width, height, dist, delta);
       this.dragging()
@@ -74,6 +76,7 @@ export default {
     /* rotatable */
     moveable.on("rotateStart", ({target, clientX, clientY}) => {
       // console.log("onRotateStart");
+      this.select()     // programmatic selection
     }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
       // console.log("onRotate", transform);
       this.dragging()

@@ -25,7 +25,6 @@ export default {
 
   mixins: [
     require('./mixins/mode').default,
-    require('./mixins/selection').default,
     require('./mixins/dragging').default
   ],
 
@@ -52,37 +51,40 @@ export default {
       // target!.style.transform = transform;
     }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
       // console.log("onDragEnd", isDrag)
-      this.setPos()
+      this.dragEnd()
+      this.storePos()
     })
     /* resizable */
     moveable.on("resizeStart", ({target, clientX, clientY}) => {
-        // console.log("onResizeStart");
+      // console.log("onResizeStart");
     }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
-        // console.log("onResize", width, height, dist, delta);
-        this.dragging()
-        // Note: for width measurement "moveable" relies on an up-to-date *view*.
-        // In contrast updating the *model* (view props) updates the view asynchronously.
-        target.style.width = `${width}px`
-        this.topic.setViewProp('dmx.topicmaps.width', width)
-        // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
-        // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
+      // console.log("onResize", width, height, dist, delta);
+      this.dragging()
+      // Note: for width measurement "moveable" relies on an up-to-date *view*.
+      // In contrast updating the *model* (view props) updates the view asynchronously.
+      target.style.width = `${width}px`
+      this.topic.setViewProp('dmx.topicmaps.width', width)
+      // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
+      // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
     }).on("resizeEnd", ({target, isDrag, clientX, clientY}) => {
-        // console.log("onResizeEnd", isDrag)
-        this.setSize()
+      // console.log("onResizeEnd", isDrag)
+      this.dragEnd()
+      this.storeSize()
     });
     /* rotatable */
     moveable.on("rotateStart", ({target, clientX, clientY}) => {
-        // console.log("onRotateStart");
-        this.dragging()
+      // console.log("onRotateStart");
     }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
-        // console.log("onRotate", transform);
-        target.style.transform = transform;
-        const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
-        // console.log(angle)
-        this.topic.setViewProp('zukunftswerk.angle', angle)
+      // console.log("onRotate", transform);
+      this.dragging()
+      target.style.transform = transform;
+      const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
+      // console.log(angle)
+      this.topic.setViewProp('zukunftswerk.angle', angle)
     }).on("rotateEnd", ({target, isDrag, clientX, clientY}) => {
-        // console.log("onRotateEnd", isDrag);
-        this.setAngle()
+      // console.log("onRotateEnd", isDrag);
+      this.dragEnd()
+      this.storeAngle()
     });
 },
 
@@ -237,23 +239,26 @@ export default {
         this.hasDragStarted = true
         this.dragStart()
       }
+      document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')   // TODO: DRY
     },
 
-    setPos () {
+    dragEnd () {
       this.dragStop()
       this.hasDragStarted = false
+      this.$nextTick(() => {
+        document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')   // TODO: DRY
+      })
+    },
+
+    storePos () {
       this.$store.dispatch('storeTopicPos', this.topic)
     },
 
-    setSize () {
-      this.dragStop()
-      this.hasDragStarted = false
+    storeSize () {
       this.$store.dispatch('storeTopicSize', this.topic)
     },
 
-    setAngle () {
-      this.dragStop()
-      this.hasDragStarted = false
+    storeAngle () {
       this.$store.dispatch('storeTopicAngle', this.topic)
     },
 

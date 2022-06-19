@@ -153,6 +153,7 @@ const actions = {
   },
 
   setTopic ({dispatch}, topic) {
+    console.log('store setTopic', topic)
     dispatch('deselect')
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
@@ -160,6 +161,7 @@ const actions = {
 
   deselect () {
     if (state.topic) {
+      console.log('store deselect')
       state.topic = undefined
       document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
     }

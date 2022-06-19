@@ -146,6 +146,7 @@ export default {
     },
 
     deselect () {
+      // console.log('canvas deselect')
       this.$store.dispatch('deselect')
     },
 

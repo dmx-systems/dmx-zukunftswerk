@@ -6,7 +6,7 @@
       @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled"
       @mousedown.native="mousedown">
     </component>
-    <div class="button-panel" v-if="editable">
+    <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
           :key="action.action" @click="action.handler" @mousedown.native.stop>
         <zw-string>{{action.action}}</zw-string>
@@ -29,67 +29,10 @@ export default {
   ],
 
   mounted () {
-    const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
-      className: `target-${this.topic.id}`,
-      target: this.$el,
-      draggable: true,    // TODO
-      resizable: true,    // TODO
-      rotatable: true,    // TODO
-      origin: false
-    })
-    moveable.renderDirections = this.handles
-    /* draggable */
-    moveable.on("dragStart", ({target, clientX, clientY}) => {
-      // console.log("onDragStart")
-      this.select()     // programmatic selection
-    }).on("drag", ({
-      target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
-    }) => {
-      // console.log("onDrag left, top, transform", left, top, transform);
-      this.dragging()
-      this.topic.setPosition({x: left, y: top})     // update client state
-      // console.log("onDrag translate", dist);
-      // target!.style.transform = transform;
-    }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
-      // console.log("onDragEnd", isDrag)
-      this.dragEnd()
-      this.storePos()
-    })
-    /* resizable */
-    moveable.on("resizeStart", ({target, clientX, clientY}) => {
-      // console.log("onResizeStart");
-      this.select()     // programmatic selection
-    }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
-      // console.log("onResize", width, height, dist, delta);
-      this.dragging()
-      // Note: for width measurement "moveable" relies on an up-to-date *view*.
-      // In contrast updating the *model* (view props) updates the view asynchronously.
-      target.style.width = `${width}px`
-      this.topic.setViewProp('dmx.topicmaps.width', width)
-      // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
-      // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
-    }).on("resizeEnd", ({target, isDrag, clientX, clientY}) => {
-      // console.log("onResizeEnd", isDrag)
-      this.dragEnd()
-      this.storeSize()
-    });
-    /* rotatable */
-    moveable.on("rotateStart", ({target, clientX, clientY}) => {
-      // console.log("onRotateStart");
-      this.select()     // programmatic selection
-    }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
-      // console.log("onRotate", transform);
-      this.dragging()
-      target.style.transform = transform;
-      const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
-      // console.log(angle)
-      this.topic.setViewProp('zukunftswerk.angle', angle)
-    }).on("rotateEnd", ({target, isDrag, clientX, clientY}) => {
-      // console.log("onRotateEnd", isDrag);
-      this.dragEnd()
-      this.storeAngle()
-    });
-},
+    if (this.editable) {
+      this.newMovable()
+    }
+  },
 
   props: {
 
@@ -162,15 +105,23 @@ export default {
     },
 
     draggable () {
-      return this.isTeam || this.isEditor
+      return this.editable
     },
 
     resizable () {
-      return this.resizeStyle !== 'none' && (this.isTeam || this.isEditor)
+      return this.editable && this.resizeStyle !== 'none'
+    },
+
+    rotatable () {
+      return this.editable
+    },
+
+    buttonPanelVisibility () {
+      return this.editable && this.infoMode
     },
 
     editable () {
-      return this.infoMode && (this.isTeam || this.isEditor)
+      return this.isTeam || this.isEditor
     },
 
     handles () {
@@ -225,6 +176,58 @@ export default {
     deleteItem () {
       // TODO: destroy moveable instance
       this.$store.dispatch('delete', this.topic)
+    },
+
+    newMovable () {
+      const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
+        className: `target-${this.topic.id}`,
+        target: this.$el,
+        draggable: this.draggable,
+        resizable: this.resizable,
+        rotatable: this.rotatable,
+        origin: false
+      })
+      moveable.renderDirections = this.handles
+      /* draggable */
+      moveable.on("dragStart", ({target, clientX, clientY}) => {
+        this.select()     // programmatic selection
+      }).on("drag", ({
+        target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
+      }) => {
+        this.dragging()
+        this.topic.setPosition({x: left, y: top})     // update client state
+        // target!.style.transform = transform;
+      }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
+        this.dragEnd()
+        this.storePos()
+      })
+      /* resizable */
+      moveable.on("resizeStart", ({target, clientX, clientY}) => {
+        this.select()     // programmatic selection
+      }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
+        this.dragging()
+        // Note: for width measurement "moveable" relies on an up-to-date *view*.
+        // In contrast updating the *model* (view props) updates the view asynchronously.
+        target.style.width = `${width}px`
+        this.topic.setViewProp('dmx.topicmaps.width', width)
+        // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
+        // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
+      }).on("resizeEnd", ({target, isDrag, clientX, clientY}) => {
+        this.dragEnd()
+        this.storeSize()
+      });
+      /* rotatable */
+      moveable.on("rotateStart", ({target, clientX, clientY}) => {
+        this.select()     // programmatic selection
+      }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
+        this.dragging()
+        target.style.transform = transform;
+        const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
+        this.topic.setViewProp('zukunftswerk.angle', angle)
+      }).on("rotateEnd", ({target, isDrag, clientX, clientY}) => {
+        this.dragEnd()
+        this.storeAngle()
+      });
     },
 
     mousedown (e) {

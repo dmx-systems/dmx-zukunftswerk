@@ -153,10 +153,12 @@ const actions = {
   },
 
   setTopic ({dispatch}, topic) {
-    console.log('store setTopic', topic)
-    dispatch('deselect')
-    state.topic = topic
-    document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
+    if (state.isTeam || state.isEditor) {
+      console.log('store setTopic', topic)
+      dispatch('deselect')
+      state.topic = topic
+      document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
+    }
   },
 
   deselect () {

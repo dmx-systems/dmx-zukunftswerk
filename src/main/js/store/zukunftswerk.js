@@ -154,7 +154,7 @@ const actions = {
 
   setTopic ({dispatch}, topic) {
     if (state.isTeam || state.isEditor) {
-      console.log('store setTopic', topic)
+      // console.log('store setTopic', topic)
       dispatch('deselect')
       state.topic = topic
       document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
@@ -163,7 +163,7 @@ const actions = {
 
   deselect () {
     if (state.topic) {
-      console.log('store deselect')
+      // console.log('store deselect')
       state.topic = undefined
       document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
     }
@@ -609,22 +609,22 @@ function replaceComment (comment) {
 function initViewport () {
   const topicmap = state.topicmap
   const viewport = topicmap.topics.find(t => t.typeUri === 'zukunftswerk.viewport')
-  if (!viewport) {
-    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
+  if (viewport) {
+    const zoom = viewport.viewProps['dmx.topicmaps.zoom']
+    state.pan = {
+      x: -viewport.pos.x * zoom,
+      y: -viewport.pos.y * zoom
+    }
+    state.zoom = zoom
+  } else {
     // fallback
+    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
     state.pan = {
       x: topicmap.panX,
       y: topicmap.panY
     }
     state.zoom = topicmap.zoom
-    return
   }
-  const zoom = viewport.viewProps['dmx.topicmaps.zoom']
-  state.pan = {
-    x: -viewport.pos.x * zoom,
-    y: -viewport.pos.y * zoom
-  }
-  state.zoom = zoom
 }
 
 function setTopicmapViewport() {

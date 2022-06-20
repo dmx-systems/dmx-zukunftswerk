@@ -30,7 +30,13 @@ export default {
 
   mounted () {
     if (this.editable) {
-      this.newMovable()
+      this.moveable = this.newMovable()
+    }
+  },
+
+  destroyed () {
+    if (this.editable) {
+      this.moveable.destroy()
     }
   },
 
@@ -62,6 +68,7 @@ export default {
       //
       // Misc
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic)
+      moveable: undefined,      // The Moveable instance
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
                                 // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
                                 // "dragStop".
@@ -228,6 +235,8 @@ export default {
         this.dragEnd()
         this.storeAngle()
       });
+      //
+      return moveable
     },
 
     mousedown (e) {

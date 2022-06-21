@@ -1,5 +1,6 @@
 <template>
-  <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style" @click.stop="select">
+  <div :class="['zw-canvas-item', customClass, mode, {selected: isSelected}]" v-if="visibilty" :style="style"
+      @click.stop="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
       @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
@@ -24,6 +25,7 @@ export default {
 
   mixins: [
     require('./mixins/mode').default,
+    require('./mixins/selection').default,
     require('./mixins/dragging').default
   ],
 
@@ -140,7 +142,7 @@ export default {
 
     buttonStyle () {
       return {
-        'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
+        'font-size': `${14 / this.zoom}px`      // "14" matches --primary-font-size (see App.vue)
       }
     },
 
@@ -331,9 +333,9 @@ export default {
   z-index: 1 !important;                    /* place arrows before other canvas items */
 }
 
-.zw-canvas-item.active,                     /* When selected, place item (and button panel) before other */
-.zw-canvas-item.form {                      /* canvas items, before arrows in particular.                */
-  z-index: 2 !important;                    /* Note: forms are always in front, regardless of selection. */
+.zw-canvas-item.selected,                   /* both, forms and the selected item (including button panel) */
+.zw-canvas-item.form {                      /* are placed before other canvas items, even before arrows.  */
+  z-index: 2 !important;                    /* Note: forms are always in front, regardless of selection.  */
 }
 
 .zw-canvas-item.draggable {                 /* "draggable" class is added by vdr TODO */

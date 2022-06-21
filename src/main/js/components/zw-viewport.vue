@@ -12,6 +12,7 @@ export default {
   created () {
     this.$emit('visibility', this.isTeam || this.isEditor)
     this.$emit('actions', [{action: 'action.set_zoom', handler: this.setZoom}])
+    this.$emit('rotate-enabled', false)
     this.$emit('resize-style', 'none')
     this.$emit('get-size', () => this.size)
   },

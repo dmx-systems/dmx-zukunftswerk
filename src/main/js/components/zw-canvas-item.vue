@@ -1,9 +1,8 @@
 <template>
-  <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style"
-      :draggable="draggable" :resizable="resizable" @click.stop="select">
+  <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style" @click.stop="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
-      @visibility="setVisibility" @custom-class="setCustomClass" @resize-style="setResizeStyle"
-      @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled"
+      @visibility="setVisibility" @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
+      @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
       @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
@@ -63,6 +62,7 @@ export default {
         {action: 'action.delete', handler: this.deleteItem}
       ],
       editEnabled: true,        // Edit button visibility (Boolean)
+      rotateEnabled: true,      // Rotate handle visibility (Boolean)
       resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
       getSize: undefined,       // Custom get-size function (Function)
       //
@@ -120,7 +120,7 @@ export default {
     },
 
     rotatable () {
-      return this.editable
+      return this.editable && this.rotateEnabled
     },
 
     buttonPanelVisibility () {
@@ -156,11 +156,6 @@ export default {
       return this.$store.state.topicmap
     },
 
-    // needed?
-    pan () {
-      return this.$store.state.pan
-    },
-
     zoom () {
       return this.$store.state.zoom
     }
@@ -181,7 +176,6 @@ export default {
 
     // Note: can't be named "delete"
     deleteItem () {
-      // TODO: destroy moveable instance
       this.$store.dispatch('delete', this.topic)
     },
 
@@ -295,6 +289,10 @@ export default {
 
     setEditEnabled (enabled) {
       this.editEnabled = enabled
+    },
+
+    setRotateEnabled (enabled) {
+      this.rotateEnabled = enabled
     },
 
     setResizeStyle (style) {

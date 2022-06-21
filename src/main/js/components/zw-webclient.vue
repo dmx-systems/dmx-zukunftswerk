@@ -58,13 +58,15 @@ export default {
     mouseup () {
       if (this.panPos) {
         this.$el.removeEventListener('mousemove', this.mousemove)
-      }
-      // stop panning
-      if (this.isPanning) {
-        // console.log('stopPanning')
-        this.isPanning = false
-        this.panPos = undefined
-        this.dragStop()
+        if (this.isPanning) {
+          // stop panning
+          // console.log('stopPanning')
+          this.isPanning = false
+          this.panPos = undefined
+          this.dragStop()
+        } else {
+          this.$store.dispatch('deselect')
+        }
       }
     },
 

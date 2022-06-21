@@ -1,34 +1,44 @@
 <template>
-  <vue-draggable-resizable :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :x="x" :y="y" :w="w" :h="h"
-      :scale="zoom" :active="isSelected" :draggable="draggable" :resizable="resizable" :handles="handles"
-      @activated="select" @deactivated="deselect" @dragstop="setPos" @resizestop="setSize" @dragging="dragging"
-      @resizing="resizing">
+  <div :class="['zw-canvas-item', customClass, mode]" v-if="visibilty" :style="style"
+      :draggable="draggable" :resizable="resizable" @click.stop="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @resize-style="setResizeStyle"
-      @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled" @adjust-handles="adjustHandles"
+      @get-size="setGetSizeHandler" @actions="setActions" @edit-enabled="setEditEnabled"
       @mousedown.native="mousedown">
     </component>
-    <div class="button-panel" v-if="editable">
+    <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
           :key="action.action" @click="action.handler" @mousedown.native.stop>
         <zw-string>{{action.action}}</zw-string>
       </el-button>
     </div>
-  </vue-draggable-resizable>
+  </div>
 </template>
 
 <script>
+import Moveable from 'moveable'
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+// import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
 
   mixins: [
     require('./mixins/mode').default,
-    require('./mixins/selection').default,
     require('./mixins/dragging').default
   ],
+
+  mounted () {
+    if (this.editable) {
+      this.moveable = this.newMovable()
+    }
+  },
+
+  destroyed () {
+    if (this.editable) {
+      this.moveable.destroy()
+    }
+  },
 
   props: {
 
@@ -57,7 +67,8 @@ export default {
       getSize: undefined,       // Custom get-size function (Function)
       //
       // Misc
-      topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic),
+      topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic)
+      moveable: undefined,      // The Moveable instance
       hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
                                 // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
                                 // "dragStop".
@@ -65,6 +76,16 @@ export default {
   },
 
   computed: {
+
+    style () {
+      return {
+        top: `${this.y}px`,
+        left: `${this.x}px`,
+        width: `${this.w}px`,
+        height: `${this.h}${this.h !== 'auto' ? 'px' : ''}`,
+        transform: `rotate(${this.angle}deg)`
+      }
+    },
 
     x () {
       return this.topic.pos.x
@@ -75,7 +96,7 @@ export default {
     },
 
     w () {
-      // console.log('w', this.formMode)
+      // console.log('w', this.formMode, this.topic.viewProps['dmx.topicmaps.width'])
       return this.formMode && zw.FORM_WIDTH || this.getSize && this.getSize().w
                                             || this.topic.viewProps['dmx.topicmaps.width']
     },
@@ -86,22 +107,34 @@ export default {
                                                  this.topic.viewProps['dmx.topicmaps.height']
     },
 
+    angle () {
+      return this.topic.viewProps['zukunftswerk.angle'] || 0
+    },
+
     draggable () {
-      return this.isTeam || this.isEditor
+      return this.editable
     },
 
     resizable () {
-      return this.resizeStyle !== 'none' && (this.isTeam || this.isEditor)
+      return this.editable && this.resizeStyle !== 'none'
+    },
+
+    rotatable () {
+      return this.editable
+    },
+
+    buttonPanelVisibility () {
+      return this.editable && this.infoMode
     },
 
     editable () {
-      return this.infoMode && (this.isTeam || this.isEditor)
+      return this.isTeam || this.isEditor
     },
 
     handles () {
       switch (this.resizeStyle) {
-        case 'x':  return ['mr']
-        case 'xy': return ['mr', 'bm', 'br']
+        case 'x':  return ['e']
+        case 'xy': return ['e', 's', 'se']
       }
     },
 
@@ -123,14 +156,13 @@ export default {
       return this.$store.state.topicmap
     },
 
+    // needed?
+    pan () {
+      return this.$store.state.pan
+    },
+
     zoom () {
       return this.$store.state.zoom
-    }
-  },
-
-  watch: {
-    zoom () {
-      this.adjustHandles()
     }
   },
 
@@ -138,13 +170,6 @@ export default {
 
     select (e) {
       this.$store.dispatch('setTopic', this.topic)
-      this.$nextTick(() => {
-        this.adjustHandles()
-      })
-    },
-
-    deselect (e) {
-      this.$store.dispatch('setTopic', undefined)
     },
 
     edit () {
@@ -156,7 +181,62 @@ export default {
 
     // Note: can't be named "delete"
     deleteItem () {
+      // TODO: destroy moveable instance
       this.$store.dispatch('delete', this.topic)
+    },
+
+    newMovable () {
+      const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
+        className: `target-${this.topic.id}`,
+        target: this.$el,
+        draggable: this.draggable,
+        resizable: this.resizable,
+        rotatable: this.rotatable,
+        origin: false
+      })
+      moveable.renderDirections = this.handles
+      /* draggable */
+      moveable.on("dragStart", ({target, clientX, clientY}) => {
+        this.select()     // programmatic selection
+      }).on("drag", ({
+        target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
+      }) => {
+        this.dragging()
+        this.topic.setPosition({x: left, y: top})     // update client state
+        // target!.style.transform = transform;
+      }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
+        this.dragEnd()
+        this.storePos()
+      })
+      /* resizable */
+      moveable.on("resizeStart", ({target, clientX, clientY}) => {
+        this.select()     // programmatic selection
+      }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
+        this.dragging()
+        // Note: for width measurement "moveable" relies on an up-to-date *view*.
+        // In contrast updating the *model* (view props) updates the view asynchronously.
+        target.style.width = `${width}px`
+        this.topic.setViewProp('dmx.topicmaps.width', width)
+        // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
+        // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
+      }).on("resizeEnd", ({target, isDrag, clientX, clientY}) => {
+        this.dragEnd()
+        this.storeSize()
+      });
+      /* rotatable */
+      moveable.on("rotateStart", ({target, clientX, clientY}) => {
+        this.select()     // programmatic selection
+      }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
+        this.dragging()
+        target.style.transform = transform;
+        const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
+        this.topic.setViewProp('zukunftswerk.angle', angle)
+      }).on("rotateEnd", ({target, isDrag, clientX, clientY}) => {
+        this.dragEnd()
+        this.storeAngle()
+      });
+      //
+      return moveable
     },
 
     mousedown (e) {
@@ -174,25 +254,27 @@ export default {
         this.hasDragStarted = true
         this.dragStart()
       }
+      document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')   // TODO: DRY
     },
 
-    resizing () {
-      this.dragging()
-      if (this.resizeStyle === 'x') {
-        this.$el.style.height = 'auto'
-      }
-    },
-
-    setPos (x, y) {
+    dragEnd () {
       this.dragStop()
       this.hasDragStarted = false
-      this.$store.dispatch('setTopicPos', {topic: this.topic, x, y})
+      this.$nextTick(() => {
+        document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')   // TODO: DRY
+      })
     },
 
-    setSize (x, y, width, height) {
-      this.dragStop()
-      this.hasDragStarted = false
-      this.$store.dispatch('setTopicSize', {topic: this.topic, width, height})
+    storePos () {
+      this.$store.dispatch('storeTopicPos', this.topic)
+    },
+
+    storeSize () {
+      this.$store.dispatch('storeTopicSize', this.topic)
+    },
+
+    storeAngle () {
+      this.$store.dispatch('storeTopicAngle', this.topic)
     },
 
     setVisibility (visibilty) {
@@ -221,20 +303,6 @@ export default {
 
     setGetSizeHandler (handler) {
       this.getSize = handler
-    },
-
-    adjustHandles () {
-      document.querySelectorAll('.handle').forEach(handle => {
-        const x = Number(handle.dataset.x)
-        const y = Number(handle.dataset.y)
-        if (isNaN(x) || isNaN(y)) {
-          // regular vdr handle
-          handle.style.transform = `scale(${1 / this.zoom}) translate(${1 / this.zoom}px, 0)`
-        } else {
-          // custom zw-arrow handle
-          handle.style.transform = `scale(${1 / this.zoom}) translate(${x * this.zoom}px, ${y * this.zoom}px)`
-        }
-      })
     }
   },
 
@@ -249,17 +317,20 @@ export default {
 </script>
 
 <style>
-.zw-canvas-item.vdr,                        /* "vdr" class is added by vdr */
-.zw-canvas-item.vdr.zw-arrow {              /* arrows never get a border (but 2 handles), even when active */
-  border: 1px solid transparent;            /* vdr default border is "1px dashed #000" */
+.zw-canvas-item {
+  position: absolute;
 }
 
-.zw-canvas-item.vdr.zw-arrow {
+.moveable-control-box {
+  display: none !important;
+}
+
+.moveable-control-box.active {
+  display: block !important;
+}
+
+.zw-canvas-item.zw-arrow {
   z-index: 1 !important;                    /* place arrows before other canvas items */
-}
-
-.zw-canvas-item.active {                    /* "active" class is added by vdr */
-  border: 1px dashed #aaa;
 }
 
 .zw-canvas-item.active,                     /* When selected, place item (and button panel) before other */
@@ -267,7 +338,7 @@ export default {
   z-index: 2 !important;                    /* Note: forms are always in front, regardless of selection. */
 }
 
-.zw-canvas-item.draggable {                 /* "draggable" class is added by vdr */
+.zw-canvas-item.draggable {                 /* "draggable" class is added by vdr TODO */
   cursor: grab;
 }
 
@@ -275,8 +346,8 @@ export default {
   cursor: grabbing;
 }
 
-.zw-canvas-item.dragging .item-content,     /* "dragging" class is added by vdr */
-.zw-canvas-item.resizing .item-content {    /* "resizing" class is added by vdr */
+.zw-canvas-item.dragging .item-content,     /* "dragging" class is added by vdr TODO */
+.zw-canvas-item.resizing .item-content {    /* "resizing" class is added by vdr TODO */
   pointer-events: none;                     /* prevent interaction with PDF renderer while dragging/resizing */
 }
 

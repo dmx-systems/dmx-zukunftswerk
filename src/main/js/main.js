@@ -8,7 +8,7 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2022/06/12')
+console.log('[ZW] 2022/06/21')
 
 // 1) Init dmx library
 dmx.init({
@@ -33,7 +33,6 @@ Vue.component('zw-comment-ref',          require('./components/zw-comment-ref').
 Vue.component('zw-document-ref',         require('./components/zw-document-ref').default)
 Vue.component('zw-attachment',           require('./components/zw-attachment').default)
 Vue.component('zw-pdf-viewer',           require('./components/zw-pdf-viewer').default)
-Vue.component('vue-draggable-resizable', require('vue-draggable-resizable'))
 
 // 4) Create Vue root instance
 new Vue({

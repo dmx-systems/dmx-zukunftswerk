@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-canvas" :style="style" ref="canvas" @wheel="wheelZoom">
+  <div class="zw-canvas" :style="style" ref="canvas" @click="deselect" @wheel="wheelZoom">
     <el-dropdown v-if="isTeam || isEditor" trigger="click" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
       <el-dropdown-menu slot="dropdown">
@@ -137,14 +137,17 @@ export default {
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false,
         ...typeUri === 'zukunftswerk.arrow' ? {
-          'zukunftswerk.x1': 0,
-          'zukunftswerk.y1': 0,
-          'zukunftswerk.x2': 200,
-          'zukunftswerk.y2': 0
+          'zukunftswerk.angle': 0,
+          'dmx.topicmaps.width': zw.ARROW_LENGTH
         } : {
           'dmx.topicmaps.width': zw.FORM_WIDTH
         }
       }
+    },
+
+    deselect () {
+      // console.log('canvas deselect')
+      this.$store.dispatch('deselect')
     },
 
     stepZoom (delta) {

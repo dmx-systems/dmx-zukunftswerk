@@ -152,15 +152,43 @@ const actions = {
     })
   },
 
-  setTopic (_, topic) {
-    state.topic = topic
+  setTopic ({dispatch}, topic) {
+    if (state.isTeam || state.isEditor) {
+      // console.log('store setTopic', topic)
+      dispatch('deselect')
+      state.topic = topic
+      document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
+    }
   },
 
-  setTopicPos (_, {topic, x, y}) {
-    const pos = {x, y}
-    topic.setPosition(pos)                                            // update client state
+  deselect () {
+    if (state.topic) {
+      // console.log('store deselect')
+      state.topic = undefined
+      document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
+    }
+  },
+
+  storeTopicPos (_, topic) {
     if (topic.id >= 0) {
-      dmx.rpc.setTopicPosition(state.topicmap.id, topic.id, pos)      // update server state
+      dmx.rpc.setTopicPosition(state.topicmap.id, topic.id, topic.pos)      // update server state
+    }
+  },
+
+  storeTopicSize (_, topic) {
+    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
+      dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
+        'dmx.topicmaps.width': topic.viewProps['dmx.topicmaps.width'],
+        'dmx.topicmaps.height': topic.viewProps['dmx.topicmaps.height']
+      })
+    }
+  },
+
+  storeTopicAngle (_, topic) {
+    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
+      dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
+        'zukunftswerk.angle': topic.viewProps['zukunftswerk.angle']
+      })
     }
   },
 
@@ -172,19 +200,6 @@ const actions = {
   storeTopicViewProps (_, topic) {
     // console.log('storeTopicViewProps', topic.viewProps)
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, topic.viewProps)
-  },
-
-  setTopicSize (_, {topic, width, height}) {
-    // update client state
-    topic.setViewProp('dmx.topicmaps.width', width)
-    topic.setViewProp('dmx.topicmaps.height', height)
-    // update server state
-    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
-      dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
-        'dmx.topicmaps.width': width,
-        'dmx.topicmaps.height': height
-      })
-    }
   },
 
   setPan (_, pan) {
@@ -594,22 +609,22 @@ function replaceComment (comment) {
 function initViewport () {
   const topicmap = state.topicmap
   const viewport = topicmap.topics.find(t => t.typeUri === 'zukunftswerk.viewport')
-  if (!viewport) {
-    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
+  if (viewport) {
+    const zoom = viewport.viewProps['dmx.topicmaps.zoom']
+    state.pan = {
+      x: -viewport.pos.x * zoom,
+      y: -viewport.pos.y * zoom
+    }
+    state.zoom = zoom
+  } else {
     // fallback
+    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
     state.pan = {
       x: topicmap.panX,
       y: topicmap.panY
     }
     state.zoom = topicmap.zoom
-    return
   }
-  const zoom = viewport.viewProps['dmx.topicmaps.zoom']
-  state.pan = {
-    x: -viewport.pos.x * zoom,
-    y: -viewport.pos.y * zoom
-  }
-  state.zoom = zoom
 }
 
 function setTopicmapViewport() {

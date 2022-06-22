@@ -539,7 +539,7 @@ function updateWorkspaceState () {
   teamWorkspace.then(workspace => {
     if (state.workspace.id !== workspace.id) {
       state.isEditor = findWorkspace(state.workspace.id).assoc.children['zukunftswerk.editor']?.value
-      console.log('isEditor', state.workspace.id, state.isEditor)
+      // console.log('isEditor', state.workspace.id, state.isEditor)
     }
   })
 }

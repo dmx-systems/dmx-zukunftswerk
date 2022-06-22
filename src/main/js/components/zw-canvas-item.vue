@@ -1,6 +1,6 @@
 <template>
-  <div :class="['zw-canvas-item', customClass, mode, {selected: isSelected}]" v-if="visibilty" :style="style"
-      @click.stop="select">
+  <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]"
+      v-if="visibilty" :style="style" @click="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
       @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
@@ -19,7 +19,6 @@
 import Moveable from 'moveable'
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
-// import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
 
@@ -71,9 +70,10 @@ export default {
       // Misc
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic)
       moveable: undefined,      // The Moveable instance
-      hasDragStarted: false     // Tracks if an actual drag happened after mousedown. If not we don't dispatch any
-                                // "drag" action at all. We must never dispatch "dragStart" w/o a corresponding
-                                // "dragStop".
+      dragMode: undefined,      // While a drag is in progress: one of 'dragging', 'resizing', 'rotating'.
+                                // Also used to detect if an actual drag happened after mousedown. If not we don't
+                                // dispatch any "drag" action at all. We must never dispatch "dragStart" w/o a
+                                // corresponding "dragStop".
     }
   },
 
@@ -197,7 +197,7 @@ export default {
       }).on("drag", ({
         target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
       }) => {
-        this.dragging()
+        this.dragging('dragging')
         this.topic.setPosition({x: left, y: top})     // update client state
         // target!.style.transform = transform;
       }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
@@ -208,7 +208,7 @@ export default {
       moveable.on("resizeStart", ({target, clientX, clientY}) => {
         this.select()     // programmatic selection
       }).on("resize", ({target, width, height, dist, delta, clientX, clientY}) => {
-        this.dragging()
+        this.dragging('resizing')
         // Note: for width measurement "moveable" relies on an up-to-date *view*.
         // In contrast updating the *model* (view props) updates the view asynchronously.
         target.style.width = `${width}px`
@@ -223,7 +223,7 @@ export default {
       moveable.on("rotateStart", ({target, clientX, clientY}) => {
         this.select()     // programmatic selection
       }).on("rotate", ({target, beforeDelta, delta, dist, transform, clientX, clientY}) => {
-        this.dragging()
+        this.dragging('rotating')
         target.style.transform = transform;
         const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
         this.topic.setViewProp('zukunftswerk.angle', angle)
@@ -245,17 +245,17 @@ export default {
       }
     },
 
-    dragging () {
-      if (!this.hasDragStarted) {
-        this.hasDragStarted = true
+    dragging (dragMode) {
+      if (!this.dragMode) {
+        this.dragMode = dragMode
         this.dragStart()
       }
-      document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')   // TODO: DRY
+      document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')     // TODO: DRY
     },
 
     dragEnd () {
       this.dragStop()
-      this.hasDragStarted = false
+      this.dragMode = undefined
       this.$nextTick(() => {
         document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')   // TODO: DRY
       })
@@ -330,15 +330,15 @@ export default {
 }
 
 .zw-canvas-item.zw-arrow {
-  z-index: 1 !important;                    /* place arrows before other canvas items */
+  z-index: 1 !important;                    /* Place arrows before other canvas items */
 }
 
-.zw-canvas-item.selected,                   /* both, forms and the selected item (including button panel) */
-.zw-canvas-item.form {                      /* are placed before other canvas items, even before arrows.  */
-  z-index: 2 !important;                    /* Note: forms are always in front, regardless of selection.  */
+.zw-canvas-item.selected,                   /* Place the selected item (including button panel) in front, even    */
+.zw-canvas-item.form {                      /* before arrows. Forms are always in front, regardless of selection. */
+  z-index: 2 !important;
 }
 
-.zw-canvas-item.draggable {                 /* "draggable" class is added by vdr TODO */
+.zw-canvas-item.draggable {
   cursor: grab;
 }
 
@@ -346,9 +346,9 @@ export default {
   cursor: grabbing;
 }
 
-.zw-canvas-item.dragging .item-content,     /* "dragging" class is added by vdr TODO */
-.zw-canvas-item.resizing .item-content {    /* "resizing" class is added by vdr TODO */
-  pointer-events: none;                     /* prevent interaction with PDF renderer while dragging/resizing */
+.zw-canvas-item.dragging .item-content,
+.zw-canvas-item.resizing .item-content {
+  pointer-events: none;                     /* Prevent interaction with PDF renderer while dragging/resizing */
 }
 
 .zw-canvas-item .button-panel {

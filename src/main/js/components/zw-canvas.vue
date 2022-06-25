@@ -17,6 +17,7 @@
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
     </div>
+    <zw-arrow-layer></zw-arrow-layer>
   </div>
 </template>
 
@@ -164,7 +165,8 @@ export default {
   },
 
   components: {
-    'zw-canvas-item': require('./zw-canvas-item').default
+    'zw-canvas-item': require('./zw-canvas-item').default,
+    'zw-arrow-layer': require('./zw-arrow-layer').default
   }
 }
 

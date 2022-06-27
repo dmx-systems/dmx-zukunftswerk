@@ -7,15 +7,13 @@
 
 <script>
 import Moveable from 'moveable'
+import zw from '../zw-globals'
+
+let moveable      // Moveable instance of selected arrow
 
 export default {
 
-  created () {
-    console.log('created')
-  },
-
   mounted () {
-    console.log('mounted')
     this.m1 = this.newMovable(1, this.$refs.h1)
     this.m2 = this.newMovable(2, this.$refs.h2)
   },
@@ -37,7 +35,6 @@ export default {
   computed: {
 
     visible () {
-      console.log('visible', this.topic?.typeUri === 'zukunftswerk.arrow')
       return this.topic?.typeUri === 'zukunftswerk.arrow'
     },
 
@@ -45,30 +42,55 @@ export default {
       return this.$store.state.topic
     },
 
-    p1 () {
-      return this.topic && {
-        x: this.topic.viewProps['zukunftswerk.x1'],
-        y: this.topic.viewProps['zukunftswerk.y1']
-      }
+    pan () {
+      return this.$store.state.pan
     },
 
-    p2 () {
-      return this.topic && {
-        x: this.topic.viewProps['zukunftswerk.x2'],
-        y: this.topic.viewProps['zukunftswerk.y2']
-      }
+    pos () {
+      return this.topic.pos
+    },
+
+    width () {
+      return this.topic.viewProps['dmx.topicmaps.width']
+    },
+
+    angle () {
+      return this.topic.viewProps['zukunftswerk.angle'] || 0
+    },
+
+    newWidth () {
+      return Math.sqrt((this.h1.x - this.h2.x) ** 2 + (this.h1.y - this.h2.y) ** 2)
+    },
+
+    newAngle () {
+      return 180 * Math.atan2(this.h1.y - this.h2.y, this.h1.x - this.h2.x) / Math.PI
     }
   },
 
   watch: {
     topic () {
-      // TODO
+      if (this.visible) {
+        moveable = document.querySelector(`.zw-arrow[data-id="${this.topic.id}"]`).__vue__.moveable
+        const alpha = Math.PI * this.angle / 180
+        const sin = Math.sin(alpha)
+        const cos = Math.cos(alpha)
+        const cx = this.pos.x + this.pan.x + this.width / 2
+        const cy = this.pos.y + this.pan.y + zw.ARROW_HEIGHT / 2
+        const w2 = this.width / 2
+        const wsin = w2 * sin
+        const wcos = w2 * cos
+        this.h1.x = cx + wcos
+        this.h1.y = cy + wsin
+        this.h2.x = cx - wcos
+        this.h2.y = cy - wsin
+      }
     }
   },
 
   methods: {
+
     newMovable (nr, target) {
-      const moveable = new Moveable(document.querySelector('.zw-arrow-layer'), {
+      const _moveable = new Moveable(document.querySelector('.zw-arrow-layer'), {
         target,
         draggable: true,
         resizable: false,
@@ -76,23 +98,40 @@ export default {
         origin: false
       })
       /* draggable */
-      moveable.on("dragStart", ({target, clientX, clientY}) => {
+      _moveable.on("dragStart", ({target, clientX, clientY}) => {
         console.log('dragStart')
         // this.select()     // programmatic selection
       }).on("drag", ({
         target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
       }) => {
-        // console.log('drag', transform, left, top)
+        // store old model
+        const oldPos = {
+          x: this[`h${nr}`].x,
+          y: this[`h${nr}`].y
+        }
+        const oldWidth = this.newWidth
+        // update model
         this[`h${nr}`].x = left
         this[`h${nr}`].y = top
-        // TODO
+        this.topic.setViewProp('dmx.topicmaps.width', this.newWidth)
+        this.topic.setViewProp('zukunftswerk.angle', this.newAngle)
+        // position correction
+        const newPos = this[`h${nr}`]
+        this.topic.setPosition({
+          x: this.pos.x + (newPos.x - oldPos.x - this.newWidth + oldWidth) / 2,
+          y: this.pos.y + (newPos.y - oldPos.y) / 2
+        })
+        // update view
+        this.$nextTick(() => {
+          moveable.updateTarget()
+        })
       }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
         console.log('dragEnd')
         // this.dragEnd()
         // this.storePos()
       })
       //
-      return moveable
+      return _moveable
     }
   }
 }
@@ -106,7 +145,7 @@ export default {
   position: absolute;
   width: 14px;
   height: 14px;
-  background-color: var(--highlight-color);
+  background-color: #4af  /* TODO: var(--highlight-color) */;
   border: 2px solid white;
   border-radius: 50%;
   box-sizing: border-box;

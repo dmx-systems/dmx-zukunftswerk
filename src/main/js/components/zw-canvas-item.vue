@@ -1,6 +1,6 @@
 <template>
   <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]"
-      v-if="visibilty" :style="style" @click="select">
+      v-if="visibilty" :data-id="topic.id" :style="style" @click="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
       @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"

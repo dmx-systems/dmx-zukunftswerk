@@ -77,12 +77,12 @@ export default {
         const cx = this.pos.x + this.pan.x + this.width / 2
         const cy = this.pos.y + this.pan.y + zw.ARROW_HEIGHT / 2
         const w2 = this.width / 2
-        const wsin = w2 * sin
-        const wcos = w2 * cos
-        this.h1.x = cx + wcos
-        this.h1.y = cy + wsin
-        this.h2.x = cx - wcos
-        this.h2.y = cy - wsin
+        const w2sin = w2 * sin
+        const w2cos = w2 * cos
+        this.h1.x = cx + w2cos
+        this.h1.y = cy + w2sin
+        this.h2.x = cx - w2cos
+        this.h2.y = cy - w2sin
       }
     }
   },
@@ -99,7 +99,6 @@ export default {
       })
       /* draggable */
       _moveable.on("dragStart", ({target, clientX, clientY}) => {
-        console.log('dragStart')
         // this.select()     // programmatic selection
       }).on("drag", ({
         target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
@@ -126,9 +125,7 @@ export default {
           moveable.updateTarget()
         })
       }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
-        console.log('dragEnd')
-        // this.dragEnd()
-        // this.storePos()
+        this.$store.dispatch('storeArrowHandles', this.topic)
       })
       //
       return _moveable

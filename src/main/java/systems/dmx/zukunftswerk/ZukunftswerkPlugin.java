@@ -191,12 +191,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         Assoc assoc = topic.getRelatingAssoc();
         String typeUri = topic.getTypeUri();
         if (typeUri.equals(ZW_NOTE) || typeUri.equals(DOCUMENT) || typeUri.equals(LABEL) || typeUri.equals(ARROW)) {
-            if (assoc.hasProperty(ANGLE)) {         // Angle is regarded an optional view prop
+            if (assoc.hasProperty(ANGLE)) {         // Angle is an optional view prop
                 viewProps.set(ANGLE, assoc.getProperty(ANGLE));
             }
         }
         if (typeUri.equals(ZW_NOTE)) {
-            if (assoc.hasProperty(ZW_COLOR)) {      // Color is regarded an optional view prop
+            if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
                 viewProps.set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
             }
         } else if (typeUri.equals(VIEWPORT)) {

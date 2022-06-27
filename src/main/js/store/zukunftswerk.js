@@ -192,6 +192,17 @@ const actions = {
     }
   },
 
+  storeArrowHandles (_, topic) {
+    // Note: the server would store doubles but can't retrieve doubles but integers (ClassCastException)!
+    // So we better do the rounding here.
+    dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
+      'dmx.topicmaps.x':     Math.round(topic.viewProps['dmx.topicmaps.x']),
+      'dmx.topicmaps.y':     Math.round(topic.viewProps['dmx.topicmaps.y']),
+      'dmx.topicmaps.width': topic.viewProps['dmx.topicmaps.width'],
+      'zukunftswerk.angle':  topic.viewProps['zukunftswerk.angle']
+    })
+  },
+
   /**
    * Persists all of the given topic's view props.
    *

@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-arrow-layer" v-show="visible">
+  <div class="zw-arrow-layer" v-show="visible" :style="zoomStyle">
     <div class="handle" :style="{top: `${h1.y}px`, left: `${h1.x}px`}" ref="h1"></div>
     <div class="handle" :style="{top: `${h2.y}px`, left: `${h2.x}px`}" ref="h2"></div>
   </div>
@@ -12,6 +12,10 @@ import zw from '../zw-globals'
 let moveable      // Moveable instance of selected arrow
 
 export default {
+
+  mixins: [
+    require('./mixins/zoom').default
+  ],
 
   mounted () {
     this.m1 = this.newMovable(1, this.$refs.h1)
@@ -42,10 +46,6 @@ export default {
       return this.$store.state.topic
     },
 
-    pan () {
-      return this.$store.state.pan
-    },
-
     pos () {
       return this.topic.pos
     },
@@ -74,8 +74,8 @@ export default {
         const alpha = Math.PI * this.angle / 180
         const sin = Math.sin(alpha)
         const cos = Math.cos(alpha)
-        const cx = this.pos.x + this.pan.x + this.width / 2
-        const cy = this.pos.y + this.pan.y + zw.ARROW_HEIGHT / 2
+        const cx = this.pos.x + this.width / 2
+        const cy = this.pos.y + zw.ARROW_HEIGHT / 2
         const w2 = this.width / 2
         const w2sin = w2 * sin
         const w2cos = w2 * cos

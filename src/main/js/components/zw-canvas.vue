@@ -13,7 +13,7 @@
       <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
       <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
     </div>
-    <div class="content-layer" :style="contentLayerStyle">
+    <div class="content-layer" :style="zoomStyle">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
     </div>
@@ -30,11 +30,29 @@ const GRID_SIZE = 20    // 20x20 = size of grid.png
 
 export default {
 
+  mixins: [
+    require('./mixins/zoom').default
+  ],
+
   mounted () {
     HEADER_HEIGHT = document.querySelector('.zw-header').clientHeight
   },
 
   computed: {
+
+    style () {
+      return {
+        'background-position': `${this.bgPos.x}px ${this.bgPos.y}px`,
+        'background-size': `${GRID_SIZE * this.zoom}px`
+      }
+    },
+
+    bgPos () {
+      return  {
+        x: this.pan.x % (GRID_SIZE * this.zoom),
+        y: this.pan.y % (GRID_SIZE * this.zoom)
+      }
+    },
 
     isTeam () {
       return this.$store.state.isTeam
@@ -48,41 +66,12 @@ export default {
       return this.$store.state.topicmap
     },
 
-    pan () {
-      return this.$store.state.pan
-    },
-
-    zoom () {
-      return this.$store.state.zoom
-    },
-
     topics () {
       return this.topicmap ? this.topicmap.topics.filter(zw.canvasFilter) : []
     },
 
     newTopics () {
       return this.$store.state.newTopics
-    },
-
-    style () {
-      return {
-        'background-position': `${this.bgPos.x}px ${this.bgPos.y}px`,
-        'background-size': `${GRID_SIZE * this.zoom}px`
-      }
-    },
-
-    contentLayerStyle () {
-      return {
-        'transform': `translate(${this.pan.x}px, ${this.pan.y}px) scale(${this.zoom})`,
-        'transform-origin': 'top left'
-      }
-    },
-
-    bgPos () {
-      return  {
-        x: this.pan.x % (GRID_SIZE * this.zoom),
-        y: this.pan.y % (GRID_SIZE * this.zoom)
-      }
     }
   },
 

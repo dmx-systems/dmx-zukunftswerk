@@ -14,6 +14,7 @@ let moveable      // Moveable instance of selected arrow
 export default {
 
   mixins: [
+    require('./mixins/editable').default,
     require('./mixins/zoom').default
   ],
 
@@ -31,15 +32,15 @@ export default {
     return {
       h1: {x: 0, y: 0},
       h2: {x: 0, y: 0},
-      m1: undefined,      // The Moveable instance
-      m2: undefined       // The Moveable instance
+      m1: undefined,      // The Moveable instance, initialized on mount
+      m2: undefined       // The Moveable instance, initialized on mount
     }
   },
 
   computed: {
 
     visible () {
-      return this.topic?.typeUri === 'zukunftswerk.arrow'
+      return this.editable && this.topic?.typeUri === 'zukunftswerk.arrow'
     },
 
     topic () {

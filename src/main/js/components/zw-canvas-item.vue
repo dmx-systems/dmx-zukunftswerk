@@ -25,7 +25,8 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/selection').default,
-    require('./mixins/dragging').default
+    require('./mixins/dragging').default,
+    require('./mixins/editable').default
   ],
 
   mounted () {
@@ -128,10 +129,6 @@ export default {
       return this.editable && this.infoMode
     },
 
-    editable () {
-      return this.isTeam || this.isEditor
-    },
-
     handles () {
       switch (this.resizeStyle) {
         case 'x':  return ['e']
@@ -143,14 +140,6 @@ export default {
       return {
         'font-size': `${14 / this.zoom}px`      // "14" matches --primary-font-size (see App.vue)
       }
-    },
-
-    isTeam () {
-      return this.$store.state.isTeam
-    },
-
-    isEditor () {
-      return this.$store.state.isEditor
     },
 
     topicmap () {

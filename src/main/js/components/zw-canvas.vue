@@ -10,9 +10,10 @@
       </el-dropdown-menu>
     </el-dropdown>
     <div class="button-panel">
-      <el-button type="text" icon="el-icon-s-home" @click="home"></el-button>
       <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
       <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
+      <el-button type="text" icon="el-icon-full-screen" @click="fullscreen"></el-button>
+      <el-button type="text" icon="el-icon-s-home" @click="home"></el-button>
     </div>
     <div class="content-layer" :style="zoomStyle">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
@@ -127,12 +128,8 @@ export default {
         'dmx.topicmaps.y': y,
         'dmx.topicmaps.visibility': true,
         'dmx.topicmaps.pinned': false,
-        ...typeUri === 'zukunftswerk.arrow' ? {
-          'zukunftswerk.angle': 0,
-          'dmx.topicmaps.width': zw.ARROW_LENGTH
-        } : {
-          'dmx.topicmaps.width': zw.FORM_WIDTH
-        }
+        'dmx.topicmaps.width': typeUri === 'zukunftswerk.arrow' ? zw.ARROW_LENGTH : zw.FORM_WIDTH,
+        'zukunftswerk.angle': 0
       }
     },
 
@@ -142,6 +139,26 @@ export default {
         pan: viewport.pan,
         zoom: viewport.zoom
       })
+    },
+
+    fullscreen () {
+      let xMin = 1000, xMax = -1000
+      let yMin = 1000   // TODO: height
+      this.topics.forEach(topic => {
+        if (topic.typeUri !== 'zukunftswerk.viewport') {
+          const x1 = topic.pos.x
+          const y1 = topic.pos.y
+          const x2 = x1 + topic.viewProps['dmx.topicmaps.width']
+          if (x1 < xMin) xMin = x1
+          if (y1 < yMin) yMin = y1
+          if (x2 > xMax) xMax = x2
+        }
+      })
+      const width = xMax - xMin
+      const _width = this.$refs.canvas.clientWidth
+      const zoom = _width / width
+      // console.log('fullscreen', xMin, xMax, yMin, zoom)
+      this.$store.dispatch('setViewport', {pan: {x: -xMin, y: -yMin}, zoom})
     },
 
     stepZoom (delta) {

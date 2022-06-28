@@ -28,6 +28,7 @@ export default {
     this.$emit('rotate-enabled', false)
     this.$emit('resize-style', 'none')
     this.$emit('get-size', () => this.size)
+    this.$emit('move-handler', this.onMove)
   },
 
   props: {
@@ -48,6 +49,12 @@ export default {
         w: this.topic.viewProps['dmx.topicmaps.width'],
         h: 30
       }
+    }
+  },
+
+  methods: {
+    onMove () {
+      document.querySelector('.zw-arrow-handles').__vue__.updateHandles()
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-arrow-layer" v-show="visible" :style="zoomStyle">
+  <div class="zw-arrow-handles" v-show="visible" :style="zoomStyle">
     <div class="handle" :style="{top: `${h1.y}px`, left: `${h1.x}px`}" ref="h1"></div>
     <div class="handle" :style="{top: `${h2.y}px`, left: `${h2.x}px`}" ref="h2"></div>
   </div>
@@ -71,18 +71,7 @@ export default {
     topic () {
       if (this.visible) {
         moveable = document.querySelector(`.zw-arrow[data-id="${this.topic.id}"]`).__vue__.moveable
-        const alpha = Math.PI * this.angle / 180
-        const sin = Math.sin(alpha)
-        const cos = Math.cos(alpha)
-        const cx = this.pos.x + this.width / 2
-        const cy = this.pos.y + zw.ARROW_HEIGHT / 2
-        const w2 = this.width / 2
-        const w2sin = w2 * sin
-        const w2cos = w2 * cos
-        this.h1.x = cx + w2cos
-        this.h1.y = cy + w2sin
-        this.h2.x = cx - w2cos
-        this.h2.y = cy - w2sin
+        this.updateHandles()
       }
     }
   },
@@ -90,7 +79,7 @@ export default {
   methods: {
 
     newMovable (nr, target) {
-      const _moveable = new Moveable(document.querySelector('.zw-arrow-layer'), {
+      const _moveable = new Moveable(this.$el, {
         target,
         draggable: true,
         resizable: false,
@@ -129,16 +118,31 @@ export default {
       })
       //
       return _moveable
+    },
+
+    updateHandles () {
+      const alpha = Math.PI * this.angle / 180
+      const sin = Math.sin(alpha)
+      const cos = Math.cos(alpha)
+      const cx = this.pos.x + this.width / 2
+      const cy = this.pos.y + zw.ARROW_HEIGHT / 2
+      const w2 = this.width / 2
+      const w2sin = w2 * sin
+      const w2cos = w2 * cos
+      this.h1.x = cx + w2cos
+      this.h1.y = cy + w2sin
+      this.h2.x = cx - w2cos
+      this.h2.y = cy - w2sin
     }
   }
 }
 </script>
 
 <style>
-.zw-arrow-layer {
+.zw-arrow-handles {
 }
 
-.zw-arrow-layer .handle {
+.zw-arrow-handles .handle {
   position: absolute;
   width: 14px;
   height: 14px;

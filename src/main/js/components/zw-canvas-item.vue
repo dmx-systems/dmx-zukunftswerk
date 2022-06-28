@@ -4,7 +4,7 @@
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @visibility="setVisibility" @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
       @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
-      @mousedown.native="mousedown">
+      @move-handler="setMoveHandler" @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="buttonPanelVisibility">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
@@ -66,6 +66,7 @@ export default {
       rotateEnabled: true,      // Rotate handle visibility (Boolean)
       resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
       getSize: undefined,       // Custom get-size function (Function)
+      moveHandler: undefined,   // Custom handler to react on item moves (Function)
       //
       // Misc
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic)
@@ -192,14 +193,11 @@ export default {
       })
       moveable.renderDirections = this.handles
       /* draggable */
-      moveable.on("dragStart", ({target, clientX, clientY}) => {
-        this.select()     // programmatic selection
-      }).on("drag", ({
-        target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
-      }) => {
+      moveable.on("dragStart", this.select)           // programmatic selection
+      .on("drag", ({left, top}) => {
         this.dragging('dragging')
         this.topic.setPosition({x: left, y: top})     // update client state
-        // target!.style.transform = transform;
+        this.moveHandler && this.moveHandler()
       }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
         this.dragEnd()
         this.storePos()
@@ -273,16 +271,16 @@ export default {
       this.$store.dispatch('storeTopicAngle', this.topic)
     },
 
+    buttonVisibility (action) {
+      return action.action !== 'action.edit' || this.editEnabled
+    },
+
     setVisibility (visibilty) {
       this.visibilty = visibilty
     },
 
     setCustomClass (classname) {
       this.customClass = classname
-    },
-
-    buttonVisibility (action) {
-      return action.action !== 'action.edit' || this.editEnabled
     },
 
     setActions (actions) {
@@ -303,6 +301,10 @@ export default {
 
     setGetSizeHandler (handler) {
       this.getSize = handler
+    },
+
+    setMoveHandler (handler) {
+      this.moveHandler = handler
     }
   },
 

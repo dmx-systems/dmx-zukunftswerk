@@ -156,7 +156,7 @@ const actions = {
     // console.log('store setTopic', topic)
     dispatch('deselect')
     state.topic = topic
-    document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
+    document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active') // FIXME: topic undefined
   },
 
   deselect () {
@@ -413,6 +413,7 @@ const actions = {
   delete ({dispatch}, topic) {
     dispatch('setTopic', topic)   // select programmatically
     zw.confirmDeletion().then(() => {
+      state.topic = undefined
       state.topicmap.removeTopic(topic.id)        // update client state
       dmx.rpc.deleteTopic(topic.id)               // update server state
     }).catch(() => {})            // suppress unhandled rejection on cancel

@@ -10,10 +10,10 @@
       </el-dropdown-menu>
     </el-dropdown>
     <div class="button-panel">
+      <el-button type="text" icon="el-icon-s-home" @click="home"></el-button>
+      <el-button type="text" icon="el-icon-full-screen" @click="fullscreen"></el-button>
       <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
       <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
-      <el-button type="text" icon="el-icon-full-screen" @click="fullscreen"></el-button>
-      <el-button type="text" icon="el-icon-s-home" @click="home"></el-button>
     </div>
     <div class="content-layer" :style="zoomStyle">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>

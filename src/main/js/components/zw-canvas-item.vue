@@ -34,9 +34,7 @@ export default {
   },
 
   destroyed () {
-    if (this.editable) {
-      this.moveable.destroy()
-    }
+    this.moveable.destroy()
   },
 
   props: {

@@ -213,17 +213,17 @@ const actions = {
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, topic.viewProps)
   },
 
+  // Note: pan/zoom state is not persisted. We have the Viewport topic instead.
   setPan (_, pan) {
-    // TODO: update client state (topicmap model)?
+    // TODO: update topicmap model?
     state.pan = pan
-    setTopicmapViewport()     // update server state (debounced)
   },
 
+  // Note: pan/zoom state is not persisted. We have the Viewport topic instead.
   setViewport (_, {pan, zoom}) {
-    // TODO: update client state (topicmap model)?
+    // TODO: update topicmap model?
     state.pan = pan
     state.zoom = zoom
-    setTopicmapViewport()     // update server state (debounced)
   },
 
   setPanelVisibility (_, visibility) {
@@ -618,30 +618,9 @@ function replaceComment (comment) {
 }
 
 function initViewport () {
-  const topicmap = state.topicmap
-  const viewport = topicmap.topics.find(t => t.typeUri === 'zukunftswerk.viewport')
-  if (viewport) {
-    const zoom = viewport.viewProps['dmx.topicmaps.zoom']
-    state.pan = {
-      x: -viewport.pos.x * zoom,
-      y: -viewport.pos.y * zoom
-    }
-    state.zoom = zoom
-  } else {
-    // fallback
-    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
-    state.pan = {
-      x: topicmap.panX,
-      y: topicmap.panY
-    }
-    state.zoom = topicmap.zoom
-  }
-}
-
-function setTopicmapViewport() {
-  if (state.isTeam || state.isEditor) {
-    dmx.rpc.setTopicmapViewport(state.topicmap.id, state.pan, state.zoom)           // update server state
-  }
+  const viewport = zw.getViewport()
+  state.pan = viewport.pan
+  state.zoom = viewport.zoom
 }
 
 // util

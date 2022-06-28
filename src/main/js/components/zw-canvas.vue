@@ -9,7 +9,8 @@
         <el-dropdown-item command="newArrow"><zw-string>item.arrow</zw-string></el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <div class="zoom-panel">
+    <div class="button-panel">
+      <el-button type="text" icon="el-icon-s-home" @click="home"></el-button>
       <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
       <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
     </div>
@@ -135,6 +136,14 @@ export default {
       }
     },
 
+    home () {
+      const viewport = zw.getViewport()
+      this.$store.dispatch('setViewport', {
+        pan: viewport.pan,
+        zoom: viewport.zoom
+      })
+    },
+
     stepZoom (delta) {
       const c = this.$refs.canvas
       this.setZoom(this.zoom + delta, c.clientWidth / 2, c.clientHeight / 2)
@@ -183,14 +192,14 @@ function newArrowId () {
   margin: 8px;
 }
 
-.zw-canvas .zoom-panel {
+.zw-canvas > .button-panel {
   position: absolute;
   top: 8px;
   right: 16px;
   z-index: 1;           /* place zoom buttons above canvas items */
 }
 
-.zw-canvas .zoom-panel .el-button {
+.zw-canvas > .button-panel .el-button {
   font-size: 24px;
 }
 

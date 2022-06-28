@@ -18,6 +18,7 @@ const logo = {
 export default {
 
   getDisplayName,
+  getViewport,
   getUser,
   getString,
   getLogo,
@@ -47,6 +48,33 @@ export default {
 
 function getDisplayName (username) {
   return getUser(username).children['zukunftswerk.display_name']?.value || '?'     // TODO
+}
+
+/**
+ * @return  the viewport of the current topicmap.
+ */
+function getViewport() {
+  const viewport = store.state.topicmap.topics.find(t => t.typeUri === 'zukunftswerk.viewport')
+  if (viewport) {
+    const zoom = viewport.viewProps['dmx.topicmaps.zoom']
+    return {
+      pan: {
+        x: -viewport.pos.x * zoom,
+        y: -viewport.pos.y * zoom
+      },
+      zoom
+    }
+  } else {
+    // fallback
+    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
+    return {
+      pan: {
+        x: topicmap.panX,
+        y: topicmap.panY
+      },
+      zoom: topicmap.zoom
+    }
+  }
 }
 
 function getUser (username) {

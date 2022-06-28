@@ -153,5 +153,6 @@ export default {
   margin-top: -7px;
   margin-left: -7px;
   z-index: 10;
+  cursor: move;
 }
 </style>

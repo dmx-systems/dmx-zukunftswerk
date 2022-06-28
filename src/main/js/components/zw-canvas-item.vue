@@ -29,9 +29,7 @@ export default {
   ],
 
   mounted () {
-    if (this.editable) {    // FIXME
-      this.moveable = this.newMovable()
-    }
+    this.moveable = this.newMovable()
   },
 
   destroyed () {

@@ -17,11 +17,11 @@ const logo = {
 
 export default {
 
-  getDisplayName,
+  getLogo,
   getViewport,
+  getDisplayName,
   getUser,
   getString,
-  getLogo,
 
   topicSort,
   canvasFilter,
@@ -46,10 +46,12 @@ export default {
   ARROW_HEIGHT: 30
 }
 
-function getDisplayName (username) {
-  return getUser(username).children['zukunftswerk.display_name']?.value || '?'     // TODO
+// TODO: make it a store getter?
+function getLogo () {
+  return logo[store.state.lang]
 }
 
+// TODO: make it a store getter?
 /**
  * @return  the viewport of the current topicmap.
  */
@@ -77,16 +79,16 @@ function getViewport() {
   }
 }
 
+function getDisplayName (username) {
+  return getUser(username).children['zukunftswerk.display_name']?.value || '?'     // TODO
+}
+
 function getUser (username) {
   return store.state.users.find(ws => ws.value === username)
 }
 
 function getString (key) {
   return uiStrings[`${key}.${store.state.lang}`]
-}
-
-function getLogo () {
-  return logo[store.state.lang]
 }
 
 function topicSort (t1, t2) {

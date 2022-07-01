@@ -1,8 +1,8 @@
 <template>
-  <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]"
-      v-if="visibilty" :data-id="topic.id" :style="style">
+  <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]" :data-id="topic.id"
+      :style="style">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
-      @visibility="setVisibility" @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
+      @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
       @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
       @move-handler="setMoveHandler" @mousedown.native="mousedown">
     </component>
@@ -53,7 +53,6 @@ export default {
   data () {
     return {
       // Default configuration, can be (partially) supplied by child component
-      visibilty: true,          // Is this item visible? (Boolean)
       customClass: undefined,   // Custom class (String)
       actions: [                // Actions appearing in the button panel
         {action: 'action.edit',   handler: this.edit},
@@ -264,10 +263,6 @@ export default {
 
     buttonVisibility (action) {
       return action.action !== 'action.edit' || this.editEnabled
-    },
-
-    setVisibility (visibilty) {
-      this.visibilty = visibilty
     },
 
     setCustomClass (classname) {

@@ -10,7 +10,6 @@ import dmx from 'dmx-api'
 export default {
 
   created () {
-    this.$emit('visibility', this.isTeam || this.isEditor)
     this.$emit('actions', [{action: 'action.set_zoom', handler: this.setZoom}])
     this.$emit('rotate-enabled', false)
     this.$emit('resize-style', 'none')
@@ -32,17 +31,8 @@ export default {
   },
 
   computed: {
-
     zoomRounded () {
       return Math.round(100 * this.zoom) / 100
-    },
-
-    isTeam () {
-      return this.$store.state.isTeam
-    },
-
-    isEditor () {
-      return this.$store.state.isEditor
     }
   },
 

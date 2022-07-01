@@ -100,7 +100,7 @@ function canvasFilter (topic) {
          topic.typeUri === 'zukunftswerk.note'     ||
          topic.typeUri === 'zukunftswerk.label'    ||
          topic.typeUri === 'zukunftswerk.arrow'    ||
-         topic.typeUri === 'zukunftswerk.viewport'
+         topic.typeUri === 'zukunftswerk.viewport' && (store.state.isTeam || store.state.isEditor)
 }
 
 function confirmDeletion (textKey = 'warning.delete') {

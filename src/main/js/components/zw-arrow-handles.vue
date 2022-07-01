@@ -70,6 +70,7 @@ export default {
 
   watch: {
     topic () {
+      console.log('topic', this.topic?.id)
       if (this.visible) {
         moveable = document.querySelector(`.zw-arrow[data-id="${this.topic.id}"]`).__vue__.moveable
         this.updateHandles()

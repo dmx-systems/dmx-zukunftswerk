@@ -33,6 +33,7 @@ export default {
   methods: {
 
     mousedown (e) {
+      // console.log('mousedown', e.target, e.target.classList.contains('zw-canvas'))
       if (e.target.classList.contains('zw-canvas')) {
         this.$el.addEventListener('mousemove', this.mousemove)
         this.panPos = {
@@ -55,18 +56,19 @@ export default {
       }
     },
 
-    mouseup () {
+    mouseup (e) {
+      // console.log('mouseup', e.target, this.panPos)
       if (this.panPos) {
         this.$el.removeEventListener('mousemove', this.mousemove)
         if (this.isPanning) {
           // stop panning
           // console.log('stopPanning')
           this.isPanning = false
-          this.panPos = undefined
           this.dragStop()
         } else {
           this.$store.dispatch('deselect')
         }
+        this.panPos = undefined
       }
     },
 

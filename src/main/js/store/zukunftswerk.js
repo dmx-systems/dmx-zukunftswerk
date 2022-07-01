@@ -152,18 +152,22 @@ const actions = {
     })
   },
 
-  setTopic ({dispatch}, topic) {
-    // console.log('store setTopic', topic)
+  /**
+   * @param   topic   must not be null/undefined
+   */
+  select ({dispatch}, topic) {
+    console.log('select', topic.id)
     dispatch('deselect')
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active') // FIXME: topic undefined
   },
 
   deselect () {
+    console.log('deselect', state.topic?.id)
     if (state.topic) {
-      // console.log('store deselect')
+      document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
+      // document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
       state.topic = undefined
-      document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
     }
   },
 
@@ -386,7 +390,7 @@ const actions = {
   revealDocument ({dispatch}, doc) {
     // 1) select and pan
     const topic = state.topicmap.getTopic(doc.id)
-    dispatch('setTopic', topic)
+    dispatch('select', topic)     // programmatic selection
     dispatch('setPan', {
       x: -topic.pos.x * state.zoom + zw.NEW_POS_X,
       y: -topic.pos.y * state.zoom + zw.NEW_POS_Y
@@ -406,12 +410,12 @@ const actions = {
   },
 
   edit ({dispatch}, topic) {
-    dispatch('setTopic', topic)   // select programmatically
+    dispatch('select', topic)     // programmatic selection
     state.isEditActive.push(topic.id)
   },
 
   delete ({dispatch}, topic) {
-    dispatch('setTopic', topic)   // select programmatically
+    dispatch('select', topic)     // programmatic selection
     zw.confirmDeletion().then(() => {
       state.topic = undefined
       state.topicmap.removeTopic(topic.id)        // update client state

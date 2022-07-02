@@ -125,8 +125,10 @@ export default {
   watch: {
 
     lang () {
-      const str = zw.getString('label.new_comment')
-      document.querySelector('.zw-discussion .new-comment .ql-editor').setAttribute('data-placeholder', str)
+      if (this.panelVisibility) {
+        const str = zw.getString('label.new_comment')
+        document.querySelector('.zw-discussion .new-comment .ql-editor').setAttribute('data-placeholder', str)
+      }
     },
 
     panelVisibility () {this.scrollDown()},

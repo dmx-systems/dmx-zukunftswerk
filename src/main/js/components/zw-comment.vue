@@ -31,16 +31,13 @@
       </template>
       <template v-else>
         <div class="dmx-html-field left">
-          <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill">
-          </quill>
+          <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
           <el-button class="translate-button" type="text" @click="doTranslate">
             <zw-string>action.translate</zw-string>
           </el-button>
         </div>
         <div class="dmx-html-field right">
-          <quill v-model="model[lang2].value" :options="quillOptions" ref="translation"
-            v-loading="translating">
-          </quill>
+          <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
         </div>
       </template>
     </div>

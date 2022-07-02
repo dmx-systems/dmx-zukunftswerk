@@ -1,7 +1,7 @@
 <template>
   <el-dialog custom-class="zw-upload-dialog" :visible="visible" :modal="false" width="400px"
       @open="clearError" @close="close">
-    <el-upload drag :action="action" :on-success="onSuccess" :on-error="onError" ref="upload">
+    <el-upload drag :action="action" :accept="accept" :on-success="onSuccess" :on-error="onError" ref="upload">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
     </el-upload>
@@ -23,6 +23,7 @@ export default {
 
   data () {
     return {
+      accept: "image/*, .pdf",
       error: ''
     }
   },

@@ -55,7 +55,7 @@ export default {
     toolbarStyle () {
       if (!this.fullscreen) {
         return {
-          'font-size': `${14 / this.zoom}px`      // "14" corresponds to --primary-font-size (see App.vue)
+          'font-size': `${20 / this.zoom}px`
         }
       }
     },
@@ -165,16 +165,16 @@ export default {
 }
 
 .zw-pdf-viewer .toolbar.upper {
-  top: 4px;
-  right: 4px;
+  top: 0px;
+  right: 0px;
 }
 
 .zw-pdf-viewer.fullscreen .toolbar.upper {
-  right: 16px;
+  right: 16px;    /* scrollbar pad */
 }
 
 .zw-pdf-viewer.fullscreen .toolbar.upper .el-button {
-  font-size: 18px;
+  font-size: 26px;
 }
 
 .zw-pdf-viewer .toolbar.lower {
@@ -183,7 +183,7 @@ export default {
 }
 
 .zw-pdf-viewer.fullscreen .toolbar.lower {
-  right: 20px;
+  right: 20px;    /* scrollbar pad */
 }
 
 .zw-pdf-viewer:hover .toolbar {

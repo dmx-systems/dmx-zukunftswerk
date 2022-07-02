@@ -109,6 +109,10 @@ export default {
       return this.$store.state.refDocument
     },
 
+    lang () {
+      return this.$store.state.lang
+    },
+
     fileTopicIds () {
       return this.attachments.map(file => file.id)
     },
@@ -119,15 +123,15 @@ export default {
   },
 
   watch: {
-    panelVisibility () {
-      this.scrollDown()
+
+    lang () {
+      const str = zw.getString('label.new_comment')
+      document.querySelector('.zw-discussion .new-comment .ql-editor').setAttribute('data-placeholder', str)
     },
-    discussion () {
-      this.scrollDown()
-    },
-    refDocument () {
-      this.scrollDown()
-    }
+
+    panelVisibility () {this.scrollDown()},
+    discussion ()      {this.scrollDown()},
+    refDocument ()     {this.scrollDown()}
   },
 
   methods: {

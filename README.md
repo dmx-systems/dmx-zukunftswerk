@@ -7,6 +7,30 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.3** -- Jul 7, 2022
+
+* Features:
+    * 4 new canvas buttons: "Home", "Zoom to fit", "Zoom in", "Zoom out"
+    * Rotatable canvas items: Notes, Documents, Headlines
+* Improvements:
+    * Login:
+        * User lands in recently used workspace (based on ws-cookie)
+        * Workspace deep-links: request login if due
+    * Canvas / PDF viewer:
+        * Larger "fullscreen" toggle button
+    * Chat panel:
+        * Accept only images and PDFs as comment attachments
+        * Use "paper plane" icon for submit
+* Fixes:
+    * Canvas: arrows properly follow when moving handles
+    * Chat panel:
+        * Editors can't edit posts (only her own)
+        * Reset doc-filter on workspace change
+        * New-comment placeholder text adapts to UI language
+    * Header: workspace drop down is up-to-date after WS edit
+    * Admin area: disable "Editor" checkbox if "Member" is unchecked
+* Compatible with DMX 5.3-SNAPSHOT
+
 **1.2** -- Jun 4, 2022
 
 * Features:

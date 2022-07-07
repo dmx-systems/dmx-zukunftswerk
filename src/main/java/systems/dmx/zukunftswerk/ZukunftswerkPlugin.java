@@ -184,7 +184,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // Note: as Topicmap is not a DMXObject no PRE_SEND event is fired, so we use a TopicmapCustomizer.
 
     /**
-     * For arrows load the x2/y2 view props.
+     * For arrows load the x2/y2 view props. ### FIXDOC
      */
     @Override
     public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {

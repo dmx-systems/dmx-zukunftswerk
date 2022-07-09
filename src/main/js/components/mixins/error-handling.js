@@ -12,8 +12,8 @@ export default {
         switch (msgBox) {
         case 'confirm':
           return this.$confirm(zw.getString('warning.translation_confirm'), {
-            title:             zw.getString('warning.translation_failed'),
             type: 'warning',
+            title:             zw.getString('warning.translation_failed'),
             confirmButtonText: zw.getString('action.create'),
             cancelButtonText:  zw.getString('action.cancel'),
             showClose: false,

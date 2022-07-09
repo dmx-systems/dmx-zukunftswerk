@@ -87,6 +87,8 @@ export default {
   'label.password.fr': 'Mot de passe',
   'label.color.de': 'Farbe',
   'label.color.fr': 'Couleur',
+  'label.warning.de': 'Warnung',
+  'label.warning.fr': 'Avertissement',
 
   'action.submit.de': 'OK',
   'action.submit.fr': 'OK',

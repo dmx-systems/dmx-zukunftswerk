@@ -104,10 +104,12 @@ function canvasFilter (topic) {
 }
 
 function confirmDeletion (textKey = 'warning.delete') {
-  return Vue.prototype.$confirm(getString(textKey), 'Warning', {
+  return Vue.prototype.$confirm(getString(textKey), {
     type: 'warning',
+    title: getString('label.warning'),
     confirmButtonText: getString('action.delete'),
     confirmButtonClass: 'el-button--danger',
+    cancelButtonText: getString('action.cancel'),
     showClose: false
   })
 }

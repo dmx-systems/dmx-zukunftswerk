@@ -48,7 +48,7 @@ const state = {
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
-  lang: 'de',                   // UI language ('de'/'fr')
+  lang: initLang(),             // UI language ('de'/'fr')
   loginMessage: ''              // the status message shown besides Login button
 }
 
@@ -502,6 +502,13 @@ function create (type, topic, monolingual) {
 }
 
 // state helper
+
+function initLang () {
+  const _lang = navigator.language.substr(0, 2)
+  const lang = ['de', 'fr'].includes(_lang) ? _lang : 'de'
+  console.log('[ZW] lang: ', _lang, '->', lang)
+  return lang
+}
 
 /**
  * Initialzes 4 states:

@@ -48,7 +48,7 @@ const state = {
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
-  lang: initLang(),             // UI language ('de'/'fr')
+  lang: undefined,              // UI language ('de'/'fr')
   loginMessage: ''              // the status message shown besides Login button
 }
 
@@ -128,6 +128,7 @@ const actions = {
 
   setLang (_, lang) {
     state.lang = lang
+    dmx.utils.setCookie('zw_lang', lang)
   },
 
   setWorkspace ({dispatch}, workspaceId) {
@@ -473,6 +474,7 @@ const store = new Vuex.Store({
 })
 
 store.registerModule('admin', adminStore)
+initLang()
 
 export default store
 
@@ -504,10 +506,17 @@ function create (type, topic, monolingual) {
 // state helper
 
 function initLang () {
-  const _lang = navigator.language.substr(0, 2)
-  const lang = ['de', 'fr'].includes(_lang) ? _lang : 'de'
-  console.log('[ZW] lang: ', _lang, '->', lang)
-  return lang
+  let lang
+  const langC = dmx.utils.getCookie('zw_lang')
+  if (langC) {
+    lang = langC
+    console.log('[ZW] lang:', lang, '(from cookie)')
+  } else {
+    const langB = navigator.language.substr(0, 2)
+    lang = ['de', 'fr'].includes(langB) ? langB : 'de'
+    console.log('[ZW] lang:', langB, '(from browser) ->', lang)
+  }
+  store.dispatch('setLang', lang)
 }
 
 /**

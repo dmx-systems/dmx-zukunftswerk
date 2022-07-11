@@ -159,7 +159,7 @@ const actions = {
   select ({dispatch}, topic) {
     dispatch('deselect')
     state.topic = topic
-    document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active') // FIXME: topic undefined
+    document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
   },
 
   deselect () {

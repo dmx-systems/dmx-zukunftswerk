@@ -450,6 +450,10 @@ const actions = {
     }
   },
 
+  updateControlBox (_, topicId) {
+    document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()
+  },
+
   translate (_, text) {
     // suppress standard HTTP error handler
     return dmx.rpc._http.post('/zukunftswerk/translate', text).then(response => response.data)

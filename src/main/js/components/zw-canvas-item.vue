@@ -152,8 +152,8 @@ export default {
     mode () {
       // Note: $nextTick() instead shows strange result
       setTimeout(() => {
-        document.querySelector(`.zw-canvas-item[data-id="${this.topic.id}"]`).__vue__.moveable.updateTarget()
-      }, 0)
+        this.$store.dispatch('updateControlBox', this.topic.id)
+      }, 300)
     }
   },
 

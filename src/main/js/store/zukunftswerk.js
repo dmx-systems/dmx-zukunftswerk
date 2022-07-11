@@ -391,8 +391,8 @@ const actions = {
     const topic = state.topicmap.getTopic(doc.id)
     dispatch('select', topic)     // programmatic selection
     dispatch('setPan', {
-      x: -topic.pos.x * state.zoom + zw.NEW_POS_X,
-      y: -topic.pos.y * state.zoom + zw.NEW_POS_Y
+      x: -topic.pos.x * state.zoom + zw.CANVAS_BORDER,
+      y: -topic.pos.y * state.zoom + zw.CANVAS_BORDER
     })
     // 2) set doc filter
     dispatch('setRefDocument', doc)

@@ -11,7 +11,7 @@
     </el-dropdown>
     <div class="button-panel">
       <el-button type="text" icon="el-icon-s-home" @click="home"></el-button>
-      <el-button type="text" icon="el-icon-full-screen" @click="fullscreen"></el-button>
+      <el-button type="text" icon="el-icon-full-screen" @click="zoomToFit"></el-button>
       <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
       <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
     </div>
@@ -121,8 +121,8 @@ export default {
     },
 
     viewProps (typeUri)  {
-      const x = (zw.NEW_POS_X - this.pan.x) / this.zoom
-      const y = (zw.NEW_POS_Y - this.pan.y) / this.zoom
+      const x = (zw.CANVAS_BORDER - this.pan.x) / this.zoom
+      const y = (zw.CANVAS_BORDER - this.pan.y) / this.zoom
       return {
         'dmx.topicmaps.x': x,
         'dmx.topicmaps.y': y,
@@ -141,24 +141,32 @@ export default {
       })
     },
 
-    fullscreen () {
+    zoomToFit () {
       let xMin = 1000, xMax = -1000
-      let yMin = 1000   // TODO: height
+      let yMin = 1000, yMax = -1000
       this.topics.forEach(topic => {
-        if (topic.typeUri !== 'zukunftswerk.viewport') {
-          const x1 = topic.pos.x
-          const y1 = topic.pos.y
-          const x2 = x1 + topic.viewProps['dmx.topicmaps.width']
-          if (x1 < xMin) xMin = x1
-          if (y1 < yMin) yMin = y1
-          if (x2 > xMax) xMax = x2
-        }
+        const x1 = topic.pos.x
+        const y1 = topic.pos.y
+        const item = document.querySelector(`.zw-canvas-item[data-id="${topic.id}"]`)
+        const x2 = x1 + item.clientWidth
+        const y2 = y1 + item.clientHeight
+        if (x1 < xMin) xMin = x1
+        if (y1 < yMin) yMin = y1
+        if (x2 > xMax) xMax = x2
+        if (y2 > yMax) yMax = y2
       })
       const width = xMax - xMin
-      const _width = this.$refs.canvas.clientWidth
-      const zoom = _width / width
-      // console.log('fullscreen', xMin, xMax, yMin, zoom)
-      this.$store.dispatch('setViewport', {pan: {x: -xMin, y: -yMin}, zoom})
+      const height = yMax - yMin
+      const _width = this.$refs.canvas.clientWidth - 2 * zw.CANVAS_BORDER
+      const _height = this.$refs.canvas.clientHeight - 2 * zw.CANVAS_BORDER
+      const zoomW = _width / width
+      const zoomH = _height / height
+      const zoom = Math.min(zoomW, zoomH)
+      const dx = (_width / zoom - width) / 2
+      const dy = (_height / zoom - height) / 2
+      const x = (dx - xMin) * zoom + zw.CANVAS_BORDER
+      const y = (dy - yMin) * zoom + zw.CANVAS_BORDER
+      this.$store.dispatch('setViewport', {pan: {x, y}, zoom})
     },
 
     stepZoom (delta) {

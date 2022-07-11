@@ -39,8 +39,7 @@ export default {
     'rgb(145, 187, 205)',
     'transparent'
   ],
-  NEW_POS_X: 42,                // position of both, new items, and document revelation (in pixel)
-  NEW_POS_Y: 42,
+  CANVAS_BORDER: 42,            // affects a) position of new items and document revelation, b) zoom-to-fit (in pixel)
   FORM_WIDTH: 384,              // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
   ARROW_LENGTH: 200,
   ARROW_HEIGHT: 30

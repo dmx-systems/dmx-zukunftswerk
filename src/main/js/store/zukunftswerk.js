@@ -448,6 +448,9 @@ const actions = {
     }
   },
 
+  /**
+   * Precondition: the given topic is visible on canvas.
+   */
   updateControlBox (_, {topicId, delay = 0}) {
     // Note: $nextTick() instead shows strange result
     setTimeout(() => {

@@ -27,9 +27,11 @@ export default message => {
     break
   case 'setTopicPosition':
     if (message.args.topicmapId === topicmap.id) {
-      const topicId = message.args.topicId
-      topicmap.getTopic(topicId).setPosition(message.args.pos)
-      store.dispatch('updateControlBox', {topicId})
+      const topic = topicmap.getTopic(message.args.topicId)
+      topic.setPosition(message.args.pos)
+      if (zw.canvasFilter(topic)) {
+        store.dispatch('updateControlBox', {topicId: topic.id})
+      }
     }
     break
   case 'processDirectives':

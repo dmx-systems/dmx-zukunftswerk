@@ -48,7 +48,7 @@ import zw from '../zw-globals'
 import errorHandler from '../error-handler'
 
 const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
-console.log('[ZW] isChrome', isChrome)
+console.log('[ZW] isChrome:', isChrome)
 
 export default {
 

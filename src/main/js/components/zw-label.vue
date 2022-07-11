@@ -142,7 +142,7 @@ export default {
     setText (lang) {
       // Note: in a monolingual label "fr" is not defined     // TODO: simplify
       if (!this.topic.children['zukunftswerk.label.fr']) {
-        this.topic.children['zukunftswerk.label.fr'] = {}
+        this.$set(this.topic.children, 'zukunftswerk.label.fr', {})
       }
       //
       const compDefUri = 'zukunftswerk.label.' + lang

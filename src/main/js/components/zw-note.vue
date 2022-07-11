@@ -201,7 +201,7 @@ export default {
     setNote (lang) {
       // Note: in a monolingual note "fr" is not defined     // TODO: simplify
       if (!this.topic.children['zukunftswerk.note.fr']) {
-        this.topic.children['zukunftswerk.note.fr'] = {}
+        this.$set(this.topic.children, 'zukunftswerk.note.fr', {})
       }
       //
       const compDefUri = 'zukunftswerk.note.' + lang

@@ -157,14 +157,12 @@ const actions = {
    * @param   topic   must not be null/undefined
    */
   select ({dispatch}, topic) {
-    console.log('select', topic.id)
     dispatch('deselect')
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active') // FIXME: topic undefined
   },
 
   deselect () {
-    console.log('deselect', state.topic?.id)
     if (state.topic) {
       document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
       // document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
@@ -450,8 +448,11 @@ const actions = {
     }
   },
 
-  updateControlBox (_, topicId) {
-    document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()
+  updateControlBox (_, {topicId, delay = 0}) {
+    // Note: $nextTick() instead shows strange result
+    setTimeout(() => {
+      document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()
+    }, delay)
   },
 
   translate (_, text) {

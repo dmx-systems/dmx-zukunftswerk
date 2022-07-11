@@ -27,7 +27,9 @@ export default message => {
     break
   case 'setTopicPosition':
     if (message.args.topicmapId === topicmap.id) {
-      topicmap.getTopic(message.args.topicId).setPosition(message.args.pos)
+      const topicId = message.args.topicId
+      topicmap.getTopic(topicId).setPosition(message.args.pos)
+      store.dispatch('updateControlBox', {topicId})
     }
     break
   case 'processDirectives':

@@ -95,13 +95,11 @@ export default {
     },
 
     w () {
-      // console.log('w', this.formMode, this.topic.viewProps['dmx.topicmaps.width'])
       return this.formMode && zw.FORM_WIDTH || this.getSize && this.getSize().w
                                             || this.topic.viewProps['dmx.topicmaps.width']
     },
 
     h () {
-      // console.log('h', this.getSize, this.getSize && this.getSize().h)
       return this.getSize && this.getSize().h || this.resizeStyle === 'x' ? 'auto' :
                                                  this.topic.viewProps['dmx.topicmaps.height']
     },
@@ -150,17 +148,13 @@ export default {
 
   watch: {
     mode () {
-      // Note: $nextTick() instead shows strange result
-      setTimeout(() => {
-        this.$store.dispatch('updateControlBox', this.topic.id)
-      }, 300)
+      this.$store.dispatch('updateControlBox', {topicId: this.topic.id, delay: 300})
     }
   },
 
   methods: {
 
     select (e) {
-      console.log('view select')
       this.$store.dispatch('select', this.topic)
     },
 
@@ -227,7 +221,6 @@ export default {
       const inInput = e.target.tagName === 'INPUT'
       const inQuill = e.target.closest('.ql-container')
       // FIXME: handle el-upload fields?
-      // console.log('mousedown', inInput, inQuill)
       if (inInput || inQuill) {
         e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag
       }

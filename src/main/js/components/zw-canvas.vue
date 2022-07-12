@@ -157,13 +157,14 @@ export default {
       })
       const width = xMax - xMin
       const height = yMax - yMin
-      const _width = this.$refs.canvas.clientWidth - 2 * zw.CANVAS_BORDER
-      const _height = this.$refs.canvas.clientHeight - 2 * zw.CANVAS_BORDER
-      const zoomW = _width / width
-      const zoomH = _height / height
+      const canvas = this.$refs.canvas
+      const widthC = canvas.clientWidth - 2 * zw.CANVAS_BORDER
+      const heightC = canvas.clientHeight - 2 * zw.CANVAS_BORDER
+      const zoomW = widthC / width
+      const zoomH = heightC / height
       const zoom = Math.min(zoomW, zoomH)
-      const dx = (_width / zoom - width) / 2
-      const dy = (_height / zoom - height) / 2
+      const dx = (widthC / zoom - width) / 2
+      const dy = (heightC / zoom - height) / 2
       const x = (dx - xMin) * zoom + zw.CANVAS_BORDER
       const y = (dy - yMin) * zoom + zw.CANVAS_BORDER
       this.$store.dispatch('setViewport', {pan: {x, y}, zoom})

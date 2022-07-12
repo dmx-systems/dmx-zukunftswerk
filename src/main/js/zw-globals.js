@@ -79,11 +79,21 @@ function getViewport() {
 }
 
 function getDisplayName (username) {
-  return getUser(username).children['zukunftswerk.display_name']?.value || '?'     // TODO
+  try {
+    return getUser(username).children['zukunftswerk.display_name']?.value || '?'     // TODO
+  } catch (e) {
+    console.warn(`Display name error. ${e}`)
+    console.info(`Known users: ${store.state.users.map(user => user.value)}`)
+    return '!'
+  }
 }
 
 function getUser (username) {
-  return store.state.users.find(ws => ws.value === username)
+  const user = store.state.users.find(user => user.value === username)
+  if (!user) {
+    throw Error(`User "${username}" is unknown`)
+  }
+  return user
 }
 
 function getString (key) {

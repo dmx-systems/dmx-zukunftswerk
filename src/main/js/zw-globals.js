@@ -1,4 +1,4 @@
-// Global functions and values (not reactive)
+// Global functions and values (non-reactive)
 
 import Vue from 'vue'
 import dmx from 'dmx-api'

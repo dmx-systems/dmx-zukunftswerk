@@ -362,6 +362,16 @@ const actions = {
     state.discussion.push(comment)
   },
 
+  /**
+   * @param   comment   if not part of the current discussion nothing happens.
+   */
+  replaceComment (_, comment) {
+    const i = findCommentIndex(comment)
+    if (i >= 0) {
+      state.discussion.splice(i, 1, comment)
+    }
+  },
+
   jumpToComment (_, {comment, behavior = 'smooth'}) {
     // 1) Scroll comment into view
     // Safari note: Safari ignores scrollIntoView() "behavior" option; scrolling is not smooth.
@@ -629,7 +639,7 @@ function removeEditActive (topic) {
 }
 
 function removeComment (comment) {
-  const i = state.discussion.indexOf(comment)
+  const i = findCommentIndex(comment)
   if (i === -1) {
     throw Error('removeComment')
   }
@@ -637,11 +647,15 @@ function removeComment (comment) {
 }
 
 function replaceComment (comment) {
-  const i = state.discussion.findIndex(cmt => cmt.id === comment.id)
+  const i = findCommentIndex(comment)
   if (i === -1) {
     throw Error('replaceComment')
   }
   state.discussion.splice(i, 1, comment)
+}
+
+function findCommentIndex (comment) {
+  return state.discussion.findIndex(cmt => cmt.id === comment.id)
 }
 
 function initViewport () {

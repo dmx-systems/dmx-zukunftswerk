@@ -34,9 +34,10 @@ export default message => {
     break
   case 'processDirectives':
     message.args.forEach(directive => {
+      let topic
       switch (directive.type) {
       case 'UPDATE_TOPIC':
-        const topic = directive.arg
+        topic = directive.arg
         if (topic.typeUri === 'zukunftswerk.comment') {
           store.dispatch('replaceComment', topic)
         } else {
@@ -49,7 +50,12 @@ export default message => {
         }
         break
       case 'DELETE_TOPIC':
-        topicmap.removeTopic(directive.arg.id)
+        topic = directive.arg
+        if (topic.typeUri === 'zukunftswerk.comment') {
+          store.dispatch('removeComment', topic)
+        } else {
+          topicmap.removeTopic(topic.id)
+        }
         break
       }
     })

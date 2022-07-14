@@ -40,8 +40,12 @@ export default message => {
         if (topic.typeUri === 'zukunftswerk.comment') {
           store.dispatch('replaceComment', topic)
         } else {
-          topic.viewProps = topicmap.getTopic(topic.id).viewProps
-          topicmap.addTopic(new dmx.ViewTopic(topic))
+          const _topic = topicmap.getTopicIfExists(topic.id)
+          if (_topic) {
+            topic.viewProps = _topic.viewProps
+            topicmap.addTopic(new dmx.ViewTopic(topic))
+            // TODO: better model support for replace-topic
+          }
         }
         break
       case 'DELETE_TOPIC':

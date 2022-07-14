@@ -1,6 +1,6 @@
 <template>
   <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]" :data-id="topic.id"
-      :style="style" @click="select">
+      :style="style" @mousedown="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
       @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
@@ -181,8 +181,7 @@ export default {
       })
       moveable.renderDirections = this.handles
       /* draggable */
-      moveable.on('dragStart', this.select)           // programmatic selection
-      .on('drag', ({left, top}) => {
+      moveable.on('drag', ({left, top}) => {
         this.dragging('dragging')
         this.topic.setPosition({x: left, y: top})     // update client state
         this.moveHandler && this.moveHandler()

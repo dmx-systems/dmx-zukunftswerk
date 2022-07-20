@@ -102,6 +102,8 @@ export default {
   'action.edit.fr': 'Éditer',
   'action.delete.de': 'Löschen',
   'action.delete.fr': 'Supprimer',
+  'action.download.de': 'Download',
+  'action.download.fr': 'Télécharger',
   'action.translate.de': 'Übersetzen',
   'action.translate.fr': 'Traduire',
   'action.set_zoom.de': 'Aktuellen Zoom-Wert speichern',

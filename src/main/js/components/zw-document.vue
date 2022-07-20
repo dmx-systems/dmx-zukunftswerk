@@ -63,6 +63,11 @@ export default {
 
   created () {
     // console.log('zw-document', this.topic, this.topicBuffer, this.isNew)
+    this.$emit('action', {
+      action: 'action.download',
+      handler: this.download,
+      enabledForReadOnly: true
+    })
     this.initText()
   },
 
@@ -239,6 +244,10 @@ export default {
       p.then(() => {
         this.complete()
       })
+    },
+
+    download () {
+      this.$store.dispatch('downloadFile', this.path)
     },
 
     loading () {

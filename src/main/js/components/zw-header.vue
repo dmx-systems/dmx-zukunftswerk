@@ -96,7 +96,6 @@ export default {
   align-items: center;
   padding: 2px 10px;
   background-color: var(--header-color);
-  z-index: 1;
 }
 
 .zw-header img.logo {

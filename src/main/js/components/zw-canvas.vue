@@ -205,6 +205,7 @@ function newArrowId () {
   flex-grow: 1;
   background-image: url("../../resources-build/grid.png");
   min-width: 0;
+  overflow: hidden;
 }
 
 .zw-canvas > .el-dropdown {

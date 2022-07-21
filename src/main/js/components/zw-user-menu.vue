@@ -13,13 +13,20 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <el-dialog :visible.sync="visible" width="350px">
-      <zw-string slot="title">label.user_profile</zw-string>
+    <el-dialog :visible.sync="visible" width="400px">
+      <div slot="title">
+        <zw-string>label.user_profile</zw-string>:&nbsp;&nbsp;<b>{{username}}</b>
+      </div>
       <div class="field">
         <div class="field-label"><zw-string>label.display_name</zw-string></div>
         <el-input v-model="displayName"></el-input>
       </div>
-      <el-button class="save-button" type="primary" @click="save">
+      <div class="field">
+        <el-checkbox v-model="revealEmailAddress">
+          <zw-string>label.reveal_email_address</zw-string>
+        </el-checkbox>
+      </div>
+      <el-button type="primary" slot="footer" @click="save">
         <zw-string>action.submit</zw-string>
       </el-button>
     </el-dialog>
@@ -35,7 +42,8 @@ export default {
     return {
       // User Profile dialog
       visible: false,
-      displayName: ''
+      displayName: '',
+      revealEmailAddress: false
     }
   },
 
@@ -69,7 +77,6 @@ export default {
 </script>
 
 <style>
-.zw-user-menu .save-button {
-  margin-top: 26px;
+.zw-user-menu {
 }
 </style>

@@ -13,7 +13,7 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-    <el-dialog :visible.sync="visible" width="400px">
+    <el-dialog :visible.sync="visible" width="400px" v-loading="loading">
       <div slot="title">
         <zw-string>label.user_profile</zw-string>:&nbsp;&nbsp;<b>{{username}}</b>
       </div>
@@ -42,6 +42,7 @@ export default {
     return {
       // User Profile dialog
       visible: false,
+      loading: false,
       displayName: '',
       revealEmailAddress: false
     }
@@ -70,9 +71,18 @@ export default {
     },
 
     save () {
+      this.loading = true
       this.$store.dispatch('admin/updateUser', {
         emailAddress: this.username,
         displayName: this.displayName
+      }).catch(error => {
+        this.$alert(error.message, {
+          type: 'error',
+          showClose: false
+        }).then(() => {
+          this.loading = false
+          this.visible = false
+        })
       })
     }
   }

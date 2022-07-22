@@ -76,13 +76,13 @@ export default {
         emailAddress: this.username,
         displayName: this.displayName
       }).catch(error => {
-        this.$alert(error.message, {
+        return this.$alert(error.message, {
           type: 'error',
           showClose: false
-        }).then(() => {
-          this.loading = false
-          this.visible = false
         })
+      }).then(() => {
+        this.loading = false
+        this.visible = false
       })
     }
   }

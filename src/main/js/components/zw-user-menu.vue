@@ -70,7 +70,10 @@ export default {
     },
 
     save () {
-      // TODO
+      this.$store.dispatch('admin/updateUser', {
+        emailAddress: this.username,
+        displayName: this.displayName
+      })
     }
   }
 }

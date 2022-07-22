@@ -58,7 +58,9 @@ html {
 body {
   height: 100%;
   margin: 0;
-  overflow: hidden;       /* avoid body bounce when scrolling reaches top/bottom */
+  overflow: hidden;         /* avoid body bounce when scrolling reaches top/bottom */
+  word-break: break-word;   /* FIXME: long attachment names (discussion panel) still don't break */
+  /* overflow-wrap: break-word; */
   font-family: var(--primary-font-family);
   font-size:   var(--primary-font-size);
 }

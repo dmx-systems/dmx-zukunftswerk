@@ -9,7 +9,7 @@
           <td><zw-string>label.editor</zw-string></td>
         </tr>
         <tr v-for="(workspace, i) in workspaces">
-          <td>{{workspace.value}}</td>
+          <td>{{getWorkspaceName(workspace)}}</td>
           <td><el-checkbox v-model="model1[i]"></el-checkbox></td>
           <td><el-checkbox v-model="model2[i]" :disabled="!model1[i]"></el-checkbox></td>
         </tr>
@@ -30,7 +30,8 @@
 export default {
 
   mixins: [
-    require('./mixins/admin-util').default
+    require('./mixins/admin-util').default,
+    require('../mixins/workspace-name').default
   ],
 
   created () {

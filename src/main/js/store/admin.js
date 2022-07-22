@@ -222,7 +222,7 @@ const actions = {
     return http.put(`/sign-up/display-name/${username}`, undefined, {
       params: {displayName}
     }).then(() => {
-      updateUser(username, displayName)
+      updateUser(username, displayName)               // update client state
       // rootState.users.sort(zw.topicSort)           // TODO: sort by display name (email address at the moment)
     })
   },

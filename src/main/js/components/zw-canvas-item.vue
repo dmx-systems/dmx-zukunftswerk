@@ -1,12 +1,12 @@
 <template>
   <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]" :data-id="topic.id"
-      :style="style" @click="select">
+      :style="style" @mousedown="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
-      @custom-class="setCustomClass" @actions="setActions" @edit-enabled="setEditEnabled"
+      @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
       @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
       @move-handler="setMoveHandler" @mousedown.native="mousedown">
     </component>
-    <div class="button-panel" v-if="buttonPanelVisibility">
+    <div class="button-panel" v-if="infoMode">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
           :key="action.action" @click="action.handler" @mousedown.native.stop>
         <zw-string>{{action.action}}</zw-string>
@@ -120,10 +120,6 @@ export default {
       return this.editable && this.rotateEnabled
     },
 
-    buttonPanelVisibility () {
-      return this.editable && this.infoMode
-    },
-
     handles () {
       switch (this.resizeStyle) {
         case 'x':  return ['e']
@@ -181,8 +177,7 @@ export default {
       })
       moveable.renderDirections = this.handles
       /* draggable */
-      moveable.on('dragStart', this.select)           // programmatic selection
-      .on('drag', ({left, top}) => {
+      moveable.on('drag', ({left, top}) => {
         this.dragging('dragging')
         this.topic.setPosition({x: left, y: top})     // update client state
         this.moveHandler && this.moveHandler()
@@ -255,11 +250,15 @@ export default {
     },
 
     buttonVisibility (action) {
-      return action.action !== 'action.edit' || this.editEnabled
+      return (this.editable || action.enabledForReadOnly) && (action.action !== 'action.edit' || this.editEnabled)
     },
 
     setCustomClass (classname) {
       this.customClass = classname
+    },
+
+    addAction (action) {
+      this.actions.push(action)
     },
 
     setActions (actions) {

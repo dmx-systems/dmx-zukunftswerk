@@ -37,8 +37,8 @@ export default {
   ],
 
   props: {
-    workspace: {      // plain Workspace topic
-      type: Object,
+    workspace: {
+      type: Object,     // a plain Workspace topic
       required: true
     }
   },

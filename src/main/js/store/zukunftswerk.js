@@ -135,7 +135,8 @@ const actions = {
     if (!workspaceId) {
       throw Error(`${workspaceId} is not a workspace ID`)
     }
-    dispatch('setRefDocument', undefined)
+    dispatch('deselect')                      // reset selection
+    dispatch('setRefDocument', undefined)     // reset doc-filter
     dmx.rpc.getTopic(workspaceId, true).then(workspace => {           // includeChildren=true
       if (workspace.typeUri !== 'dmx.workspaces.workspace') {
         throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)
@@ -158,14 +159,15 @@ const actions = {
    */
   select ({dispatch}, topic) {
     dispatch('deselect')
+    // console.log('select', topic.id)
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
   },
 
   deselect () {
+    // console.log('deselect', state.topic?.id)
     if (state.topic) {
       document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
-      // document.querySelectorAll(`.moveable-control-box`).forEach(box => box.classList.remove('active'))
       state.topic = undefined
     }
   },
@@ -360,6 +362,26 @@ const actions = {
 
   addComment (_, comment) {
     state.discussion.push(comment)
+  },
+
+  /**
+   * @param   comment   if not part of the current discussion nothing happens.
+   */
+  replaceComment (_, comment) {
+    const i = findCommentIndex(comment)
+    if (i >= 0) {
+      state.discussion.splice(i, 1, comment)
+    }
+  },
+
+  /**
+   * @param   comment   if not part of the current discussion nothing happens.
+   */
+  removeComment (_, comment) {
+    const i = findCommentIndex(comment)
+    if (i >= 0) {
+      state.discussion.splice(i, 1)
+    }
   },
 
   jumpToComment (_, {comment, behavior = 'smooth'}) {
@@ -557,6 +579,7 @@ function initUserState (username) {
     state.workspaces = []
     state.isTeam = false
     state.workspace = undefined
+    state.topic = undefined
     updateWorkspaceCookie()
     return Promise.resolve()
   }
@@ -610,8 +633,6 @@ function addTopicToTopicmap (viewTopic, topic) {
   dmx.rpc.addTopicToTopicmap(state.topicmap.id, topic.id, viewTopic.viewProps)      // update server state
 }
 
-// TODO: unify this 3 functions
-
 function removeNewTopic (topic) {
   const i = state.newTopics.indexOf(topic)
   if (i === -1) {
@@ -629,7 +650,7 @@ function removeEditActive (topic) {
 }
 
 function removeComment (comment) {
-  const i = state.discussion.indexOf(comment)
+  const i = findCommentIndex(comment)
   if (i === -1) {
     throw Error('removeComment')
   }
@@ -637,11 +658,15 @@ function removeComment (comment) {
 }
 
 function replaceComment (comment) {
-  const i = state.discussion.findIndex(cmt => cmt.id === comment.id)
+  const i = findCommentIndex(comment)
   if (i === -1) {
     throw Error('replaceComment')
   }
   state.discussion.splice(i, 1, comment)
+}
+
+function findCommentIndex (comment) {
+  return state.discussion.findIndex(cmt => cmt.id === comment.id)
 }
 
 function initViewport () {

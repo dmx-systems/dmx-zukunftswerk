@@ -95,9 +95,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 2px 10px;
-  color: white;
   background-color: var(--header-color);
-  z-index: 1;
 }
 
 .zw-header img.logo {
@@ -107,6 +105,7 @@ export default {
 
 .zw-header .workspace {
   flex-grow: 1;
+  color: white;
 }
 
 .zw-header .workspace .name {

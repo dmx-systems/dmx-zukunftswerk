@@ -140,9 +140,6 @@ export default {
 </script>
 
 <style>
-.zw-arrow-handles {
-}
-
 .zw-arrow-handles .handle {
   position: absolute;
   width: 14px;

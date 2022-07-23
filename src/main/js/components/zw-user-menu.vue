@@ -22,8 +22,8 @@
         <el-input v-model="displayName"></el-input>
       </div>
       <div class="field">
-        <el-checkbox v-model="revealEmailAddress">
-          <zw-string>label.reveal_email_address</zw-string>
+        <el-checkbox v-model="showEmailAddress">
+          <zw-string>label.show_email_address</zw-string>
         </el-checkbox>
       </div>
       <el-button type="primary" slot="footer" @click="save">
@@ -44,7 +44,7 @@ export default {
       visible: false,
       loading: false,
       displayName: '',
-      revealEmailAddress: false
+      showEmailAddress: false
     }
   },
 
@@ -80,7 +80,7 @@ export default {
           type: 'error',
           showClose: false
         })
-      }).then(() => {
+      }).finally(() => {
         this.loading = false
         this.visible = false
       })
@@ -88,8 +88,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.zw-user-menu {
-}
-</style>

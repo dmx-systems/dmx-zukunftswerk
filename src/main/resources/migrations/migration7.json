@@ -1,0 +1,22 @@
+// Part of Zukunftswerk 1.4
+{
+  "topic_types": [
+    // "Show Email Address" / "Show Email Address Facet"
+    {
+      "value":       "Show Email Address",
+      "uri":         "zukunftswerk.show_email_address",
+      "dataTypeUri": "dmx.core.boolean"
+    },
+    {
+      "value":       "Show Email Address Facet",
+      "uri":         "zukunftswerk.show_email_address_facet",
+      "dataTypeUri": "dmx.core.entity",
+      "compDefs": [
+        {
+          "childTypeUri":        "zukunftswerk.show_email_address",
+          "childCardinalityUri": "dmx.core.one"
+        }
+      ]
+    }
+  ]
+}

@@ -51,6 +51,11 @@ public interface ZukunftswerkService {
      */
     Translation translate(String text, String targetLang);
 
+    /**
+     * Updates the user profile of the current user.
+     */
+    void updateUserProfile(String displayName, boolean showEmailAddress);
+
     // --- Admin ---
 
     /**

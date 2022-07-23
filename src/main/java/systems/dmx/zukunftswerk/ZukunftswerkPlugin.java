@@ -11,6 +11,7 @@ import systems.dmx.accesscontrol.AccessControlService;
 import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
+import systems.dmx.core.model.ChildTopicsModel;
 import systems.dmx.core.model.SimpleValue;
 import systems.dmx.core.model.TopicModel;
 import systems.dmx.core.model.topicmaps.ViewProps;
@@ -20,6 +21,7 @@ import systems.dmx.core.service.ChangeReport.Change;
 import systems.dmx.core.service.Cookies;
 import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
+import systems.dmx.core.service.accesscontrol.PrivilegedAccess;
 import systems.dmx.core.service.accesscontrol.SharingMode;
 import systems.dmx.core.service.event.PostCreateAssoc;
 import systems.dmx.core.service.event.PostUpdateTopic;
@@ -162,10 +164,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             }
         } else if (topic.getTypeUri().equals(USERNAME)) {
             String username = topic.getSimpleValue().toString();
+            ChildTopicsModel topics = topic.getChildTopics().getModel();
             String displayName = signup.getDisplayName(username);
             if (displayName != null) {
-                topic.getChildTopics().getModel().set(DISPLAY_NAME, displayName);
+                topics.set(DISPLAY_NAME, displayName);
             }
+            topics.set(SHOW_EMAIL_ADDRESS, getShowEmailAddress(username));
         }
         // Note: in a Related Username Topic w/ a Membership *both* are enriched
         if (topic instanceof RelatedTopic) {
@@ -334,6 +338,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         } catch (Exception e) {
             throw new RuntimeException("Translation failed, text=\"" + text + "\", targetLang=" + targetLang, e);
         }
+    }
+
+    @PUT
+    @Path("/user_profile")
+    @Transactional
+    @Override
+    public void updateUserProfile(@QueryParam("displayName") String displayName,
+                                  @QueryParam("showEmailAddress") boolean showEmailAddress) {
+        String username = acs.getUsername();
+        signup.updateDisplayName(username, displayName);
+        updateShowEmailAddressFacet(username, showEmailAddress);
     }
 
     // --- Admin ---
@@ -579,6 +594,37 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             }
             return null;
         });
+    }
+
+    private boolean getShowEmailAddress(String username) {
+        try {
+            Topic usernameTopic = acs.getUsernameTopic(username);
+            Topic showEmailAddress = facets.getFacet(usernameTopic, SHOW_EMAIL_ADDRESS_FACET);
+            if (showEmailAddress != null) {
+                return showEmailAddress.getSimpleValue().booleanValue();
+            }
+            return false;
+        } catch (Exception e) {
+            throw new RuntimeException("Fetching show-email-address of user \"" + username + "\" failed", e);
+        }
+    }
+
+    private void updateShowEmailAddressFacet(String username, boolean showEmailAddress) {
+        try {
+            PrivilegedAccess pa = dmx.getPrivilegedAccess();
+            pa.runInWorkspaceContext(pa.getSystemWorkspaceId(), () -> {
+                Topic usernameTopic = acs.getUsernameTopic(username);
+                if (usernameTopic != null) {
+                    facets.updateFacet(usernameTopic, SHOW_EMAIL_ADDRESS_FACET,
+                        mf.newFacetValueModel(SHOW_EMAIL_ADDRESS).set(showEmailAddress)
+                    );
+                }
+                return null;
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("Updating show-email-address (" + showEmailAddress + ") of user \"" + username +
+                "\" failed", e);
+        }
     }
 
     /**

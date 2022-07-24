@@ -144,8 +144,7 @@ export default {
     },
 
     emailAddress () {
-      // Note: "this.username" is undefined on logout
-      return this.username && zw.getShowEmailAddress(this.username) && this.username
+      return zw.getShowEmailAddress(this.creator) && this.creator
     },
 
     automatic () {

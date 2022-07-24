@@ -480,6 +480,15 @@ const actions = {
     }, delay)
   },
 
+  updateUserProfile ({rootState}, userProfile) {
+    return http.put(`/zukunftswerk/user_profile`, undefined, {
+      params: userProfile
+    }).then(() => {
+      updateUserProfile(userProfile)              // update client state
+      // rootState.users.sort(zw.topicSort)       // TODO: sort by display name (email address at the moment)
+    })
+  },
+
   translate (_, text) {
     // suppress standard HTTP error handler
     return dmx.rpc._http.post('/zukunftswerk/translate', text).then(response => response.data)
@@ -619,6 +628,16 @@ function fetchDiscussion () {
       (c1, c2) => c1.children['dmx.timestamps.created'].value - c2.children['dmx.timestamps.created'].value
     )
   })
+}
+
+// TODO: basically copied from admin.js
+function updateUserProfile(userProfile) {
+  const children = zw.getUser(state.username).children
+  if (!children['zukunftswerk.display_name']) {   // TODO: refactor
+    Vue.set(children, 'zukunftswerk.display_name', {})
+  }
+  children['zukunftswerk.display_name'].value = userProfile.displayName
+  children['zukunftswerk.show_email_address'].value = userProfile.showEmailAddress
 }
 
 /**

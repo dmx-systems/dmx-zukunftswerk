@@ -20,6 +20,7 @@ export default {
   getLogo,
   getViewport,
   getDisplayName,
+  getShowEmailAddress,
   getUser,
   getString,
 
@@ -79,7 +80,11 @@ function getViewport() {
 }
 
 function getDisplayName (username) {
-  return getUser(username).children['zukunftswerk.display_name']?.value || '?'     // TODO
+  return getUser(username).children['zukunftswerk.display_name']?.value || '?'
+}
+
+function getShowEmailAddress (username) {
+  return getUser(username).children['zukunftswerk.show_email_address'].value
 }
 
 function getUser (username) {

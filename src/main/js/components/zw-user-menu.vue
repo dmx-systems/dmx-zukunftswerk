@@ -61,6 +61,7 @@ export default {
       case 'userProfile':
         this.visible = true
         this.displayName = zw.getDisplayName(this.username)
+        this.showEmailAddress = zw.getShowEmailAddress(this.username)
         break
       case 'logout':
         this.$store.dispatch('logout').then(() =>
@@ -72,9 +73,9 @@ export default {
 
     save () {
       this.loading = true
-      this.$store.dispatch('admin/updateUser', {
-        emailAddress: this.username,
-        displayName: this.displayName
+      this.$store.dispatch('updateUserProfile', {
+        displayName: this.displayName,
+        showEmailAddress: this.showEmailAddress
       }).catch(error => {
         return this.$alert(error.message, {
           type: 'error',

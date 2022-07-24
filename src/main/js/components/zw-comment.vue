@@ -2,7 +2,7 @@
   <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
     <div class="heading">
       <div>
-        <span class="creator">{{displayName}}</span>
+        <span class="creator" :title="emailAddress">{{displayName}}</span>
         <span class="date label">{{date}}</span>
         <span class="edit-flag label">
           (<zw-string>label.translation</zw-string>:
@@ -141,6 +141,11 @@ export default {
 
     displayName () {
       return zw.getDisplayName(this.creator)
+    },
+
+    emailAddress () {
+      // Note: "this.username" is undefined on logout
+      return this.username && zw.getShowEmailAddress(this.username) && this.username
     },
 
     automatic () {

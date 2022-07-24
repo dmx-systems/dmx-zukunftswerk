@@ -112,10 +112,6 @@ body.fixed {
   font-size: unset !important;
 }
 
-.el-collapse-item__content {
-  margin-left: 24px;
-}
-
 .el-collapse-item.zw-selected .el-collapse-item__wrap,
 .el-collapse-item.zw-selected .el-collapse-item__header {
   background-color: var(--highlight-color-9);

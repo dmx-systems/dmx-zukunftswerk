@@ -17,18 +17,27 @@
       <div slot="title">
         <zw-string>label.user_profile</zw-string>:&nbsp;&nbsp;<b>{{username}}</b>
       </div>
-      <div class="field">
-        <div class="field-label"><zw-string>label.display_name</zw-string></div>
-        <el-input v-model="displayName"></el-input>
-      </div>
-      <div class="field">
-        <el-checkbox v-model="showEmailAddress">
-          <zw-string>label.show_email_address</zw-string>
-        </el-checkbox>
-      </div>
-      <el-button type="primary" slot="footer" @click="save">
-        <zw-string>action.submit</zw-string>
-      </el-button>
+      <el-collapse v-model="expandedItems" accordion>
+        <el-collapse-item name="privacy">
+          <zw-string slot="title">label.privacy</zw-string>
+          <div class="field">
+            <div class="field-label"><zw-string>label.display_name</zw-string></div>
+            <el-input v-model="displayName"></el-input>
+          </div>
+          <el-checkbox class="field" v-model="showEmailAddress">
+            <zw-string>label.show_email_address</zw-string>
+          </el-checkbox>
+          <el-button class="field" type="primary" @click="save">
+            <zw-string>action.submit</zw-string>
+          </el-button>
+        </el-collapse-item>
+        <el-collapse-item name="password">
+          <zw-string slot="title">label.password</zw-string>
+          <el-button type="primary" @click="changePassword">
+            <zw-string>action.change_password</zw-string>
+          </el-button>
+        </el-collapse-item>
+      </el-collapse>
     </el-dialog>
   </div>
 </template>
@@ -40,6 +49,7 @@ export default {
 
   data () {
     return {
+      expandedItems: ['privacy'],
       // User Profile dialog
       visible: false,
       loading: false,
@@ -85,6 +95,10 @@ export default {
         this.loading = false
         this.visible = false
       })
+    },
+
+    changePassword () {
+      // TODO
     }
   }
 }

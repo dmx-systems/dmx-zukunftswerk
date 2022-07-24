@@ -155,4 +155,9 @@ export default {
 .zw-admin .secondary-panel .submit-button {
   margin-top: 26px;
 }
+
+/* override Element UI style */
+.zw-admin .el-collapse-item__content {
+  margin-left: 24px;
+}
 </style>

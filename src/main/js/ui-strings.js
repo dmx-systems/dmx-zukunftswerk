@@ -23,6 +23,8 @@ export default {
   'label.user_profile.fr': 'Profil d\'utilisateur',
   'label.show_email_address.de': 'Emailadresse anderen Nutzern zeigen',
   'label.show_email_address.fr': 'Montrer son adresse e-mail aux autres utilisateurs',
+  'label.privacy.de': 'Privacy',
+  'label.privacy.fr': 'Vie privée',
   'label.imprint.de': 'Impressum',
   'label.imprint.fr': 'Impressum',
   'label.privacy_policy.de': 'Datenschutzerklärung',
@@ -134,6 +136,8 @@ export default {
   'action.delete_user.fr': 'Supprimer l\'utilisateur',
   'action.reset_password.de': 'Passwort zurücksetzen',
   'action.reset_password.fr': 'Réinitialiser le mot de passe',
+  'action.change_password.de': 'Passwort ändern',
+  'action.change_password.fr': 'Modifier le mot de passe',
 
   'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',

@@ -98,7 +98,11 @@ export default {
     },
 
     changePassword () {
-      // TODO
+      this.loading = true
+      this.$store.dispatch('resetPassword', this.username).finally(() => {
+        this.loading = false
+        this.visible = false
+      })
     }
   }
 }

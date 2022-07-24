@@ -86,10 +86,6 @@ const actions = {
     return dmx.rpc.logout().then(initUserState)
   },
 
-  resetPassword (_, emailAddress) {
-    return http.get(`/sign-up/password-token/${emailAddress}/%2f`)      // redirectUrl=/ (%2f)
-  },
-
   fetchAllUsers () {
     if (!state.users.length) {
       return http.get('/zukunftswerk/users').then(response => {
@@ -486,6 +482,21 @@ const actions = {
     }).then(() => {
       updateUserProfile(userProfile)              // update client state
       // rootState.users.sort(zw.topicSort)       // TODO: sort by display name (email address at the moment)
+    })
+  },
+
+  resetPassword (_, emailAddress) {
+    return http.get(`/sign-up/password-token/${emailAddress}/%2f`).then(() => {      // redirectUrl=/ (%2f)
+      Vue.prototype.$notify({
+        message: `Mail was sent to ${emailAddress}`,
+        type: 'success',
+        showClose: false
+      })
+    }).catch(error => {
+      Vue.prototype.$alert('An error occurred while sending the password reset mail', {
+        type: 'error',
+        showClose: false
+      })
     })
   },
 

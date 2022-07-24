@@ -3,6 +3,7 @@ package systems.dmx.zukunftswerk;
 import static systems.dmx.accesscontrol.Constants.*;
 import static systems.dmx.core.Constants.*;
 import static systems.dmx.files.Constants.*;
+import static systems.dmx.signup.Constants.*;
 import static systems.dmx.topicmaps.Constants.*;
 import static systems.dmx.workspaces.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
@@ -605,14 +606,14 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             }
             return false;
         } catch (Exception e) {
-            throw new RuntimeException("Fetching show-email-address of user \"" + username + "\" failed", e);
+            throw new RuntimeException("Fetching \"Show Email Address\" flag of user \"" + username + "\" failed", e);
         }
     }
 
     private void updateShowEmailAddressFacet(String username, boolean showEmailAddress) {
         try {
             PrivilegedAccess pa = dmx.getPrivilegedAccess();
-            pa.runInWorkspaceContext(pa.getSystemWorkspaceId(), () -> {
+            pa.runInWorkspaceContext(getDisplayNamesWorkspaceId(), () -> {
                 Topic usernameTopic = acs.getUsernameTopic(username);
                 if (usernameTopic != null) {
                     facets.updateFacet(usernameTopic, SHOW_EMAIL_ADDRESS_FACET,
@@ -622,8 +623,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 return null;
             });
         } catch (Exception e) {
-            throw new RuntimeException("Updating show-email-address (" + showEmailAddress + ") of user \"" + username +
-                "\" failed", e);
+            throw new RuntimeException("Updating \"Show Email Address\" flag (" + showEmailAddress + ") of user \"" +
+                username + "\" failed", e);
         }
     }
 
@@ -637,5 +638,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             throw new IllegalArgumentException("Topic " + id + " is not a Username (but a \"" + typeUri + "\")");
         }
         return username.getSimpleValue().toString();
+    }
+
+    private long getDisplayNamesWorkspaceId() {
+        return dmx.getTopicByUri(DISPLAY_NAME_WS_URI).getId();
     }
 }

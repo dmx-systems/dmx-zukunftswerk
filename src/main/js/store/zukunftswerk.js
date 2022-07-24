@@ -633,10 +633,10 @@ function fetchDiscussion () {
 // TODO: basically copied from admin.js
 function updateUserProfile(userProfile) {
   const children = zw.getUser(state.username).children
-  if (!children['zukunftswerk.display_name']) {   // TODO: refactor
-    Vue.set(children, 'zukunftswerk.display_name', {})
+  if (!children['dmx.signup.display_name']) {   // TODO: refactor
+    Vue.set(children, 'dmx.signup.display_name', {})
   }
-  children['zukunftswerk.display_name'].value = userProfile.displayName
+  children['dmx.signup.display_name'].value = userProfile.displayName
   children['zukunftswerk.show_email_address'].value = userProfile.showEmailAddress
 }
 

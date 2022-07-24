@@ -281,10 +281,10 @@ function replaceWorkspace (workspace, rootState) {
 
 function updateUser(username, displayName) {
   const children = zw.getUser(username).children
-  if (!children['zukunftswerk.display_name']) {   // TODO: refactor
-    Vue.set(children, 'zukunftswerk.display_name', {})
+  if (!children['dmx.signup.display_name']) {   // TODO: refactor
+    Vue.set(children, 'dmx.signup.display_name', {})
   }
-  children['zukunftswerk.display_name'].value = displayName
+  children['dmx.signup.display_name'].value = displayName
 }
 
 function collapseWorkspaces (dispatch) {

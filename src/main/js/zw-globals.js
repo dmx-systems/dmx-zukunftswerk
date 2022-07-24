@@ -80,7 +80,7 @@ function getViewport() {
 }
 
 function getDisplayName (username) {
-  return getUser(username).children['zukunftswerk.display_name']?.value || '?'
+  return getUser(username).children['dmx.signup.display_name']?.value || '?'
 }
 
 function getShowEmailAddress (username) {

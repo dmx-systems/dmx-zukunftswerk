@@ -34,22 +34,14 @@ export default {
     require('./mixins/workspace-name').default
   ],
 
-  created () {
-    this.$store.state.teamWorkspace.then(workspace => {
-      this.teamWorkspace = workspace
-    })
-  },
-
-  data () {
-    return {
-      teamWorkspace: undefined      // a Workspace topic
-    }
-  },
-
   computed: {
 
     divided () {
       return this.workspaces.length > 0
+    },
+
+    teamWorkspace () {
+      return this.$store.state.teamWorkspace
     },
 
     workspaces () {

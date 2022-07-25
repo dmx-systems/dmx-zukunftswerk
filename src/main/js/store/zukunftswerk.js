@@ -10,14 +10,17 @@ window.addEventListener('focus', updateWorkspaceCookie)
 
 Vue.use(Vuex)
 
-const teamWorkspace = dmx.rpc.getTopicByUri('zukunftswerk.team', true)      // includeChildren=true
+const teamWorkspace = dmx.rpc.getTopicByUri('zukunftswerk.team', true).then(workspace => {      // includeChildren=true
+  state.teamWorkspace = workspace
+  return workspace
+})
 const ready = dmx.rpc.getUsername().then(initUserState)
 const width = window.innerWidth
 
 const state = {
 
-  teamWorkspace,                // a promise, resolved with the "Team" Workspace topic (dmx.Topic)
   ready,                        // a promise, resolved once User state is initialized
+  teamWorkspace: undefined,     // the "Team" Workspace topic (dmx.Topic)
 
   // User state
   username: '',                 // username of current user (String), empty/undefined if not logged in
@@ -98,19 +101,20 @@ const actions = {
    * Precondition: User state is up-to-date.
    */
   getInitialWorkspaceId () {
-    // 1) take from URL
-    let workspaceId = state.routerModule.router.currentRoute.query.workspaceId
-    if (workspaceId) {
+    console.log('getInitialWorkspaceId', state.routerModule.router.currentRoute)
+    // 1) take from URL query param
+    let workspaceId = id(state.routerModule.router.currentRoute.query.workspaceId)
+    if (zw.isValidWorkspaceId(workspaceId, 'query param')) {
       return workspaceId
     }
     // 2) take from cookie
-    workspaceId = dmx.utils.getCookie('dmx_workspace_id')
-    if (workspaceId) {
+    workspaceId = id(dmx.utils.getCookie('dmx_workspace_id'))
+    if (zw.isValidWorkspaceId(workspaceId, 'cookie')) {
       return workspaceId
     }
     // 3) team members land in "Team" workspace (at first login there are no ZW event workspaces)
     if (state.isTeam) {
-      return state.teamWorkspace.then(workspace => workspace.id)
+      return state.teamWorkspace.id
     }
     // 4) take first workspace (based on memberships)
     workspaceId = state.workspaces[0]?.id
@@ -581,7 +585,7 @@ function initLang () {
  * @return  a promise, resolved once the state is initialized.
  */
 function initUserState (username) {
-  if (username) {
+  if (username) {     // Login
     return Promise.all([
       teamWorkspace
         .then(workspace => workspace.isWritable())
@@ -594,7 +598,7 @@ function initUserState (username) {
       }),
       store.dispatch('fetchAllUsers')     // needed for accessing display names
     ])
-  } else {
+  } else {            // Logout
     state.username = ''
     state.workspaces = []
     state.isTeam = false
@@ -617,16 +621,14 @@ function updateWorkspaceState () {
   state.workspace.isWritable().then(isWritable => {
     state.isWritable = isWritable
   })
-  teamWorkspace.then(workspace => {
-    if (state.workspace.id !== workspace.id) {
-      state.isEditor = findWorkspace(state.workspace.id).assoc.children['zukunftswerk.editor']?.value
-      // console.log('isEditor', state.workspace.id, state.isEditor)
-    }
-  })
+  if (state.workspace.id !== state.teamWorkspace.id) {
+    state.isEditor = findWorkspace(state.workspace.id).assoc.children['zukunftswerk.editor']?.value
+    // console.log('isEditor', state.workspace.id, state.isEditor)
+  }
 }
 
 function findWorkspace (id) {
-  const workspace = state.workspaces.find(ws => ws.id === id)
+  const workspace = zw.findWorkspace(id)
   if (!workspace) {
     throw Error(`Workspace ${id} not found in ${state.workspaces} (${state.workspaces.length})`)
   }
@@ -716,4 +718,17 @@ function fetchTopicmap () {
     // TODO: show warning if there are more than one topicmaps
     return dmx.rpc.getTopicmap(topics[0].id, true)      // includeChildren=true
   })
+}
+
+// TODO: drop; copy in router.js; move getInitialWorkspaceId action to router module
+function id (v) {
+  // Note: Number(undefined) is NaN, and NaN != NaN is true!
+  // Note: dmx.utils.getCookie may return null, and Number(null) is 0 (and typeof null is 'object')
+  if (typeof v === 'number') {
+    return v
+  } else if (typeof v === 'string') {
+    return Number(v)
+  } else if (v !== undefined && v !== null) {
+    throw Error(`Expecting one of [number|string|undefined|null], got ${v}`)
+  }
 }

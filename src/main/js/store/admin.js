@@ -101,15 +101,13 @@ const actions = {
   fetchAllZWWorkspaces ({rootState}) {
     http.get('/zukunftswerk/admin/workspaces').then(response => {
       state.workspaces = dmx.utils.instantiateMany(response.data, dmx.Topic)
-      return rootState.teamWorkspace
-    }).then(workspace => {
-      state.workspaces.push(workspace)
+      state.workspaces.push(rootState.teamWorkspace)
       state.workspaces.sort(zw.topicSort)
     })
   },
 
   fetchMemberships (_, workspaceId) {
-    const workspace = findWorkspace(workspaceId)
+    const workspace = zw.findWorkspace(workspaceId)
     if (!workspace.memberships) {
       return dmx.rpc.getMemberships(workspaceId).then(users => {
         Vue.set(workspace, 'memberships', users.sort(zw.topicSort))       // ad-hoc property is not reactive by default
@@ -243,10 +241,6 @@ export default {
 }
 
 // state helper
-
-function findWorkspace (id) {
-  return state.workspaces.find(ws => ws.id === id)
-}
 
 function removeWorkspace (id) {
   const i = state.workspaces.findIndex(ws => ws.id === id)

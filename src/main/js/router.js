@@ -10,6 +10,7 @@ import Webclient from './components/zw-webclient'
 import Workspace from './components/zw-workspace'
 import Admin from './components/admin/zw-admin'
 import store from './store/zukunftswerk'
+import zw from './zw-globals'
 import dmx from 'dmx-api'
 
 Vue.use(VueRouter)
@@ -52,27 +53,30 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  console.log('guard', to.name, id(to.params.workspaceId))
   store.state.ready.then(() => {
     if (['imprint', 'privacy_policy'].includes(to.name)) {
       next()
     } else if (store.state.username) {
-      let init = false
+      let init = true
       if (to.name === 'workspace') {
-        next()
+        if (zw.isValidWorkspaceId(id(to.params.workspaceId), 'path param')) {
+          next()
+          init = false
+        }
       } else if (to.name === 'admin') {
         if (store.state.isTeam) {
           next()
+          init = false
         } else {
           if (from.name) {
             next(false)
-          } else {
-            init = true
+            init = false
           }
         }
-      } else {
-        init = true
       }
       if (init) {
+        console.log('guard: call getInitialWorkspaceId')
         store.dispatch('getInitialWorkspaceId').then(workspaceId => {
           next({name: 'workspace', params: {workspaceId}})
         })
@@ -152,6 +156,7 @@ store.watch(
  * Adapts app state when route changes.
  */
 function navigate (to, from) {
+  console.log('route watcher', to.name, id(to.params.workspaceId))
   if (to.name === 'workspace') {
     store.dispatch('setWorkspace', id(to.params.workspaceId))
   }

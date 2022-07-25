@@ -24,6 +24,9 @@ export default {
   getUser,
   getString,
 
+  findWorkspace,
+  isValidWorkspaceId,
+
   topicSort,
   canvasFilter,
   confirmDeletion,
@@ -94,6 +97,25 @@ function getUser (username) {
 
 function getString (key) {
   return uiStrings[`${key}.${store.state.lang}`]
+}
+
+function findWorkspace (id) {
+  return store.state.workspaces.find(ws => ws.id === id)
+}
+
+/**
+ * @param   id    if undefined false is returned
+ */
+function isValidWorkspaceId (id, origin) {
+  if (!id) {
+    return false
+  }
+  const valid = store.state.isTeam && id === store.state.teamWorkspace.id || findWorkspace(id)
+  console.log('isValidWorkspaceId', id, '(from ' + origin + ')', !!valid)
+  if (!valid) {
+    console.warn(`${id} is an invalid workspace ID for user "${store.state.username}"`)
+  }
+  return valid
 }
 
 function topicSort (t1, t2) {

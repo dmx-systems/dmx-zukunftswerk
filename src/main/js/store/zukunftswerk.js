@@ -20,14 +20,14 @@ const width = window.innerWidth
 const state = {
 
   ready,                        // a promise, resolved once User state is initialized
-  teamWorkspace: undefined,     // the "Team" Workspace topic (dmx.Topic)
+  users: [],                    // all users in the system (array of plain Username topics)
+  teamWorkspace: undefined,     // the "Team" Workspace topic (dmx.Topic); guaranteed inited once User state is ready
 
   // User state
   username: '',                 // username of current user (String), empty/undefined if not logged in
   workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics)
                                 // Note: the "Team" workspace is not included.
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
-  users: [],                    // all users in the system (array of plain Username topics)
 
   // Workspace state
   workspace: undefined,         // the selected workspace (dmx.Topic)
@@ -95,35 +95,6 @@ const actions = {
         state.users = response.data.sort(zw.topicSort)
       })
     }
-  },
-
-  /**
-   * Precondition: User state is up-to-date.
-   */
-  getInitialWorkspaceId () {
-    console.log('getInitialWorkspaceId', state.routerModule.router.currentRoute)
-    // 1) take from URL query param
-    let workspaceId = id(state.routerModule.router.currentRoute.query.workspaceId)
-    if (zw.isValidWorkspaceId(workspaceId, 'query param')) {
-      return workspaceId
-    }
-    // 2) take from cookie
-    workspaceId = id(dmx.utils.getCookie('dmx_workspace_id'))
-    if (zw.isValidWorkspaceId(workspaceId, 'cookie')) {
-      return workspaceId
-    }
-    // 3) team members land in "Team" workspace (at first login there are no ZW event workspaces)
-    if (state.isTeam) {
-      return state.teamWorkspace.id
-    }
-    // 4) take first workspace (based on memberships)
-    workspaceId = state.workspaces[0]?.id
-    if (!workspaceId) {
-      throw Error("Benutzer \"" + state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte nimm " +
-        "Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + state.username + "\" n'a pas encore été " +
-        "affecté à un domaine d'activité. Veuillez prendre contact avec l'équipe de Zukunftswerk.")
-    }
-    return workspaceId
   },
 
   setLang (_, lang) {
@@ -718,17 +689,4 @@ function fetchTopicmap () {
     // TODO: show warning if there are more than one topicmaps
     return dmx.rpc.getTopicmap(topics[0].id, true)      // includeChildren=true
   })
-}
-
-// TODO: drop; copy in router.js; move getInitialWorkspaceId action to router module
-function id (v) {
-  // Note: Number(undefined) is NaN, and NaN != NaN is true!
-  // Note: dmx.utils.getCookie may return null, and Number(null) is 0 (and typeof null is 'object')
-  if (typeof v === 'number') {
-    return v
-  } else if (typeof v === 'string') {
-    return Number(v)
-  } else if (v !== undefined && v !== null) {
-    throw Error(`Expecting one of [number|string|undefined|null], got ${v}`)
-  }
 }

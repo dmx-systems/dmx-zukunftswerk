@@ -139,28 +139,57 @@ const actions = {
 
   callAdminRoute () {
     router.push({name: 'admin'})
+  },
+
+  /**
+   * Precondition: User state is up-to-date.
+   */
+  getInitialWorkspaceId () {
+    console.log('getInitialWorkspaceId', router.currentRoute)
+    // 1) take from URL (query param)
+    let workspaceId = id(router.currentRoute.query.workspaceId)
+    if (zw.isValidWorkspaceId(workspaceId, 'query param')) {
+      return workspaceId
+    }
+    // 2) take from cookie
+    workspaceId = id(dmx.utils.getCookie('dmx_workspace_id'))
+    if (zw.isValidWorkspaceId(workspaceId, 'cookie')) {
+      return workspaceId
+    }
+    // 3) team members land in "Team" workspace (at first login there are no ZW event workspaces)
+    if (store.state.isTeam) {
+      return store.state.teamWorkspace.id
+    }
+    // 4) take first workspace (based on memberships)
+    workspaceId = store.state.workspaces[0]?.id
+    if (!workspaceId) {
+      throw Error("Benutzer \"" + store.state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte nimm " +
+        "Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + store.state.username + "\" n'a pas encore été " +
+        "affecté à un domaine d'activité. Veuillez prendre contact avec l'équipe de Zukunftswerk.")
+    }
+    return workspaceId
   }
 }
 
 export default router
 
-store.registerModule('routerModule', {state, actions})
-store.watch(
-  state => state.routerModule.router.currentRoute,
-  (to, from) => {
-    navigate(to, from)
-  }
-)
+store.registerModule('routerModule', {
+  state,
+  actions
+})
 
 /**
  * Adapts app state when route changes.
  */
-function navigate (to, from) {
-  console.log('route watcher', to.name, id(to.params.workspaceId))
-  if (to.name === 'workspace') {
-    store.dispatch('setWorkspace', id(to.params.workspaceId))
+store.watch(
+  state => state.routerModule.router.currentRoute,
+  (to, from) => {
+    console.log('route watcher', to.name, id(to.params.workspaceId))
+    if (to.name === 'workspace') {
+      store.dispatch('setWorkspace', id(to.params.workspaceId))
+    }
   }
-}
+)
 
 /**
  * Converts the given value into Number.

@@ -184,7 +184,6 @@ store.registerModule('routerModule', {
 store.watch(
   state => state.routerModule.router.currentRoute,
   (to, from) => {
-    console.log('route watcher', to.name, id(to.params.workspaceId))
     if (to.name === 'workspace') {
       store.dispatch('setWorkspace', id(to.params.workspaceId))
     }

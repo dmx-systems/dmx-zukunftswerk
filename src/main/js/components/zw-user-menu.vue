@@ -27,9 +27,11 @@
           <el-checkbox class="field" v-model="showEmailAddress">
             <zw-string>label.show_email_address</zw-string>
           </el-checkbox>
-          <el-button class="field" type="primary" @click="save">
-            <zw-string>action.submit</zw-string>
-          </el-button>
+          <div class="field">
+            <el-button type="primary" @click="save">
+              <zw-string>action.submit</zw-string>
+            </el-button>
+          </div>
         </el-collapse-item>
         <el-collapse-item name="password">
           <zw-string slot="title">label.password</zw-string>

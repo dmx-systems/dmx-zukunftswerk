@@ -463,8 +463,9 @@ const actions = {
   resetPassword (_, emailAddress) {
     return http.get(`/sign-up/password-token/${emailAddress}/%2f`).then(() => {      // redirectUrl=/ (%2f)
       Vue.prototype.$notify({
-        message: `Mail was sent to ${emailAddress}`,
         type: 'success',
+        title: zw.getString('label.email_sent'),
+        message: `${zw.getString('label.to')} ${emailAddress}`,
         showClose: false
       })
     }).catch(error => {

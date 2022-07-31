@@ -92,56 +92,46 @@ export default {
     <h3>2. Name und Anschrift des für die Verarbeitung Verantwortlichen</h3>
 
     <p>Verantwortlicher im Sinne der Datenschutz-Grundverordnung, sonstiger in den Mitgliedstaaten der Europäischen Union geltenden Datenschutzgesetze und anderer Bestimmungen mit datenschutzrechtlichem Charakter ist das:</p>
-    <p class="p6">IASS Potsdam<br>
+    <p>IASS Potsdam<br>
     Berliner Straße 130<br>
     14467 Potsdam</p>
-    <p class="p6">Tel.: +49 331 288 22 0<br>
+    <p>Tel.: +49 331 288 22 0<br>
     Fax: +49 331 28822-310</p>
-    <p class="p4">E-Mail: info.zukunftswerk@iass-potsdam.de<span class="s1"><br>
-    </span>Website: www.iass-potsam.de</p>
-    <p class="p7"><br></p>
-    <p class="p7"><br></p>
+    <p>E-Mail: <a href="mailto:info.zukunftswerk@iass-potsdam.de">info.zukunftswerk@iass-potsdam.de</a><br>
+    Website: <a href="https://www.iass-potsam.de">www.iass-potsam.de</a></p>
 
     <h3>3. Name und Anschrift des Datenschutzbeauftragten</h3>
 
     <p >Der Datenschutzbeauftragte des für die Verarbeitung Verantwortlichen ist:</p>
-    <p class="p6">Frau Eva Grübel-Hoffmann</p>
-    <p class="p6">ITM Ges. für IT-Management mbH Bürgerstraße 81<br>
+    <p>Frau Eva Grübel-Hoffmann</p>
+    <p>ITM Ges. für IT-Management mbH Bürgerstraße 81<br>
     D-01127 Dresden</p>
-    <p class="p8"><span class="s2">E-Mail: </span><span class="s1">datenschutz@itm-dl.de</span></p>
-    <p class="p8"><span class="s2">Website: </span><span class="s1">https://www.itm-dl.de</span></p>
-    <p class="p9"><span class="s1"></span><br></p>
+    <p>E-Mail: <a href="mailto:datenschutz@itm-dl.de">datenschutz@itm-dl.de</a><br>
+    Website: <a href="https://www.itm-dl.de">https://www.itm-dl.de</a></p>
     <p>Jede betroffene Person kann sich jederzeit bei allen Fragen und Anregungen zum Datenschutz direkt an unseren Datenschutzbeauftragten wenden.</p>
 
     <h3>4. Erfassung von Informationen und Reichweitenmessung</h3>
 
-    <p class="p4">Unsere Plattform verwendet Cookies, um wesentliche Services und Funktionen auf unserer Plattform zu ermöglichen. Es werden 3 technisch notwendige Cookies gespeichert:</p>
+    <p>Unsere Plattform verwendet Cookies, um wesentliche Services und Funktionen auf unserer Plattform zu ermöglichen. Es werden 3 technisch notwendige Cookies gespeichert:</p>
     <table cellspacing="0" cellpadding="0" class="t1">
       <tbody>
         <tr>
           <td valign="middle" class="td1">
-            <p class="p11"><br></p>
             <p class="p12"><b>Name</b></p>
-            <p class="p13"><b></b><br></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Firma</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Zweck</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Art</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Speicherdauer</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Party</b></p>
           </td>
         </tr>
@@ -211,23 +201,20 @@ export default {
         </tr>
       </tbody>
     </table>
-    <p class="p7"><sup></sup><br></p>
-    <p class="p7"><sup></sup><br></p>
-    <p class="p10"><b>Erfassung von allgemeinen Daten und Informationen</b></p>
+
+    <h4>Erfassung von allgemeinen Daten und Informationen</h4>
+
+    <p>Wird auf Dienste, die auf unseren Servern betrieben werden, über das Internet zugegriffen, werden automatisch Informationen allgemeiner Natur erfasst und in den Logfiles des Servers gespeichert. Diese Informationen beinhalten etwa die Art und die Version des verwendeten Browsers, das verwendete Betriebssystem, die Internetseite, von welcher ein zugreifendes System auf unsere Systeme gelangt (sogenannte Referrer), besuchte Sites, Datum und die Uhrzeit eines Zugriffs, eine Internet-Protokoll-Adresse (IP-Adresse), der Internet-Service-Provider des zugreifenden Systems, Menge der gesendeten Daten in Byte und ähnliches. Es handelt sich um Informationen, die vorrangig der Gefahrenabwehr im Falle von Angriffen auf unsere Informationstechnischen Systeme dienen.</p>
+    <p>Bei der Nutzung dieser allgemeinen Daten und Informationen zieht die DMX Systems UG (haftungsbeschränkt) keine Rückschlüsse auf die betroffene Person. Diese Informationen werden vielmehr benötigt, um die dauerhafte Funktionsfähigkeit unserer informationstechnologischen Systeme zu gewährleisten und diese zu optimieren, und um Strafverfolgungsbehörden im Falle eines Cyberangriffes die zur Strafverfolgung notwendigen Informationen bereitzustellen. Diese anonym erhobenen Daten und Informationen werden durch die DMX Systems UG</p>
+    <p>(haftungsbeschränkt) daher einerseits statistisch und ferner mit dem Ziel ausgewertet, den Datenschutz und die Datensicherheit in unserem Unternehmen zu erhöhen. Ziel dieser Maßnahmen ist es, ein optimales Schutzniveau für die von uns verarbeiteten personenbezogenen Daten sicherzustellen. Die anonymen Daten der Server-Logfiles werden getrennt von allen durch eine betroffene Person angegebenen personenbezogenen Daten gespeichert.</p>
+
+    <h4>Reichweitenmessung mit Matomo</h4>
+
     <p class="p17"><b></b><br></p>
-    <p class="p4">Wird auf Dienste, die auf unseren Servern betrieben werden, über das Internet zugegriffen, werden automatisch Informationen allgemeiner Natur erfasst und in den Logfiles des Servers gespeichert. Diese Informationen beinhalten etwa die Art und die Version des verwendeten Browsers, das verwendete Betriebssystem, die Internetseite, von welcher ein zugreifendes System auf unsere Systeme gelangt (sogenannte Referrer), besuchte Sites, Datum und die Uhrzeit eines Zugriffs, eine Internet-Protokoll-Adresse (IP-Adresse), der Internet-Service-Provider des zugreifenden Systems, Menge der gesendeten Daten in Byte und ähnliches. Es handelt sich um Informationen, die vorrangig der Gefahrenabwehr im Falle von Angriffen auf unsere Informationstechnischen Systeme dienen.</p>
-    <p class="p7"><br></p>
-    <p class="p4">Bei der Nutzung dieser allgemeinen Daten und Informationen zieht die DMX Systems UG (haftungsbeschränkt) keine Rückschlüsse auf die betroffene Person. Diese Informationen werden vielmehr benötigt, um die dauerhafte Funktionsfähigkeit unserer informationstechnologischen Systeme zu gewährleisten und diese zu optimieren, und um Strafverfolgungsbehörden im Falle eines Cyberangriffes die zur Strafverfolgung notwendigen Informationen bereitzustellen. Diese anonym erhobenen Daten und Informationen werden durch die DMX Systems UG</p>
-    <p class="p4">(haftungsbeschränkt) daher einerseits statistisch und ferner mit dem Ziel ausgewertet, den Datenschutz und die Datensicherheit in unserem Unternehmen zu erhöhen. Ziel dieser Maßnahmen ist es, ein optimales Schutzniveau für die von uns verarbeiteten personenbezogenen Daten sicherzustellen. Die anonymen Daten der Server-Logfiles werden getrennt von allen durch eine betroffene Person angegebenen personenbezogenen Daten gespeichert.</p>
-    <p class="p10"><b>Reichweitenmessung mit Matomo</b></p>
-    <p class="p17"><b></b><br></p>
-    <p class="p4">Im Rahmen der Reichweitenanalyse von Matomo werden auf Grundlage unserer berechtigten Interessen (d.h. Interesse an der Analyse, Optimierung und wirtschaftlichem Betrieb unseres Onlineangebotes im Sinne des Art. 6 Abs. 1 lit. f. DSGVO) die folgenden Daten verarbeitet:</p>
-    <p class="p4">Der verwendete Browsertyp und die Browserversion, das verwendete Betriebssystem, das Herkunftsland, Datum und Uhrzeit der Serveranfrage, die Anzahl der Besuche, die Titel der besuchten Seiten, heruntergeladene Dateien, Verweildauer auf Webseiten sowie betätigte externen Links.</p>
-    <p class="p7"><br></p>
-    <p class="p4">Wir verwenden Matomo unter Auswertung der Logdateien unserer Server und verzichten dabei auf den Einsatz von Cookies. Somit können wir mit unserer Reichweitenmessung in Matomo wiederkehrende BesucherInnen nicht als solche identifizieren und mit Matomo auch keine Nutzerprofile erstellen.</p>
-    <p class="p7"><br></p>
-    <p class="p4">Zusätzlich wird im Falle der Erfassung eines Zugriffs die IP-Adresse der NutzerInnen auf 2-bytes (wie z.B.: 192.168.xxx.xxx) anonymisiert, bevor sie gespeichert wird. Die durch die Reichweitenmessung erzeugten Informationen über die Nutzung unserer Dienste werden nur auf unserem Server gespeichert und nicht an Dritte weitergegeben. Die Logs mit den Zugriffsdaten werden nach spätestens 6 Monaten gelöscht.</p>
-    <p class="p7"><br></p>
+    <p>Im Rahmen der Reichweitenanalyse von Matomo werden auf Grundlage unserer berechtigten Interessen (d.h. Interesse an der Analyse, Optimierung und wirtschaftlichem Betrieb unseres Onlineangebotes im Sinne des Art. 6 Abs. 1 lit. f. DSGVO) die folgenden Daten verarbeitet:</p>
+    <p>Der verwendete Browsertyp und die Browserversion, das verwendete Betriebssystem, das Herkunftsland, Datum und Uhrzeit der Serveranfrage, die Anzahl der Besuche, die Titel der besuchten Seiten, heruntergeladene Dateien, Verweildauer auf Webseiten sowie betätigte externen Links.</p>
+    <p>Wir verwenden Matomo unter Auswertung der Logdateien unserer Server und verzichten dabei auf den Einsatz von Cookies. Somit können wir mit unserer Reichweitenmessung in Matomo wiederkehrende BesucherInnen nicht als solche identifizieren und mit Matomo auch keine Nutzerprofile erstellen.</p>
+    <p>Zusätzlich wird im Falle der Erfassung eines Zugriffs die IP-Adresse der NutzerInnen auf 2-bytes (wie z.B.: 192.168.xxx.xxx) anonymisiert, bevor sie gespeichert wird. Die durch die Reichweitenmessung erzeugten Informationen über die Nutzung unserer Dienste werden nur auf unserem Server gespeichert und nicht an Dritte weitergegeben. Die Logs mit den Zugriffsdaten werden nach spätestens 6 Monaten gelöscht.</p>
     <p class="p14"><b>Adresse des Serviceproviders für diese Plattform:<br>
     </b></p>
     <p class="p18"><span class="s2">Telefon: </span>+49 30 54908221<br>
@@ -236,13 +223,10 @@ export default {
     <h3>5. Datenübermittlung an Dritte</h3>
 
     <p class="p16">Wir behandeln Ihre personenbezogenen Daten vertraulich und übermitteln diese nicht an unbefugte Dritte.</p>
-    <p class="p19"><br></p>
-    <p class="p19"><br></p>
 
     <h3>6. Datenübermittlung in unsichere Drittländer</h3>
 
-    <p class="p4">Alle Cookies haben die Richtlinie SameSite=Strict. Das heißt, sie werden niemals an eine Website eines Drittanbieters gesendet.</p>
-    <p class="p7"><br></p>
+    <p>Alle Cookies haben die Richtlinie SameSite=Strict. Das heißt, sie werden niemals an eine Website eines Drittanbieters gesendet.</p>
 
     <h3>7. Registrierung/Nutzerkonto auf unserer Plattform</h3>
 
@@ -255,14 +239,14 @@ export default {
 
     <h3>8. Einsatz von Google Fonts</h3>
 
-    <p class="p4">Auf unserer Webseite binden wir die Schriftart “Space grotesk” unter Einsatz von “Google Fonts” des Anbieters Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA, ein. Datenschutzerklärung: https://www.google.com/policies/privacy/, Opt-Out: https://adssettings.google.com/authenticated.</p>
+    <p>Auf unserer Webseite binden wir die Schriftart “Space grotesk” unter Einsatz von “Google Fonts” des Anbieters Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA, ein. Datenschutzerklärung: https://www.google.com/policies/privacy/, Opt-Out: https://adssettings.google.com/authenticated.</p>
     <p>Google Fonts setzt unter Umständen Cookies ein womit es Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA unter Umständen möglich wird – zumindest sofern Sie zu dem Zeitpunkt bei dem Onlineangebot von Google eingeloggt sind (bzw. Google Cookies in ihrem Browser gespeichert haben) – Ihre Anfragen an eine Webseite unseres Onlineangebots mit ihrer Google ID in Verbindung zu bringen. Um dies zu verhindern, löschen Sie Cookies von Google in Ihrem Browser vor dem Besuch einer Seite unseres Onlineangebots.</p>
 
     <h3>9. DeepL Übersetzungsservice</h3>
 
     <p class="p21"><b></b><br></p>
-    <p class="p4">Auf unserer Plattform binden wir den „DeepL Übersetzungsservice“ des Anbieters „DeepL SE, Maarweg 165, 50825, Köln, Deutschland ein. Die Datenschutzerklärung des Anbieters finden sie unter: https://www.deepl.com/de/privacy/. Im Rahmen des DeepL Abonnements, welches unsere Plattform nutzt speichert DeepL keine Texte, sondern verwendet diese nur zum Zweck der Erstellung der Übersetzung des eingegebenen Textes.</p>
-    <p class="p4">Auf DeepL dürfen im Rahmen des genutzten Abonnements keine personenbezogenen Daten übermittelt werden. Diese sollten vor hochladen und übersetzen des Textes unkenntlich gemacht werden, um Missbrauch zu verhindern.</p>
+    <p>Auf unserer Plattform binden wir den „DeepL Übersetzungsservice“ des Anbieters „DeepL SE, Maarweg 165, 50825, Köln, Deutschland ein. Die Datenschutzerklärung des Anbieters finden sie unter: https://www.deepl.com/de/privacy/. Im Rahmen des DeepL Abonnements, welches unsere Plattform nutzt speichert DeepL keine Texte, sondern verwendet diese nur zum Zweck der Erstellung der Übersetzung des eingegebenen Textes.</p>
+    <p>Auf DeepL dürfen im Rahmen des genutzten Abonnements keine personenbezogenen Daten übermittelt werden. Diese sollten vor hochladen und übersetzen des Textes unkenntlich gemacht werden, um Missbrauch zu verhindern.</p>
 
     <h3>10. Routinemäßige Löschung und Sperrung von personenbezogenen Daten</h3>
 
@@ -288,14 +272,13 @@ export default {
       </ul>
       <p>Ferner steht der betroffenen Person ein Auskunftsrecht darüber zu, ob personenbezogene Daten an ein Drittland oder an eine internationale Organisation übermittelt wurden. Sofern dies der Fall ist, so steht der betroffenen Person im Übrigen das Recht zu, Auskunft über die geeigneten Garantien im Zusammenhang mit der Übermittlung zu erhalten.</p>
       <p>Möchte eine betroffene Person dieses Auskunftsrecht in Anspruch nehmen, kann sie sich hierzu jederzeit an eine Mitarbeiter:in des für die Verarbeitung Verantwortlichen wenden.</p>
-      <p class="p4"><b>Die zuständige Aufsichtsbehörde ist die brandenburgische Landesdatenschutzbeauftragte:</b></p>
-      <p class="p6">Frau Dagmar Hartge<br>
+      <p><b>Die zuständige Aufsichtsbehörde ist die brandenburgische Landesdatenschutzbeauftragte:</b></p>
+      <p>Frau Dagmar Hartge<br>
       Stahnsdorfer Damm 77<br>
       14532 Kleinmachnow</p>
       <p class="p14">Telefon: +49 332 0356 0<br>
       Telefax: +49 332 0356 49<br>
       E-Mail: <span class="s3">poststelle@lda.brandenburg.de</span></p>
-      <p class="p9"><span class="s1"></span><br></p>
       <li><b>c) Recht auf Berichtigung</b></li>
       <p>Jede von der Verarbeitung personenbezogener Daten betroffene Person hat das vom Europäischen Richtlinien- und Verordnungsgeber gewährte Recht, die unverzügliche Berichtigung sie betreffender unrichtiger personenbezogener Daten zu verlangen. Ferner steht der betroffenen Person das Recht zu, unter Berücksichtigung der Zwecke der Verarbeitung, die Vervollständigung unvollständiger personenbezogener Daten — auch mittels einer ergänzenden Erklärung — zu verlangen.</p>
       <p>Möchte eine betroffene Person dieses Berichtigungsrecht in Anspruch nehmen, kann sie sich hierzu jederzeit an eine Mitarbeiter:in des für die Verarbeitung Verantwortlichen wenden.</p>
@@ -367,10 +350,9 @@ export default {
     <h3>17. Bestehen einer automatisierten Entscheidungsfindung</h3>
 
     <p>Als verantwortungsbewusstes Institut verzichten wir auf eine automatische Entscheidungsfindung.</p>
-    <p class="p4"><b>Gültigkeit und Änderung unserer Datenschutzbestimmungen</b></p>
+    <p><b>Gültigkeit und Änderung unserer Datenschutzbestimmungen</b></p>
     <p>Diese Datenschutzerklärung hat den Stand 03/2021 und ist aktuell gültig. Wir behalten uns vor, diesen Datenschutzhinweis gelegentlich anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen in dem Datenschutzhinweis umzusetzen, z. B. bei der Einführung neuer Services. Für Ihren erneuten Besuch gilt dann der neue Datenschutzhinweis.</p>
-    <p class="p4">Diese Datenschutzerklärung wurde durch den Datenschutzerklärungs-Generator der DGD Deutsche Gesellschaft für Datenschutz GmbH, die als <span class="s3">Externer Datenschutzbeauftragter Niederbayern</span> tätig ist, in Kooperation mit den <span class="s3">Datenschutz Anwälten der Kanzlei WILDE BEUGER SOLMECKE | Rechtsanwälte</span> erstellt.</p>
-    <p class="p15"><br></p>`,
+    <p>Diese Datenschutzerklärung wurde durch den Datenschutzerklärungs-Generator der DGD Deutsche Gesellschaft für Datenschutz GmbH, die als <span class="s3">Externer Datenschutzbeauftragter Niederbayern</span> tätig ist, in Kooperation mit den <span class="s3">Datenschutz Anwälten der Kanzlei WILDE BEUGER SOLMECKE | Rechtsanwälte</span> erstellt.</p>`,
 
   'privacy_policy.fr': `
     <p>Nous vous remercions de l'intérêt que vous portez au Forum pour l'avenir franco-allemand. IASS - Institute for Advanced Sustainability Studies e.V. - est responsable de la protection des données sur notre site Internet ou notre plateforme en tant qu'organisme chef de file auquel est rattaché le secrétariat allemand du Forum pour l'avenir. La protection des données revêt une importance toute particulière pour la direction de l'IASS. Toute personne concernée souhaitant utiliser des services particuliers proposés par notre Institut via notre plateforme peut être invitée à saisir des données à caractère personnel nécessitant un traitement de notre part. D'une manière générale, si le traitement de données à caractère personnel est nécessaire et qu'il n'existe aucune base légale pour un tel traitement, nous demandons le consentement de la personne concernée.</p>
@@ -429,73 +411,60 @@ export default {
     <h3>2. Nom et adresse du responsable du traitement</h3>
 
     <p>Le responsable au sens du Règlement général sur la protection des données, d'autres lois sur la protection des données en vigueur dans les États membres de l'Union européenne et d'autres dispositions relevant du droit de la protection des données est:</p>
-    <p class="p6">IASS Potsdam<br>
+    <p>IASS Potsdam<br>
     Berliner Straße 130<br>
     14467 Potsdam</p>
-    <p class="p6">Tél.: +49 331 288 22 0<br>
+    <p>Tél.: +49 331 288 22 0<br>
     Fax: +49 331 28822-310</p>
-    <p class="p4">E-mail: info.zukunftswerk@iass-potsdam.de<br>
-    Internet: www.iass-potsam.de</p>
-    <p class="p7"><br></p>
-    <p class="p7"><br></p>
+    <p>E-mail: <a href="mailto:info.zukunftswerk@iass-potsdam.de">info.zukunftswerk@iass-potsdam.de</a><br>
+    Internet: <a href="https://www.iass-potsam.de">www.iass-potsam.de</a></p>
 
     <h3>3. Nom et adresse du délégué à la protection des données</h3>
 
     <p>Le délégué à la protection des données du responsable du traitement est:</p>
-    <p class="p6">Mme Eva Grübel-Hoffmann</p>
-    <p class="p6">ITM Ges. für IT-Management mbH Bürgerstraße 81<br>
+    <p>Mme Eva Grübel-Hoffmann</p>
+    <p>ITM Ges. für IT-Management mbH Bürgerstraße 81<br>
     D-01127 Dresden</p>
-    <p class="p8"><span class="s1">E-mail: </span>datenschutz@itm-dl.de</p>
-    <p class="p8"><span class="s1">Internet: </span><span class="s2">https://www.itm-dl.de</span></p>
-    <p class="p9"><span class="s2"></span><br></p>
+    <p>E-mail: <a href="mailto:datenschutz@itm-dl.de">datenschutz@itm-dl.de</a><br>
+    Internet: <a href="https://www.itm-dl.de">https://www.itm-dl.de</a></p>
     <p>Pour toute question ou suggestion relative à la protection des données, veuillez contacter directement notre délégué à la protection des données.</p>
 
     <h3>4. Collecte d'informations et mesure d'audience</h3>
 
-    <p class="p4">Notre plateforme utilise des cookies afin de permettre la fourniture de services et de fonctions qui lui sont indispensables. Trois cookies techniquement nécessaires sont utilisés:</p>
+    <p>Notre plateforme utilise des cookies afin de permettre la fourniture de services et de fonctions qui lui sont indispensables. Trois cookies techniquement nécessaires sont utilisés:</p>
     <table cellspacing="0" cellpadding="0" class="t1">
       <tbody>
         <tr>
           <td valign="middle" class="td1">
-            <p class="p11"><br></p>
             <p class="p12"><b>Nom</b></p>
-            <p class="p13"><b></b><br></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Société</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Finalité</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Type</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Durée de conservation</b></p>
           </td>
           <td valign="middle" class="td1">
-            <p class="p13"><b></b><br></p>
             <p class="p12"><b>Partie</b></p>
           </td>
         </tr>
         <tr>
           <td valign="middle" class="td1">
             <p class="p14">Identifiant de session (JSESSIONID)</p>
-            <p class="p15"><br></p>
           </td>
           <td valign="middle" class="td1">
             <p class="p14">DMX</p>
           </td>
           <td valign="middle" class="td1">
             <p class="p14">Ce cookie sert à identifier la session HTTP sur le serveur.</p>
-            <p class="p15"></p>
             <p class="p14">Une fois que la procédure de connexion a abouti, un identifiant est généré et enregistré dans le navigateur de l'utilisateur. Cet identifiant ne contient aucune donnée personnelle de l'utilisateur.</p>
             <p class="p14">Exemple d'identifiant: 61cuy4433xj21dted2o5sb1x5</p>
-            <p class="p15"><br></p>
           </td>
           <td valign="middle" class="td1">
             <p class="p14">Essentiel</p>
@@ -510,7 +479,6 @@ export default {
         <tr>
           <td valign="middle" class="td1">
             <p class="p14">Identifiant du client (dmx_client_id)</p>
-            <p class="p15"><br></p>
           </td>
           <td valign="middle" class="td1">
             <p class="p14">DMX</p>
@@ -518,7 +486,6 @@ export default {
           <td valign="middle" class="td1">
             <p class="p14">Ce cookie sert à l'identification du client Window.</p>
             <p class="p14">Exemple d'identifiant: 3385189191755023</p>
-            <p class="p15"><br></p>
           </td>
           <td valign="middle" class="td1">
             <p class="p14">Essentiel</p>
@@ -533,7 +500,6 @@ export default {
         <tr>
           <td valign="middle" class="td1">
             <p class="p14">Identifiant de l'espace de travail (dmx_workspace_id)</p>
-            <p class="p15"><br></p>
           </td>
           <td valign="middle" class="td1">
             <p class="p14">DMX</p>
@@ -541,7 +507,6 @@ export default {
           <td valign="middle" class="td1">
             <p class="p14">Ce cookie sert à l'identification de l'espace de travail DMX actuel.</p>
             <p class="p14">Exemple d'identifiant: 5366</p>
-            <p class="p15"><br></p>
           </td>
           <td valign="middle" class="td1">
             <p class="p14">Essentiel</p>
@@ -555,23 +520,16 @@ export default {
         </tr>
       </tbody>
     </table>
-    <p class="p7"><br></p>
-    <p class="p7"><br></p>
-    <p class="p10"><b>Collecte de données et informations générales</b></p>
+    <h4>Collecte de données et informations générales</h4>
     <p class="p17"><b></b><br></p>
-    <p class="p4">En cas d'accès à des services exploités sur nos serveurs via Internet, des informations de nature générale sont automatiquement collectées et enregistrées dans les fichiers journaux du serveur. Ces informations comprennent par exemple le type et la version du navigateur utilisé, le système d'exploitation employé, la page Internet à partir de laquelle un système qui se connecte accède à nos systèmes (ce que l'on appelle le référent), les sites visités, la date et l'heure d'un accès, une adresse de protocole Internet (adresse IP), le fournisseur de services Internet du système qui se connecte, la quantité de données envoyées en octets et autres informations similaires. Il s'agit d'informations qui servent en premier lieu à prévenir les risques en cas d'attaques visant nos systèmes informatiques.</p>
-    <p class="p7"><br></p>
-    <p class="p4">Lors de l'utilisation de ces données et informations générales, la société DMX Systems UG (à responsabilité limitée) ne tire aucune conclusion sur la personne concernée. Au contraire, ces informations sont nécessaires pour assurer le bon fonctionnement à long terme de nos systèmes informatiques et pour optimiser ces derniers, ainsi que pour fournir aux autorités répressives des informations nécessaires à l'application de la loi en cas de cyberattaque. La société DMX Systems UG (à responsabilité limitée) analyse donc les données et informations collectées de manière anonyme, d'une part sur le plan statistique et d'autre part, dans le but d'augmenter la protection et la sécurité des données dans notre entreprise. L'objectif de ces mesures est de garantir un niveau optimal de protection des données à caractère personnel que nous traitons. Les données anonymes des fichiers journaux du serveur sont enregistrées séparément de toutes les données à caractère personnel fournies par une personne concernée.</p>
-    <p class="p15"><br></p>
-    <p class="p10"><b>Mesure d'audience avec Matomo</b></p>
+    <p>En cas d'accès à des services exploités sur nos serveurs via Internet, des informations de nature générale sont automatiquement collectées et enregistrées dans les fichiers journaux du serveur. Ces informations comprennent par exemple le type et la version du navigateur utilisé, le système d'exploitation employé, la page Internet à partir de laquelle un système qui se connecte accède à nos systèmes (ce que l'on appelle le référent), les sites visités, la date et l'heure d'un accès, une adresse de protocole Internet (adresse IP), le fournisseur de services Internet du système qui se connecte, la quantité de données envoyées en octets et autres informations similaires. Il s'agit d'informations qui servent en premier lieu à prévenir les risques en cas d'attaques visant nos systèmes informatiques.</p>
+    <p>Lors de l'utilisation de ces données et informations générales, la société DMX Systems UG (à responsabilité limitée) ne tire aucune conclusion sur la personne concernée. Au contraire, ces informations sont nécessaires pour assurer le bon fonctionnement à long terme de nos systèmes informatiques et pour optimiser ces derniers, ainsi que pour fournir aux autorités répressives des informations nécessaires à l'application de la loi en cas de cyberattaque. La société DMX Systems UG (à responsabilité limitée) analyse donc les données et informations collectées de manière anonyme, d'une part sur le plan statistique et d'autre part, dans le but d'augmenter la protection et la sécurité des données dans notre entreprise. L'objectif de ces mesures est de garantir un niveau optimal de protection des données à caractère personnel que nous traitons. Les données anonymes des fichiers journaux du serveur sont enregistrées séparément de toutes les données à caractère personnel fournies par une personne concernée.</p>
+    <h4>Mesure d'audience avec Matomo</h4>
     <p class="p17"><b></b><br></p>
-    <p class="p4">Les données suivantes sont traitées dans le cadre de l'analyse d'audience réalisée par Matomo et sur la base de nos intérêts légitimes (c'est-à-dire l'intérêt pour l'analyse, l'optimisation et le fonctionnement économique de notre offre en ligne au sens de l'article 6, alinéa 1, point f) du RGPD):</p>
-    <p class="p4">Le type et la version du navigateur utilisé, le système d'exploitation employé, le pays d'origine, la date et l'heure de la requête adressée au serveur, le nombre de visites, les titres des pages visitées, les fichiers téléchargés, le temps passé sur les sites Internet ainsi que les liens externes activés.</p>
-    <p class="p7"><br></p>
-    <p class="p4">Nous utilisons Matomo dans le cadre de l'analyse des fichiers journaux de nos serveurs et renonçons à l'utilisation de cookies. Par conséquent, notre mesure d'audience dans Matomo ne nous permet pas d'identifier les visiteurs récurrents en tant que tels, ni d'établir des profils d'utilisateurs avec Matomo.</p>
-    <p class="p7"><br></p>
-    <p class="p4">De plus, en cas de détection d'un accès, l'adresse IP des utilisateurs ou utilisatrices est anonymisée sur 2 octets (par ex.: 192.168.xxx.xxx) avant d'être enregistrée. Les informations générées par la mesure d'audience sur l'utilisation de nos services sont uniquement enregistrées sur notre serveur et ne sont pas transmises à des tiers. Les fichiers journaux contenant les données d'accès sont effacés au plus tard au bout de 6 mois.</p>
-    <p class="p7"><br></p>
+    <p>Les données suivantes sont traitées dans le cadre de l'analyse d'audience réalisée par Matomo et sur la base de nos intérêts légitimes (c'est-à-dire l'intérêt pour l'analyse, l'optimisation et le fonctionnement économique de notre offre en ligne au sens de l'article 6, alinéa 1, point f) du RGPD):</p>
+    <p>Le type et la version du navigateur utilisé, le système d'exploitation employé, le pays d'origine, la date et l'heure de la requête adressée au serveur, le nombre de visites, les titres des pages visitées, les fichiers téléchargés, le temps passé sur les sites Internet ainsi que les liens externes activés.</p>
+    <p>Nous utilisons Matomo dans le cadre de l'analyse des fichiers journaux de nos serveurs et renonçons à l'utilisation de cookies. Par conséquent, notre mesure d'audience dans Matomo ne nous permet pas d'identifier les visiteurs récurrents en tant que tels, ni d'établir des profils d'utilisateurs avec Matomo.</p>
+    <p>De plus, en cas de détection d'un accès, l'adresse IP des utilisateurs ou utilisatrices est anonymisée sur 2 octets (par ex.: 192.168.xxx.xxx) avant d'être enregistrée. Les informations générées par la mesure d'audience sur l'utilisation de nos services sont uniquement enregistrées sur notre serveur et ne sont pas transmises à des tiers. Les fichiers journaux contenant les données d'accès sont effacés au plus tard au bout de 6 mois.</p>
     <p class="p14"><b>Adresse du fournisseur de services pour cette plateforme:</b><br>
     </p>
     <p class="p18"><span class="s1">Téléphone: </span>+49 30 54908221<br>
@@ -580,13 +538,10 @@ export default {
     <h3>5. Transfert de données à des tiers</h3>
 
     <p class="p16">Nous traitons vos données à caractère personnel de manière confidentielle et ne les communiquons pas à des tiers non autorisés.</p>
-    <p class="p19"><br></p>
-    <p class="p19"><br></p>
 
     <h3>6. Transfert de données vers des pays tiers présentant des risques</h3>
 
-    <p class="p4">Tous les cookies sont soumis à la directive SameSite=Strict. En d'autres termes, ils ne sont jamais envoyés au site Internet d'un fournisseur tiers.</p>
-    <p class="p7"><br></p>
+    <p>Tous les cookies sont soumis à la directive SameSite=Strict. En d'autres termes, ils ne sont jamais envoyés au site Internet d'un fournisseur tiers.</p>
 
     <h3>7. Inscription/compte utilisateur sur notre plateforme</h3>
 
@@ -599,14 +554,14 @@ export default {
 
     <h3>8. Utilisation de Google Fonts</h3>
 
-    <p class="p4">Sur notre site Internet, nous intégrons la police de caractères «Space grotesk» proposée par «Google Fonts» (polices de caractères de Google) de la société Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis. Déclaration de confidentialité: https://www.google.com/policies/privacy/, option de retrait: https://adssettings.google.com/authenticated.</p>
+    <p>Sur notre site Internet, nous intégrons la police de caractères «Space grotesk» proposée par «Google Fonts» (polices de caractères de Google) de la société Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis. Déclaration de confidentialité: https://www.google.com/policies/privacy/, option de retrait: https://adssettings.google.com/authenticated.</p>
     <p>Google Fonts utilise éventuellement des cookies, ce qui permet à Google LLC, 1600 Amphitheatre Parkway, Mountain View, CA 94043, États-Unis, dans certaines circonstances – du moins si vous êtes connecté à l'offre en ligne de Google à ce moment-là (ou si vous avez enregistré des cookies Google dans votre navigateur) – d’associer vos demandes à un site Web de notre offre en ligne avec votre identifiant Google ID. Vous pouvez éviter cette situation en supprimant les cookies de Google dans votre navigateur avant de visiter une page de notre offre en ligne.</p>
 
     <h3>9. Service de traduction DeepL</h3>
 
     <p class="p21"><b></b><br></p>
-    <p class="p4">Sur notre plate-forme, nous intégrons le «service de traduction DeepL» du fournisseur DeepL SE, Maarweg 165, 50825, Cologne, Allemagne. La déclaration de confidentialité du fournisseur est disponible à l'adresse suivante: https://www.deepl.com/de/privacy/. Dans le cadre de l'abonnement à DeepL, qu’utilise notre plateforme, DeepL n'enregistre pas les textes, mais utilise ces derniers uniquement dans le but de générer la traduction du texte saisi.</p>
-    <p class="p4">Aucune donnée à caractère personnel ne peut être transmise sur DeepL dans le cadre de l'abonnement utilisé. Ces données doivent être rendues indéchiffrables avant le téléchargement et la traduction du texte afin d'empêcher d'éventuels abus.</p>
+    <p>Sur notre plate-forme, nous intégrons le «service de traduction DeepL» du fournisseur DeepL SE, Maarweg 165, 50825, Cologne, Allemagne. La déclaration de confidentialité du fournisseur est disponible à l'adresse suivante: https://www.deepl.com/de/privacy/. Dans le cadre de l'abonnement à DeepL, qu’utilise notre plateforme, DeepL n'enregistre pas les textes, mais utilise ces derniers uniquement dans le but de générer la traduction du texte saisi.</p>
+    <p>Aucune donnée à caractère personnel ne peut être transmise sur DeepL dans le cadre de l'abonnement utilisé. Ces données doivent être rendues indéchiffrables avant le téléchargement et la traduction du texte afin d'empêcher d'éventuels abus.</p>
 
     <h3>10. Suppression et verrouillage systématique des données à caractère personnel</h3>
 
@@ -632,14 +587,13 @@ export default {
       </ul>
       <p>La personne concernée dispose en outre d'un droit d'accès lui permettant de savoir si des données à caractère personnel ont été transmises à un pays tiers ou à une organisation internationale. Si tel est le cas, la personne concernée a par ailleurs le droit d'obtenir des renseignements sur les garanties adéquates associées à ce transfert.</p>
       <p>Si une personne concernée souhaite exercer ce droit d'accès, elle peut à tout moment s'adresser à un collaborateur ou une collaboratrice du responsable du traitement.</p>
-      <p class="p4"><b>L'autorité de surveillance compétente est la déléguée à la protection des données du Land de Brandebourg:</b></p>
-      <p class="p6">Mme Dagmar Hartge<br>
+      <p><b>L'autorité de surveillance compétente est la déléguée à la protection des données du Land de Brandebourg:</b></p>
+      <p>Mme Dagmar Hartge<br>
       Stahnsdorfer Damm 77<br>
       14532 Kleinmachnow</p>
       <p class="p14">Téléphone: +49 332 0356 0<br>
       Fax: +49 332 0356 49<br>
       E-mail: <span class="s3">poststelle@lda.brandenburg.de</span></p>
-      <p class="p9"><br></p>
       <li><b>c) Droit de rectification</b></li>
       <p>Le législateur européen accorde à toute personne concernée par le traitement de données à caractère personnel le droit d'exiger à tout moment la rectification immédiate de données à caractère personnel erronées la concernant. En outre, la personne concernée a le droit, tout en respectant les finalités du traitement, d'exiger que des données à caractère personnel incomplètes soient rectifiées, y compris par le biais d'une déclaration complémentaire.</p>
       <p>Si une personne concernée souhaite exercer ce droit de rectification, elle peut à tout moment s'adresser à un collaborateur ou une collaboratrice du responsable du traitement.</p>
@@ -711,8 +665,7 @@ export default {
     <h3>17. Existence d'une prise de décision automatisée</h3>
 
     <p>En tant qu'organisme responsable, nous renonçons à une prise de décision automatisée.</p>
-    <p class="p4"><b>Validité et modification de notre déclaration de confidentialité</b></p>
+    <p><b>Validité et modification de notre déclaration de confidentialité</b></p>
     <p>La présente déclaration de confidentialité date de mars 2021 et est actuellement applicable. Nous nous réservons le droit d'adapter de temps à autre le présent avis de confidentialité afin d'assurer sa conformité permanente aux exigences légales en vigueur ou d'y transposer des modifications de nos prestations, par exemple lors de l'introduction de nouveaux services. Le nouvel avis de confidentialité s'appliquera alors à votre nouvelle visite.</p>
-    <p class="p4">La présente déclaration de confidentialité a été rédigée par le générateur de déclaration de confidentialité de la société DGD Deutsche Gesellschaft für Datenschutz GmbH, en sa qualité de <span class="s4">déléguée externe à la protection des données de Basse-Bavière</span>, en coopération avec les <span class="s4">avocats spécialisés dans la protection des données du cabinet WILDE BEUGER SOLMECKE | Rechtsanwälte</span>.</p>
-    <p class="p15"><br></p>`
+    <p>La présente déclaration de confidentialité a été rédigée par le générateur de déclaration de confidentialité de la société DGD Deutsche Gesellschaft für Datenschutz GmbH, en sa qualité de <span class="s4">déléguée externe à la protection des données de Basse-Bavière</span>, en coopération avec les <span class="s4">avocats spécialisés dans la protection des données du cabinet WILDE BEUGER SOLMECKE | Rechtsanwälte</span>.</p>`
 }

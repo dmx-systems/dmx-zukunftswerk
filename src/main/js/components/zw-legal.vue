@@ -79,9 +79,7 @@ export default {
   margin-bottom: 24px;
 }
 
-.zw-legal.privacy_policy.de p.p2 {margin: 0.0px 0.0px 15.0px 0.0px; text-align: justify; font: 10.0px Times}
 .zw-legal.privacy_policy.de p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 10.0px Times}
-.zw-legal.privacy_policy.de p.p5 {margin: 0.0px 0.0px 15.0px 0.0px; text-align: justify; font: 10.0px Times; min-height: 13.0px}
 .zw-legal.privacy_policy.de p.p6 {margin: 0.0px 0.0px 15.0px 0.0px; font: 10.0px Times}
 .zw-legal.privacy_policy.de p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 10.0px Times; min-height: 13.0px}
 .zw-legal.privacy_policy.de p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Arial}
@@ -97,20 +95,13 @@ export default {
 .zw-legal.privacy_policy.de p.p18 {margin: 0.0px 0.0px 15.0px 0.0px; font: 12.0px Times}
 .zw-legal.privacy_policy.de p.p19 {margin: 0.0px 0.0px 15.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
 .zw-legal.privacy_policy.de p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 13.0px Times; min-height: 16.0px}
-.zw-legal.privacy_policy.de li.li2 {margin: 0.0px 0.0px 15.0px 0.0px; text-align: justify; font: 10.0px Times}
-.zw-legal.privacy_policy.de li.li4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 10.0px Times}
-.zw-legal.privacy_policy.de li.li14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Times}
 .zw-legal.privacy_policy.de span.s1 {text-decoration: underline}
 .zw-legal.privacy_policy.de span.s2 {font: 10.0px Times}
 .zw-legal.privacy_policy.de span.s3 {font: 10.0px Arial; text-decoration: underline}
-.zw-legal.privacy_policy.de span.Apple-tab-span {white-space:pre}
 .zw-legal.privacy_policy.de table.t1 {border-collapse: collapse}
 .zw-legal.privacy_policy.de td.td1 {border-style: solid; border-width: 1.0px 1.0px 1.0px 1.0px; border-color: #bfbfbf #bfbfbf #bfbfbf #bfbfbf; padding: 0.0px 5.0px 0.0px 5.0px}
-.zw-legal.privacy_policy.de ul.ul1 {list-style-type: disc}
 
-.zw-legal.privacy_policy.fr p.p2 {margin: 0.0px 0.0px 15.0px 0.0px; text-align: justify; font: 10.0px Times}
 .zw-legal.privacy_policy.fr p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 10.0px Times}
-.zw-legal.privacy_policy.fr p.p5 {margin: 0.0px 0.0px 15.0px 0.0px; text-align: justify; font: 10.0px Times; min-height: 13.0px}
 .zw-legal.privacy_policy.fr p.p6 {margin: 0.0px 0.0px 15.0px 0.0px; font: 10.0px Times}
 .zw-legal.privacy_policy.fr p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 10.0px Times; min-height: 13.0px}
 .zw-legal.privacy_policy.fr p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Arial}
@@ -126,15 +117,10 @@ export default {
 .zw-legal.privacy_policy.fr p.p18 {margin: 0.0px 0.0px 15.0px 0.0px; font: 12.0px Times}
 .zw-legal.privacy_policy.fr p.p19 {margin: 0.0px 0.0px 15.0px 0.0px; font: 12.0px Times; min-height: 14.0px}
 .zw-legal.privacy_policy.fr p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 13.0px Times; min-height: 16.0px}
-.zw-legal.privacy_policy.fr li.li2 {margin: 0.0px 0.0px 15.0px 0.0px; text-align: justify; font: 10.0px Times}
-.zw-legal.privacy_policy.fr li.li4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 10.0px Times}
-.zw-legal.privacy_policy.fr li.li14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Times}
 .zw-legal.privacy_policy.fr span.s1 {font: 10.0px Times}
 .zw-legal.privacy_policy.fr span.s2 {text-decoration: underline}
 .zw-legal.privacy_policy.fr span.s3 {font: 10.0px Arial}
 .zw-legal.privacy_policy.fr span.s4 {font: 10.0px Arial; text-decoration: underline}
-.zw-legal.privacy_policy.fr span.Apple-tab-span {white-space:pre}
 .zw-legal.privacy_policy.fr table.t1 {border-collapse: collapse}
 .zw-legal.privacy_policy.fr td.td1 {border-style: solid; border-width: 1.0px 1.0px 1.0px 1.0px; border-color: #bfbfbf #bfbfbf #bfbfbf #bfbfbf; padding: 0.0px 5.0px 0.0px 5.0px}
-.zw-legal.privacy_policy.fr ul.ul1 {list-style-type: disc}
 </style>

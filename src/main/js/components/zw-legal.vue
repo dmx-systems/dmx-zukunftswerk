@@ -1,5 +1,5 @@
 <template>
-  <div :class="['zw-legal', routeName, lang]">
+  <div :class="['zw-legal', routeName]">
     <zw-language-switch></zw-language-switch>
     <img :src="logo">
     <zw-string class="heading">{{heading}}</zw-string>
@@ -28,10 +28,6 @@ export default {
 
     router () {
       return this.$store.state.routerModule.router
-    },
-
-    lang () {
-      return this.$store.state.lang
     }
   }
 }
@@ -48,6 +44,34 @@ export default {
   background-position: bottom right;
   background-repeat: no-repeat;
   padding: 50px 0 0 120px;
+}
+
+.zw-legal h2 {
+  margin-top: 34px;
+}
+
+.zw-legal ol {
+  list-style-type: lower-alpha;
+}
+
+.zw-legal p,
+.zw-legal ul > li {
+  font-family: serif;
+}
+
+.zw-legal ul > li {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.zw-legal ol > li {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.zw-legal ol > li > div {
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .zw-legal img {

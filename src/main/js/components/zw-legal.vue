@@ -79,28 +79,12 @@ export default {
   margin-bottom: 24px;
 }
 
-.zw-legal.privacy_policy.de p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 10.0px 'Times New Roman'}
-.zw-legal.privacy_policy.de p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Times}
-.zw-legal.privacy_policy.de p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-.zw-legal.privacy_policy.de p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Times; min-height: 16.0px}
-.zw-legal.privacy_policy.de p.p18 {margin: 0.0px 0.0px 15.0px 0.0px; font: 12.0px Times}
-.zw-legal.privacy_policy.de p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 13.0px Times; min-height: 16.0px}
-.zw-legal.privacy_policy.de span.s1 {text-decoration: underline}
-.zw-legal.privacy_policy.de span.s2 {font: 10.0px Times}
-.zw-legal.privacy_policy.de span.s3 {font: 10.0px Arial; text-decoration: underline}
-.zw-legal.privacy_policy.de table.t1 {border-collapse: collapse}
-.zw-legal.privacy_policy.de td.td1 {border-style: solid; border-width: 1.0px 1.0px 1.0px 1.0px; border-color: #bfbfbf #bfbfbf #bfbfbf #bfbfbf; padding: 0.0px 5.0px 0.0px 5.0px}
+.zw-legal.privacy_policy table {
+  border-collapse: collapse
+}
 
-.zw-legal.privacy_policy.fr p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 10.0px 'Times New Roman'}
-.zw-legal.privacy_policy.fr p.p14 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Times}
-.zw-legal.privacy_policy.fr p.p16 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times}
-.zw-legal.privacy_policy.fr p.p17 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px Times; min-height: 16.0px}
-.zw-legal.privacy_policy.fr p.p18 {margin: 0.0px 0.0px 15.0px 0.0px; font: 12.0px Times}
-.zw-legal.privacy_policy.fr p.p21 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: justify; font: 13.0px Times; min-height: 16.0px}
-.zw-legal.privacy_policy.fr span.s1 {font: 10.0px Times}
-.zw-legal.privacy_policy.fr span.s2 {text-decoration: underline}
-.zw-legal.privacy_policy.fr span.s3 {font: 10.0px Arial}
-.zw-legal.privacy_policy.fr span.s4 {font: 10.0px Arial; text-decoration: underline}
-.zw-legal.privacy_policy.fr table.t1 {border-collapse: collapse}
-.zw-legal.privacy_policy.fr td.td1 {border-style: solid; border-width: 1.0px 1.0px 1.0px 1.0px; border-color: #bfbfbf #bfbfbf #bfbfbf #bfbfbf; padding: 0.0px 5.0px 0.0px 5.0px}
+.zw-legal.privacy_policy td {
+  border: 1px solid #bfbfbf;
+  padding: 10px;
+}
 </style>

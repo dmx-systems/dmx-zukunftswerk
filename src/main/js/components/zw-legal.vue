@@ -46,34 +46,6 @@ export default {
   padding: 50px 0 0 120px;
 }
 
-.zw-legal h2 {
-  margin-top: 34px;
-}
-
-.zw-legal ol {
-  list-style-type: lower-alpha;
-}
-
-.zw-legal p,
-.zw-legal ul > li {
-  font-family: serif;
-}
-
-.zw-legal ul > li {
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-.zw-legal ol > li {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
-.zw-legal ol > li > div {
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
 .zw-legal img {
   align-self: flex-start;
   margin-left: -81px;
@@ -87,7 +59,7 @@ export default {
 
 .zw-legal .heading {
   color: var(--primary-color);
-  font-size: 20px;
+  font-size: 24px;
   margin-top: 42px;
 }
 
@@ -95,12 +67,43 @@ export default {
   overflow: auto;
   flex-grow: 1;
   margin-top: 24px;
-  padding-right: 36%;
+  padding-right: 34%;
 }
 
 .zw-legal .text {
   color: white;
   margin-bottom: 24px;
+}
+
+.zw-legal.privacy_policy h2 {
+  font-size: 20px;
+  margin-top: 32px;
+  margin-bottom: 14px;
+}
+
+.zw-legal.privacy_policy ol {
+  list-style-type: lower-alpha;
+}
+
+.zw-legal.privacy_policy p,
+.zw-legal.privacy_policy ul > li {
+  font-family: serif;
+  text-align: justify;
+}
+
+.zw-legal.privacy_policy ul > li {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.zw-legal.privacy_policy ol > li {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.zw-legal.privacy_policy ol > li > div {
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .zw-legal.privacy_policy table {

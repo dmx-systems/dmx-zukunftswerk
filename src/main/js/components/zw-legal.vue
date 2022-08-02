@@ -77,6 +77,7 @@ export default {
 
 .zw-legal.privacy_policy h2 {
   font-size: 20px;
+  line-height: normal;
   margin-top: 32px;
   margin-bottom: 14px;
 }
@@ -103,7 +104,7 @@ export default {
 
 .zw-legal.privacy_policy ol > li > div {
   font-weight: bold;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .zw-legal.privacy_policy table {

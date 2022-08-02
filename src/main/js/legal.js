@@ -124,89 +124,77 @@ export default {
     <h2>4. Erfassung von Informationen und Reichweitenmessung</h2>
 
     <p>Unsere Plattform verwendet Cookies, um wesentliche Services und Funktionen auf unserer Plattform zu ermöglichen. Es werden 3 technisch notwendige Cookies gespeichert:</p>
-    <table cellspacing="0" cellpadding="0">
+    <table>
       <tbody>
         <tr>
-          <td valign="middle">
-            <p><b>Name</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Firma</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Zweck</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Art</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Speicherdauer</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Party</b></p>
-          </td>
+          <th>Name</th>
+          <th>Firma</th>
+          <th>Zweck</th>
+          <th>Art</th>
+          <th>Speicherdauer</th>
+          <th>Party</th>
         </tr>
         <tr>
-          <td valign="middle">
+          <td>
             <p>Session ID (JSESSIONID)</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>DMX</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Dieses Cookie dient der Identifikation der Serverseitigen HTTP Session.</p>
             <p>Nach erfolgreichem Login wird eine ID erzeugt und im Browser des Nutzers gespeichert. Diese ID enthält keinerlei persönliche Nutzerdaten.</p>
             <p>Beispiel einer ID: 61cuy4433xj21dted2o5sb1x5</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Essential</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Projektdauer bzw. Löschung bei Logout</p>
           </td>
-          <td valign="middle">
-            <p>2nd</p>
-          </td>
-        </tr>
-        <tr>
-          <td valign="middle">
-            <p>Client ID (dmx_client_id)</p>
-          </td>
-          <td valign="middle">
-            <p>DMX</p>
-          </td>
-          <td valign="middle">
-            <p>Dieses Cookie dient der Identifikation des Client Window.</p>
-            <p>Beispiel einer ID: 3385189191755023</p>
-          </td>
-          <td valign="middle">
-            <p>Essential</p>
-          </td>
-          <td valign="middle">
-            <p>Projektdauer bzw. Löschung bei Logout</p>
-          </td>
-          <td valign="middle">
+          <td>
             <p>2<sup>nd</sup></p>
           </td>
         </tr>
         <tr>
-          <td valign="middle">
-            <p>Workspace ID (dmx_workspace_id)</p>
+          <td>
+            <p>Client ID (dmx_client_id)</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>DMX</p>
           </td>
-          <td valign="middle">
+          <td>
+            <p>Dieses Cookie dient der Identifikation des Client Window.</p>
+            <p>Beispiel einer ID: 3385189191755023</p>
+          </td>
+          <td>
+            <p>Essential</p>
+          </td>
+          <td>
+            <p>Projektdauer bzw. Löschung bei Logout</p>
+          </td>
+          <td>
+            <p>2<sup>nd</sup></p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>Workspace ID (dmx_workspace_id)</p>
+          </td>
+          <td>
+            <p>DMX</p>
+          </td>
+          <td>
             <p>Dieses Cookie dient der Identifikation des aktuellen DMX Workspaces.</p>
             <p>Beispiel einer ID: 5366</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Essential</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Projektdauer bzw. Löschung bei Logout</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>2<sup>nd</sup></p>
           </td>
         </tr>
@@ -271,26 +259,28 @@ export default {
       </li>
       <li><div>Recht auf Auskunft</div>
         <p>Jede von der Verarbeitung personenbezogener Daten betroffene Person hat das vom Europäischen Richtlinien- und Verordnungsgeber gewährte Recht, jederzeit von dem für die Verarbeitung Verantwortlichen unentgeltliche Auskunft über die zu seiner Person gespeicherten personenbezogenen Daten und eine Kopie dieser Auskunft zu erhalten. Ferner hat der Europäische Richtlinien- und Verordnungsgeber der betroffenen Person Auskunft über folgende Informationen zugestanden:</p>
+        <ul>
+          <li>die Verarbeitungszwecke</li>
+          <li>die Kategorien personenbezogener Daten, die verarbeitet werden</li>
+          <li>die Empfänger oder Kategorien von Empfängern, gegenüber denen die personenbezogenen Daten offengelegt worden sind oder noch offengelegt werden, insbesondere bei Empfängern in Drittländern oder bei internationalen Organisationen</li>
+          <li>falls möglich die geplante Dauer, für die die personenbezogenen Daten gespeichert werden, oder, falls dies nicht möglich ist, die Kriterien für die Festlegung dieser Dauer</li>
+          <li>das Bestehen eines Rechts auf Berichtigung oder Löschung der sie betreffenden personenbezogenen Daten oder auf Einschränkung der Verarbeitung durch den Verantwortlichen oder eines Widerspruchsrechts gegen diese Verarbeitung</li>
+          <li>das Bestehen eines Beschwerderechts bei einer Aufsichtsbehörde</li>
+          <li>wenn die personenbezogenen Daten nicht bei der betroffenen Person erhoben werden: Alle verfügbaren Informationen über die Herkunft der Daten</li>
+          <li>das Bestehen einer automatisierten Entscheidungsfindung einschließlich Profiling gemäß Artikel 22 Abs.1 und 4 DS-GVO und – zumindest in diesen Fällen – aussagekräftige Informationen über die involvierte Logik sowie die Tragweite und die angestrebten Auswirkungen einer derartigen Verarbeitung für die betroffene Person</li>
+        </ul>
+        <p>Ferner steht der betroffenen Person ein Auskunftsrecht darüber zu, ob personenbezogene Daten an ein Drittland oder an eine internationale Organisation übermittelt wurden. Sofern dies der Fall ist, so steht der betroffenen Person im Übrigen das Recht zu, Auskunft über die geeigneten Garantien im Zusammenhang mit der Übermittlung zu erhalten.</p>
+        <p>Möchte eine betroffene Person dieses Auskunftsrecht in Anspruch nehmen, kann sie sich hierzu jederzeit an eine Mitarbeiter:in des für die Verarbeitung Verantwortlichen wenden.</p>
+        <p><b>Die zuständige Aufsichtsbehörde ist die brandenburgische Landesdatenschutzbeauftragte:</b></p>
+        <p>
+          Frau Dagmar Hartge<br>
+          Stahnsdorfer Damm 77<br>
+          14532 Kleinmachnow</p>
+          <p>Telefon: +49 332 0356 0<br>
+          Telefax: +49 332 0356 49<br>
+          E-Mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a>
+        </p>
       </li>
-      <ul>
-        <li>die Verarbeitungszwecke</li>
-        <li>die Kategorien personenbezogener Daten, die verarbeitet werden</li>
-        <li>die Empfänger oder Kategorien von Empfängern, gegenüber denen die personenbezogenen Daten offengelegt worden sind oder noch offengelegt werden, insbesondere bei Empfängern in Drittländern oder bei internationalen Organisationen</li>
-        <li>falls möglich die geplante Dauer, für die die personenbezogenen Daten gespeichert werden, oder, falls dies nicht möglich ist, die Kriterien für die Festlegung dieser Dauer</li>
-        <li>das Bestehen eines Rechts auf Berichtigung oder Löschung der sie betreffenden personenbezogenen Daten oder auf Einschränkung der Verarbeitung durch den Verantwortlichen oder eines Widerspruchsrechts gegen diese Verarbeitung</li>
-        <li>das Bestehen eines Beschwerderechts bei einer Aufsichtsbehörde</li>
-        <li>wenn die personenbezogenen Daten nicht bei der betroffenen Person erhoben werden: Alle verfügbaren Informationen über die Herkunft der Daten</li>
-        <li>das Bestehen einer automatisierten Entscheidungsfindung einschließlich Profiling gemäß Artikel 22 Abs.1 und 4 DS-GVO und – zumindest in diesen Fällen – aussagekräftige Informationen über die involvierte Logik sowie die Tragweite und die angestrebten Auswirkungen einer derartigen Verarbeitung für die betroffene Person</li>
-      </ul>
-      <p>Ferner steht der betroffenen Person ein Auskunftsrecht darüber zu, ob personenbezogene Daten an ein Drittland oder an eine internationale Organisation übermittelt wurden. Sofern dies der Fall ist, so steht der betroffenen Person im Übrigen das Recht zu, Auskunft über die geeigneten Garantien im Zusammenhang mit der Übermittlung zu erhalten.</p>
-      <p>Möchte eine betroffene Person dieses Auskunftsrecht in Anspruch nehmen, kann sie sich hierzu jederzeit an eine Mitarbeiter:in des für die Verarbeitung Verantwortlichen wenden.</p>
-      <p><b>Die zuständige Aufsichtsbehörde ist die brandenburgische Landesdatenschutzbeauftragte:</b></p>
-      <p>Frau Dagmar Hartge<br>
-      Stahnsdorfer Damm 77<br>
-      14532 Kleinmachnow</p>
-      <p>Telefon: +49 332 0356 0<br>
-      Telefax: +49 332 0356 49<br>
-      E-Mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a></p>
       <li><div>Recht auf Berichtigung</div>
         <p>Jede von der Verarbeitung personenbezogener Daten betroffene Person hat das vom Europäischen Richtlinien- und Verordnungsgeber gewährte Recht, die unverzügliche Berichtigung sie betreffender unrichtiger personenbezogener Daten zu verlangen. Ferner steht der betroffenen Person das Recht zu, unter Berücksichtigung der Zwecke der Verarbeitung, die Vervollständigung unvollständiger personenbezogener Daten — auch mittels einer ergänzenden Erklärung — zu verlangen.</p>
         <p>Möchte eine betroffene Person dieses Berichtigungsrecht in Anspruch nehmen, kann sie sich hierzu jederzeit an eine Mitarbeiter:in des für die Verarbeitung Verantwortlichen wenden.</p>
@@ -442,89 +432,77 @@ export default {
     <h2>4. Collecte d'informations et mesure d'audience</h2>
 
     <p>Notre plateforme utilise des cookies afin de permettre la fourniture de services et de fonctions qui lui sont indispensables. Trois cookies techniquement nécessaires sont utilisés:</p>
-    <table cellspacing="0" cellpadding="0">
+    <table>
       <tbody>
         <tr>
-          <td valign="middle">
-            <p><b>Nom</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Société</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Finalité</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Type</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Durée de conservation</b></p>
-          </td>
-          <td valign="middle">
-            <p><b>Partie</b></p>
-          </td>
+          <th>Nom</th>
+          <th>Société</th>
+          <th>Finalité</th>
+          <th>Type</th>
+          <th>Durée</th>
+          <th>Partie</th>
         </tr>
         <tr>
-          <td valign="middle">
+          <td>
             <p>Identifiant de session (JSESSIONID)</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>DMX</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Ce cookie sert à identifier la session HTTP sur le serveur.</p>
             <p>Une fois que la procédure de connexion a abouti, un identifiant est généré et enregistré dans le navigateur de l'utilisateur. Cet identifiant ne contient aucune donnée personnelle de l'utilisateur.</p>
             <p>Exemple d'identifiant: 61cuy4433xj21dted2o5sb1x5</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Essentiel</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Durée du projet ou suppression en cas de déconnexion</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>2ème</p>
           </td>
         </tr>
         <tr>
-          <td valign="middle">
+          <td>
             <p>Identifiant du client (dmx_client_id)</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>DMX</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Ce cookie sert à l'identification du client Window.</p>
             <p>Exemple d'identifiant: 3385189191755023</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Essentiel</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Durée du projet ou suppression en cas de déconnexion</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>2ème</p>
           </td>
         </tr>
         <tr>
-          <td valign="middle">
+          <td>
             <p>Identifiant de l'espace de travail (dmx_workspace_id)</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>DMX</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Ce cookie sert à l'identification de l'espace de travail DMX actuel.</p>
             <p>Exemple d'identifiant: 5366</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Essentiel</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>Durée du projet ou suppression lors de la déconnexion</p>
           </td>
-          <td valign="middle">
+          <td>
             <p>2ème</p>
           </td>
         </tr>
@@ -601,12 +579,14 @@ export default {
         <p>La personne concernée dispose en outre d'un droit d'accès lui permettant de savoir si des données à caractère personnel ont été transmises à un pays tiers ou à une organisation internationale. Si tel est le cas, la personne concernée a par ailleurs le droit d'obtenir des renseignements sur les garanties adéquates associées à ce transfert.</p>
         <p>Si une personne concernée souhaite exercer ce droit d'accès, elle peut à tout moment s'adresser à un collaborateur ou une collaboratrice du responsable du traitement.</p>
         <p><b>L'autorité de surveillance compétente est la déléguée à la protection des données du Land de Brandebourg:</b></p>
-        <p>Mme Dagmar Hartge<br>
-        Stahnsdorfer Damm 77<br>
-        14532 Kleinmachnow</p>
-        <p>Téléphone: +49 332 0356 0<br>
-        Fax: +49 332 0356 49<br>
-        E-mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a></p>
+        <p>
+          Mme Dagmar Hartge<br>
+          Stahnsdorfer Damm 77<br>
+          14532 Kleinmachnow</p>
+          <p>Téléphone: +49 332 0356 0<br>
+          Fax: +49 332 0356 49<br>
+          E-mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a>
+        </p>
       </li>
       <li><div>Droit de rectification</div>
         <p>Le législateur européen accorde à toute personne concernée par le traitement de données à caractère personnel le droit d'exiger à tout moment la rectification immédiate de données à caractère personnel erronées la concernant. En outre, la personne concernée a le droit, tout en respectant les finalités du traitement, d'exiger que des données à caractère personnel incomplètes soient rectifiées, y compris par le biais d'une déclaration complémentaire.</p>

@@ -14,6 +14,7 @@
       <el-button type="text" icon="el-icon-full-screen" @click="zoomToFit"></el-button>
       <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
       <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
+      <el-button type="text" icon="el-icon-c-scale-to-original" @click="resetZoom"></el-button>
     </div>
     <div class="content-layer" :style="zoomStyle">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
@@ -168,6 +169,11 @@ export default {
       const x = (dx - xMin) * zoom + zw.CANVAS_BORDER
       const y = (dy - yMin) * zoom + zw.CANVAS_BORDER
       this.$store.dispatch('setViewport', {pan: {x, y}, zoom})
+    },
+
+    resetZoom () {
+      const c = this.$refs.canvas
+      this.setZoom(1, c.clientWidth / 2, c.clientHeight / 2)
     },
 
     stepZoom (delta) {

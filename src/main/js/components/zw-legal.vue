@@ -102,8 +102,8 @@ export default {
 }
 
 .zw-legal.privacy_policy ul > li {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
 .zw-legal.privacy_policy ol > li {
@@ -113,7 +113,7 @@ export default {
 
 .zw-legal.privacy_policy ol > li > div {
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .zw-legal.privacy_policy table {

@@ -125,19 +125,21 @@ export default {
 
     <p>Unsere Plattform verwendet Cookies, um wesentliche Services und Funktionen auf unserer Plattform zu ermöglichen. Es werden 3 technisch notwendige Cookies gespeichert:</p>
     <table>
-      <tbody>
+      <thead>
         <tr>
-          <th>Name</th>
+          <th>Cookie</th>
           <th>Firma</th>
           <th>Zweck</th>
           <th>Art</th>
           <th>Speicherdauer</th>
           <th>Party</th>
         </tr>
+      </thead>
+      <tbody>
         <tr>
           <td>
-            <p>Session ID</p>
-            <p>(<code>JSESSIONID</code>)</p>
+            <p>"Session ID"</p>
+            <p><code>JSESSIONID</code></p>
           </td>
           <td>
             <p>DMX</p>
@@ -151,7 +153,7 @@ export default {
             <p>Essential</p>
           </td>
           <td>
-            <p>Projektdauer bzw. Löschung bei Logout</p>
+            <p>Löschung beim Schließen des Browsers<br>("session cookie")</p>
           </td>
           <td>
             <p>2<sup>nd</sup></p>
@@ -159,8 +161,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Client ID</p>
-            <p>(<code>dmx_client_id</code>)</p>
+            <p>"Client ID"</p>
+            <p><code>dmx_client_id</code></p>
           </td>
           <td>
             <p>DMX</p>
@@ -173,7 +175,7 @@ export default {
             <p>Essential</p>
           </td>
           <td>
-            <p>Projektdauer bzw. Löschung bei Logout</p>
+            <p>Löschung beim Schließen des Browsers<br>("session cookie")</p>
           </td>
           <td>
             <p>2<sup>nd</sup></p>
@@ -181,8 +183,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Workspace ID</p>
-            <p>(<code>dmx_workspace_id</code>)</p>
+            <p>"Workspace ID"</p>
+            <p><code>dmx_workspace_id</code></p>
           </td>
           <td>
             <p>DMX</p>
@@ -195,7 +197,7 @@ export default {
             <p>Essential</p>
           </td>
           <td>
-            <p>Projektdauer bzw. Löschung bei Logout</p>
+            <p>Löschung beim Schließen des Browsers<br>("session cookie")</p>
           </td>
           <td>
             <p>2<sup>nd</sup></p>
@@ -228,7 +230,7 @@ export default {
 
     <h2>6. Datenübermittlung in unsichere Drittländer</h2>
 
-    <p>Alle Cookies haben die Richtlinie SameSite=Strict. Das heißt, sie werden niemals an eine Website eines Drittanbieters gesendet.</p>
+    <p>Alle Cookies haben die Richtlinie <code>SameSite=Strict</code>. Das heißt, sie werden niemals an eine Website eines Drittanbieters gesendet.</p>
 
     <h2>7. Registrierung/Nutzerkonto auf unserer Plattform</h2>
 
@@ -434,19 +436,21 @@ export default {
 
     <p>Notre plateforme utilise des cookies afin de permettre la fourniture de services et de fonctions qui lui sont indispensables. Trois cookies techniquement nécessaires sont utilisés:</p>
     <table>
-      <tbody>
+      <thead>
         <tr>
-          <th>Nom</th>
+          <th>Cookie</th>
           <th>Société</th>
           <th>Finalité</th>
           <th>Type</th>
           <th>Durée</th>
           <th>Partie</th>
         </tr>
+      </thead>
+      <tbody>
         <tr>
           <td>
-            <p>Identifiant de session</p>
-            <p>(<code>JSESSIONID</code>)</p>
+            <p>"Session ID"</p>
+            <p><code>JSESSIONID</code></p>
           </td>
           <td>
             <p>DMX</p>
@@ -460,7 +464,7 @@ export default {
             <p>Essentiel</p>
           </td>
           <td>
-            <p>Durée du projet ou suppression en cas de déconnexion</p>
+            <p>Suppression à la fermeture du navigateur<br>("session cookie")</p>
           </td>
           <td>
             <p>2ème</p>
@@ -468,8 +472,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Identifiant du client</p>
-            <p>(<code>dmx_client_id</code>)</p>
+            <p>"Client ID"</p>
+            <p><code>dmx_client_id</code></p>
           </td>
           <td>
             <p>DMX</p>
@@ -482,7 +486,7 @@ export default {
             <p>Essentiel</p>
           </td>
           <td>
-            <p>Durée du projet ou suppression en cas de déconnexion</p>
+            <p>Suppression à la fermeture du navigateur<br>("session cookie")</p>
           </td>
           <td>
             <p>2ème</p>
@@ -490,8 +494,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Identifiant de l'espace de travail</p>
-            <p>(<code>dmx_workspace_id</code>)</p>
+            <p>"Workspace ID"</p>
+            <p><code>dmx_workspace_id</code></p>
           </td>
           <td>
             <p>DMX</p>
@@ -504,7 +508,7 @@ export default {
             <p>Essentiel</p>
           </td>
           <td>
-            <p>Durée du projet ou suppression lors de la déconnexion</p>
+            <p>Suppression à la fermeture du navigateur<br>("session cookie")</p>
           </td>
           <td>
             <p>2ème</p>
@@ -536,7 +540,7 @@ export default {
 
     <h2>6. Transfert de données vers des pays tiers présentant des risques</h2>
 
-    <p>Tous les cookies sont soumis à la directive SameSite=Strict. En d'autres termes, ils ne sont jamais envoyés au site Internet d'un fournisseur tiers.</p>
+    <p>Tous les cookies sont soumis à la directive <code>SameSite=Strict</code>. En d'autres termes, ils ne sont jamais envoyés au site Internet d'un fournisseur tiers.</p>
 
     <h2>7. Inscription/compte utilisateur sur notre plateforme</h2>
 

@@ -147,7 +147,7 @@ export default {
           <td>
             <p>Dieses Cookie dient der Identifikation der Serverseitigen HTTP Session.</p>
             <p>Nach erfolgreichem Login wird eine ID erzeugt und im Browser des Nutzers gespeichert. Diese ID enthält keinerlei persönliche Nutzerdaten.</p>
-            <p>Beispiel einer ID: 61cuy4433xj21dted2o5sb1x5</p>
+            <p>Beispiel einer ID: <code>61cuy4433xj21dted2o5sb1x5</code></p>
           </td>
           <td>
             <p>Essential</p>
@@ -169,7 +169,7 @@ export default {
           </td>
           <td>
             <p>Dieses Cookie dient der Identifikation des Client Window.</p>
-            <p>Beispiel einer ID: 3385189191755023</p>
+            <p>Beispiel einer ID: <code>3385189191755023</code></p>
           </td>
           <td>
             <p>Essential</p>
@@ -191,7 +191,29 @@ export default {
           </td>
           <td>
             <p>Dieses Cookie dient der Identifikation des aktuellen DMX Workspaces.</p>
-            <p>Beispiel einer ID: 5366</p>
+            <p>Beispiel einer ID: <code>5366</code></p>
+          </td>
+          <td>
+            <p>Essential</p>
+          </td>
+          <td>
+            <p>Löschung beim Schließen des Browsers<br>("session cookie")</p>
+          </td>
+          <td>
+            <p>2<sup>nd</sup></p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>"Language"</p>
+            <p><code>zw_lang</code></p>
+          </td>
+          <td>
+            <p>DMX</p>
+          </td>
+          <td>
+            <p>Sprache, die der Benuter gewählt hat.</p>
+            <p>Mögliche Werte: <code>de</code>, <code>fr</code></p>
           </td>
           <td>
             <p>Essential</p>
@@ -458,7 +480,7 @@ export default {
           <td>
             <p>Ce cookie sert à identifier la session HTTP sur le serveur.</p>
             <p>Une fois que la procédure de connexion a abouti, un identifiant est généré et enregistré dans le navigateur de l'utilisateur. Cet identifiant ne contient aucune donnée personnelle de l'utilisateur.</p>
-            <p>Exemple d'identifiant: 61cuy4433xj21dted2o5sb1x5</p>
+            <p>Exemple d'identifiant: <code>61cuy4433xj21dted2o5sb1x5</code></p>
           </td>
           <td>
             <p>Essentiel</p>
@@ -480,7 +502,7 @@ export default {
           </td>
           <td>
             <p>Ce cookie sert à l'identification du client Window.</p>
-            <p>Exemple d'identifiant: 3385189191755023</p>
+            <p>Exemple d'identifiant: <code>3385189191755023</code></p>
           </td>
           <td>
             <p>Essentiel</p>
@@ -502,7 +524,29 @@ export default {
           </td>
           <td>
             <p>Ce cookie sert à l'identification de l'espace de travail DMX actuel.</p>
-            <p>Exemple d'identifiant: 5366</p>
+            <p>Exemple d'identifiant: <code>5366</code></p>
+          </td>
+          <td>
+            <p>Essentiel</p>
+          </td>
+          <td>
+            <p>Suppression à la fermeture du navigateur<br>("session cookie")</p>
+          </td>
+          <td>
+            <p>2ème</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>"Language"</p>
+            <p><code>zw_lang</code></p>
+          </td>
+          <td>
+            <p>DMX</p>
+          </td>
+          <td>
+            <p>Langue choisie par l'utilisateur.</p>
+            <p>Valeurs possibles: <code>de</code>, <code>fr</code></p>
           </td>
           <td>
             <p>Essentiel</p>

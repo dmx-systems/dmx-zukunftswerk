@@ -136,7 +136,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Session ID (JSESSIONID)</p>
+            <p>Session ID</p>
+            <p>(<code>JSESSIONID</code>)</p>
           </td>
           <td>
             <p>DMX</p>
@@ -158,7 +159,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Client ID (dmx_client_id)</p>
+            <p>Client ID</p>
+            <p>(<code>dmx_client_id</code>)</p>
           </td>
           <td>
             <p>DMX</p>
@@ -179,7 +181,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Workspace ID (dmx_workspace_id)</p>
+            <p>Workspace ID</p>
+            <p>(<code>dmx_workspace_id</code>)</p>
           </td>
           <td>
             <p>DMX</p>
@@ -272,14 +275,12 @@ export default {
         <p>Ferner steht der betroffenen Person ein Auskunftsrecht darüber zu, ob personenbezogene Daten an ein Drittland oder an eine internationale Organisation übermittelt wurden. Sofern dies der Fall ist, so steht der betroffenen Person im Übrigen das Recht zu, Auskunft über die geeigneten Garantien im Zusammenhang mit der Übermittlung zu erhalten.</p>
         <p>Möchte eine betroffene Person dieses Auskunftsrecht in Anspruch nehmen, kann sie sich hierzu jederzeit an eine Mitarbeiter:in des für die Verarbeitung Verantwortlichen wenden.</p>
         <p><b>Die zuständige Aufsichtsbehörde ist die brandenburgische Landesdatenschutzbeauftragte:</b></p>
-        <p>
-          Frau Dagmar Hartge<br>
-          Stahnsdorfer Damm 77<br>
-          14532 Kleinmachnow</p>
-          <p>Telefon: +49 332 0356 0<br>
-          Telefax: +49 332 0356 49<br>
-          E-Mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a>
-        </p>
+        <p>Frau Dagmar Hartge<br>
+        Stahnsdorfer Damm 77<br>
+        14532 Kleinmachnow</p>
+        <p>Telefon: +49 332 0356 0<br>
+        Telefax: +49 332 0356 49<br>
+        E-Mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a></p>
       </li>
       <li><div>Recht auf Berichtigung</div>
         <p>Jede von der Verarbeitung personenbezogener Daten betroffene Person hat das vom Europäischen Richtlinien- und Verordnungsgeber gewährte Recht, die unverzügliche Berichtigung sie betreffender unrichtiger personenbezogener Daten zu verlangen. Ferner steht der betroffenen Person das Recht zu, unter Berücksichtigung der Zwecke der Verarbeitung, die Vervollständigung unvollständiger personenbezogener Daten — auch mittels einer ergänzenden Erklärung — zu verlangen.</p>
@@ -444,7 +445,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Identifiant de session (JSESSIONID)</p>
+            <p>Identifiant de session</p>
+            <p>(<code>JSESSIONID</code>)</p>
           </td>
           <td>
             <p>DMX</p>
@@ -466,7 +468,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Identifiant du client (dmx_client_id)</p>
+            <p>Identifiant du client</p>
+            <p>(<code>dmx_client_id</code>)</p>
           </td>
           <td>
             <p>DMX</p>
@@ -487,7 +490,8 @@ export default {
         </tr>
         <tr>
           <td>
-            <p>Identifiant de l'espace de travail (dmx_workspace_id)</p>
+            <p>Identifiant de l'espace de travail</p>
+            <p>(<code>dmx_workspace_id</code>)</p>
           </td>
           <td>
             <p>DMX</p>
@@ -579,14 +583,12 @@ export default {
         <p>La personne concernée dispose en outre d'un droit d'accès lui permettant de savoir si des données à caractère personnel ont été transmises à un pays tiers ou à une organisation internationale. Si tel est le cas, la personne concernée a par ailleurs le droit d'obtenir des renseignements sur les garanties adéquates associées à ce transfert.</p>
         <p>Si une personne concernée souhaite exercer ce droit d'accès, elle peut à tout moment s'adresser à un collaborateur ou une collaboratrice du responsable du traitement.</p>
         <p><b>L'autorité de surveillance compétente est la déléguée à la protection des données du Land de Brandebourg:</b></p>
-        <p>
-          Mme Dagmar Hartge<br>
-          Stahnsdorfer Damm 77<br>
-          14532 Kleinmachnow</p>
-          <p>Téléphone: +49 332 0356 0<br>
-          Fax: +49 332 0356 49<br>
-          E-mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a>
-        </p>
+        <p>Mme Dagmar Hartge<br>
+        Stahnsdorfer Damm 77<br>
+        14532 Kleinmachnow</p>
+        <p>Téléphone: +49 332 0356 0<br>
+        Fax: +49 332 0356 49<br>
+        E-mail: <a href="mailto:poststelle@lda.brandenburg.de">poststelle@lda.brandenburg.de</a></p>
       </li>
       <li><div>Droit de rectification</div>
         <p>Le législateur européen accorde à toute personne concernée par le traitement de données à caractère personnel le droit d'exiger à tout moment la rectification immédiate de données à caractère personnel erronées la concernant. En outre, la personne concernée a le droit, tout en respectant les finalités du traitement, d'exiger que des données à caractère personnel incomplètes soient rectifiées, y compris par le biais d'une déclaration complémentaire.</p>

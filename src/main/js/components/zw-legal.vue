@@ -92,6 +92,15 @@ export default {
   text-align: justify;
 }
 
+.zw-legal.privacy_policy table p {
+  text-align: initial;
+  word-break: initial;
+}
+
+.zw-legal.privacy_policy table th {
+  word-break: initial;
+}
+
 .zw-legal.privacy_policy ul > li {
   margin-top: 8px;
   margin-bottom: 8px;

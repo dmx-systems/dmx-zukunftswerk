@@ -127,7 +127,8 @@ body.fixed {
   margin: 0;
 }
 
-.dmx-html-field p + p {
+.dmx-html-field p + p,
+.dmx-html-field p + table {
   margin-top: var(--paragraph-spacing);
 }
 

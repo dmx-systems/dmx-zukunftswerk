@@ -47,9 +47,6 @@
 import zw from '../zw-globals'
 import errorHandler from '../error-handler'
 
-const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
-console.log('[ZW] isChrome:', isChrome)
-
 export default {
 
   mixins: [
@@ -179,7 +176,7 @@ export default {
       this.$refs.newComment.setHTML('')     // TODO: atm vue-quill-minimum does not react on model change
       this.refComment = undefined
       this.attachments = []
-      this.jumpTo(comment, isChrome ? 'auto' : undefined)
+      this.jumpTo(comment, zw.isChrome ? 'auto' : undefined)
     },
 
     reply (comment) {

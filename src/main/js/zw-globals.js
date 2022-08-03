@@ -15,6 +15,9 @@ const logo = {
   fr: require('../resources-build/zw-logo.fr.png')
 }
 
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)
+console.log('[ZW] isChrome:', isChrome)
+
 export default {
 
   getLogo,
@@ -33,6 +36,7 @@ export default {
 
   quillOptions,
   quillOptions2,
+  isChrome,
 
   NOTE_COLORS: [
     'white',
@@ -111,7 +115,7 @@ function isValidWorkspaceId (id, origin) {
     return false
   }
   const valid = store.state.isTeam && id === store.state.teamWorkspace.id || findWorkspace(id)
-  console.log('isValidWorkspaceId', id, '(from ' + origin + ')', !!valid)
+  // console.log('isValidWorkspaceId', id, '(from ' + origin + ')', !!valid)
   if (!valid) {
     console.warn(`${id} is an invalid workspace ID for user "${store.state.username}"`)
   }

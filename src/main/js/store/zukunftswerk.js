@@ -130,13 +130,11 @@ const actions = {
    */
   select ({dispatch}, topic) {
     dispatch('deselect')
-    // console.log('select', topic.id)
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
   },
 
   deselect () {
-    // console.log('deselect', state.topic?.id)
     if (state.topic) {
       document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
       state.topic = undefined
@@ -183,7 +181,6 @@ const actions = {
    * @param   topic   the topic (dmx.ViewTopic)
    */
   storeTopicViewProps (_, topic) {
-    // console.log('storeTopicViewProps', topic.viewProps)
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, topic.viewProps)
   },
 
@@ -595,7 +592,6 @@ function updateWorkspaceState () {
   })
   if (state.workspace.id !== state.teamWorkspace.id) {
     state.isEditor = findWorkspace(state.workspace.id).assoc.children['zukunftswerk.editor']?.value
-    // console.log('isEditor', state.workspace.id, state.isEditor)
   }
 }
 

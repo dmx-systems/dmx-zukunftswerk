@@ -53,7 +53,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log('guard', to.name, id(to.params.workspaceId))
   store.state.ready.then(() => {
     if (['imprint', 'privacy_policy'].includes(to.name)) {
       next()
@@ -76,7 +75,6 @@ router.beforeEach((to, from, next) => {
         }
       }
       if (init) {
-        console.log('guard: call getInitialWorkspaceId')
         store.dispatch('getInitialWorkspaceId').then(workspaceId => {
           next({name: 'workspace', params: {workspaceId}})
         })
@@ -145,7 +143,6 @@ const actions = {
    * Precondition: User state is up-to-date.
    */
   getInitialWorkspaceId () {
-    console.log('getInitialWorkspaceId', router.currentRoute)
     // 1) take from URL (query param)
     let workspaceId = id(router.currentRoute.query.workspaceId)
     if (zw.isValidWorkspaceId(workspaceId, 'query param')) {

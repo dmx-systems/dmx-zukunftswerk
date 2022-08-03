@@ -199,10 +199,10 @@ export default {
         this.storeSize()
       });
       /* rotatable */
-      moveable.on('rotate', ({target, transform}) => {
+      moveable.on('rotate', ({target, rotate}) => {
         this.dragging('rotating')
-        target.style.transform = transform;
-        const angle = Number(transform.match(/rotate\(([-.\d]*)deg\)/)[1])
+        const angle = Math.round(rotate / 5) * 5      // rotate in 5 deg steps
+        target.style.transform = `rotate(${angle}deg)`;
         this.topic.setViewProp('zukunftswerk.angle', angle)
       }).on('rotateEnd', () => {
         this.dragEnd()

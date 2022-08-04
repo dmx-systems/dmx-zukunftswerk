@@ -1,7 +1,7 @@
 <template>
   <div :class="['zw-legal', routeName]">
     <zw-language-switch></zw-language-switch>
-    <img :src="logo">
+    <el-button class="home-button" type="text" @click="home"><img :src="logo"></el-button>
     <zw-string class="heading">{{heading}}</zw-string>
     <div class="scroll-container dmx-html-field">
       <zw-string class="text" :html="true">{{routeName}}</zw-string>
@@ -29,6 +29,13 @@ export default {
     router () {
       return this.$store.state.routerModule.router
     }
+  },
+
+  methods: {
+
+    home () {
+      this.$store.dispatch('callRootRoute')
+    }
   }
 }
 </script>
@@ -46,7 +53,7 @@ export default {
   padding: 50px 0 0 120px;
 }
 
-.zw-legal img {
+.zw-legal .home-button {
   align-self: flex-start;
   margin-left: -81px;
 }

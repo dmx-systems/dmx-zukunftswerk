@@ -34,7 +34,7 @@
   --secondary-font-size: 13px;
   --secondary-color: #808080;
   --line-height: 1.5;
-  --paragraph-spacing: 0.5em;
+  --paragraph-spacing: 10px;
   --field-spacing: 16px;                      /* vertical spacing between data fields */
 
   --header-color: black;

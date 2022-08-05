@@ -145,8 +145,8 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Dieses Cookie dient der Identifikation der Serverseitigen HTTP Session.</p>
-            <p>Nach erfolgreichem Login wird eine ID erzeugt und im Browser des Nutzers gespeichert. Diese ID enthält keinerlei persönliche Nutzerdaten.</p>
+            <p>Identifikation der serverseitigen HTTP-Session.</p>
+            <p>Die Session enthält die Information, ob jemand eingeloggt ist (Ja/Nein), und wenn Ja, den Usernamen (= E-Mail Adresse).</p>
             <p>Beispiel einer ID: <code>61cuy4433xj21dted2o5sb1x5</code></p>
           </td>
           <td>
@@ -168,7 +168,8 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Dieses Cookie dient der Identifikation des Client Window.</p>
+            <p>Identifikation des Client Window.</p>
+            <p>Wird für die Synchronisation der verbundenen Clients benötigt.</p>
             <p>Beispiel einer ID: <code>3385189191755023</code></p>
           </td>
           <td>
@@ -190,7 +191,8 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Dieses Cookie dient der Identifikation des aktuellen DMX Workspaces.</p>
+            <p>Identifikation des aktuellen DMX Workspaces.</p>
+            <p>Wird beim Erzeugen von Objekten benötigt.</p>
             <p>Beispiel einer ID: <code>5366</code></p>
           </td>
           <td>
@@ -212,7 +214,7 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Sprache, die der Benuter gewählt hat.</p>
+            <p>"Sich merken" der Sprache, die der Benuter gewählt hat.</p>
             <p>Mögliche Werte: <code>de</code>, <code>fr</code></p>
           </td>
           <td>
@@ -477,8 +479,8 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Ce cookie sert à identifier la session HTTP sur le serveur.</p>
-            <p>Une fois que la procédure de connexion a abouti, un identifiant est généré et enregistré dans le navigateur de l'utilisateur. Cet identifiant ne contient aucune donnée personnelle de l'utilisateur.</p>
+            <p>Identification de la session HTTP côté serveur.</p>
+            <p>La session contient l'information si quelqu'un est connecté (oui/non), et si oui, le nom d'utilisateur (= adresse e-mail).</p>
             <p>Exemple d'identifiant: <code>61cuy4433xj21dted2o5sb1x5</code></p>
           </td>
           <td>
@@ -500,7 +502,8 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Ce cookie sert à l'identification du client Window.</p>
+            <p>Identification de la fenêtre du client.</p>
+            <p>Est nécessaire pour la synchronisation des clients connectés.</p>
             <p>Exemple d'identifiant: <code>3385189191755023</code></p>
           </td>
           <td>
@@ -522,7 +525,8 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Ce cookie sert à l'identification de l'espace de travail DMX actuel.</p>
+            <p>Identification de l'espace de travail DMX actuel.</p>
+            <p>Est nécessaire lors de la création d'objets.</p>
             <p>Exemple d'identifiant: <code>5366</code></p>
           </td>
           <td>
@@ -544,7 +548,7 @@ export default {
             <p>DMX</p>
           </td>
           <td>
-            <p>Langue choisie par l'utilisateur.</p>
+            <p>"Mémoriser" la langue choisie par l'utilisateur.</p>
             <p>Valeurs possibles: <code>de</code>, <code>fr</code></p>
           </td>
           <td>

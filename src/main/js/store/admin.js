@@ -13,7 +13,7 @@ const state = {
   formMode: undefined,                // 'create'/'update' (String), relevant only for secondary panel forms
   editBuffer: undefined,
 
-  workspaces: [],                     // all ZW shared workspaces+the "Team" workspace (array of Workspace dmx.Topics)
+  workspaces: [],                     // all ZW shared workspaces + the "Team" workspace (array of Workspace dmx.Topics)
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
   activeWorkspace: undefined,         // (plain Workspace topic)
 
@@ -107,7 +107,7 @@ const actions = {
   },
 
   fetchMemberships (_, workspaceId) {
-    const workspace = zw.findWorkspace(workspaceId)
+    const workspace = findWorkspace(workspaceId)
     if (!workspace.memberships) {
       return dmx.rpc.getMemberships(workspaceId).then(users => {
         Vue.set(workspace, 'memberships', users.sort(zw.topicSort))       // ad-hoc property is not reactive by default
@@ -241,6 +241,14 @@ export default {
 }
 
 // state helper
+
+function findWorkspace (id) {
+  const ws = state.workspaces.find(ws => ws.id === id)
+  if (!ws) {
+    throw Error(`Workspace ${id} not found`)
+  }
+  return ws
+}
 
 function removeWorkspace (id) {
   const i = state.workspaces.findIndex(ws => ws.id === id)

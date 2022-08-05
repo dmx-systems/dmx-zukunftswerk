@@ -103,6 +103,12 @@ function getString (key) {
   return uiStrings[`${key}.${store.state.lang}`]
 }
 
+/**
+ * Finds the given workspace among the current user's workspaces.
+ *
+ * @return  the workspace (plain topic), or undefined if the given ID does not refer to one of the current user's
+ *          workspaces.
+ */
 function findWorkspace (id) {
   return store.state.workspaces.find(ws => ws.id === id)
 }

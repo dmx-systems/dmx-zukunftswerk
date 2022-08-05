@@ -4,7 +4,8 @@
     <div v-if="noWorkspaces" class="secondary"><zw-string>label.no_workspaces</zw-string></div>
     <div v-else class="scroll-container">
       <el-collapse v-model="expandedIds">
-        <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace" :key="workspace.id"></zw-workspace-item>
+        <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace" :key="workspace.id">
+        </zw-workspace-item>
       </el-collapse>
     </div>
     <el-button class="add-button" size="medium" icon="el-icon-plus" @click="addWorkspace">

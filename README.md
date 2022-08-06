@@ -7,6 +7,41 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.4** -- Aug 6, 2022
+
+* Features:
+    * New user profile dialog:
+        * Editable Display Name
+        * A checkbox whether to show her email address to other users
+        * Initiate a password-reset
+    * Chat panel: show email-address of other users, if allowed by respective user
+    * Canvas: documents can be downloaded
+    * The Privacy policy text is now in place
+* Improvements:
+    * ZW UI language:
+        * At first launch the browser's language setting is respected
+        * The UI language chosen by the user is remembered
+    * Canvas: item rotation is restricted to steps of 5 degrees, so resetting to 0 is easy
+    * Chat panel: scroll comment's OK/Cancel button into view when clicking Edit
+    * Updated texts for the password-reset workflow
+    * Impressum/privacy policy: clicking the ZW logo returns to home page
+* Fixes:
+    * Zoom-to-fit button works as expected
+    * Editing of notes/headings when created w/o translation
+    * Item selection works for participants
+    * Chat panel:
+        * Break long words in discussion panel
+        * Comments are properly rendered when logged in using uppercase in username
+    * Admin area: workspace names in membership list reflect UI language
+    * Images survive the auto-translation
+    * Special characters in sent emails are properly encoded (both, HTML and plain text parts)
+    * Client-sync:
+        * Client sync for update-comment and delete-comment
+        * Control box is updated when item moves
+    * Redirect if logged in but requested workspace is not readable
+    * Missing translations are added
+* Compatible with DMX 5.3-SNAPSHOT
+
 **1.3** -- Jul 7, 2022
 
 * Features:

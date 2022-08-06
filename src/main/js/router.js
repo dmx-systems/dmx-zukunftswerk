@@ -59,7 +59,7 @@ router.beforeEach((to, from, next) => {
     } else if (store.state.username) {
       let init = true
       if (to.name === 'workspace') {
-        if (zw.isValidWorkspaceId(id(to.params.workspaceId), 'path param')) {
+        if (isValidWorkspaceId(id(to.params.workspaceId), 'path param')) {
           next()
           init = false
         }
@@ -145,12 +145,12 @@ const actions = {
   getInitialWorkspaceId () {
     // 1) take from URL (query param)
     let workspaceId = id(router.currentRoute.query.workspaceId)
-    if (zw.isValidWorkspaceId(workspaceId, 'query param')) {
+    if (isValidWorkspaceId(workspaceId, 'query param')) {
       return workspaceId
     }
     // 2) take from cookie
     workspaceId = id(dmx.utils.getCookie('dmx_workspace_id'))
-    if (zw.isValidWorkspaceId(workspaceId, 'cookie')) {
+    if (isValidWorkspaceId(workspaceId, 'cookie')) {
       return workspaceId
     }
     // 3) team members land in "Team" workspace (at first login there are no ZW event workspaces)
@@ -186,6 +186,23 @@ store.watch(
     }
   }
 )
+
+/**
+ * Returns truish if the given ID refers to a valid workspace for the current user.
+ *
+ * @param   id    if undefined false is returned
+ */
+function isValidWorkspaceId (id, origin) {
+  if (!id) {
+    return false
+  }
+  const valid = store.state.isTeam && id === store.state.teamWorkspace.id || zw.findWorkspace(id)
+  // console.log('isValidWorkspaceId', id, '(from ' + origin + ')', !!valid)
+  if (!valid) {
+    console.warn(`${id} is an invalid workspace ID for user "${store.state.username}"`)
+  }
+  return valid
+}
 
 /**
  * Converts the given value into Number.

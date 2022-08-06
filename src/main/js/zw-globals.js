@@ -20,24 +20,6 @@ console.log('[ZW] isChrome:', isChrome)
 
 export default {
 
-  getLogo,
-  getViewport,
-  getDisplayName,
-  getShowEmailAddress,
-  getUser,
-  getString,
-
-  findWorkspace,
-  isValidWorkspaceId,
-
-  topicSort,
-  canvasFilter,
-  confirmDeletion,
-
-  quillOptions,
-  quillOptions2,
-  isChrome,
-
   NOTE_COLORS: [
     'white',
     'rgb(238, 232, 234)',
@@ -50,7 +32,24 @@ export default {
   CANVAS_BORDER: 42,            // affects a) position of new items and document revelation, b) zoom-to-fit (in pixel)
   FORM_WIDTH: 384,              // 360=width of upload area, +24=2*12 pixel padding   // TODO: proper geometry
   ARROW_LENGTH: 200,
-  ARROW_HEIGHT: 30
+  ARROW_HEIGHT: 30,
+
+  getLogo,
+  getViewport,
+  getDisplayName,
+  getShowEmailAddress,
+  getUser,
+  getString,
+
+  findWorkspace,
+
+  topicSort,
+  canvasFilter,
+  confirmDeletion,
+
+  quillOptions,
+  quillOptions2,
+  isChrome
 }
 
 // TODO: make it a store getter?
@@ -111,21 +110,6 @@ function getString (key) {
  */
 function findWorkspace (id) {
   return store.state.workspaces.find(ws => ws.id === id)
-}
-
-/**
- * @param   id    if undefined false is returned
- */
-function isValidWorkspaceId (id, origin) {
-  if (!id) {
-    return false
-  }
-  const valid = store.state.isTeam && id === store.state.teamWorkspace.id || findWorkspace(id)
-  // console.log('isValidWorkspaceId', id, '(from ' + origin + ')', !!valid)
-  if (!valid) {
-    console.warn(`${id} is an invalid workspace ID for user "${store.state.username}"`)
-  }
-  return valid
 }
 
 function topicSort (t1, t2) {

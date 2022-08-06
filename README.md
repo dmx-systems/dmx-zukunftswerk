@@ -21,7 +21,9 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
     * ZW UI language:
         * At first launch the browser's language setting is respected
         * The UI language chosen by the user is remembered
-    * Canvas: item rotation is restricted to steps of 5 degrees, so resetting to 0 is easy
+    * Canvas:
+        * Item rotation is restricted to steps of 5 degrees, so resetting to 0 is easy
+        * New "reset zoom" button sets the zoom back to "normal" (1)
     * Chat panel: scroll comment's OK/Cancel button into view when clicking Edit
     * Impressum/privacy policy: clicking the ZW logo returns to home page
     * Updated texts for the password-reset workflow

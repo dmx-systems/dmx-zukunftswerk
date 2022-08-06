@@ -99,12 +99,22 @@ export default {
   text-align: justify;
 }
 
-.zw-legal.privacy_policy table p {
-  text-align: initial;
-  word-break: initial;
+.zw-legal.privacy_policy table {
+  border-collapse: collapse;
+  margin-bottom: 2em;
 }
 
 .zw-legal.privacy_policy table th {
+  word-break: initial;
+}
+
+.zw-legal.privacy_policy table td {
+  border: 1px solid #bfbfbf;
+  padding: 10px;
+}
+
+.zw-legal.privacy_policy table td p {
+  text-align: initial;
   word-break: initial;
 }
 
@@ -121,14 +131,5 @@ export default {
 .zw-legal.privacy_policy ol > li > div {
   font-weight: bold;
   margin-bottom: 4px;
-}
-
-.zw-legal.privacy_policy table {
-  border-collapse: collapse
-}
-
-.zw-legal.privacy_policy td {
-  border: 1px solid #bfbfbf;
-  padding: 10px;
 }
 </style>

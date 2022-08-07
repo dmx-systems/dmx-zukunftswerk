@@ -24,15 +24,16 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
     * Canvas:
         * Item rotation is restricted to steps of 5 degrees, so resetting to 0 is easy
         * New "reset zoom" button sets the zoom back to "normal" (1)
-    * Chat panel: scroll comment's OK/Cancel button into view when clicking Edit
+    * Chat panel: scroll comment's OK/Cancel buttons into view when clicking Edit
     * Impressum/privacy policy: clicking the ZW logo returns to home page
     * Updated texts for the password-reset workflow
 * Fixes:
-    * Zoom-to-fit button works as expected
-    * Editing of notes/headings when created w/o translation
-    * Item selection works for participants (selected item appears on-top)
+    * Canvas:
+        * Zoom-to-fit button works as expected
+        * Editing of notes/headings when created w/o translation
+        * Item selection works for participants (selected item appears on-top)
     * Chat panel:
-        * Break long words in discussion panel
+        * Break long words in comments
         * Comments are properly rendered when logged in using uppercase in username
     * Admin area: workspace names in membership list reflect UI language
     * Images survive the auto-translation

@@ -160,9 +160,9 @@ const actions = {
     // 4) take first workspace (based on memberships)
     workspaceId = store.state.workspaces[0]?.id
     if (!workspaceId) {
-      throw Error("Benutzer \"" + store.state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte nimm " +
-        "Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + store.state.username + "\" n'a pas encore été " +
-        "affecté à un domaine d'activité. Veuillez prendre contact avec l'équipe de Zukunftswerk.")
+      throw Error("Benutzer \"" + store.state.username + "\" wurde noch keinem Arbeitsbereich zugeordnet. Bitte " +
+        "nehmen Sie Kontakt mit dem Zukunftswerk-Team auf. / L'utilisateur \"" + store.state.username + "\" n'a pas " +
+        "encore été affecté à un domaine d'activité. N'hésitez pas à prendre contact avec l'équipe de Zukunftswerk.")
     }
     return workspaceId
   }

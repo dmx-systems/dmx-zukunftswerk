@@ -65,10 +65,14 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                                                                                         PreDeleteAssoc,
                                                                                         PreSendTopic {
 
+    // ------------------------------------------------------------------------------------------------------- Constants
+
+    static final long MILLISECS_PER_DAY = 1000 * 60 * 60 * 24;
+
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
     @Inject private DeepLService deepls;
-    @Inject private TimestampsService tss;
+    @Inject private TimestampsService timestamps;
     @Inject private TopicmapsService tms;
     @Inject private WorkspacesService ws;
     @Inject private AccessControlService acs;
@@ -93,6 +97,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         teamWorkspace = dmx.getTopicByUri(TEAM_WORKSPACE_URI);
         me = new Messenger(dmx.getWebSocketService());
         tms.registerTopicmapCustomizer(this);
+        sendEmailDigests();    // TODO: schedule once per day
     }
 
     @Override
@@ -531,22 +536,50 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         //
         Topic commentTopic = dmx.createTopic(commentModel);
         acs.enrichWithUserInfo(commentTopic);
-        tss.enrichWithTimestamps(commentTopic);
+        timestamps.enrichWithTimestamps(commentTopic);
         me.addComment(workspaceId(), commentTopic);
-        sendNotificationMail(commentTopic);
         return commentTopic;
     }
 
-    private void sendNotificationMail(Topic comment) {
+    private void sendEmailDigests() {
+        try {
+            long to = System.currentTimeMillis();
+            long from = to - MILLISECS_PER_DAY;
+            timestamps.getTopicsByModificationTime(from, to).stream()
+                .filter(this::isComment)
+                .collect(Collectors.groupingBy(this::workspace))
+                .forEach((workspaceId, comments) -> {
+                    String workspace = dmx.getTopic(workspaceId).getSimpleValue().toString();
+                    String subject = "[ZW Platform] " + workspace;
+                    logger.info("Workspace \"" + workspace + "\": " + comments.size() + " comments");
+                    StringBuilder message = new StringBuilder();
+                    comments.forEach(comment -> {
+                        acs.enrichWithUserInfo(comment);
+                        message.append(emailMessage(comment));
+                    });
+                    forEachTeamMember(username -> {
+                        sendmail.doEmailRecipient(subject, message.toString(), username.getSimpleValue().toString());
+                    });
+                });
+        } catch (Exception e) {
+            throw new RuntimeException("Sending email digests failed", e);
+        }
+    }
+
+    private boolean isComment(Topic topic) {
+        return topic.getTypeUri().equals(COMMENT);
+    }
+
+    private Long workspace(Topic comment) {
+        return ws.getAssignedWorkspace(comment.getId()).getId();
+    }
+
+    private String emailMessage(Topic comment) {
         String commentDe = comment.getChildTopics().getString(COMMENT_DE);
         String commentFr = comment.getChildTopics().getString(COMMENT_FR, "");
-        String workspace = dmx.getTopic(workspaceId()).getSimpleValue().toString();
         String creator   = comment.getModel().getChildTopics().getString(CREATOR);    // synthetic, so operate on model
-        String message = "\rNEW COMMENT\r\rWorkspace: " + workspace + "\rAuthor: " + creator +
+        return "\rAuthor: " + creator +
             "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
-        forEachTeamMember(username -> {
-          sendmail.doEmailRecipient("ZW Platform Activity", message, username.getSimpleValue().toString());
-        });
     }
 
     private void forEachTeamMember(Consumer<Topic> consumer) {

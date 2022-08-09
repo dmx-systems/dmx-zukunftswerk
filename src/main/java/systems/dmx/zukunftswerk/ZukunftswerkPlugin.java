@@ -24,6 +24,7 @@ import systems.dmx.core.service.Inject;
 import systems.dmx.core.service.Transactional;
 import systems.dmx.core.service.accesscontrol.PrivilegedAccess;
 import systems.dmx.core.service.accesscontrol.SharingMode;
+import systems.dmx.core.service.event.AllPluginsActive;
 import systems.dmx.core.service.event.PostCreateAssoc;
 import systems.dmx.core.service.event.PostUpdateTopic;
 import systems.dmx.core.service.event.PreDeleteAssoc;
@@ -59,7 +60,8 @@ import java.util.stream.Collectors;
 
 @Path("/zukunftswerk")
 @Produces("application/json")
-public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, TopicmapCustomizer,
+public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, AllPluginsActive,
+                                                                                        TopicmapCustomizer,
                                                                                         PostCreateAssoc,
                                                                                         PostUpdateTopic,
                                                                                         PreDeleteAssoc,
@@ -97,7 +99,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         teamWorkspace = dmx.getTopicByUri(TEAM_WORKSPACE_URI);
         me = new Messenger(dmx.getWebSocketService());
         tms.registerTopicmapCustomizer(this);
-        sendEmailDigests();    // TODO: schedule once per day
     }
 
     @Override
@@ -106,6 +107,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     // Listeners
+
+    @Override
+    public void allPluginsActive() {
+        sendEmailDigests();    // TODO: schedule once per day
+    }
 
     /**
      * Creates required memberships for new Team members.

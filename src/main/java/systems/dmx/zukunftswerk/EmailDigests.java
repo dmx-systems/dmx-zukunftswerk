@@ -1,6 +1,7 @@
 package systems.dmx.zukunftswerk;
 
 import static systems.dmx.accesscontrol.Constants.*;
+import static systems.dmx.timestamps.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.accesscontrol.AccessControlService;
@@ -12,6 +13,7 @@ import systems.dmx.timestamps.TimestampsService;
 import systems.dmx.workspaces.WorkspacesService;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
@@ -88,6 +90,7 @@ class EmailDigests {
                     StringBuilder message = new StringBuilder();
                     comments.forEach(comment -> {
                         acs.enrichWithUserInfo(comment);
+                        timestamps.enrichWithTimestamps(comment);
                         message.append(emailMessage(comment));
                     });
                     forEachTeamMember(username -> {
@@ -96,7 +99,7 @@ class EmailDigests {
                     digestCount++;
                 });
             if (digestCount == 0) {
-                logger.info("### Sending email digests SKIPPED -- no new/changed comments in the last 24 hours");
+                logger.info("### Sending email digests SKIPPED -- no new/changed comments in last 24 hours");
             }
         } catch (Exception e) {
             throw new RuntimeException("Sending email digests failed", e);
@@ -115,8 +118,9 @@ class EmailDigests {
         String commentDe = comment.getChildTopics().getString(COMMENT_DE);
         String commentFr = comment.getChildTopics().getString(COMMENT_FR, "");
         String creator   = comment.getModel().getChildTopics().getString(CREATOR);    // synthetic, so operate on model
-        return "\rAuthor: " + creator +
-            "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
+        long modified  = comment.getModel().getChildTopics().getLong(MODIFIED);       // synthetic, so operate on model
+        return "<br>\rAuthor: " + creator + "<br>\rDate: " + new Date(modified) + "<br><br>\r\r----------------<br>\r" +
+            commentDe + "<br>\r----------------<br>\r" + commentFr + "<br>\r----------------<br>\r";
     }
 
     private void forEachTeamMember(Consumer<String> consumer) {

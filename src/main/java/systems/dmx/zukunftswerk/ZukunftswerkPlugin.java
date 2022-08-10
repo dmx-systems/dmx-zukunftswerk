@@ -49,12 +49,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -68,10 +64,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                                                                                         PostUpdateTopic,
                                                                                         PreDeleteAssoc,
                                                                                         PreSendTopic {
-
-    // ------------------------------------------------------------------------------------------------------- Constants
-
-    static final long MILLISECS_PER_DAY = 1000 * 60 * 60 * 24;
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
@@ -88,7 +80,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     private Topic teamWorkspace;
     private Messenger me;
     private Random random = new Random();
-    private int digestCount;    // manipulated from lambda, so we make it a field (instead a local variable)
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -100,9 +91,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public void init() {
         zwPluginTopic = dmx.getTopicByUri(ZW_PLUGIN_URI);
         teamWorkspace = dmx.getTopicByUri(TEAM_WORKSPACE_URI);
-        me = new Messenger(dmx.getWebSocketService());
         tms.registerTopicmapCustomizer(this);
-        startEmailTask();
+        me = new Messenger(dmx.getWebSocketService());
+        new EmailDigests(dmx, acs, ws, timestamps, sendmail, teamWorkspace).startTimedTask();
     }
 
     @Override
@@ -633,75 +624,5 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     private long getDisplayNamesWorkspaceId() {
         return dmx.getTopicByUri(DISPLAY_NAME_WS_URI).getId();
-    }
-
-    /* Daily Email Digests */
-
-    // Digests are emailed every morning at 6am.
-    // Note: if the ZW plugin is deployed after 6am, the first digests are sent right away.
-    private void startEmailTask() {
-        Calendar cal = new GregorianCalendar();
-        cal.set(Calendar.HOUR_OF_DAY, 6);    // 6am
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        logger.info("### Sheduling email-digests task for daily execution at 6am, first execution: " + cal.getTime());
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                sendEmailDigests();
-            }
-        }, cal.getTime(), MILLISECS_PER_DAY);
-    }
-
-    private void sendEmailDigests() {
-        try {
-            long to = System.currentTimeMillis();
-            long from = to - MILLISECS_PER_DAY;
-            digestCount = 0;
-            timestamps.getTopicsByModificationTime(from, to).stream()
-                .filter(this::isComment)
-                .collect(Collectors.groupingBy(this::workspace))
-                .forEach((workspaceId, comments) -> {
-                    String workspace = dmx.getTopic(workspaceId).getSimpleValue().toString();
-                    String subject = "[ZW Platform] " + workspace;
-                    logger.info("Workspace \"" + workspace + "\": " + comments.size() + " comments");
-                    StringBuilder message = new StringBuilder();
-                    comments.forEach(comment -> {
-                        acs.enrichWithUserInfo(comment);
-                        message.append(emailMessage(comment));
-                    });
-                    forEachTeamMember(username -> {
-                        sendmail.doEmailRecipient(subject, message.toString(), username);
-                    });
-                    digestCount++;
-                });
-            if (digestCount == 0) {
-                logger.info("### Sending email digests SKIPPED -- no new/changed comments in the last 24 hours");
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Sending email digests failed", e);
-        }
-    }
-
-    private boolean isComment(Topic topic) {
-        return topic.getTypeUri().equals(COMMENT);
-    }
-
-    private Long workspace(Topic comment) {
-        return ws.getAssignedWorkspace(comment.getId()).getId();
-    }
-
-    private String emailMessage(Topic comment) {
-        String commentDe = comment.getChildTopics().getString(COMMENT_DE);
-        String commentFr = comment.getChildTopics().getString(COMMENT_FR, "");
-        String creator   = comment.getModel().getChildTopics().getString(CREATOR);    // synthetic, so operate on model
-        return "\rAuthor: " + creator +
-            "\r\r----------------\r" + commentDe + "\r----------------\r" + commentFr + "\r----------------\r";
-    }
-
-    private void forEachTeamMember(Consumer<String> consumer) {
-        getZWTeamMembers().stream().forEach(username -> {
-            consumer.accept(username.getSimpleValue().toString());
-        });
     }
 }

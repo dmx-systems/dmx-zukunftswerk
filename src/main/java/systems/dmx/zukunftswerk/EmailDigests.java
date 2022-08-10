@@ -86,11 +86,19 @@ class EmailDigests {
                 .forEach((workspaceId, comments) -> {
                     String workspace = dmx.getTopic(workspaceId).getSimpleValue().toString();
                     String subject = "[ZW Platform] " + workspace;
-                    logger.info("### Workspace \"" + workspace + "\": " + comments.size() + " comments");
                     StringBuilder message = new StringBuilder();
+                    logger.info("### Sending email digest for workspace \"" + workspace + "\" (" + comments.size() +
+                        " comments)");
                     comments.forEach(comment -> {
-                        acs.enrichWithUserInfo(comment);
                         timestamps.enrichWithTimestamps(comment);
+                        acs.enrichWithUserInfo(comment);
+                    });
+                    comments.sort((c1, c2) -> {
+                        int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
+                        int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
+                        return m1 - m2;
+                    });
+                    comments.forEach(comment -> {
                         message.append(emailMessage(comment));
                     });
                     forEachTeamMember(username -> {
@@ -117,10 +125,10 @@ class EmailDigests {
     private String emailMessage(Topic comment) {
         String commentDe = comment.getChildTopics().getString(COMMENT_DE);
         String commentFr = comment.getChildTopics().getString(COMMENT_FR, "");
-        String creator   = comment.getModel().getChildTopics().getString(CREATOR);    // synthetic, so operate on model
-        long modified  = comment.getModel().getChildTopics().getLong(MODIFIED);       // synthetic, so operate on model
-        return "<br>\rAuthor: " + creator + "<br>\rDate: " + new Date(modified) + "<br><br>\r\r----------------<br>\r" +
-            commentDe + "<br>\r----------------<br>\r" + commentFr + "<br>\r----------------<br>\r";
+        String creator   = comment.getModel().getChildTopics().getString(CREATOR);     // synthetic, so operate on model
+        long modified    = comment.getModel().getChildTopics().getLong(MODIFIED);      // synthetic, so operate on model
+        return "<br>\rAuthor: " + creator + "<br>\rDate: " + new Date(modified) + "<br><br>\r\r" +
+            commentDe + "\r>>>\r" + commentFr + "\r------------------------------------------------<br>\r";
     }
 
     private void forEachTeamMember(Consumer<String> consumer) {

@@ -78,27 +78,29 @@ class EmailDigests {
     private void sendEmailDigests() {
         try {
             long to = System.currentTimeMillis();
-            long from = to - MILLISECS_PER_DAY;
-            digestCount = 0;
-            timestamps.getTopicsByModificationTime(from, to).stream()
+            List<Topic> comments = timestamps.getTopicsByModificationTime(to - MILLISECS_PER_DAY, to).stream()
                 .filter(this::isComment)
+                .collect(Collectors.toList());
+            comments.forEach(comment -> {
+                timestamps.enrichWithTimestamps(comment);
+                acs.enrichWithUserInfo(comment);
+            });
+            comments.sort((c1, c2) -> {
+                int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
+                int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
+                return m1 - m2;
+            });
+            digestCount = 0;
+            comments
+                .stream()
                 .collect(Collectors.groupingBy(this::workspace))
-                .forEach((workspaceId, comments) -> {
+                .forEach((workspaceId, _comments) -> {
                     String workspace = dmx.getTopic(workspaceId).getSimpleValue().toString();
                     String subject = "[ZW Platform] " + workspace;
                     StringBuilder message = new StringBuilder();
-                    logger.info("### Sending email digest for workspace \"" + workspace + "\" (" + comments.size() +
+                    logger.info("### Sending email digest for workspace \"" + workspace + "\" (" + _comments.size() +
                         " comments)");
-                    comments.forEach(comment -> {
-                        timestamps.enrichWithTimestamps(comment);
-                        acs.enrichWithUserInfo(comment);
-                    });
-                    comments.sort((c1, c2) -> {
-                        int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
-                        int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
-                        return m1 - m2;
-                    });
-                    comments.forEach(comment -> {
+                    _comments.forEach(comment -> {
                         message.append(emailMessage(comment));
                     });
                     List<RelatedTopic> users = getZWTeamMembers();
@@ -111,7 +113,7 @@ class EmailDigests {
                     digestCount++;
                 });
             if (digestCount == 0) {
-                logger.info("### Sending email digests SKIPPED -- no new/changed comments in last 24 hours");
+                logger.info("### Sending email digests SKIPPED -- no new (or changed) comment since 24 hours");
             }
         } catch (Exception e) {
             throw new RuntimeException("Sending email digests failed", e);

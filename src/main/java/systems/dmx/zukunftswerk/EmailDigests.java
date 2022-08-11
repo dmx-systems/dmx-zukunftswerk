@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -81,16 +82,20 @@ class EmailDigests {
             List<Topic> comments = timestamps.getTopicsByModificationTime(to - MILLISECS_PER_DAY, to).stream()
                 .filter(this::isComment)
                 .collect(Collectors.toList());
-            logger.info("### New comments of last 24 hours: " + comments.size())
             comments.forEach(comment -> {
                 timestamps.enrichWithTimestamps(comment);
                 acs.enrichWithUserInfo(comment);
             });
-            /* comments.sort((c1, c2) -> {
-                int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
-                int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
-                return m1 - m2;
-            }); */
+            comments.sort((c1, c2) -> {
+                try {
+                    int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
+                    int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
+                    return m1 - m2;
+                } catch (Exception e) {
+                    logger.log(Level.SEVERE, "An error occurred while comment sorting", e);
+                    return 0;
+                }
+            });
             digestCount = 0;
             comments
                 .stream()
@@ -105,10 +110,7 @@ class EmailDigests {
                         message.append(emailMessage(comment));
                     });
                     List<RelatedTopic> users = getZWTeamMembers();
-                    logger.info("### Sending email to " + users.size() + " team members");
                     forEachTeamMember(username -> {
-                        logger.info("### Sending email to " + username + ", subject=\"" + subject + "\", message=\"" +
-                            message.toString() + "\"");
                         sendmail.doEmailRecipient(subject, message.toString(), username);
                     });
                     digestCount++;

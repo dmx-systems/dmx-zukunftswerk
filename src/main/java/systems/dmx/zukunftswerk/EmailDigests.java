@@ -102,6 +102,8 @@ class EmailDigests {
                         message.append(emailMessage(comment));
                     });
                     forEachTeamMember(username -> {
+                        logger.info("### Sending email to " + username + ", subject=\"" + subject + "\", message=\"" +
+                            message.toString() + "\"");
                         sendmail.doEmailRecipient(subject, message.toString(), username);
                     });
                     digestCount++;

@@ -93,11 +93,11 @@ class EmailDigests {
                         timestamps.enrichWithTimestamps(comment);
                         acs.enrichWithUserInfo(comment);
                     });
-                    /* comments.sort((c1, c2) -> {
+                    comments.sort((c1, c2) -> {
                         int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
                         int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
                         return m1 - m2;
-                    }); */
+                    });
                     comments.forEach(comment -> {
                         message.append(emailMessage(comment));
                     });
@@ -132,7 +132,7 @@ class EmailDigests {
         String creator   = comment.getModel().getChildTopics().getString(CREATOR);     // synthetic, so operate on model
         long modified    = comment.getModel().getChildTopics().getLong(MODIFIED);      // synthetic, so operate on model
         return "<br>\rAuthor: " + creator + "<br>\rDate: " + new Date(modified) + "<br><br>\r\r" +
-            commentDe + "\r>>>\r" + commentFr + "\r------------------------------------------------<br>\r";
+            commentDe + "\r>>>\r" + commentFr + "\r\r------------------------------------------------<br>\r";
     }
 
     private void forEachTeamMember(Consumer<String> consumer) {

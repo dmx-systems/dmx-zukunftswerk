@@ -81,15 +81,16 @@ class EmailDigests {
             List<Topic> comments = timestamps.getTopicsByModificationTime(to - MILLISECS_PER_DAY, to).stream()
                 .filter(this::isComment)
                 .collect(Collectors.toList());
+            logger.info("### New comments of last 24 hours: " + comments.size())
             comments.forEach(comment -> {
                 timestamps.enrichWithTimestamps(comment);
                 acs.enrichWithUserInfo(comment);
             });
-            comments.sort((c1, c2) -> {
+            /* comments.sort((c1, c2) -> {
                 int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
                 int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
                 return m1 - m2;
-            });
+            }); */
             digestCount = 0;
             comments
                 .stream()

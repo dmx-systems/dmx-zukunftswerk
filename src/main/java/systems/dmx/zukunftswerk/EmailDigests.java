@@ -93,14 +93,16 @@ class EmailDigests {
                         timestamps.enrichWithTimestamps(comment);
                         acs.enrichWithUserInfo(comment);
                     });
-                    comments.sort((c1, c2) -> {
+                    /* comments.sort((c1, c2) -> {
                         int m1 = c1.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
                         int m2 = c2.getModel().getChildTopics().getInt(MODIFIED);      // synthetic, so operate on model
                         return m1 - m2;
-                    });
+                    }); */
                     comments.forEach(comment -> {
                         message.append(emailMessage(comment));
                     });
+                    List<RelatedTopic> users = getZWTeamMembers();
+                    logger.info("### Sending email to " + users.size() + " team members");
                     forEachTeamMember(username -> {
                         logger.info("### Sending email to " + username + ", subject=\"" + subject + "\", message=\"" +
                             message.toString() + "\"");

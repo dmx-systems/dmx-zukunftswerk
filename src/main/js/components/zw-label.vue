@@ -13,9 +13,9 @@
           <zw-string>item.label</zw-string> ({{lang1}})
         </div>
         <el-input v-model="model[lang1].value" ref="input"></el-input>
-        <el-button class="translate-button" type="text" @click="translate">
-          <zw-string>action.translate</zw-string>
-        </el-button>
+      </div>
+      <div class="translate">
+        <el-button type="text" icon="el-icon-bottom" @click="translate"></el-button>
       </div>
       <div class="field">
         <div class="field-label">
@@ -167,22 +167,20 @@ export default {
   font-size: 24px;
 }
 
+.zw-label.form .translate {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.zw-label.form .translate .el-button {
+  font-size: 24px;
+}
+
 .zw-label.form .save-button {
   margin-top: var(--field-spacing);
 }
 
 .zw-label.form.new .save-button {
   margin-top: 6px;
-}
-
-.zw-label.form .translate-button {
-  position: absolute;
-  display: block;
-  visibility: hidden;
-  margin-top: 1px;
-}
-
-.zw-label.form .left-col:hover .translate-button {
-  visibility: visible;
 }
 </style>

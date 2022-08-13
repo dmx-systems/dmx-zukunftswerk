@@ -32,10 +32,8 @@
       <template v-else>
         <div class="dmx-html-field left">
           <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
-          <el-button class="translate-button" type="text" @click="doTranslate">
-            <zw-string>action.translate</zw-string>
-          </el-button>
         </div>
+        <el-button class="translate-button" type="text" icon="el-icon-right" @click="doTranslate"></el-button>
         <div class="dmx-html-field right">
           <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
         </div>
@@ -306,6 +304,10 @@ export default {
   border-right: 1px dashed #aaa;
 }
 
+.zw-comment.form .columns > .right {
+  border-left: 1px dashed #aaa;
+}
+
 .zw-comment.info .columns > .left {
   padding-right: 15px;
 }
@@ -322,14 +324,9 @@ export default {
   padding: 0 0 0 15px !important;
 }
 
-.zw-comment .columns > .left .translate-button {
-  position: absolute;
-  visibility: hidden;
-  margin-top: -2px;
-}
-
-.zw-comment .columns > .left:hover .translate-button {
-  visibility: visible;
+.zw-comment .columns > .translate-button {
+  font-size: 18px;
+  margin: 0 6px;
 }
 
 .zw-comment .columns.glow {

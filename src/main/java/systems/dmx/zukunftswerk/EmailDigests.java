@@ -12,6 +12,8 @@ import systems.dmx.sendmail.SendmailService;
 import systems.dmx.timestamps.TimestampsService;
 import systems.dmx.workspaces.WorkspacesService;
 
+// import java.text.DateFormat;
+// import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -30,6 +32,8 @@ class EmailDigests {
     // ------------------------------------------------------------------------------------------------------- Constants
 
     static final long MILLISECS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    // static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM d, yyyy HH:mm:ss z");
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
@@ -127,8 +131,8 @@ class EmailDigests {
         String commentFr = comment.getChildTopics().getString(COMMENT_FR, "");
         String creator   = comment.getModel().getChildTopics().getString(CREATOR);     // synthetic, so operate on model
         long modified    = comment.getModel().getChildTopics().getLong(MODIFIED);      // synthetic, so operate on model
-        return "<br>\rAuthor: " + creator + "<br>\rDate: " + new Date(modified) + "<br><br>\r\r" +
-            commentDe + "\r>>>\r" + commentFr + "\r\r------------------------------------------------<br>\r";
+        return "<br>\nAuthor: " + creator + "<br>\nDate: " + new Date(modified) + "<br><br>\n\n" +
+            commentDe + "\n>>>\n" + commentFr + "\n\n------------------------------------------------<br>\n";
     }
 
     private void forEachTeamMember(Consumer<String> consumer) {

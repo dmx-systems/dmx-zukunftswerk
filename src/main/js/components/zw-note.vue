@@ -16,9 +16,9 @@
         </div>
         <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill">
         </quill>
-        <el-button class="translate-button" type="text" @click="doTranslate">
-          <zw-string>action.translate</zw-string>
-        </el-button>
+      </div>
+      <div class="translate">
+        <el-button type="text" icon="el-icon-bottom" @click="doTranslate"></el-button>
       </div>
       <div class="field">
         <div class="field-label">
@@ -235,14 +235,13 @@ export default {
   padding: 12px;
 }
 
-.zw-note.form .translate-button {
-  position: absolute;
-  visibility: hidden;
-  margin-top: 1px;
+.zw-note.form .translate {
+  text-align: center;
+  margin-top: 12px;
 }
 
-.zw-note.form .left-col:hover .translate-button {
-  visibility: visible;
+.zw-note.form .translate .el-button {
+  font-size: 24px;
 }
 
 .zw-note.form .el-icon-arrow-down {

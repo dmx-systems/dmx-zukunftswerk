@@ -207,7 +207,11 @@ export default {
         this.topicBuffer.children['zukunftswerk.comment.fr'] = {value: ""}
       }
       this.$nextTick(() => {
-        this.$store.dispatch('jumpToComment', {comment: this.topic, behavior: zw.isChrome ? 'auto' : undefined})
+        this.$store.dispatch('jumpToComment', {
+          comment: this.topic,
+          behavior: zw.isChrome ? 'auto' : undefined,
+          glow: false
+        })
       })
     },
 

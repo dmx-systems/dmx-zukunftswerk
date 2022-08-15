@@ -352,7 +352,7 @@ const actions = {
     }
   },
 
-  jumpToComment (_, {comment, behavior = 'smooth'}) {
+  jumpToComment (_, {comment, behavior = 'smooth', glow = true}) {
     // 1) Scroll comment into view
     // Safari note: Safari ignores scrollIntoView() "behavior" option; scrolling is not smooth.
     // Chrome note: in Chrome after new-comment scrolling does not work at all if "behavior" is set to "smooth".
@@ -366,11 +366,13 @@ const actions = {
       block: 'nearest'      // avoid body scroll
     })
     // 2) Apply "glow" effect
-    const text = document.querySelector(`${commentSelector} .columns`)
-    text.classList.add('glow')
-    setTimeout(() => {
-      text.classList.remove('glow')
-    }, 3000)    // corresponds to CSS variable "--glow-duration" in App.vue
+    if (glow) {
+      const text = document.querySelector(`${commentSelector} .columns`)
+      text.classList.add('glow')
+      setTimeout(() => {
+        text.classList.remove('glow')
+      }, 3000)    // corresponds to CSS variable "--glow-duration" in App.vue
+    }
   },
 
   /**

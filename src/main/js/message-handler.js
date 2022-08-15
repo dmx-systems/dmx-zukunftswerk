@@ -25,10 +25,12 @@ export default message => {
     break
   case 'setTopicPosition':
     if (message.args.topicmapId === topicmap.id) {
-      const topic = topicmap.getTopic(message.args.topicId)
-      topic.setPosition(message.args.pos)
-      if (zw.canvasFilter(topic)) {
-        store.dispatch('updateControlBox', {topicId: topic.id})
+      const topic = topicmap.getTopicIfExists(message.args.topicId)
+      if (topic) {
+        topic.setPosition(message.args.pos)
+        if (zw.canvasFilter(topic)) {
+          store.dispatch('updateControlBox', {topicId: topic.id})
+        }
       }
     }
     break

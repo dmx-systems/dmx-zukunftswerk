@@ -13,32 +13,32 @@
     </template>
     <template v-else>
       <div class="field">
-        <div class="field-label"><zw-string>label.document_name</zw-string> (de)</div>
-        <el-input v-model="docModel.names.de.value" ref="docName"></el-input>
+        <div class="field-label"><zw-string>label.document_name</zw-string> <span v-if="!isNew">({{lang1}})</span></div>
+        <el-input v-model="docModel.names[lang1].value" ref="docName"></el-input>
+      </div>
+      <div class="field" v-if="!isNew">
+        <div class="field-label"><zw-string>label.document_name</zw-string> <span>({{lang2}})</span></div>
+        <el-input v-model="docModel.names[lang2].value"></el-input>
       </div>
       <div class="field">
-        <div class="field-label"><zw-string>label.document_name</zw-string> (fr)</div>
-        <el-input v-model="docModel.names.fr.value"></el-input>
-      </div>
-      <div class="field">
-        <div class="field-label"><zw-string>label.file</zw-string> (de)</div>
-        <el-upload drag :action="uploadUrl" :on-success="onSuccess.de" :on-error="onError.de" ref="upload.de"
-            :before-upload="beforeUpload">
+        <div class="field-label"><zw-string>label.file</zw-string> <span v-if="!isNew">({{lang1}})</span></div>
+        <el-upload drag :action="uploadUrl" :on-success="onSuccess[lang1]" :on-error="onError[lang1]"
+            :ref="'upload.' + lang1" :before-upload="beforeUpload">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
-        <div class="error">{{error.de}}</div>
-        <el-input v-model="docModel.paths.de.value"></el-input>
+        <div class="error">{{error[lang1]}}</div>
+        <el-input v-model="docModel.paths[lang1].value"></el-input>
       </div>
-      <div class="field">
-        <div class="field-label"><zw-string>label.file</zw-string> (fr)</div>
-        <el-upload drag :action="uploadUrl" :on-success="onSuccess.fr" :on-error="onError.fr" ref="upload.fr"
-            :before-upload="beforeUpload">
+      <div class="field" v-if="!isNew">
+        <div class="field-label"><zw-string>label.file</zw-string> <span>({{lang2}})</span></div>
+        <el-upload drag :action="uploadUrl" :on-success="onSuccess[lang2]" :on-error="onError[lang2]"
+            :ref="'upload.' + lang2" :before-upload="beforeUpload">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
         </el-upload>
-        <div class="error">{{error.fr}}</div>
-        <el-input v-model="docModel.paths.fr.value"></el-input>
+        <div class="error">{{error[lang2]}}</div>
+        <el-input v-model="docModel.paths[lang2].value"></el-input>
       </div>
       <el-button class="save-button" type="primary" size="medium" :disabled="saveButtonDisabled" @click="save">
         <zw-string>action.submit</zw-string>
@@ -58,6 +58,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/doc-util').default,
+    require('./mixins/translation').default,
     require('./mixins/cancel').default
   ],
 

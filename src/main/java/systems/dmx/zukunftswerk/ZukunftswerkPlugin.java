@@ -254,6 +254,21 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @POST
+    @Path("/document")
+    @Transactional
+    @Override
+    public Topic createDocument(String docName, @QueryParam("fileId") long fileId) {
+        try {
+            TopicModel document = createBilingualTopicModel(DOCUMENT, docName, DOCUMENT_NAME);
+            String lang = document.getChildTopics().getString(LANGUAGE + "#" + ORIGINAL_LANGUAGE);
+            document.getChildTopics().setRef(FILE + "#zukunftswerk." + lang, fileId);
+            return dmx.createTopic(document);
+        } catch (Exception e) {
+            throw new RuntimeException("Creating document failed, docName=\"" + docName + "\", fileId=" + fileId, e);
+        }
+    }
+
+    @POST
     @Path("/note")
     @Transactional
     @Override
@@ -494,12 +509,16 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     // ------------------------------------------------------------------------------------------------- Private Methods
 
     private TopicModel createBilingualTopicModel(String topicTypeUri, String text) {
+        return createBilingualTopicModel(topicTypeUri, text, topicTypeUri);
+    }
+
+    private TopicModel createBilingualTopicModel(String topicTypeUri, String text, String childTypeUri) {
         Translation translation = translate(text, null);
         String origLang = translation.detectedSourceLang;
         String targetLang = targetLang(origLang);
         return mf.newTopicModel(topicTypeUri, mf.newChildTopicsModel()
-            .set(topicTypeUri + "." + origLang, text)
-            .set(topicTypeUri + "." + targetLang, translation.text)
+            .set(childTypeUri + "." + origLang, text)
+            .set(childTypeUri + "." + targetLang, translation.text)
             .set(LANGUAGE + "#" + ORIGINAL_LANGUAGE, origLang)
         );
     }

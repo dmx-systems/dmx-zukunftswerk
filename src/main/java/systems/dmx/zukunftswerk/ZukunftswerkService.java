@@ -26,6 +26,8 @@ public interface ZukunftswerkService {
 
     List<Topic> getAllUsers();
 
+    Topic createDocument(String docName, long fileId);
+
     Topic createNote(String note);
 
     Topic createLabel(String label);
@@ -52,7 +54,7 @@ public interface ZukunftswerkService {
     Translation translate(String text, String targetLang);
 
     /**
-     * Updates the user profile of the current user.
+     * Updates the profile of the current user.
      */
     void updateUserProfile(String displayName, boolean showEmailAddress);
 

@@ -244,8 +244,10 @@ const actions = {
    * @param   topic   a dmx.ViewTopic
    */
   createDocument (_, topic) {
-    return dmx.rpc.createTopic(topic).then(_topic => {
-      addTopicToTopicmap(topic, _topic)
+    const docName = topic.children['zukunftswerk.document_name.de'].value
+    const fileId = topic.children['dmx.files.file#zukunftswerk.de'].id
+    return http.post(`/zukunftswerk/document`, docName, {params: {fileId}}).then(response => {
+      addTopicToTopicmap(topic, response.data)
       removeNewTopic(topic)
     })
   },

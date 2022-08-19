@@ -241,13 +241,22 @@ const actions = {
   },
 
   /**
-   * @param   topic   a dmx.ViewTopic
+   * @param   topic         a dmx.ViewTopic of type "Document"
+   * @param   monolingual   Optional: if truish a monolingual document is created (no auto-translation)
    */
-  createDocument (_, topic) {
-    const docName = topic.children['zukunftswerk.document_name.de'].value
-    const fileId = topic.children['dmx.files.file#zukunftswerk.de'].id
-    return http.post(`/zukunftswerk/document`, docName, {params: {fileId}}).then(response => {
-      addTopicToTopicmap(topic, response.data)
+  createDocument (_, {topic, monolingual}) {
+    let p
+    if (monolingual)  {
+      // Note: a monolingual document name is stored in "de". "fr" and "Original Language" are not set.
+      p = dmx.rpc.createTopic(topic)
+    } else {
+      const docName = topic.children['zukunftswerk.document_name.de'].value
+      const fileId = topic.children['dmx.files.file#zukunftswerk.de'].id
+      // suppress standard HTTP error handler
+      p = dmx.rpc._http.post('/zukunftswerk/document', docName, {params: {fileId}}).then(response => response.data)
+    }
+    return p.then(_topic => {
+      addTopicToTopicmap(topic, _topic)
       removeNewTopic(topic)
     })
   },
@@ -509,6 +518,7 @@ export default store
 
 /**
  * @param   type    'note'/'label'
+ * @param   topic   a dmx.ViewTopic of type "Note". Its "value" is used for topic creation (not its "children").
  */
 function create (type, topic, monolingual) {
   let p

@@ -240,9 +240,27 @@ export default {
 
     save () {
       this.loading()
-      const p = this.isNew ? this.$store.dispatch('createDocument', this.topic) :
-                             this.$store.dispatch('updateDocument', {topic: this.topic, docModel: this.docModel})
-      p.then(() => {
+      let action, msgBox
+      const arg = {topic: this.topic}
+      if (this.isNew) {
+        action = 'createDocument'
+        msgBox = 'confirm'
+      } else {
+        action = 'updateDocument'
+        arg.docModel = this.docModel
+      }
+      this.$store.dispatch(action, arg).catch(error => {
+        return this.handleError(error, msgBox)
+      }).then(result => {
+        if (result === 'confirm') {
+          arg.monolingual = true
+          this.$store.dispatch(action, arg).catch(error => {
+            errorHandler(error)     // generic error handler
+          })
+        }
+      }).catch(result => {
+        console.log('cancel', result)
+      }).finally(() => {
         this.complete()
       })
     },

@@ -16,10 +16,15 @@
         <div class="field-label"><zw-string>label.document_name</zw-string> <span v-if="!isNew">({{lang1}})</span></div>
         <el-input v-model="docModel.names[lang1].value" ref="docName"></el-input>
       </div>
-      <div class="field" v-if="!isNew">
-        <div class="field-label"><zw-string>label.document_name</zw-string> <span>({{lang2}})</span></div>
-        <el-input v-model="docModel.names[lang2].value"></el-input>
-      </div>
+      <template  v-if="!isNew">
+        <div class="translate">
+          <el-button type="text" icon="el-icon-bottom" @click="translate"></el-button>
+        </div>
+        <div class="field">
+          <div class="field-label"><zw-string>label.document_name</zw-string> <span>({{lang2}})</span></div>
+          <el-input v-model="docModel.names[lang2].value"></el-input>
+        </div>
+      </template>
       <div class="field">
         <div class="field-label"><zw-string>label.file</zw-string> <span v-if="!isNew">({{lang1}})</span></div>
         <el-upload drag :action="uploadUrl" :on-success="onSuccess[lang1]" :on-error="onError[lang1]"
@@ -95,6 +100,7 @@ export default {
 
   data () {
     return {
+      type: 'zukunftswerk.document_name',
       text: '',                     // used only for text files: the contained text (String)      FIXME: 2x ?
       isLoading: false,             // true while document is loaded/saved (Boolean)
       saveButtonDisabled: false,    // true when save button is disabled (Boolean)
@@ -259,7 +265,7 @@ export default {
           })
         }
       }).catch(result => {
-        console.log('cancel', result)
+        // console.log('cancel', result)
       }).finally(() => {
         this.complete()
       })
@@ -348,6 +354,15 @@ export default {
 
 .zw-document > img {
   width: 100%;
+}
+
+.zw-document .translate {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.zw-document .translate .el-button {
+  font-size: 24px;
 }
 
 .zw-document .save-button {

@@ -184,7 +184,7 @@ export default {
     doTranslate () {
       this.translate().then(translation => {
         // Note: in case of translation error 'confirm' is passed (String)
-        // TODO: why is this needed here, but not in zw-label.vue?
+        // TODO: why is this needed here, but not in zw-label.vue or zw-document.vue?
         if (translation instanceof Object) {
           this.$refs.translation.setHTML(translation.text) // TODO: atm vue-quill-minimum does not react on model change
         }

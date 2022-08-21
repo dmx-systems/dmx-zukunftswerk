@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml" :style="style"></div>
+  <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml" :style="{'background-color': color}"></div>
   <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving">
     <template v-if="isNew">
       <div class="field">
@@ -30,9 +30,9 @@
       <div class="field-label">
         <zw-string>label.color</zw-string>
       </div>
-      <el-dropdown size="medium" trigger="click" @command="setColor">
+      <el-dropdown size="medium" trigger="click" @command="selectColor">
         <el-button type="text">
-          <div class="color-box" :style="style"></div><!--
+          <div class="color-box" :style="{'background-color': selectedColor}"></div><!--
           --><span class="el-icon-arrow-down el-icon--right"></span>
         </el-button>
         <el-dropdown-menu slot="dropdown">
@@ -59,8 +59,8 @@ import errorHandler from '../error-handler'
 export default {
 
   created () {
-    // console.log('zw-note', this.noteColor)
-    this.color = this.noteColor
+    // console.log('zw-note', this.color)
+    this.selectedColor = this.color
   },
 
   mixins: [
@@ -71,8 +71,8 @@ export default {
   data () {
     return {
       type: 'zukunftswerk.note',
-      noteColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
-      color: undefined,               // selected color
+      color: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
+      selectedColor: undefined,       // color menu model
       colors: zw.NOTE_COLORS,         // all colors
       saving: false                   // true while note is saved
     }
@@ -94,12 +94,6 @@ export default {
   },
 
   computed: {
-
-    style () {
-      return {
-        'background-color': this.color
-      }
-    },
 
     note () {
       return {
@@ -142,8 +136,9 @@ export default {
     },
 
     save () {
-      this.noteColor = this.color
       this.saving = true
+      this.color = this.selectedColor
+      this.topic.setViewProp('zukunftswerk.color', this.selectedColor)
       let action, arg, msgBox
       if (this.isNew) {
         action = 'createNote'
@@ -158,7 +153,6 @@ export default {
         this.setNote('de')
         this.setNote('fr')
       }
-      this.topic.setViewProp('zukunftswerk.color', this.color)
       this.$store.dispatch(action, arg).catch(error => {
         return this.handleError(error, msgBox)
       }).then(result => {
@@ -176,7 +170,7 @@ export default {
     },
 
     cancel () {
-      this.color = this.noteColor
+      this.selectedColor = this.color
       this.$store.dispatch('cancel', this.topic)
     },
 
@@ -208,8 +202,8 @@ export default {
       this.topic.children[compDefUri].value = this.model[lang].value
     },
 
-    setColor (color) {
-      this.color = color
+    selectColor (color) {
+      this.selectedColor = color
     },
 
     colorBoxClass (col, i) {

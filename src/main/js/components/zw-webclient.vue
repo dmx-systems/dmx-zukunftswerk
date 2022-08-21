@@ -9,7 +9,8 @@
 export default {
 
   mixins: [
-    require('./mixins/dragging').default
+    require('./mixins/dragging').default,
+    require('./mixins/selection').default
   ],
 
   data() {
@@ -27,6 +28,18 @@ export default {
 
     isDragging () {
       return this.$store.state.isDragging
+    },
+
+    lang () {
+      return this.$store.state.lang
+    }
+  },
+
+  watch: {
+    lang () {
+      if (this.selectedTopic) {
+          this.$store.dispatch('updateControlBox', {topicId: this.selectedTopic.id, delay: 300})
+      }
     }
   },
 

@@ -1,26 +1,20 @@
 <template>
   <div v-if="infoMode" class="zw-label info">{{labelText}}</div>
-  <div v-else :class="['zw-label', 'form', {'new': isNew}]" v-loading="saving">
+  <div v-else :class="['zw-label', 'form']" v-loading="saving">
     <template v-if="isNew">
-      <div class="field-label">
-        <zw-string>label.new_label</zw-string>
-      </div>
+      <div class="field-label"><zw-string>label.new_label</zw-string></div>
       <el-input v-model="topic.value" ref="input"></el-input>
     </template>
     <template v-else>
       <div class="field left-col">
-        <div class="field-label">
-          <zw-string>item.label</zw-string> ({{lang1}})
-        </div>
+        <div class="field-label"><zw-string>item.label</zw-string> ({{lang1}})</div>
         <el-input v-model="model[lang1].value" ref="input"></el-input>
       </div>
       <div class="translate">
         <el-button type="text" icon="el-icon-bottom" @click="translate"></el-button>
       </div>
       <div class="field">
-        <div class="field-label">
-          <zw-string>item.label</zw-string> ({{lang2}})
-        </div>
+        <div class="field-label"><zw-string>item.label</zw-string> ({{lang2}})</div>
         <el-input v-model="model[lang2].value" v-loading="translating"></el-input>
       </div>
     </template>
@@ -159,12 +153,8 @@ export default {
 }
 
 .zw-label.form {
+  background-color: var(--background-color);
   padding: 10px;
-  border: 1px solid var(--border-color-lighter);
-}
-
-.zw-label.form .el-input {
-  font-size: 24px;
 }
 
 .zw-label.form .translate {
@@ -178,9 +168,5 @@ export default {
 
 .zw-label.form .save-button {
   margin-top: var(--field-spacing);
-}
-
-.zw-label.form.new .save-button {
-  margin-top: 6px;
 }
 </style>

@@ -316,7 +316,7 @@ export default {
   box-sizing: border-box;
   height: 100%;
   padding: 8px;
-  background-color: var(--discussion-color);
+  background-color: var(--background-color);
 }
 
 .zw-document.ref-doc {
@@ -338,7 +338,7 @@ export default {
   top: 0;
   right: -28px;
   padding: 4px;
-  background-color: var(--discussion-color);
+  background-color: var(--background-color);
   border-top-right-radius: 14px;
   border-bottom-right-radius: 14px;
 }

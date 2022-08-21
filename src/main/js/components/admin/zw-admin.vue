@@ -93,7 +93,7 @@ export default {
 .zw-admin .nav-bar {
   display: flex;
   flex-direction: column;
-  background-color: var(--discussion-color);
+  background-color: var(--background-color);
   padding: 20px 6px 6px 6px;
   flex-basis: 30px;
 }
@@ -144,7 +144,7 @@ export default {
 .zw-admin .secondary-panel {
   flex-grow: 1;
   padding: 35px;
-  background-color: var(--discussion-color);
+  background-color: var(--background-color);
 }
 
 .zw-admin .secondary-panel .heading {

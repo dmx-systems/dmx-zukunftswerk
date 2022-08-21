@@ -38,7 +38,7 @@
   --field-spacing: 16px;                      /* vertical spacing between data fields */
 
   --header-color: black;
-  --discussion-color: #e6e6e6;
+  --background-color: #e6e6e6;                /* for panels and forms */
   --doc-filter-color: #ffe880;
   --primary-color: #ffd100;                   /* (yellow) */
   --primary-color-light: #fff6cc;             /* (light yellow) */

@@ -3,33 +3,25 @@
   <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving">
     <template v-if="isNew">
       <div class="field">
-        <div class="field-label">
-          <zw-string>label.new_note</zw-string>
-        </div>
+        <div class="field-label"><zw-string>label.new_note</zw-string></div>
         <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
     </template>
     <template v-else>
       <div class="field left-col">
-        <div class="field-label">
-          <zw-string>item.note</zw-string> ({{lang1}})
-        </div>
+        <div class="field-label"><zw-string>item.note</zw-string> ({{lang1}})</div>
         <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
       <div class="translate">
         <el-button type="text" icon="el-icon-bottom" @click="doTranslate"></el-button>
       </div>
       <div class="field">
-        <div class="field-label">
-          <zw-string>item.note</zw-string> ({{lang2}})
-        </div>
+        <div class="field-label"><zw-string>item.note</zw-string> ({{lang2}})</div>
         <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
       </div>
     </template>
     <div class="field">
-      <div class="field-label">
-        <zw-string>label.color</zw-string>
-      </div>
+      <div class="field-label"><zw-string>label.color</zw-string></div>
       <el-dropdown size="medium" trigger="click" @command="selectColor">
         <el-button type="text">
           <div class="color-box" :style="{'background-color': selectedColor}"></div><!--
@@ -71,7 +63,6 @@ export default {
   data () {
     return {
       type: 'zukunftswerk.note',
-      color: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
       selectedColor: undefined,       // color menu model
       colors: zw.NOTE_COLORS,         // all colors
       saving: false                   // true while note is saved
@@ -94,6 +85,10 @@ export default {
   },
 
   computed: {
+
+    color () {
+      return this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1]      // default is gray
+    },
 
     note () {
       return {
@@ -137,7 +132,6 @@ export default {
 
     save () {
       this.saving = true
-      this.color = this.selectedColor
       this.topic.setViewProp('zukunftswerk.color', this.selectedColor)
       let action, arg, msgBox
       if (this.isNew) {
@@ -230,7 +224,7 @@ export default {
 }
 
 .zw-note.form {
-  background-color: var(--discussion-color);
+  background-color: var(--background-color);
 }
 
 .zw-note.form .translate {

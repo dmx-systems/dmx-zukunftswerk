@@ -245,7 +245,7 @@ export default {
 
 <style>
 .zw-discussion {
-  background-color: var(--discussion-color);
+  background-color: var(--background-color);
   display: flex;
   flex-direction: column;
   position: relative;         /* place close-button relative to this element */

@@ -1,6 +1,6 @@
 <template>
   <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml" :style="style"></div>
-  <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving" :style="style">
+  <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving">
     <template v-if="isNew">
       <div class="field">
         <div class="field-label">
@@ -14,8 +14,7 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{lang1}})
         </div>
-        <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill">
-        </quill>
+        <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
       <div class="translate">
         <el-button type="text" icon="el-icon-bottom" @click="doTranslate"></el-button>
@@ -24,8 +23,7 @@
         <div class="field-label">
           <zw-string>item.note</zw-string> ({{lang2}})
         </div>
-        <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
-        </quill>
+        <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
       </div>
     </template>
     <div class="field">
@@ -61,8 +59,8 @@ import errorHandler from '../error-handler'
 export default {
 
   created () {
-    // console.log('zw-note', this.initColor)
-    this.color = this.initColor
+    // console.log('zw-note', this.noteColor)
+    this.color = this.noteColor
   },
 
   mixins: [
@@ -73,7 +71,7 @@ export default {
   data () {
     return {
       type: 'zukunftswerk.note',
-      initColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
+      noteColor: this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1],     // gray
       color: undefined,               // selected color
       colors: zw.NOTE_COLORS,         // all colors
       saving: false                   // true while note is saved
@@ -144,6 +142,7 @@ export default {
     },
 
     save () {
+      this.noteColor = this.color
       this.saving = true
       let action, arg, msgBox
       if (this.isNew) {
@@ -177,7 +176,7 @@ export default {
     },
 
     cancel () {
-      this.color = this.initColor
+      this.color = this.noteColor
       this.$store.dispatch('cancel', this.topic)
     },
 
@@ -236,6 +235,10 @@ export default {
   padding: 12px;
 }
 
+.zw-note.form {
+  background-color: var(--discussion-color);
+}
+
 .zw-note.form .translate {
   text-align: center;
   margin-top: 12px;
@@ -256,6 +259,10 @@ export default {
   border: 1px dashed var(--highlight-color);
 }
 
+.zw-note.form .save-button {
+  margin-top: var(--field-spacing);
+}
+
 /* dropdown menus are body mounted */
 body > .el-dropdown-menu .color-box {
   margin-top: 9px;
@@ -272,9 +279,5 @@ body > .el-dropdown-menu .color-box.transparent {
   background-image: url("../../resources-build/grid.png");
   background-position: bottom right;
   background-size: 12px;
-}
-
-.zw-note.form .save-button {
-  margin-top: var(--field-spacing);
 }
 </style>

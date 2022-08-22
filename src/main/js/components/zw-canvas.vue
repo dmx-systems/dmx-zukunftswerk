@@ -34,7 +34,8 @@ const GRID_SIZE = 20    // 20x20 = size of grid.png
 export default {
 
   mixins: [
-    require('./mixins/zoom').default
+    require('./mixins/zoom').default,
+    require('./mixins/selection').default
   ],
 
   mounted () {
@@ -75,6 +76,19 @@ export default {
 
     newTopics () {
       return this.$store.state.newTopics
+    },
+
+    lang () {
+      return this.$store.state.lang
+    }
+  },
+
+  watch: {
+    lang () {
+      if (this.selectedTopic) {
+          // FIXME: proper synchronization with pfd/images loading (documents)
+          this.$store.dispatch('updateControlBox', {topicId: this.selectedTopic.id, delay: 300})
+      }
     }
   },
 

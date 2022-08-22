@@ -45,12 +45,11 @@ export default {
     },
 
     getPath (file) {
-      const path = this.getPathTopic(file)
-      return path && path.value
+      return this.getPathTopic(file)?.value
     },
 
     getPathTopic (file) {
-      return file && file.children['dmx.files.path']
+      return file?.children['dmx.files.path']
     }
   }
 }

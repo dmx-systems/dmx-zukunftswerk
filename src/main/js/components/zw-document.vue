@@ -122,8 +122,8 @@ export default {
   computed: {
 
     docName () {
-      const de = this.docNames.de && this.docNames.de.value
-      const fr = this.docNames.fr && this.docNames.fr.value
+      const de = this.docNames.de?.value
+      const fr = this.docNames.fr?.value
       if (de && fr) {
         return this.docNames[this.lang].value
       } else if (de) {
@@ -173,10 +173,7 @@ export default {
     },
 
     mediaType () {
-      if (this.file) {
-        const mediaType = this.file.children['dmx.files.media_type']
-        return mediaType && mediaType.value
-      }
+      return this.file?.children['dmx.files.media_type']?.value
     },
 
     uploadUrl () {
@@ -184,19 +181,19 @@ export default {
     },
 
     isText () {
-      return this.mediaType && this.mediaType.startsWith('text/')
+      return this.mediaType?.startsWith('text/')
     },
 
     isImage () {
-      return this.mediaType && this.mediaType.startsWith('image/')
+      return this.mediaType?.startsWith('image/')
     },
 
     isAudio () {
-      return this.mediaType && this.mediaType.startsWith('audio/')
+      return this.mediaType?.startsWith('audio/')
     },
 
     isVideo () {
-      return this.mediaType && this.mediaType.startsWith('video/')
+      return this.mediaType?.startsWith('video/')
     },
 
     isPDF () {

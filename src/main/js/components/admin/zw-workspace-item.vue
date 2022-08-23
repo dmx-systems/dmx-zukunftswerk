@@ -12,7 +12,7 @@
           <el-dropdown-item command="edit">
             <i class="fa fa-fw fa-pencil"></i><zw-string>action.edit_workspace</zw-string>
           </el-dropdown-item>
-          <el-dropdown-item command="delete">
+          <el-dropdown-item command="delete" :disabled="username !== owner">
             <i class="fa fa-fw fa-trash"></i><zw-string>action.delete_workspace</zw-string>
           </el-dropdown-item>
           <el-dropdown-item command="editMemberships" divided>
@@ -60,6 +60,10 @@ export default {
 
     owner () {
       return this.workspace.children['dmx.accesscontrol.owner'].value
+    },
+
+    username () {
+      return this.$store.state.username
     }
   },
 

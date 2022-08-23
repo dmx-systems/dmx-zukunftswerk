@@ -2,6 +2,7 @@
   <el-collapse-item :class="['zw-workspace-item', {'zw-selected': selected}]" :name="workspace.id">
     <div class="workspace" slot="title">
       <div class="name"><span class="fa fa-fw fa-list"></span> {{workspaceName}}</div>
+      <div class="owner"><span class="fa fa-fw fa-user"></span> {{owner}}</div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
         <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
         <el-dropdown-menu slot="dropdown">
@@ -55,6 +56,10 @@ export default {
 
     displayNames () {
       return this.workspace.memberships.map(user => zw.getDisplayName(user.value))
+    },
+
+    owner () {
+      return this.workspace.children['dmx.accesscontrol.owner'].value
     }
   },
 
@@ -92,6 +97,10 @@ export default {
 }
 
 .zw-workspace-item .workspace .name {
-  flex-grow: 1;
+  flex-basis: 64%;
+}
+
+.zw-workspace-item .workspace .owner {
+  flex-basis: 34%;
 }
 </style>

@@ -158,7 +158,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
      */
     @Override
     public void preSendTopic(Topic topic) {
-        if (topic.getTypeUri().equals(COMMENT)) {
+        if (topic.getTypeUri().equals(WORKSPACE)) {
+            acs.enrichWithOwnerInfo(topic);
+        } else if (topic.getTypeUri().equals(COMMENT)) {
             acs.enrichWithUserInfo(topic);
             Topic refComment = topic.getChildTopics().getTopicOrNull(COMMENT);
             if (refComment != null) {
@@ -301,8 +303,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         try {
             return _createComment(createBilingualTopicModel(COMMENT, comment), refTopicIds, fileTopicIds);
         } catch (Exception e) {
-            throw new RuntimeException("Creating comment failed, comment=\"" + comment + "\", refTopicIds=" +
-                refTopicIds + ", fileTopicIds=" + fileTopicIds, e);
+            throw new RuntimeException("Creating comment failed, refTopicIds=" + refTopicIds + ", fileTopicIds=" +
+                fileTopicIds, e);
         }
     }
 
@@ -318,8 +320,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 .set(COMMENT_DE, comment)
             ), refTopicIds, fileTopicIds);
         } catch (Exception e) {
-            throw new RuntimeException("Creating monolingual comment failed, comment=\"" + comment +
-                "\", refTopicIds=" + refTopicIds + ", fileTopicIds=" + fileTopicIds, e);
+            throw new RuntimeException("Creating monolingual comment failed, refTopicIds=" + refTopicIds +
+                ", fileTopicIds=" + fileTopicIds, e);
         }
     }
 

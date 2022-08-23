@@ -2,12 +2,15 @@
   <div class="zw-workspace-list">
     <div class="heading"><zw-string>label.admin_workspaces</zw-string></div>
     <div v-if="noWorkspaces" class="secondary"><zw-string>label.no_workspaces</zw-string></div>
-    <div v-else class="scroll-container">
-      <el-collapse v-model="expandedIds">
-        <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace" :key="workspace.id">
-        </zw-workspace-item>
-      </el-collapse>
-    </div>
+    <template v-else>
+      <div class="owner" key="owner"><zw-string>label.owner</zw-string></div>
+      <div class="scroll-container">
+        <el-collapse v-model="expandedIds">
+          <zw-workspace-item v-for="workspace in workspaces" :workspace="workspace" :key="workspace.id">
+          </zw-workspace-item>
+        </el-collapse>
+      </div>
+    </template>
     <el-button class="add-button" size="medium" icon="el-icon-plus" @click="addWorkspace">
       <zw-string>action.add_workspace</zw-string>
     </el-button>
@@ -52,3 +55,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.zw-workspace-list > .owner {
+  margin-left: 58%;
+  margin-bottom: 6px;
+}
+</style>

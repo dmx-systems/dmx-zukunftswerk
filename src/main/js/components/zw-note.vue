@@ -37,7 +37,7 @@
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>action.submit</zw-string>
     </el-button>
-    <el-button size="medium" @click="cancel">
+    <el-button size="medium" @click="doCancel">
       <zw-string>action.cancel</zw-string>
     </el-button>
   </div>
@@ -57,7 +57,8 @@ export default {
 
   mixins: [
     require('./mixins/mode').default,
-    require('./mixins/translation').default
+    require('./mixins/translation').default,
+    require('./mixins/cancel').default
   ],
 
   data () {
@@ -112,7 +113,7 @@ export default {
     },
 
     isNew () {
-      return !this.topic.id
+      return this.topic.id < 0
     },
 
     lang () {
@@ -163,9 +164,9 @@ export default {
       })
     },
 
-    cancel () {
+    doCancel () {
       this.selectedColor = this.color
-      this.$store.dispatch('cancel', this.topic)
+      this.cancel()
     },
 
     doTranslate () {

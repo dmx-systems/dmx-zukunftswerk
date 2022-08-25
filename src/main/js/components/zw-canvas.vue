@@ -28,8 +28,9 @@
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
-let HEADER_HEIGHT
 const GRID_SIZE = 20    // 20x20 = size of grid.png
+let HEADER_HEIGHT
+let synId = -1          // gernerator for temporary synthetic topic IDs, needed for topics not yet saved, counts down
 
 export default {
 
@@ -123,14 +124,16 @@ export default {
     newDocumentViewTopic () {
       return new dmx.ViewTopic({
         ...dmx.typeCache.getTopicType('zukunftswerk.document').newFormModel(),
+        id: newSynId(),   // overwrite ID created in previous line
         viewProps: this.viewProps('zukunftswerk.document')
       })
     },
 
     newViewTopic (typeUri) {
       return new dmx.ViewTopic({
+        id: newSynId(),
         typeUri,
-        value: '',      // used as intermediate note/label model while create
+        value: '',        // used as intermediate note/label model while create
         viewProps: this.viewProps(typeUri)
       })
     },
@@ -216,6 +219,10 @@ export default {
 
 function newArrowId () {
   return Math.floor(Number.MAX_SAFE_INTEGER * Math.random())
+}
+
+function newSynId () {
+  return synId--
 }
 </script>
 

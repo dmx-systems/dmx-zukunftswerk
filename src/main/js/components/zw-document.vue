@@ -201,7 +201,7 @@ export default {
     },
 
     isNew () {
-      return this.topic.id === -1
+      return this.topic.id < 0
     },
 
     isRefDocument () {

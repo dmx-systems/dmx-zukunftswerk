@@ -91,7 +91,7 @@ export default {
     },
 
     isNew () {
-      return !this.topic.id
+      return this.topic.id < 0
     },
 
     lang () {

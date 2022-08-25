@@ -130,11 +130,13 @@ const actions = {
    */
   select ({dispatch}, topic) {
     dispatch('deselect')
+    // console.log('select', topic.id)
     state.topic = topic
-    document.querySelector(`.moveable-control-box.target-${topic.id}`).classList.add('active')
+    document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.add('active')
   },
 
   deselect () {
+    // console.log('deselect', state.topic?.id)
     if (state.topic) {
       document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
       state.topic = undefined
@@ -148,7 +150,7 @@ const actions = {
   },
 
   storeTopicSize (_, topic) {
-    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
+    if (topic.id >= 0) {
       dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
         'dmx.topicmaps.width': topic.viewProps['dmx.topicmaps.width'],
         'dmx.topicmaps.height': topic.viewProps['dmx.topicmaps.height']
@@ -157,7 +159,7 @@ const actions = {
   },
 
   storeTopicAngle (_, topic) {
-    if (topic.id >= 0) {    // regard both, undefined and -1 as "not set"
+    if (topic.id >= 0) {
       dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
         'zukunftswerk.angle': topic.viewProps['zukunftswerk.angle']
       })
@@ -441,10 +443,11 @@ const actions = {
     })
   },
 
-  cancel (_, topic) {
-    if (topic.id === -1 || topic.id === undefined) {
+  cancel ({dispatch}, topic) {
+    if (topic.id < 0) {
       // abort creation
       removeNewTopic(topic)                       // update client state
+      dispatch('deselect')
     } else {
       // abort update
       removeEditActive(topic)                     // update client state
@@ -550,7 +553,7 @@ function initLang () {
     console.log('[ZW] lang:', lang, '(from cookie)')
   } else {
     const langB = navigator.language.substr(0, 2)
-    lang = ['de', 'fr'].includes(langB) ? langB : 'de'
+    lang = ['de', 'fr'].includes(langB) ? langB : 'de'      // fallback is 'de'
     console.log('[ZW] lang:', langB, '(from browser) ->', lang)
   }
   store.dispatch('setLang', lang)

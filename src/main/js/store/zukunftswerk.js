@@ -231,7 +231,7 @@ const actions = {
     }
   },
 
-  newTopic (_, topic) {
+  newTopic ({dispatch}, topic) {
     state.newTopics.push(topic)
     //
     // workaround to prevent body scrolling when new topic exceeds viewport
@@ -239,6 +239,7 @@ const actions = {
     Vue.nextTick(() => {
       // a fixed body would not adapt to window resize anymore
       document.body.classList.remove('fixed')
+      dispatch('select', topic)       // programmatic selection
     })
   },
 

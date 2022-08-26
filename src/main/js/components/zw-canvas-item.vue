@@ -313,9 +313,12 @@ export default {
   z-index: 1 !important;                    /* Place arrows before other canvas items */
 }
 
-.zw-canvas-item.selected,                   /* Place the selected item (including button panel) in front, even    */
-.zw-canvas-item.form {                      /* before arrows. Forms are always in front, regardless of selection. */
+.zw-canvas-item.form {                      /* Place forms before arrows */
   z-index: 2 !important;
+}
+
+.zw-canvas-item.selected {                  /* Place the selected item (including button panel) in front */
+  z-index: 3 !important;
 }
 
 .zw-canvas-item.draggable {

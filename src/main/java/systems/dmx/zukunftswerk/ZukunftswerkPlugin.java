@@ -152,8 +152,9 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     /**
      * Enriches:
+     * - Worksapces by "Owner"
      * - Comments by "Creator"
-     * - Usernames by "Display Name"
+     * - Usernames by "Display Name" and "Show Email Address" flag
      * - Memberships by "Editor" flag
      */
     @Override

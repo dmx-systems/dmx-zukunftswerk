@@ -11,7 +11,7 @@
       </div>
       <!-- Comments -->
       <div v-if="noComments" class="secondary"><zw-string>label.no_comments</zw-string></div>
-      <div v-else class="comments">
+      <div v-else class="comments" v-loading="discussionLoading">
         <zw-comment v-for="comment in filteredDiscussion" :topic="comment" :key="comment.id" @reply="reply"
           @comment-ref-click="jumpTo">
         </zw-comment>
@@ -79,6 +79,10 @@ export default {
 
     discussion () {
       return this.$store.state.discussion
+    },
+
+    discussionLoading () {
+      return this.$store.state.discussionLoading
     },
 
     filteredDiscussion () {
@@ -294,6 +298,7 @@ export default {
 .zw-discussion .comments {
   overflow: auto;
   position: relative;     /* scroll absolute positioned childs along, e.g. the "Translate" button */
+  min-height: 72px;       /* corresponds to effective comment min-height */
 }
 
 .zw-discussion .comments .zw-comment {

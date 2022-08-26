@@ -47,6 +47,7 @@ const state = {
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
+  discussionLoading: false,     // true while a discussion is loading
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
@@ -622,10 +623,13 @@ function findWorkspace (id) {
 }
 
 function fetchDiscussion () {
+  state.discussion = undefined      // trigger recalculation of "noComments" (zw-discussion.vue), load-spinner appears
+  state.discussionLoading = true
   http.get('/zukunftswerk/discussion').then(response => {
     state.discussion = dmx.utils.instantiateMany(response.data, dmx.Topic).sort(
       (c1, c2) => c1.children['dmx.timestamps.created'].value - c2.children['dmx.timestamps.created'].value
     )
+    state.discussionLoading = false
   })
 }
 

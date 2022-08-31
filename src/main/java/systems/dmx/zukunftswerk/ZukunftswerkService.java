@@ -35,8 +35,7 @@ public interface ZukunftswerkService {
     Topic createComment           (String comment, IdList refTopicIds, IdList fileTopicIds);
     Topic createMonolingualComment(String comment, IdList refTopicIds, IdList fileTopicIds);
 
-    // Note: there are no createDocument() or createArrow() calls here.
-    // Documents and arrows are created by generic createTopic() calls.
+    // Note: there is no createArrow() call here. Arrows are created by a generic createTopic() call.
     // No auto-translation is involved.
 
     /**

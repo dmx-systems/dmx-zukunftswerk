@@ -190,10 +190,16 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
     }
 
-    // Note: as Topicmap is not a DMXObject no PRE_SEND event is fired, so we use a TopicmapCustomizer.
+    // TopicmapCustomizer
+    //
+    // Note: as Topicmap is not a DMXObject no PRE_SEND event is fired, so we use a TopicmapCustomizer to enrich
+    // the topic's view properties.
 
     /**
-     * For arrows load the x2/y2 view props. ### FIXDOC
+     * Enriches:
+     * - Notes, Documents, Labels, and Arrows by "Angle"
+     * - Notes by "Color"
+     * - Viewports by "Zoom"
      */
     @Override
     public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {

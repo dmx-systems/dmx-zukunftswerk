@@ -205,7 +205,7 @@ export default {
     },
 
     isRefDocument () {
-      return this.refDocument && this.refDocument.id === this.topic.id
+      return this.refDocument?.id === this.topic.id
     },
 
     refDocument () {
@@ -317,6 +317,10 @@ export default {
 }
 
 .zw-document.ref-doc {
+  background-color: var(--doc-filter-color);
+}
+
+.zw-document.ref-doc .discussion-button {
   background-color: var(--doc-filter-color);
 }
 

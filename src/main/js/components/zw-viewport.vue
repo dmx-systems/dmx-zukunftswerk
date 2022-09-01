@@ -25,12 +25,16 @@ export default {
 
   data () {
     return {
-      zoom: this.topic.viewProps['dmx.topicmaps.zoom'],
       size: {w: 50, h: 50}
     }
   },
 
   computed: {
+
+    zoom () {
+      return this.topic.viewProps['dmx.topicmaps.zoom']
+    },
+
     zoomRounded () {
       return Math.round(100 * this.zoom) / 100
     }
@@ -39,7 +43,7 @@ export default {
   methods: {
     setZoom () {
       // update client state
-      this.zoom = this.$store.state.zoom
+      this.topic.setViewProp('dmx.topicmaps.zoom', this.$store.state.zoom)
       // update server state    // TODO: dispatch
       dmx.rpc.setTopicViewProps(this.$store.state.topicmap.id, this.topic.id, {
         'dmx.topicmaps.zoom': this.zoom

@@ -59,10 +59,10 @@ function getLogo () {
 
 // TODO: make it a store getter?
 /**
- * @return  the viewport of the current topicmap.
+ * @return  the viewport of the current topicmap (object with "pan" and "zoom" props).
  */
 function getViewport() {
-  const viewport = store.state.topicmap.topics.find(t => t.typeUri === 'zukunftswerk.viewport')
+  const viewport = getViewportTopic()
   if (viewport) {
     const zoom = viewport.viewProps['dmx.topicmaps.zoom']
     return {
@@ -83,6 +83,10 @@ function getViewport() {
       zoom: topicmap.zoom
     }
   }
+}
+
+function getViewportTopic() {
+  return store.state.topicmap.topics.find(topic => topic.typeUri === 'zukunftswerk.viewport')
 }
 
 function getDisplayName (username) {

@@ -46,7 +46,7 @@ export default {
   computed: {
 
     pageNr () {
-      return this.$store.state.pageNr[this.topic.id]
+      return this.$store.state.pageNr[this.lang][this.topic.id]
     },
 
     numPages () {
@@ -91,15 +91,9 @@ export default {
   },
 
   watch: {
-
     src () {
       // console.log('watch src', this.src)
       this.fetchPDF().then(this.renderPage)
-    },
-
-    lang () {
-      // console.log('watch lang', this.lang)
-      this.$store.dispatch('resetPageNr', this.topic.id)
     }
   },
 

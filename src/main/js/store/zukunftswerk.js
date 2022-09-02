@@ -42,7 +42,7 @@ const state = {
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
                                 // canvas pan, panel resize)
   fullscreen: false,            // if true the current document is rendered fullscreen
-  pageNr: {},                   // key: document topic ID, value: pageNr (Number)
+  pageNr: {de: {}, fr: {}},     // key: document topic ID, value: pageNr (Number)
 
   // Discussion Panel state
   panelVisibility: true,        // discussion panel visibility (Boolean)
@@ -234,27 +234,26 @@ const actions = {
   },
 
   initPageNr (_, topicId) {
-    if (!state.pageNr[topicId]) {
-      Vue.set(state.pageNr, topicId, 1)
+    const pageNr = state.pageNr[state.lang]
+    if (!pageNr[topicId]) {
+      Vue.set(pageNr, topicId, 1)
     }
   },
 
   prevPage (_, topicId) {
-    if (state.pageNr[topicId] > 1) {
-      state.pageNr[topicId]--
+    const pageNr = state.pageNr[state.lang]
+    if (pageNr[topicId] > 1) {
+      pageNr[topicId]--
       return true
     }
   },
 
   nextPage (_, {topicId, numPages}) {
-    if (state.pageNr[topicId] < numPages) {
-      state.pageNr[topicId]++
+    const pageNr = state.pageNr[state.lang]
+    if (pageNr[topicId] < numPages) {
+      pageNr[topicId]++
       return true
     }
-  },
-
-  resetPageNr (_, topicId) {
-    state.pageNr[topicId] = 1
   },
 
   newTopic ({dispatch}, topic) {

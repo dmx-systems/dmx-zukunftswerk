@@ -1,6 +1,6 @@
 <template>
   <div class="zw-workspace">
-    <zw-pdf-viewer class="left-panel" v-if="fullscreen" :src="fileUrl"></zw-pdf-viewer>
+    <zw-pdf-viewer class="left-panel" v-if="fullscreen" :topic="topic" :src="fileUrl"></zw-pdf-viewer>
     <zw-canvas class="left-panel" v-else></zw-canvas>
     <zw-resizer></zw-resizer>
     <zw-discussion class="right-panel"></zw-discussion>

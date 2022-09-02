@@ -36,12 +36,11 @@ const state = {
   isEditor: false,              // true if the current user is an editor of the selected workspace (Boolean)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
   newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
-  isEditActive: [],             // IDs of topics being edited (array)     // ### TODO: drop this, query model ID instead
-  pan: {x: 0, y: 0},            // canvas pan (in pixel)                  // ### TODO: drop this, calculate instead
-  zoom: 1,                      // canvas zoom (Number)                   // ### TODO: drop this, calculate instead
+  isEditActive: [],             // IDs of topics being edited (array)     // TODO: drop this, query model ID instead?
+  pan: {x: 0, y: 0},            // canvas pan (in pixel)                  // TODO: drop this, calculate instead?
+  zoom: 1,                      // canvas zoom (Number)                   // TODO: drop this, calculate instead?
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
                                 // canvas pan, panel resize)
-  fullscreen: false,            // if true the current document is rendered fullscreen
 
   // Discussion Panel state
   panelVisibility: true,        // discussion panel visibility (Boolean)
@@ -50,6 +49,10 @@ const state = {
   discussionLoading: false,     // true while a discussion is loading
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
+
+  // PDF Viewer state
+  fullscreen: false,            // if true the current document is rendered fullscreen
+  pageNr: {},                   // key: document topic ID, value: pageNr (Number)
 
   // Misc state
   lang: undefined,              // UI language ('de'/'fr')
@@ -229,6 +232,26 @@ const actions = {
       Vue.nextTick(() => {
         document.querySelector('.zw-resizer').__vue__.resize()
       })
+    }
+  },
+
+  initPageNr (_, topicId) {
+    if (!state.pageNr[topicId]) {
+      Vue.set(state.pageNr, topicId, 1)
+    }
+  },
+
+  prevPage (_, topicId) {
+    if (state.pageNr[topicId] > 1) {
+      state.pageNr[topicId]--
+      return true
+    }
+  },
+
+  nextPage (_, {topicId, numPages}) {
+    if (state.pageNr[topicId] < numPages) {
+      state.pageNr[topicId]++
+      return true
     }
   },
 

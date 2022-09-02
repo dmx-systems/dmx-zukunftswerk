@@ -9,7 +9,7 @@
       <img v-if="isImage" :src="fileUrl" @loadstart="loading" @load="complete">
       <audio v-if="isAudio" :src="fileUrl" controls></audio>
       <video v-if="isVideo" :src="fileUrl" controls @loadeddata="update"></video>
-      <zw-pdf-viewer v-if="isPDF" :src="fileUrl" @loading="loading" @complete="complete"></zw-pdf-viewer>
+      <zw-pdf-viewer v-if="isPDF" :topic="topic" :src="fileUrl" @loading="loading" @complete="complete"></zw-pdf-viewer>
     </template>
     <template v-else>
       <div class="field">

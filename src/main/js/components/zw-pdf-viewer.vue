@@ -7,24 +7,30 @@
       <el-button type="text" :icon="fullscreenIcon" @click="toggleFullscreen"></el-button>
     </div>
     <div class="toolbar lower" v-if="pagerVisibility" :style="toolbarStyle">
-      <el-button type="text" icon="el-icon-arrow-left" @click="prev"></el-button>
+      <el-button type="text" icon="el-icon-arrow-left" @click="prevPage"></el-button>
       <span>{{pageNr}} / {{numPages}}</span>
-      <el-button type="text" icon="el-icon-arrow-right" @click="next"></el-button>
+      <el-button type="text" icon="el-icon-arrow-right" @click="nextPage"></el-button>
     </div>
   </div>
 </template>
 
 <script>
+import dmx from 'dmx-api'
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.js'
 pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/pdfjs/pdf.worker.js'
 
 export default {
 
   created () {
-    this.fetchPDF()
+    console.log('zw-pdf-viewer', this.src)
+    this.fetchPDF().then(this.renderPage)
   },
 
   props: {
+    topic: {                // the underlying Document topic (dmx.ViewTopic)
+      type: dmx.ViewTopic,
+      required: true
+    },
     src: {
       type: String,
       required: true
@@ -33,12 +39,15 @@ export default {
 
   data () {
     return {
-      pdf: undefined,
-      pageNr: undefined
+      pdf: undefined        // inited by fetchPDF()
     }
   },
 
   computed: {
+
+    pageNr () {
+      return this.$store.state.pageNr[this.topic.id]
+    },
 
     numPages () {
       return this.pdf?.numPages
@@ -64,12 +73,12 @@ export default {
       return this.$store.state.zoom
     },
 
-    fullscreen () {
-      return this.$store.state.fullscreen
-    },
-
     panelX () {
       return this.$store.state.panelX
+    },
+
+    fullscreen () {
+      return this.$store.state.fullscreen
     },
 
     fullscreenIcon () {
@@ -78,12 +87,8 @@ export default {
   },
 
   watch: {
-
-    pageNr () {
-      this.renderPage()
-    },
-
     src () {
+      console.log('watch src', this.src)
       const pageNr = this.pageNr
       this.fetchPDF().then(() => {
         if (pageNr == 1) {      // if previous page is != 1 page is already rendered by fetchPDF() (via pageNr watcher)
@@ -102,12 +107,13 @@ export default {
         cMapUrl: 'cmaps/'
       }).promise.then(pdf => {
         this.pdf = pdf
-        this.pageNr = 1
+        this.$store.dispatch('initPageNr', this.topic.id)
         this.$emit('complete')
       })
     },
 
     renderPage () {
+      console.log('renderPage', this.pageNr)
       return this.pdf.getPage(this.pageNr).then(page => {
         let viewport = page.getViewport({scale: 1})
         if (this.fullscreen) {
@@ -124,16 +130,16 @@ export default {
       })
     },
 
-    prev () {
-      if (this.pageNr > 1) {
-        this.pageNr--
-      }
+    prevPage () {
+      this.$store.dispatch('prevPage', this.topic.id).then(changed => {
+        changed && this.renderPage()
+      })
     },
 
-    next () {
-      if (this.pageNr < this.numPages) {
-        this.pageNr++
-      }
+    nextPage () {
+      this.$store.dispatch('nextPage', {topicId: this.topic.id, numPages: this.numPages}).then(changed => {
+        changed && this.renderPage()
+      })
     },
 
     toggleFullscreen () {

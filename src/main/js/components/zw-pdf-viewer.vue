@@ -22,7 +22,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/pdfjs/pdf.worke
 export default {
 
   created () {
-    console.log('zw-pdf-viewer', this.src)
+    // console.log('zw-pdf-viewer', this.src)
     this.fetchPDF().then(this.renderPage)
   },
 
@@ -81,20 +81,25 @@ export default {
       return this.$store.state.fullscreen
     },
 
+    lang () {
+      return this.$store.state.lang
+    },
+
     fullscreenIcon () {
       return this.fullscreen ? 'el-icon-bottom-left' : 'el-icon-top-right'
     }
   },
 
   watch: {
+
     src () {
-      console.log('watch src', this.src)
-      const pageNr = this.pageNr
-      this.fetchPDF().then(() => {
-        if (pageNr == 1) {      // if previous page is != 1 page is already rendered by fetchPDF() (via pageNr watcher)
-          this.renderPage()
-        }
-      })
+      // console.log('watch src', this.src)
+      this.fetchPDF().then(this.renderPage)
+    },
+
+    lang () {
+      // console.log('watch lang', this.lang)
+      this.$store.dispatch('resetPageNr', this.topic.id)
     }
   },
 
@@ -113,7 +118,7 @@ export default {
     },
 
     renderPage () {
-      console.log('renderPage', this.pageNr)
+      // console.log('renderPage', this.pageNr)
       return this.pdf.getPage(this.pageNr).then(page => {
         let viewport = page.getViewport({scale: 1})
         if (this.fullscreen) {

@@ -41,6 +41,8 @@ const state = {
   zoom: 1,                      // canvas zoom (Number)                   // TODO: drop this, calculate instead?
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
                                 // canvas pan, panel resize)
+  fullscreen: false,            // if true the current document is rendered fullscreen
+  pageNr: {},                   // key: document topic ID, value: pageNr (Number)
 
   // Discussion Panel state
   panelVisibility: true,        // discussion panel visibility (Boolean)
@@ -49,10 +51,6 @@ const state = {
   discussionLoading: false,     // true while a discussion is loading
   refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
-
-  // PDF Viewer state
-  fullscreen: false,            // if true the current document is rendered fullscreen
-  pageNr: {},                   // key: document topic ID, value: pageNr (Number)
 
   // Misc state
   lang: undefined,              // UI language ('de'/'fr')
@@ -253,6 +251,10 @@ const actions = {
       state.pageNr[topicId]++
       return true
     }
+  },
+
+  resetPageNr (_, topicId) {
+    state.pageNr[topicId] = 1
   },
 
   newTopic ({dispatch}, topic) {

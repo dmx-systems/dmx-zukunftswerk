@@ -7,6 +7,29 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.5** -- Sep 5, 2022
+
+* Improvements:
+    * Auto-translate document name
+    * Manual-translate button is always visible (documents, notes, heading, and comments)
+    * PDFs remember selected page when fullscreen is switched on/off
+    * Note and heading forms have a gray background
+    * Discussion panel shows a spinner while loading
+    * Admin area:
+        * The respective workspace owners are displayed
+        * Only the owner can delete a workspace
+    * Send email digests: only one mail per day and workspace (at 6am)
+* Fixes:
+    * Working with multiple forms at the same time works
+        * The selected form appears before other forms
+    * New canvas items are selected programmatically
+    * New document name is shown if entered afterwards
+    * When switching UI language the document resize-frame adapts
+    * Document discussion button appears yellow when doc-filter is set
+    * New viewport zoom value is respected immediately (when pressing the Home button)
+    * Change no-workspace error text ("Du" -> "Sie")
+* Compatible with DMX 5.3-SNAPSHOT
+
 **1.4** -- Aug 6, 2022
 
 * Features:

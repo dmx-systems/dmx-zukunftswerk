@@ -1,5 +1,4 @@
 import dmx from 'dmx-api'
-import DMXWebSocket from 'dmx-websocket'
 import Vue from 'vue'
 import App from './components/App'
 import store from './store/zukunftswerk'
@@ -8,7 +7,7 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2022/09/08')
+console.log('[ZW] 2022/09/08-2')
 
 // 1) Init dmx library
 dmx.init({
@@ -19,13 +18,11 @@ dmx.init({
     'dmx.workspaces.workspace'    // needed by admin interface
   ],
   store,
+  messageHandler,
   onHttpError
 })
 
-// 2) Open websocket connection
-new DMXWebSocket(messageHandler)
-
-// 3) Global component registrations (needed by several components)
+// 2) Global component registrations (needed by several components)
 Vue.component('zw-language-switch', require('./components/zw-language-switch').default)
 Vue.component('zw-string',          require('./components/zw-string').default)
 Vue.component('zw-truncate',        require('./components/zw-truncate').default)
@@ -34,7 +31,7 @@ Vue.component('zw-document-ref',    require('./components/zw-document-ref').defa
 Vue.component('zw-attachment',      require('./components/zw-attachment').default)
 Vue.component('zw-pdf-viewer',      require('./components/zw-pdf-viewer').default)
 
-// 4) Create Vue root instance
+// 3) Create Vue root instance
 new Vue({
   el: '#app',
   store,

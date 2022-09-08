@@ -8,7 +8,7 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 1.5')
+console.log('[ZW] 2022/09/08')
 
 // 1) Init dmx library
 dmx.init({
@@ -23,7 +23,7 @@ dmx.init({
 })
 
 // 2) Open websocket connection
-new DMXWebSocket('systems.dmx.webclient', messageHandler)
+new DMXWebSocket(messageHandler)
 
 // 3) Global component registrations (needed by several components)
 Vue.component('zw-language-switch', require('./components/zw-language-switch').default)

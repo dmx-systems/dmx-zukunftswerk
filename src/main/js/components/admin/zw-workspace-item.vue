@@ -102,9 +102,14 @@ export default {
 
 .zw-workspace-item .workspace .name {
   flex-basis: 64%;
+  white-space: nowrap;
 }
 
 .zw-workspace-item .workspace .owner {
   flex-basis: 34%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 30px;
 }
 </style>

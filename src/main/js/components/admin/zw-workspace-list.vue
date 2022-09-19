@@ -58,7 +58,7 @@ export default {
 
 <style>
 .zw-workspace-list > .owner {
-  margin-left: 58%;
+  margin-left: 56%;
   margin-bottom: 6px;
 }
 </style>

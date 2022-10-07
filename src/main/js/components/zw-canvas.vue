@@ -28,7 +28,6 @@
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
-const GRID_SIZE = 20    // 20x20 = size of grid.png
 let HEADER_HEIGHT
 let synId = -1          // gernerator for temporary synthetic topic IDs, needed for topics not yet saved, counts down
 
@@ -48,14 +47,14 @@ export default {
     style () {
       return {
         'background-position': `${this.bgPos.x}px ${this.bgPos.y}px`,
-        'background-size': `${GRID_SIZE * this.zoom}px`
+        'background-size': `${zw.CANVAS_GRID * this.zoom}px`
       }
     },
 
     bgPos () {
       return  {
-        x: this.pan.x % (GRID_SIZE * this.zoom),
-        y: this.pan.y % (GRID_SIZE * this.zoom)
+        x: this.pan.x % (zw.CANVAS_GRID * this.zoom),
+        y: this.pan.y % (zw.CANVAS_GRID * this.zoom)
       }
     },
 

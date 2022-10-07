@@ -62,7 +62,7 @@ export default {
       rotateEnabled: true,      // Rotate handle visibility (Boolean)
       resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
       getSize: undefined,       // Custom get-size function (Function)
-      moveHandler: undefined,   // Custom handler to react on item moves (Function)
+      moveHandler: this.onMove, // Handler to react on item moves (Function)
       //
       // Misc
       topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic)
@@ -166,6 +166,13 @@ export default {
       this.$store.dispatch('delete', this.topic)
     },
 
+    onMove (x, y) {
+      this.topic.setPosition({    // update client state
+        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,
+        y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
+      })
+    },
+
     newMovable () {
       const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
         className: `target-${this.topic.id}`,   // Note: (data-)attributes are not supported, so we use a class instead
@@ -179,8 +186,7 @@ export default {
       /* draggable */
       moveable.on('drag', ({left, top}) => {
         this.dragging('dragging')
-        this.topic.setPosition({x: left, y: top})     // update client state
-        this.moveHandler && this.moveHandler()
+        this.moveHandler(left, top)     // update client state
       }).on('dragEnd', () => {
         this.dragEnd()
         this.storePos()

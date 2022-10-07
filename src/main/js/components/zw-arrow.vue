@@ -53,7 +53,8 @@ export default {
   },
 
   methods: {
-    onMove () {
+    onMove (x, y) {
+      this.topic.setPosition({x, y})     // update client state
       document.querySelector('.zw-arrow-handles').__vue__.updateHandles()
     }
   }

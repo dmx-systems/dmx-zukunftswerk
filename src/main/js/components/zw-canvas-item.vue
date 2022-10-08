@@ -167,8 +167,9 @@ export default {
     },
 
     onMove (x, y) {
-      this.topic.setPosition({    // update client state
-        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,
+      // update client state
+      this.topic.setPosition({
+        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,     // snap to grid
         y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
       })
     },

@@ -13,6 +13,7 @@
 
 <script>
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 
 export default {
 
@@ -41,13 +42,13 @@ export default {
   computed: {
 
     viewBox () {
-      return `0 -16 ${this.size.w} ${this.size.h}`
+      return `0 -${zw.CANVAS_GRID} ${this.size.w} ${this.size.h}`
     },
 
     size () {
       return {
         w: this.topic.viewProps['dmx.topicmaps.width'],
-        h: 30
+        h: 2 * zw.CANVAS_GRID - 2
       }
     }
   },

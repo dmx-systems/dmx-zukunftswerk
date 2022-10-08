@@ -138,8 +138,8 @@ export default {
     },
 
     viewProps (typeUri)  {
-      const x = (zw.CANVAS_BORDER - this.pan.x) / this.zoom
-      const y = (zw.CANVAS_BORDER - this.pan.y) / this.zoom
+      const x = Math.round((zw.CANVAS_BORDER - this.pan.x) / this.zoom / zw.CANVAS_GRID) * zw.CANVAS_GRID
+      const y = Math.round((zw.CANVAS_BORDER - this.pan.y) / this.zoom / zw.CANVAS_GRID) * zw.CANVAS_GRID
       return {
         'dmx.topicmaps.x': x,
         'dmx.topicmaps.y': y,

@@ -100,8 +100,8 @@ export default {
         }
         const oldWidth = this.newWidth
         // update model
-        this[`h${nr}`].x = left
-        this[`h${nr}`].y = top
+        this[`h${nr}`].x = Math.round(left / zw.ARROW_GRID) * zw.ARROW_GRID
+        this[`h${nr}`].y = Math.round(top / zw.ARROW_GRID) * zw.ARROW_GRID
         this.topic.setViewProp('dmx.topicmaps.width', this.newWidth)
         this.topic.setViewProp('zukunftswerk.angle', this.newAngle)
         // position correction

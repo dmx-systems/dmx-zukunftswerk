@@ -54,9 +54,13 @@ export default {
   },
 
   methods: {
-    onMove (x, y) {
-      this.topic.setPosition({x, y})     // update client state
-      document.querySelector('.zw-arrow-handles').__vue__.updateHandles()
+    onMove (x, y, startPos) {
+      // snap to grid
+      this.topic.setPosition({                                                // update model
+        x: startPos.x + Math.round((x - startPos.x) / zw.ARROW_GRID) * zw.ARROW_GRID,
+        y: startPos.y + Math.round((y - startPos.y) / zw.ARROW_GRID) * zw.ARROW_GRID
+      })
+      document.querySelector('.zw-arrow-handles').__vue__.updateHandles()     // update view
     }
   }
 }

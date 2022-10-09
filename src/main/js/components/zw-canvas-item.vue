@@ -71,6 +71,7 @@ export default {
                                 // Also used to detect if an actual drag happened after mousedown. If not we don't
                                 // dispatch any "drag" action at all. We must never dispatch "dragStart" w/o a
                                 // corresponding "dragStop".
+      dragStartPos: undefined
     }
   },
 
@@ -185,9 +186,11 @@ export default {
       })
       moveable.renderDirections = this.handles
       /* draggable */
-      moveable.on('drag', ({left, top}) => {
+      moveable.on('dragStart', () => {
+        this.dragStartPos = this.topic.pos
+      }).on('drag', ({left, top}) => {
         this.dragging('dragging')
-        this.moveHandler(left, top)     // update client state
+        this.moveHandler(left, top, this.dragStartPos)     // update client state
       }).on('dragEnd', () => {
         this.dragEnd()
         this.storePos()

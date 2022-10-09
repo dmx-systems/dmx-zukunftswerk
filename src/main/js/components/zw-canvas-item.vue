@@ -195,14 +195,16 @@ export default {
       /* resizable */
       moveable.on('resize', ({target, width, height}) => {
         this.dragging('resizing')
-        // Note: for width measurement "moveable" relies on an up-to-date *view*.
-        // In contrast updating the *model* (view props) updates the view asynchronously.
-        target.style.width = `${width}px`
-        this.topic.setViewProp('dmx.topicmaps.width', width)
+        // Note: snap-to-grid while resize is in progress did not work as expected (the mouse is no longer over the
+        // component when width is changed programmatically?). Workaraound is to snap only on resize-end.
+        this.setWidth(target, width)
         // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
         // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
-      }).on('resizeEnd', () => {
+      }).on('resizeEnd', ({target}) => {
         this.dragEnd()
+        // snap to grid
+        const width = Math.round(this.topic.getViewProp('dmx.topicmaps.width') / zw.CANVAS_GRID) * zw.CANVAS_GRID
+        this.setWidth(target, width)
         this.storeSize()
       });
       /* rotatable */
@@ -217,6 +219,13 @@ export default {
       });
       //
       return moveable
+    },
+
+    setWidth (target, width) {
+      // Note: for width measurement "moveable" relies on an up-to-date *view*.
+      // In contrast updating the *model* (view props) updates the view asynchronously.
+      target.style.width = `${width}px`                       // update view
+      this.topic.setViewProp('dmx.topicmaps.width', width)    // update model
     },
 
     mousedown (e) {

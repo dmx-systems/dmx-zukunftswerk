@@ -199,7 +199,7 @@ export default {
       moveable.on('resize', ({target, width, height}) => {
         this.dragging('resizing')
         // Note: snap-to-grid while resize is in progress did not work as expected (the mouse is no longer over the
-        // component when width is changed programmatically?). Workaraound is to snap only on resize-end.
+        // component when width is changed programmatically?). Workaround is to snap only on resize-end.
         this.setWidth(target, width)
         // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
         // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
@@ -236,7 +236,7 @@ export default {
       const inQuill = e.target.closest('.ql-container')
       // FIXME: handle el-upload fields?
       if (inInput || inQuill) {
-        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag
+        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag                 // TODO: drop?
       }
     },
 

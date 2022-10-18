@@ -15,6 +15,7 @@
       <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
       <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
       <el-button type="text" icon="el-icon-c-scale-to-original" @click="resetZoom"></el-button>
+      <zw-canvas-search></zw-canvas-search>
     </div>
     <div class="content-layer" :style="zoomStyle">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
@@ -212,6 +213,7 @@ export default {
 
   components: {
     'zw-canvas-item': require('./zw-canvas-item').default,
+    'zw-canvas-search': require('./zw-canvas-search').default,
     'zw-arrow-handles': require('./zw-arrow-handles').default
   }
 }
@@ -247,13 +249,17 @@ function newSynId () {
 
 .zw-canvas > .button-panel {
   position: absolute;
-  top: 8px;
+  top: 4px;
   right: 16px;
   z-index: 1;           /* place zoom buttons above canvas items */
 }
 
 .zw-canvas > .button-panel .el-button {
   font-size: 24px;
+}
+
+.zw-canvas > .button-panel .zw-canvas-search {
+  margin-left: 15px;
 }
 
 .zw-canvas .content-layer {

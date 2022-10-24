@@ -72,7 +72,7 @@ export default {
     },
 
     topics () {
-      return this.topicmap ? this.topicmap.topics.filter(zw.canvasFilter) : []
+      return this.topicmap?.topics.filter(zw.canvasFilter) || []
     },
 
     newTopics () {

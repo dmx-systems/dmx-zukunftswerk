@@ -1,8 +1,8 @@
 <template>
   <div class="zw-canvas-search">
     <el-input v-model="searchTerm"></el-input>
-    <el-button type="text" icon="el-icon-arrow-left" :disabled="disPrev" @click="prev"></el-button>
-    <el-button type="text" icon="el-icon-arrow-right" :disabled="disNext" @click="next"></el-button>
+    <el-button type="text" icon="el-icon-arrow-left" :disabled="disPrev" @click="step(-1)"></el-button>
+    <el-button type="text" icon="el-icon-arrow-right" :disabled="disNext" @click="step(1)"></el-button>
     <span :class="['match-info', {'no-match': noMatch}, 'secondary']" v-if="searchTerm">
       {{matchInfo}}
     </span>
@@ -63,16 +63,22 @@ export default {
     search () {
       this.matches = []
       this.matchIndex = 0
-      this.topicmap.topics.forEach(topic => {
-        const text = this.itemText(topic)
-        if (text) {
-          // TODO: locale lower case?
-          const i = text.toLowerCase().indexOf(this.searchTerm.toLowerCase())
-          if (i >= 0) {
-            this.matches.push(topic.id)
+      if (this.searchTerm) {
+        this.topicmap.topics.forEach(topic => {
+          const text = this.itemText(topic)
+          if (text) {
+            // TODO: locale lower case?
+            const i = text.toLowerCase().indexOf(this.searchTerm.toLowerCase())
+            if (i >= 0) {
+              this.matches.push(topic)
+            }
           }
+        })
+        // console.log('search', this.searchTerm, this.matches.length)
+        if (this.matches.length) {
+          this.showMatch()
         }
-      })
+      }
     },
 
     itemText (topic) {
@@ -88,12 +94,13 @@ export default {
       }
     },
 
-    prev () {
-      this.matchIndex--
+    step (delta) {
+      this.matchIndex += delta
+      this.showMatch()
     },
 
-    next () {
-      this.matchIndex++
+    showMatch () {
+      this.$store.dispatch('selectAndPan', this.matches[this.matchIndex])
     }
   }
 }

@@ -188,6 +188,14 @@ const actions = {
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, topic.viewProps)
   },
 
+  selectAndPan ({dispatch}, topic) {
+    dispatch('select', topic)     // programmatic selection
+    dispatch('setPan', {
+      x: -topic.pos.x * state.zoom + zw.CANVAS_BORDER,
+      y: -topic.pos.y * state.zoom + zw.CANVAS_BORDER
+    })
+  },
+
   // Note: pan/zoom state is not persisted. We have the Viewport topic instead.
   setPan (_, pan) {
     // TODO: update topicmap model?
@@ -418,14 +426,7 @@ const actions = {
    * @param   doc     a Document topic (plain object)
    */
   revealDocument ({dispatch}, doc) {
-    // 1) select and pan
-    const topic = state.topicmap.getTopic(doc.id)
-    dispatch('select', topic)     // programmatic selection
-    dispatch('setPan', {
-      x: -topic.pos.x * state.zoom + zw.CANVAS_BORDER,
-      y: -topic.pos.y * state.zoom + zw.CANVAS_BORDER
-    })
-    // 2) set doc filter
+    dispatch('selectAndPan', state.topicmap.getTopic(doc.id))
     dispatch('setRefDocument', doc)
   },
 

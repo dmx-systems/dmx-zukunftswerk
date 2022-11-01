@@ -3,9 +3,7 @@
     <el-input v-model="searchTerm"></el-input>
     <el-button type="text" icon="el-icon-arrow-left" :disabled="disPrev" @click="step(-1)"></el-button>
     <el-button type="text" icon="el-icon-arrow-right" :disabled="disNext" @click="step(1)"></el-button>
-    <span :class="['match-info', {'no-match': noMatch}, 'secondary']" v-if="searchTerm">
-      {{matchInfo}}
-    </span>
+    <span :class="['match-info', {'no-match': noMatch}, 'secondary']">{{matchInfo}}</span>
   </div>
 </template>
 
@@ -24,10 +22,12 @@ export default {
   computed: {
 
     matchInfo () {
-      if (!this.noMatch) {
-        return `Match ${this.matchIndex + 1} of ${this.matches.length}`
-      } else {
-        return 'No match'
+      if (this.searchTerm) {
+        if (this.noMatch) {
+          return 'No match'
+        } else {
+          return `Match ${this.matchIndex + 1} of ${this.matches.length}`
+        }
       }
     },
 
@@ -129,6 +129,8 @@ export default {
 }
 
 .zw-canvas-search .match-info {
+  display: inline-block;
+  width: 100px;
   margin-left: 5px;
   vertical-align: super;
 }

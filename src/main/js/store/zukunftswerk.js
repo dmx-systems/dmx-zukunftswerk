@@ -264,6 +264,9 @@ const actions = {
     }
   },
 
+  /**
+   * @param   topic         a dmx.ViewTopic
+   */
   newTopic ({dispatch}, topic) {
     state.newTopics.push(topic)
     //

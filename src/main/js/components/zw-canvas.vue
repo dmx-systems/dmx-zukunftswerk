@@ -5,6 +5,7 @@
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="newDocument"><zw-string>item.document</zw-string></el-dropdown-item>
         <el-dropdown-item command="newNote"><zw-string>item.note</zw-string></el-dropdown-item>
+        <el-dropdown-item command="newTextblock"><zw-string>item.textblock</zw-string></el-dropdown-item>
         <el-dropdown-item command="newLabel" divided><zw-string>item.label</zw-string></el-dropdown-item>
         <el-dropdown-item command="newArrow"><zw-string>item.arrow</zw-string></el-dropdown-item>
       </el-dropdown-menu>
@@ -30,7 +31,7 @@ import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
 let HEADER_HEIGHT
-let synId = -1          // gernerator for temporary synthetic topic IDs, needed for topics not yet saved, counts down
+let synId = -1          // generator for temporary synthetic topic IDs, needed for topics not yet saved, counts down
 
 export default {
 
@@ -103,12 +104,20 @@ export default {
       this[command]()
     },
 
+    // 5 methods called by dropdown menu
+
     newDocument () {
+      // TODO: align it with note/label/textblock? Possibly current model-driven approach not needed anymore
+      // as meanwhile document(name)s are auto-translated, that is single input field in create-form.
       this.$store.dispatch('newTopic', this.newDocumentViewTopic())
     },
 
     newNote () {
       this.$store.dispatch('newTopic', this.newViewTopic('zukunftswerk.note'))
+    },
+
+    newTextblock () {
+      this.$store.dispatch('newTopic', this.newViewTopic('zukunftswerk.textblock'))
     },
 
     newLabel () {
@@ -120,6 +129,8 @@ export default {
       arrow.value = 'Arrow ' + newArrowId()     // the Value Integrator needs something to integrate
       this.$store.dispatch('createArrow', arrow)
     },
+
+    //
 
     newDocumentViewTopic () {
       return new dmx.ViewTopic({

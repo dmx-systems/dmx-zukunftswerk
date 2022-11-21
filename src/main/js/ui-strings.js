@@ -6,6 +6,8 @@ export default {
   'item.document.fr': 'Document',
   'item.note.de': 'Notiz',
   'item.note.fr': 'Note',
+  'item.textblock.de': 'Textblock',
+  'item.textblock.fr': 'Bloc de texte',
   'item.label.de': 'Überschrift',
   'item.label.fr': 'Titre',
   'item.arrow.de': 'Pfeil',

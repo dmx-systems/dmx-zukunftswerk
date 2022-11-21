@@ -200,6 +200,7 @@ export default {
       return this.mediaType === 'application/pdf'
     },
 
+    // TODO: factor out as a mixin? Copies in zw-note.vue, zw-label.vue, zw-textblock.vue
     isNew () {
       return this.topic.id < 0
     },

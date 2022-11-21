@@ -112,6 +112,7 @@ export default {
       return this.note[this.noteLang]
     },
 
+    // TODO: factor out as a mixin? Copies in zw-label.vue, zw-document.vue, zw-textblock.vue
     isNew () {
       return this.topic.id < 0
     },

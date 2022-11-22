@@ -99,6 +99,8 @@ export default {
   'label.password.fr': 'Mot de passe',
   'label.color.de': 'Farbe',
   'label.color.fr': 'Couleur',
+  'label.search.de': 'Suche',
+  'label.search.fr': 'Recherche',
   'label.warning.de': 'Warnung',
   'label.warning.fr': 'Avertissement',
 

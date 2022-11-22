@@ -29,9 +29,9 @@ export default {
     matchInfo () {
       if (this.searchTerm) {
         if (this.noMatch) {
-          return 'No match'
+          return '0'
         } else {
-          return `Match ${this.matchIndex + 1} of ${this.matches.length}`
+          return `${this.matchIndex + 1} ${zw.getString('label.of')} ${this.matches.length}`
         }
       }
     },
@@ -135,7 +135,7 @@ export default {
 
 .zw-canvas-search .match-info {
   display: inline-block;
-  width: 100px;
+  width: 60px;
   margin-left: 5px;
   vertical-align: super;
 }

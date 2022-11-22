@@ -101,6 +101,8 @@ export default {
   'label.color.fr': 'Couleur',
   'label.search.de': 'Suche',
   'label.search.fr': 'Recherche',
+  'label.of.de': 'von',
+  'label.of.fr': 'de',
   'label.warning.de': 'Warnung',
   'label.warning.fr': 'Avertissement',
 

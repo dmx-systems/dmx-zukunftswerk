@@ -1,6 +1,6 @@
 <template>
   <div class="zw-canvas-search">
-    <el-input v-model="searchTerm"></el-input>
+    <el-input v-model="searchTerm" :placeholder="placeholder"></el-input>
     <el-button type="text" icon="el-icon-arrow-left" :disabled="disPrev" @click="step(-1)"></el-button>
     <el-button type="text" icon="el-icon-arrow-right" :disabled="disNext" @click="step(1)"></el-button>
     <span :class="['match-info', {'no-match': noMatch}, 'secondary']">{{matchInfo}}</span>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import zw from '../zw-globals'
 
 export default {
 
@@ -21,12 +22,16 @@ export default {
 
   computed: {
 
+    placeholder () {
+      return zw.getString('label.search')
+    },
+
     matchInfo () {
       if (this.searchTerm) {
         if (this.noMatch) {
-          return 'No match'
+          return '0'
         } else {
-          return `Match ${this.matchIndex + 1} of ${this.matches.length}`
+          return `${this.matchIndex + 1} ${zw.getString('label.of')} ${this.matches.length}`
         }
       }
     },
@@ -130,7 +135,7 @@ export default {
 
 .zw-canvas-search .match-info {
   display: inline-block;
-  width: 100px;
+  width: 60px;
   margin-left: 5px;
   vertical-align: super;
 }

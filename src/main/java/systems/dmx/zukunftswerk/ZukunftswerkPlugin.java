@@ -290,6 +290,18 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     @POST
+    @Path("/textblock")
+    @Transactional
+    @Override
+    public Topic createTextblock(String textblock) {
+        try {
+            return dmx.createTopic(createBilingualTopicModel(TEXTBLOCK, textblock));
+        } catch (Exception e) {
+            throw new RuntimeException("Creating textblock failed, textblock=\"" + textblock + "\"", e);
+        }
+    }
+
+    @POST
     @Path("/label")
     @Transactional
     @Override

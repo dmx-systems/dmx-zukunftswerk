@@ -30,6 +30,8 @@ public interface ZukunftswerkService {
 
     Topic createNote(String note);
 
+    Topic createTextblock(String textblock);
+
     Topic createLabel(String label);
 
     Topic createComment           (String comment, IdList refTopicIds, IdList fileTopicIds);

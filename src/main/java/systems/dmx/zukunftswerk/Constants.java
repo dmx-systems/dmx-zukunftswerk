@@ -12,6 +12,7 @@ public class Constants {
     public static final String DOCUMENT                 = "zukunftswerk.document";
     public static final String DOCUMENT_NAME            = "zukunftswerk.document_name";
     public static final String ZW_NOTE                  = "zukunftswerk.note"; // "NOTE" is already used by Notes module
+    public static final String TEXTBLOCK                = "zukunftswerk.textblock";
     public static final String LABEL                    = "zukunftswerk.label";
     public static final String ARROW                    = "zukunftswerk.arrow";
     public static final String COMMENT                  = "zukunftswerk.comment";

@@ -14,6 +14,7 @@ dmx.init({
   topicTypes: [                   // types are needed for dmx-api form generator (type.newFormModel())
     'zukunftswerk.document',
     'zukunftswerk.note',
+    'zukunftswerk.textblock',
     'zukunftswerk.label',
     'dmx.workspaces.workspace'    // needed by admin interface
   ],

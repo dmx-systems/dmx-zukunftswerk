@@ -329,11 +329,28 @@ const actions = {
   },
 
   /**
+   * @param   topic         a dmx.ViewTopic of type "Textblock"
+   * @param   monolingual   Optional: if truish a monolingual textblock is created (no auto-translation)
+   */
+  createTextblock (_, {topic, monolingual}) {
+    return create('textblock', topic, monolingual)
+  },
+
+  /**
    * @param   topic         a dmx.ViewTopic of type "Label"
    * @param   monolingual   Optional: if truish a monolingual label is created (no auto-translation)
    */
   createLabel (_, {topic, monolingual}) {
     return create('label', topic, monolingual)
+  },
+
+  /**
+   * @param   topic   a dmx.ViewTopic
+   */
+  update (_, topic) {
+    return dmx.rpc.updateTopic(topic).then(directives => {
+      removeEditActive(topic)
+    })
   },
 
   /**
@@ -464,15 +481,6 @@ const actions = {
     }).catch(() => {})            // suppress unhandled rejection on cancel
   },
 
-  /**
-   * @param   topic   a dmx.ViewTopic
-   */
-  update (_, topic) {
-    return dmx.rpc.updateTopic(topic).then(directives => {
-      removeEditActive(topic)
-    })
-  },
-
   cancel ({dispatch}, topic) {
     if (topic.id < 0) {
       // abort creation
@@ -550,13 +558,13 @@ export default store
 // action helper
 
 /**
- * @param   type    'note'/'label'
- * @param   topic   a dmx.ViewTopic of type "Note". Its "value" is used for topic creation (not its "children").
+ * @param   type    'note'/'textblock'/'label'
+ * @param   topic   a dmx.ViewTopic of the respective type. Its "value" is used for topic creation (not its "children").
  */
 function create (type, topic, monolingual) {
   let p
   if (monolingual)  {
-    // Note: a monolingual note/label is stored in "de". "fr" and "Original Language" are not set.
+    // Note: a monolingual note/textblock/label is stored in "de". "fr" and "Original Language" are not set.
     p = dmx.rpc.createTopic({
       typeUri: `zukunftswerk.${type}`,
       children: {

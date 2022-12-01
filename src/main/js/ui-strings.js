@@ -67,6 +67,8 @@ export default {
   'label.new_comment.fr': 'Nouvel article de discussion',
   'label.new_note.de': 'Neue Notiz',
   'label.new_note.fr': 'Nouvelle Note',
+  'label.new_textblock.de': 'Neuer Textblock',
+  'label.new_textblock.fr': 'Nouveau bloc de texte',
   'label.new_label.de': 'Neue Überschrift',
   'label.new_label.fr': 'Nouveau Titre',
   'label.new_workspace.de': 'Neuer Arbeitsbereich',

@@ -308,6 +308,7 @@ export default {
   components: {
     'zukunftswerk.document': require('./zw-document').default,
     'zukunftswerk.note': require('./zw-note').default,
+    'zukunftswerk.textblock': require('./zw-textblock').default,
     'zukunftswerk.label': require('./zw-label').default,
     'zukunftswerk.arrow': require('./zw-arrow').default,
     'zukunftswerk.viewport': require('./zw-viewport').default

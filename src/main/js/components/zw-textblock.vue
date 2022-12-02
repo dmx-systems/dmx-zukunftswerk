@@ -1,31 +1,36 @@
 <template>
-  <div class="zw-textblock dmx-html-field info" v-if="infoMode" v-html="textblockHtml"></div>
-  <div :class="['zw-textblock', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving">
-    <template v-if="isNew">
-      <div class="field">
-        <div class="field-label"><zw-string>label.new_textblock</zw-string></div>
-        <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
-      </div>
+  <div :class="['zw-textblock', 'dmx-html-field', mode]" v-loading="saving">
+    <template v-if="infoMode">
+      <div v-html="textblock[lang1]"></div>
+      <div v-html="textblock[lang2]"></div>
     </template>
     <template v-else>
-      <div class="field left-col">
-        <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang1}})</div>
-        <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
-      </div>
-      <div class="translate">
-        <el-button type="text" icon="el-icon-bottom" @click="doTranslate"></el-button>
-      </div>
-      <div class="field">
-        <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang2}})</div>
-        <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
-      </div>
+      <template v-if="isNew">
+        <div class="field">
+          <div class="field-label"><zw-string>label.new_textblock</zw-string></div>
+          <quill v-model="topic.value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        </div>
+      </template>
+      <template v-else>
+        <div class="field left-col">
+          <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang1}})</div>
+          <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+        </div>
+        <div class="translate">
+          <el-button type="text" icon="el-icon-bottom" @click="doTranslate"></el-button>
+        </div>
+        <div class="field">
+          <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang2}})</div>
+          <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
+        </div>
+      </template>
+      <el-button class="save-button" type="primary" size="medium" @click="save">
+        <zw-string>action.submit</zw-string>
+      </el-button>
+      <el-button size="medium" @click="cancel">
+        <zw-string>action.cancel</zw-string>
+      </el-button>
     </template>
-    <el-button class="save-button" type="primary" size="medium" @click="save">
-      <zw-string>action.submit</zw-string>
-    </el-button>
-    <el-button size="medium" @click="cancel">
-      <zw-string>action.cancel</zw-string>
-    </el-button>
   </div>
 </template>
 

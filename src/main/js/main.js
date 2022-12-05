@@ -7,13 +7,14 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2022/11/22-2')
+console.log('[ZW] 2022/12/5')
 
 // 1) Init dmx library
 dmx.init({
   topicTypes: [                   // types are needed for dmx-api form generator (type.newFormModel())
     'zukunftswerk.document',
     'zukunftswerk.note',
+    'zukunftswerk.textblock',
     'zukunftswerk.label',
     'dmx.workspaces.workspace'    // needed by admin interface
   ],

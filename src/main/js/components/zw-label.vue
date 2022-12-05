@@ -90,6 +90,7 @@ export default {
       return this.label[this.labelLang]
     },
 
+    // TODO: factor out as a mixin? Copies in zw-note.vue, zw-document.vue, zw-textblock.vue
     isNew () {
       return this.topic.id < 0
     },

@@ -125,10 +125,11 @@ function topicSort (t1, t2) {
 }
 
 function canvasFilter (topic) {
-  return topic.typeUri === 'zukunftswerk.document' ||
-         topic.typeUri === 'zukunftswerk.note'     ||
-         topic.typeUri === 'zukunftswerk.label'    ||
-         topic.typeUri === 'zukunftswerk.arrow'    ||
+  return topic.typeUri === 'zukunftswerk.document'  ||
+         topic.typeUri === 'zukunftswerk.note'      ||
+         topic.typeUri === 'zukunftswerk.textblock' ||
+         topic.typeUri === 'zukunftswerk.label'     ||
+         topic.typeUri === 'zukunftswerk.arrow'     ||
          topic.typeUri === 'zukunftswerk.viewport' && (store.state.isTeam || store.state.isEditor)
 }
 

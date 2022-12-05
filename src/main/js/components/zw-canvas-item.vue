@@ -65,7 +65,7 @@ export default {
       moveHandler: this.onMove, // Handler to react on item moves (Function)
       //
       // Misc
-      topicBuffer: undefined,   // The edit buffer (dmx.ViewTopic)
+      topicBuffer: undefined,   // The edit buffer, available only in edit mode (dmx.ViewTopic)
       moveable: undefined,      // The Moveable instance
       dragMode: undefined,      // While a drag is in progress: one of 'dragging', 'resizing', 'rotating'.
                                 // Also used to detect if an actual drag happened after mousedown. If not we don't
@@ -308,6 +308,7 @@ export default {
   components: {
     'zukunftswerk.document': require('./zw-document').default,
     'zukunftswerk.note': require('./zw-note').default,
+    'zukunftswerk.textblock': require('./zw-textblock').default,
     'zukunftswerk.label': require('./zw-label').default,
     'zukunftswerk.arrow': require('./zw-arrow').default,
     'zukunftswerk.viewport': require('./zw-viewport').default

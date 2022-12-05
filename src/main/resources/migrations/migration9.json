@@ -1,0 +1,56 @@
+// Part of Zukunftswerk 1.6
+{
+  "topic_types": [
+    // Textblock
+    {
+      "value":       "Textblock (de)",
+      "uri":         "zukunftswerk.textblock.de",
+      "dataTypeUri": "dmx.core.html"
+    },
+    {
+      "value":       "Textblock (fr)",
+      "uri":         "zukunftswerk.textblock.fr",
+      "dataTypeUri": "dmx.core.html"
+    },
+    {
+      "value":       "Textblock",
+      "uri":         "zukunftswerk.textblock",
+      "dataTypeUri": "dmx.core.entity",
+      "compDefs": [
+        {
+          "childTypeUri":        "zukunftswerk.textblock.de",
+          "childCardinalityUri": "dmx.core.one",
+          "includeInLabel":      true
+        },
+        {
+          "childTypeUri":        "zukunftswerk.textblock.fr",
+          "childCardinalityUri": "dmx.core.one",
+          "includeInLabel":      true
+        },
+        {
+          "childTypeUri":        "zukunftswerk.language",
+          "childCardinalityUri": "dmx.core.one",
+          "customAssocTypeUri":  "zukunftswerk.original_language",
+          "viewConfigTopics": [
+            {
+              "typeUri": "dmx.webclient.view_config",
+              "children": {
+                "dmx.webclient.widget": "ref_uri:dmx.webclient.select",
+                "dmx.webclient.clearable": true
+              }
+            }
+          ]
+        }
+      ],
+      "viewConfigTopics": [
+        {
+          "typeUri": "dmx.webclient.view_config",
+          "children": {
+            "dmx.webclient.icon": "\uf036",
+            "dmx.webclient.add_to_create_menu": true
+          }
+        }
+      ]
+    }
+  ]
+}

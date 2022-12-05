@@ -1,6 +1,6 @@
 <template>
   <div class="zw-note dmx-html-field info" v-if="infoMode" v-html="noteHtml" :style="{'background-color': color}"></div>
-  <div :class="['zw-note', 'dmx-html-field', 'form', {'new': isNew}]" v-else v-loading="saving">
+  <div :class="['zw-note', 'dmx-html-field', 'form']" v-else v-loading="saving">
     <template v-if="isNew">
       <div class="field">
         <div class="field-label"><zw-string>label.new_note</zw-string></div>
@@ -112,6 +112,7 @@ export default {
       return this.note[this.noteLang]
     },
 
+    // TODO: factor out as a mixin? Copies in zw-label.vue, zw-document.vue, zw-textblock.vue
     isNew () {
       return this.topic.id < 0
     },

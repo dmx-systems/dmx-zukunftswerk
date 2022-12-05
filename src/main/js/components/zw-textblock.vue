@@ -78,20 +78,6 @@ export default {
       }
     },
 
-    textblockLang () {
-      if (this.textblock.de && this.textblock.fr) {
-        return this.lang
-      } else if (this.textblock.de) {
-        return 'de'
-      } else if (this.textblock.fr) {
-        return 'fr'
-      }
-    },
-
-    textblockHtml () {
-      return this.textblock[this.textblockLang]
-    },
-
     // TODO: factor out as a mixin? Copies in zw-label.vue, zw-document.vue, zw-textblock.vue
     isNew () {
       return this.topic.id < 0
@@ -186,6 +172,18 @@ export default {
 .zw-textblock {
   padding: 12px;
   background-color: var(--background-color);
+}
+
+.zw-textblock.info {
+  display: flex;
+}
+
+.zw-textblock.info > div:nth-child(1) {
+  margin-right: 20px;
+}
+
+.zw-textblock.info > div:nth-child(2) {
+  margin-left: 20px;
 }
 
 .zw-textblock.form .translate {

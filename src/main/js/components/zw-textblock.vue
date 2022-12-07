@@ -179,11 +179,12 @@ export default {
 }
 
 .zw-textblock.info > div:nth-child(1) {
-  margin-right: 20px;
+  padding-right: 20px;
+  border-right: 2px dashed #f6f6f6;
 }
 
 .zw-textblock.info > div:nth-child(2) {
-  margin-left: 20px;
+  padding-left: 20px;
 }
 
 .zw-textblock.form .translate {

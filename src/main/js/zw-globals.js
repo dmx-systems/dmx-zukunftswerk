@@ -20,7 +20,7 @@ console.log('[ZW] isChrome:', isChrome)
 
 export default {
 
-  NOTE_COLORS: [
+  ITEM_COLORS: [
     'white',
     'rgb(238, 232, 234)',
     'rgb(248, 195, 213)',

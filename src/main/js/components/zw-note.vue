@@ -20,20 +20,7 @@
         <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
       </div>
     </template>
-    <div class="field">
-      <div class="field-label"><zw-string>label.color</zw-string></div>
-      <el-dropdown size="medium" trigger="click" @command="selectColor">
-        <el-button type="text">
-          <div class="color-box" :style="{'background-color': selectedColor}"></div><!--
-          --><span class="el-icon-arrow-down el-icon--right"></span>
-        </el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="(col, i) in colors" :command="col" :key="col">
-            <div :class="colorBoxClass(col, i)" :style="{'background-color': col}"></div>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
+    <zw-color-selector v-model="selectedColor"></zw-color-selector>
     <el-button class="save-button" type="primary" size="medium" @click="save">
       <zw-string>action.submit</zw-string>
     </el-button>
@@ -58,6 +45,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
+    require('./mixins/color').default,
     require('./mixins/cancel').default
   ],
 
@@ -65,7 +53,6 @@ export default {
     return {
       type: 'zukunftswerk.note',
       selectedColor: undefined,       // color menu model
-      colors: zw.NOTE_COLORS,         // all colors
       saving: false                   // true while note is saved
     }
   },
@@ -86,10 +73,6 @@ export default {
   },
 
   computed: {
-
-    color () {
-      return this.topic.viewProps['zukunftswerk.color'] || zw.NOTE_COLORS[1]      // default is gray
-    },
 
     note () {
       return {
@@ -196,22 +179,11 @@ export default {
       //
       const compDefUri = 'zukunftswerk.note.' + lang
       this.topic.children[compDefUri].value = this.model[lang].value
-    },
-
-    selectColor (color) {
-      this.selectedColor = color
-    },
-
-    colorBoxClass (col, i) {
-      const classes = ['color-box']
-      if (i === 0 || i === 6) {
-        classes.push(col)
-      }
-      return classes
     }
   },
 
   components: {
+    'zw-color-selector': require('./zw-color-selector').default,
     quill: () => ({
       component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
       loading: require('./zw-spinner')

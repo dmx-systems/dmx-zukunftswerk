@@ -1,5 +1,5 @@
 <template>
-  <div class="field">
+  <div class="field zw-color-selector">
     <div class="field-label"><zw-string>label.color</zw-string></div>
     <el-dropdown size="medium" trigger="click" @command="setColor">
       <el-button type="text">
@@ -43,7 +43,7 @@ export default {
 
     colorBoxClass (color, i) {
       const classes = ['color-box']
-      if (i === 0 || i === 6) {
+      if (i === 0 || i === 6) {       // 'white' and 'transparent' color-boxes need specific style
         classes.push(color)
       }
       return classes
@@ -51,3 +51,34 @@ export default {
   }
 }
 </script>
+
+<style>
+.zw-color-selector .color-box {
+  display: inline-block;
+  width: 40px;
+  height: 30px;
+  border: 1px dashed var(--highlight-color);
+}
+
+.zw-color-selector .el-icon-arrow-down {
+  vertical-align: top;
+}
+
+/* dropdown menus are body mounted */
+body > .el-dropdown-menu .color-box {
+  margin-top: 9px;
+  width: 40px;
+  height: 30px;
+}
+
+body > .el-dropdown-menu .color-box.white,
+body > .el-dropdown-menu .color-box.transparent {
+  border: 1px solid var(--border-color-lighter);
+}
+
+body > .el-dropdown-menu .color-box.transparent {
+  background-image: url("../../resources-build/grid.png");
+  background-position: bottom right;
+  background-size: 12px;
+}
+</style>

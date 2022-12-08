@@ -1,5 +1,5 @@
 <template>
-  <div :class="['zw-textblock', 'dmx-html-field', mode]" v-loading="saving">
+  <div :class="['zw-textblock', 'dmx-html-field', mode]" v-loading="saving" :style="style">
     <template v-if="infoMode">
       <div v-html="textblock[lang1]"></div>
       <div v-html="textblock[lang2]"></div>
@@ -24,10 +24,11 @@
           <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
         </div>
       </template>
+      <zw-color-selector v-model="selectedColor"></zw-color-selector>
       <el-button class="save-button" type="primary" size="medium" @click="save">
         <zw-string>action.submit</zw-string>
       </el-button>
-      <el-button size="medium" @click="cancel">
+      <el-button size="medium" @click="doCancel">
         <zw-string>action.cancel</zw-string>
       </el-button>
     </template>
@@ -44,7 +45,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
-    require('./mixins/cancel').default
+    require('./mixins/color').default
   ],
 
   data () {
@@ -78,6 +79,14 @@ export default {
       }
     },
 
+    style () {
+      if (this.infoMode) {
+        return {
+          'background-color': this.color
+        }
+      }
+    },
+
     // TODO: factor out as a mixin? Copies in zw-label.vue, zw-document.vue, zw-textblock.vue
     isNew () {
       return this.topic.id < 0
@@ -100,6 +109,7 @@ export default {
 
     save () {
       this.saving = true
+      this.topic.setViewProp('zukunftswerk.color', this.selectedColor)
       let action, arg, msgBox
       if (this.isNew) {
         action = 'createTextblock'
@@ -108,7 +118,7 @@ export default {
         }
         msgBox = 'confirm'
       } else {
-        action = 'update'
+        action = 'updateAndStoreColor'
         arg = this.topic
         // transfer edit buffer to topic model
         this.setText('de')
@@ -160,6 +170,7 @@ export default {
   },
 
   components: {
+    'zw-color-selector': require('./zw-color-selector').default,
     quill: () => ({
       component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
       loading: require('./zw-spinner')

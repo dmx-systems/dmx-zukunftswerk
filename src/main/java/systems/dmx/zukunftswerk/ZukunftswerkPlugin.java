@@ -198,7 +198,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     /**
      * Enriches:
      * - Notes, Documents, Labels, and Arrows by "Angle"
-     * - Notes by "Color"
+     * - Notes and Textblocks by "Color"
      * - Viewports by "Zoom"
      */
     @Override
@@ -210,7 +210,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 viewProps.set(ANGLE, assoc.getProperty(ANGLE));
             }
         }
-        if (typeUri.equals(ZW_NOTE)) {
+        if (typeUri.equals(ZW_NOTE) || typeUri.equals(TEXTBLOCK)) {
             if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
                 viewProps.set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
             }

@@ -37,22 +37,15 @@ import errorHandler from '../error-handler'
 
 export default {
 
-  created () {
-    // console.log('zw-note', this.color)
-    this.selectedColor = this.color
-  },
-
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
-    require('./mixins/color').default,
-    require('./mixins/cancel').default
+    require('./mixins/color').default
   ],
 
   data () {
     return {
       type: 'zukunftswerk.note',
-      selectedColor: undefined,       // color menu model
       saving: false                   // true while note is saved
     }
   },
@@ -126,7 +119,7 @@ export default {
         }
         msgBox = 'confirm'
       } else {
-        action = 'updateNote'
+        action = 'updateAndStoreColor'
         arg = this.topic
         // transfer edit buffer to topic model
         this.setNote('de')
@@ -146,11 +139,6 @@ export default {
       }).finally(() => {
         this.saving = false
       })
-    },
-
-    doCancel () {
-      this.selectedColor = this.color
-      this.cancel()
     },
 
     doTranslate () {
@@ -210,36 +198,7 @@ export default {
   font-size: 24px;
 }
 
-.zw-note.form .el-icon-arrow-down {
-  vertical-align: top;
-}
-
-.zw-note.form .color-box {
-  display: inline-block;
-  width: 40px;
-  height: 30px;
-  border: 1px dashed var(--highlight-color);
-}
-
 .zw-note.form .save-button {
   margin-top: var(--field-spacing);
-}
-
-/* dropdown menus are body mounted */
-body > .el-dropdown-menu .color-box {
-  margin-top: 9px;
-  width: 40px;
-  height: 30px;
-}
-
-body > .el-dropdown-menu .color-box.white,
-body > .el-dropdown-menu .color-box.transparent {
-  border: 1px solid var(--border-color-lighter);
-}
-
-body > .el-dropdown-menu .color-box.transparent {
-  background-image: url("../../resources-build/grid.png");
-  background-position: bottom right;
-  background-size: 12px;
 }
 </style>

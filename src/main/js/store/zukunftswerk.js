@@ -327,6 +327,14 @@ const actions = {
   },
 
   /**
+   * @param   topic         a dmx.ViewTopic of type "Label"
+   * @param   monolingual   Optional: if truish a monolingual label is created (no auto-translation)
+   */
+  createLabel (_, {topic, monolingual}) {
+    return create('label', topic, monolingual)
+  },
+
+  /**
    * @param   topic   a dmx.ViewTopic
    */
   updateAndStoreColor ({dispatch}, topic) {
@@ -334,14 +342,6 @@ const actions = {
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {
       'zukunftswerk.color': topic.viewProps['zukunftswerk.color']
     })
-  },
-
-  /**
-   * @param   topic         a dmx.ViewTopic of type "Label"
-   * @param   monolingual   Optional: if truish a monolingual label is created (no auto-translation)
-   */
-  createLabel (_, {topic, monolingual}) {
-    return create('label', topic, monolingual)
   },
 
   /**

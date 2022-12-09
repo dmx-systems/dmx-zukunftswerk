@@ -197,7 +197,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     /**
      * Enriches:
-     * - Notes, Documents, Labels, and Arrows by "Angle"
+     * - Documents, Notes, Textblocks, Labels, and Arrows by "Angle"
      * - Notes and Textblocks by "Color"
      * - Viewports by "Zoom"
      */
@@ -205,7 +205,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     public void customizeTopic(RelatedTopic topic, ViewProps viewProps) {
         Assoc assoc = topic.getRelatingAssoc();
         String typeUri = topic.getTypeUri();
-        if (typeUri.equals(ZW_NOTE) || typeUri.equals(DOCUMENT) || typeUri.equals(LABEL) || typeUri.equals(ARROW)) {
+        if (typeUri.equals(DOCUMENT) || typeUri.equals(ZW_NOTE) || typeUri.equals(TEXTBLOCK)
+                                     || typeUri.equals(LABEL) || typeUri.equals(ARROW)) {
             if (assoc.hasProperty(ANGLE)) {         // Angle is an optional view prop
                 viewProps.set(ANGLE, assoc.getProperty(ANGLE));
             }

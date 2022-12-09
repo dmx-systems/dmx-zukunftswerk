@@ -3,12 +3,12 @@
     <div class="field-label"><zw-string>label.color</zw-string></div>
     <el-dropdown size="medium" trigger="click" @command="setColor">
       <el-button type="text">
-        <div class="color-box" :style="{'background-color': color}"></div><!--
+        <div :class="colorBoxClass(color)" :style="{'background-color': color}"></div><!--
         --><span class="el-icon-arrow-down el-icon--right"></span>
       </el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item v-for="(color, i) in colors" :command="color" :key="color">
-          <div :class="colorBoxClass(color, i)" :style="{'background-color': color}"></div>
+        <el-dropdown-item v-for="color in colors" :command="color" :key="color">
+          <div :class="colorBoxClass(color)" :style="{'background-color': color}"></div>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -22,13 +22,13 @@ export default {
 
   data () {
     return {
-      color: this.value,              // color menu model
+      color: this.value,              // selected color
       colors: zw.ITEM_COLORS          // all colors
     }
   },
 
   props: {
-    value: {                          // the initial color
+    value: {                          // initial color
       type: String,
       required: true
     }
@@ -41,9 +41,9 @@ export default {
       this.$emit('input', color)
     },
 
-    colorBoxClass (color, i) {
+    colorBoxClass (color) {
       const classes = ['color-box']
-      if (i === 0 || i === 6) {       // 'white' and 'transparent' color-boxes need specific style
+      if (color === 'white' || color === 'transparent') {     // 'white' and 'transparent' get extra style
         classes.push(color)
       }
       return classes
@@ -76,6 +76,7 @@ body > .el-dropdown-menu .color-box.transparent {
   border: 1px solid var(--border-color-lighter);
 }
 
+.zw-color-selector .color-box.transparent,
 body > .el-dropdown-menu .color-box.transparent {
   background-image: url("../../resources-build/grid.png");
   background-position: bottom right;

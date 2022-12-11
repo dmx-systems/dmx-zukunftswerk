@@ -49,7 +49,8 @@ const state = {
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   discussionLoading: false,     // true while a discussion is loading
-  refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
+  refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)   // TODO: unify
+  refTextblock: undefined,      // textblock the new comment relates to (a Textblock topic, plain object) // TODO: unify
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
@@ -456,6 +457,24 @@ const actions = {
   setRefDocument ({dispatch}, doc) {
     state.refDocument = doc
     if (doc) {
+      dispatch('setPanelVisibility', true)
+    }
+  },
+
+  /**
+   * @param   doc     a Textblock topic (plain object)
+   */
+  revealTextblock ({dispatch}, textblock) {
+    dispatch('selectAndPan', state.topicmap.getTopic(textblock.id))
+    dispatch('setRefTextblock', textblock)
+  },
+
+  /**
+   * @param   textblock     optional: a Textblock topic (plain object)
+   */
+  setRefTextblock ({dispatch}, textblock) {
+    state.refTextblock = textblock
+    if (textblock) {
       dispatch('setPanelVisibility', true)
     }
   },

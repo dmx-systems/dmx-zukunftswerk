@@ -21,7 +21,7 @@ export default {
     html () {
       return {
         de: this.comment.children['zukunftswerk.comment.de'].value,
-        fr: this.comment.children['zukunftswerk.comment.fr'].value
+        fr: this.comment.children['zukunftswerk.comment.fr'].value      // FIXME: empty case, monolingual case
       }
     },
 

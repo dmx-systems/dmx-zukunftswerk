@@ -29,6 +29,7 @@ Vue.component('zw-string',          require('./components/zw-string').default)
 Vue.component('zw-truncate',        require('./components/zw-truncate').default)
 Vue.component('zw-comment-ref',     require('./components/zw-comment-ref').default)
 Vue.component('zw-document-ref',    require('./components/zw-document-ref').default)
+Vue.component('zw-textblock-ref',   require('./components/zw-textblock-ref').default)
 Vue.component('zw-attachment',      require('./components/zw-attachment').default)
 Vue.component('zw-pdf-viewer',      require('./components/zw-pdf-viewer').default)
 

@@ -8,7 +8,7 @@
       </div>
     </template>
     <template v-else>
-      <div class="field left-col">
+      <div class="field">
         <div class="field-label"><zw-string>item.note</zw-string> ({{lang1}})</div>
         <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>

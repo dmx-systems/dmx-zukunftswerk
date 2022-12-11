@@ -1,8 +1,11 @@
 <template>
   <div :class="['zw-textblock', 'dmx-html-field', mode]" v-loading="saving" :style="style">
     <template v-if="infoMode">
-      <div v-html="textblock[lang1]"></div>
-      <div v-html="textblock[lang2]"></div>
+      <div class="discussion-button" :style="style">
+        <el-button type="text" icon="el-icon-chat-round" @click="setRefTextblock"></el-button>
+      </div>
+      <div class="left" v-html="textblock[lang1]"></div>
+      <div class="right" v-html="textblock[lang2]"></div>
     </template>
     <template v-else>
       <template v-if="isNew">
@@ -12,7 +15,7 @@
         </div>
       </template>
       <template v-else>
-        <div class="field left-col">
+        <div class="field">
           <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang1}})</div>
           <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
         </div>
@@ -107,6 +110,10 @@ export default {
       this.$refs.quill.focus()
     },
 
+    setRefTextblock () {
+      this.$store.dispatch('setRefTextblock', this.topic)
+    },
+
     save () {
       this.saving = true
       this.topic.setViewProp('zukunftswerk.color', this.selectedColor)
@@ -189,12 +196,12 @@ export default {
   display: flex;
 }
 
-.zw-textblock.info > div:nth-child(1) {
+.zw-textblock.info > .left {
   padding-right: 20px;
   border-right: 2px dashed #f6f6f6;
 }
 
-.zw-textblock.info > div:nth-child(2) {
+.zw-textblock.info > .right {
   padding-left: 20px;
 }
 
@@ -209,5 +216,20 @@ export default {
 
 .zw-textblock.form .save-button {
   margin-top: var(--field-spacing);
+}
+
+/* discussion button */
+
+.zw-textblock .discussion-button {
+  position: absolute;
+  top: 0;
+  right: -28px;
+  padding: 4px;
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.zw-textblock .discussion-button .el-button {
+  font-size: 18px;
 }
 </style>

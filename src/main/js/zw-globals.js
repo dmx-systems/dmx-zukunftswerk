@@ -22,7 +22,7 @@ export default {
 
   ITEM_COLORS: [
     'white',
-    'rgb(238, 232, 234)',
+    'rgb(238, 232, 234)',       // lavender
     'rgb(248, 195, 213)',
     'rgb(228, 214, 166)',
     'rgb(162, 190, 168)',

@@ -22,7 +22,7 @@
           <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
           </zw-comment-ref>
           <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
-          <zw-textblock-ref :textblock="refTextblock" :closable="true"></zw-textblock-ref>
+          <zw-textblock-ref :topic="refTextblock" :closable="true"></zw-textblock-ref>
           <div class="editor-container dmx-html-field">
             <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
             <el-button class="attach-button" type="text" icon="el-icon-paperclip" :title="attachButtonTitle"
@@ -342,9 +342,7 @@ export default {
   right: unset;
 }
 
-.zw-discussion .new-comment .zw-comment-ref,
-.zw-discussion .new-comment .zw-document-ref,
-.zw-discussion .new-comment .zw-textblock-ref {
+.zw-discussion .new-comment .zw-comment-target-ref {
   margin-bottom: 15px;
 }
 

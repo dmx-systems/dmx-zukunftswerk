@@ -1,5 +1,6 @@
 <template>
-  <div :class="['zw-textblock-ref', {closable}]" v-if="textblock" :style="style" @click="reveal">
+  <div :class="['zw-textblock-ref', 'zw-comment-target-ref', {closable}]" v-if="topic" :style="style"
+      @click="reveal">
     <span class="icon fa fa-fw fa-align-left"></span>
     <zw-truncate class="textblock label" :html="textblockHtml"></zw-truncate>
     <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="close"></el-button>
@@ -9,8 +10,12 @@
 <script>
 export default {
 
+  mixins: [
+    require('./mixins/color').default
+  ],
+
   props: {
-    textblock: Object,      // the referred-to Textblock, optional (plain Object, not a dmx.Topic)
+    topic: Object,          // the referred-to Textblock, optional (plain Object, not a dmx.Topic)
     closable: Boolean       // if true the close-button is rendered, optional
   },
 
@@ -40,10 +45,6 @@ export default {
       }
     },
 
-    color () {
-      return this.textblock.viewProps['zukunftswerk.color'] || zw.ITEM_COLORS[1]      // default is gray
-    },
-
     lang () {
       return this.$store.state.lang
     }
@@ -53,14 +54,14 @@ export default {
 
     html (lang) {
       // Note: in a monolingual textblock "fr" is not defined
-      const html = this.textblock.children['zukunftswerk.textblock.' + lang]?.value
+      const html = this.topic.children['zukunftswerk.textblock.' + lang]?.value
       if (html !== '<p><br></p>') {
         return html
       }
     },
 
     reveal () {
-      this.$store.dispatch('revealTextblock', this.textblock)
+      this.$store.dispatch('revealTextblock', this.topic)
     },
 
     close () {

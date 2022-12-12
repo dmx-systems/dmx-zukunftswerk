@@ -48,7 +48,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
-    require('./mixins/color').default
+    require('./mixins/color-selector').default
   ],
 
   data () {

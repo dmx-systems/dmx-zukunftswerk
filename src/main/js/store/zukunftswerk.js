@@ -761,6 +761,8 @@ function filerepoUrl (repoPath) {
 function fetchTopicmap () {
   return dmx.rpc.getAssignedTopics(state.workspace.id, 'dmx.topicmaps.topicmap').then(topics => {
     // TODO: show warning if there are more than one topicmaps
-    return dmx.rpc.getTopicmap(topics[0].id, true)      // includeChildren=true
+    const topicmapId = topics[0].id
+    dmx.utils.setCookie('dmx_topicmap_id', topicmapId)
+    return dmx.rpc.getTopicmap(topicmapId, true)      // includeChildren=true
   })
 }

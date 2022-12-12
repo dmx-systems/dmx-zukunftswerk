@@ -154,6 +154,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
      * Enriches:
      * - Worksapces by "Owner"
      * - Comments by "Creator"
+     *   - Comment-Refs by "Creator"
+     *   - Textblock-Refs by "Color"
      * - Usernames by "Display Name" and "Show Email Address" flag
      * - Memberships by "Editor" flag
      */
@@ -166,6 +168,13 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             Topic refComment = topic.getChildTopics().getTopicOrNull(COMMENT);
             if (refComment != null) {
                 acs.enrichWithUserInfo(refComment);
+            }
+            Topic refTextblock = topic.getChildTopics().getTopicOrNull(TEXTBLOCK);
+            if (refTextblock != null) {
+                Assoc assoc = tms.getTopicMapcontext(topicmapId(), refTextblock.getId());
+                if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
+                    refTextblock.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
+                }
             }
         } else if (topic.getTypeUri().equals(USERNAME)) {
             String username = topic.getSimpleValue().toString();
@@ -213,7 +222,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
         if (typeUri.equals(ZW_NOTE) || typeUri.equals(TEXTBLOCK)) {
             if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
-                viewProps.set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
+                // Note: we store the color not as a view prop but in the topic model (as a synthetic child value)
+                // because textblocks are rendered not only on canvas, but also in discussion panel, namely as colored
+                // textblock-refs. In contrast for notes view props could be used, but we want handle color uniformly.
+                topic.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
             }
         } else if (typeUri.equals(VIEWPORT)) {
             viewProps.set(ZOOM, assoc.getProperty(ZOOM));
@@ -560,8 +572,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         // add comment/document ref
         if (refTopicIds != null) {
             for (long refTopicId : refTopicIds) {
-                String refTypeUri = dmx.getTopic(refTopicId).getTypeUri();
-                commentModel.getChildTopics().setRef(refTypeUri, refTopicId);
+                String compDefUri = dmx.getTopic(refTopicId).getTypeUri();
+                commentModel.getChildTopics().setRef(compDefUri, refTopicId);
             }
         }
         // add attachments
@@ -603,6 +615,10 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     private long workspaceId() {
         return Cookies.get().getLong("dmx_workspace_id");
+    }
+
+    private long topicmapId() {
+        return Cookies.get().getLong("dmx_topicmap_id");
     }
 
     // convenience

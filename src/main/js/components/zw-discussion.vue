@@ -98,12 +98,9 @@ export default {
 
     refTopicIds () {
       const ids = []
-      if (this.refComment) {
-        ids.push(this.refComment.id)
-      }
-      if (this.refDocument) {
-        ids.push(this.refDocument.id)
-      }
+      this.refComment   && ids.push(this.refComment.id)
+      this.refDocument  && ids.push(this.refDocument.id)
+      this.refTextblock && ids.push(this.refTextblock.id)
       return ids
     },
 

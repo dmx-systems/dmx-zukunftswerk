@@ -705,7 +705,7 @@ function updateUserProfile(userProfile) {
 function addTopicToTopicmap (viewTopic, topic) {
   viewTopic.id       = topic.id
   viewTopic.value    = topic.value
-  viewTopic.children = topic.children
+  viewTopic.children = {...viewTopic.children, ...topic.children}   // merge to keep synthetic child values (color)
   state.topicmap.addTopic(viewTopic)                                                // update client state
   dmx.rpc.addTopicToTopicmap(state.topicmap.id, topic.id, viewTopic.viewProps)      // update server state
 }

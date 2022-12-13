@@ -152,18 +152,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     /**
      * Enriches:
-     * - Worksapces by "Owner"
      * - Comments by "Creator"
      *   - Comment-Refs by "Creator"
      *   - Textblock-Refs by "Color"
+     * - Worksapces by "Owner"
      * - Usernames by "Display Name" and "Show Email Address" flag
      * - Memberships by "Editor" flag
      */
     @Override
     public void preSendTopic(Topic topic) {
-        if (topic.getTypeUri().equals(WORKSPACE)) {
-            acs.enrichWithOwnerInfo(topic);
-        } else if (topic.getTypeUri().equals(COMMENT)) {
+        String typeUri = topic.getTypeUri();
+        if (typeUri.equals(COMMENT)) {
             acs.enrichWithUserInfo(topic);
             Topic refComment = topic.getChildTopics().getTopicOrNull(COMMENT);
             if (refComment != null) {
@@ -171,12 +170,11 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             }
             Topic refTextblock = topic.getChildTopics().getTopicOrNull(TEXTBLOCK);
             if (refTextblock != null) {
-                Assoc assoc = tms.getTopicMapcontext(topicmapId(), refTextblock.getId());
-                if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
-                    refTextblock.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
-                }
+                enrichWithColor(refTextblock);
             }
-        } else if (topic.getTypeUri().equals(USERNAME)) {
+        } else if (typeUri.equals(WORKSPACE)) {
+            acs.enrichWithOwnerInfo(topic);
+        } else if (typeUri.equals(USERNAME)) {
             String username = topic.getSimpleValue().toString();
             ChildTopicsModel topics = topic.getChildTopics().getModel();
             String displayName = signup.getDisplayName(username);
@@ -588,6 +586,13 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         timestamps.enrichWithTimestamps(commentTopic);
         me.addComment(workspaceId(), commentTopic);
         return commentTopic;
+    }
+
+    private void enrichWithColor(Topic topic) {
+        Assoc assoc = tms.getTopicMapcontext(topicmapId(), topic.getId());
+        if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
+            topic.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
+        }
     }
 
     private void processTeamMembership(Assoc assoc, Consumer<String> consumer) {

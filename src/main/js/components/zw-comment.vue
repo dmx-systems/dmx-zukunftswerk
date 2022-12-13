@@ -24,6 +24,7 @@
     </div>
     <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
+    <zw-textblock-ref :topic="refTextblock"></zw-textblock-ref>
     <div class="columns">
       <template v-if="infoMode">
         <div class="dmx-html-field info left" v-html="comment[lang1]"></div>
@@ -99,6 +100,10 @@ export default {
 
     refDocument () {
       return this.topic.children['zukunftswerk.document']
+    },
+
+    refTextblock () {
+      return this.topic.children['zukunftswerk.textblock']
     },
 
     attachments () {
@@ -282,8 +287,7 @@ export default {
   margin-left: 6px;
 }
 
-.zw-comment .zw-comment-ref,
-.zw-comment .zw-document-ref {
+.zw-comment .zw-comment-target-ref {
   margin-bottom: 15px;
 }
 

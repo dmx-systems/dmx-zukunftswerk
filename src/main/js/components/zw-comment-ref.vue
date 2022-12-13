@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-comment-ref" v-if="comment" @click="click">
+  <div class="zw-comment-ref zw-comment-target-ref" v-if="comment" @click="click">
     <div class="creator label">{{displayName}}</div>
     <zw-truncate class="comment label" :html="html[lang]"></zw-truncate>
     <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="remove"></el-button>
@@ -21,7 +21,7 @@ export default {
     html () {
       return {
         de: this.comment.children['zukunftswerk.comment.de'].value,
-        fr: this.comment.children['zukunftswerk.comment.fr'].value
+        fr: this.comment.children['zukunftswerk.comment.fr'].value      // FIXME: empty case, monolingual case
       }
     },
 

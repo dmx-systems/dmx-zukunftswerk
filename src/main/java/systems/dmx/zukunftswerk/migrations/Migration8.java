@@ -25,6 +25,6 @@ public class Migration8 extends Migration {
             mf.newCompDefModel(ORIGINAL_LANGUAGE, false, false, DOCUMENT, LANGUAGE, ONE),
             FILE + "#" + DE
         );
-        // FIXME: add view config to comp def
+        // FIXME: add view config to comp def: Widget=Select, Clearable=true
     }
 }

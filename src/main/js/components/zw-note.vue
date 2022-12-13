@@ -8,7 +8,7 @@
       </div>
     </template>
     <template v-else>
-      <div class="field left-col">
+      <div class="field">
         <div class="field-label"><zw-string>item.note</zw-string> ({{lang1}})</div>
         <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
@@ -40,7 +40,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
-    require('./mixins/color').default
+    require('./mixins/color-selector').default
   ],
 
   data () {
@@ -110,7 +110,8 @@ export default {
 
     save () {
       this.saving = true
-      this.topic.setViewProp('zukunftswerk.color', this.selectedColor)
+      this.topic.setViewProp('zukunftswerk.color', this.selectedColor)            // persistence
+      this.topic.children['zukunftswerk.color'] = {value: this.selectedColor}     // view
       let action, arg, msgBox
       if (this.isNew) {
         action = 'createNote'

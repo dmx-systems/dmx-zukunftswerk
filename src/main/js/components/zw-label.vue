@@ -6,7 +6,7 @@
       <el-input v-model="topic.value" ref="input"></el-input>
     </template>
     <template v-else>
-      <div class="field left-col">
+      <div class="field">
         <div class="field-label"><zw-string>item.label</zw-string> ({{lang1}})</div>
         <el-input v-model="model[lang1].value" ref="input"></el-input>
       </div>

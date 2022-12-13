@@ -49,7 +49,8 @@ const state = {
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   discussionLoading: false,     // true while a discussion is loading
-  refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)
+  refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)   // TODO: unify
+  refTextblock: undefined,      // textblock the new comment relates to (a Textblock topic, plain object) // TODO: unify
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
@@ -460,6 +461,24 @@ const actions = {
     }
   },
 
+  /**
+   * @param   doc     a Textblock topic (plain object)
+   */
+  revealTextblock ({dispatch}, textblock) {
+    dispatch('selectAndPan', state.topicmap.getTopic(textblock.id))
+    dispatch('setRefTextblock', textblock)
+  },
+
+  /**
+   * @param   textblock     optional: a Textblock topic (plain object)
+   */
+  setRefTextblock ({dispatch}, textblock) {
+    state.refTextblock = textblock
+    if (textblock) {
+      dispatch('setPanelVisibility', true)
+    }
+  },
+
   edit ({dispatch}, topic) {
     dispatch('select', topic)     // programmatic selection
     state.isEditActive.push(topic.id)
@@ -686,7 +705,7 @@ function updateUserProfile(userProfile) {
 function addTopicToTopicmap (viewTopic, topic) {
   viewTopic.id       = topic.id
   viewTopic.value    = topic.value
-  viewTopic.children = topic.children
+  viewTopic.children = {...viewTopic.children, ...topic.children}   // merge to keep synthetic child values (color)
   state.topicmap.addTopic(viewTopic)                                                // update client state
   dmx.rpc.addTopicToTopicmap(state.topicmap.id, topic.id, viewTopic.viewProps)      // update server state
 }
@@ -742,6 +761,8 @@ function filerepoUrl (repoPath) {
 function fetchTopicmap () {
   return dmx.rpc.getAssignedTopics(state.workspace.id, 'dmx.topicmaps.topicmap').then(topics => {
     // TODO: show warning if there are more than one topicmaps
-    return dmx.rpc.getTopicmap(topics[0].id, true)      // includeChildren=true
+    const topicmapId = topics[0].id
+    dmx.utils.setCookie('dmx_topicmap_id', topicmapId)
+    return dmx.rpc.getTopicmap(topicmapId, true)      // includeChildren=true
   })
 }

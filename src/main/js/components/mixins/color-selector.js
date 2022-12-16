@@ -1,3 +1,5 @@
+import zw from '../../zw-globals'
+
 /**
  * This mixin is used by canvas items which feature a color selector.
  * It provides:
@@ -12,7 +14,6 @@
 export default {
 
   mixins: [
-    require('./color').default,
     require('./cancel').default
   ],
 
@@ -24,6 +25,12 @@ export default {
   data () {
     return {
       selectedColor: undefined        // color selector model
+    }
+  },
+
+  computed: {
+    color () {
+      return this.topic.viewProps['zukunftswerk.color'] || zw.ITEM_COLORS[1]      // default is lavender
     }
   },
 

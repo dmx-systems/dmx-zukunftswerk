@@ -10,10 +10,6 @@
 <script>
 export default {
 
-  mixins: [
-    require('./mixins/color').default
-  ],
-
   props: {
     topic: Object,          // the referred-to Textblock, optional (plain Object, not a dmx.Topic)
     closable: Boolean       // if true the close-button is rendered, optional
@@ -43,6 +39,15 @@ export default {
       return {
         'background-color': this.color
       }
+    },
+
+    color () {
+      const topic = this.topicmap.getTopic(this.topic.id)
+      return topic.viewProps['zukunftswerk.color'] || zw.ITEM_COLORS[1]      // default is lavender
+    },
+
+    topicmap () {
+      return this.$store.state.topicmap
     },
 
     lang () {

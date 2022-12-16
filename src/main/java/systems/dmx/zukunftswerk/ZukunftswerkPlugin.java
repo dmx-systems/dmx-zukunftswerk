@@ -154,7 +154,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
      * Enriches:
      * - Comments by "Creator"
      *   - Comment-Refs by "Creator"
-     *   - Textblock-Refs by "Color"
      * - Worksapces by "Owner"
      * - Usernames by "Display Name" and "Show Email Address" flag
      * - Memberships by "Editor" flag
@@ -167,10 +166,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             Topic refComment = topic.getChildTopics().getTopicOrNull(COMMENT);
             if (refComment != null) {
                 acs.enrichWithUserInfo(refComment);
-            }
-            Topic refTextblock = topic.getChildTopics().getTopicOrNull(TEXTBLOCK);
-            if (refTextblock != null) {
-                enrichWithColor(refTextblock);
             }
         } else if (typeUri.equals(WORKSPACE)) {
             acs.enrichWithOwnerInfo(topic);
@@ -220,10 +215,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         }
         if (typeUri.equals(ZW_NOTE) || typeUri.equals(TEXTBLOCK)) {
             if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
-                // Note: we store the color not as a view prop but in the topic model (as a synthetic child value)
-                // because textblocks are rendered not only on canvas, but also in discussion panel, namely as colored
-                // textblock-refs. In contrast for notes view props could be used, but we want handle color uniformly.
-                topic.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
+                viewProps.set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
             }
         } else if (typeUri.equals(VIEWPORT)) {
             viewProps.set(ZOOM, assoc.getProperty(ZOOM));
@@ -588,13 +580,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         return commentTopic;
     }
 
-    private void enrichWithColor(Topic topic) {
-        Assoc assoc = tms.getTopicMapcontext(topicmapId(), topic.getId());
-        if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
-            topic.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
-        }
-    }
-
     private void processTeamMembership(Assoc assoc, Consumer<String> consumer) {
         if (assoc.getTypeUri().equals(MEMBERSHIP)) {
             Topic workspace = assoc.getDMXObjectByType(WORKSPACE);
@@ -620,10 +605,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
 
     private long workspaceId() {
         return Cookies.get().getLong("dmx_workspace_id");
-    }
-
-    private long topicmapId() {
-        return Cookies.get().getLong("dmx_topicmap_id");
     }
 
     // convenience

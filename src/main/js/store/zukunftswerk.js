@@ -705,7 +705,7 @@ function updateUserProfile(userProfile) {
 function addTopicToTopicmap (viewTopic, topic) {
   viewTopic.id       = topic.id
   viewTopic.value    = topic.value
-  viewTopic.children = {...viewTopic.children, ...topic.children}   // merge to keep synthetic child values (color)
+  viewTopic.children = topic.children
   state.topicmap.addTopic(viewTopic)                                                // update client state
   dmx.rpc.addTopicToTopicmap(state.topicmap.id, topic.id, viewTopic.viewProps)      // update server state
 }
@@ -761,8 +761,6 @@ function filerepoUrl (repoPath) {
 function fetchTopicmap () {
   return dmx.rpc.getAssignedTopics(state.workspace.id, 'dmx.topicmaps.topicmap').then(topics => {
     // TODO: show warning if there are more than one topicmaps
-    const topicmapId = topics[0].id
-    dmx.utils.setCookie('dmx_topicmap_id', topicmapId)
-    return dmx.rpc.getTopicmap(topicmapId, true)      // includeChildren=true
+    return dmx.rpc.getTopicmap(topics[0].id, true)      // includeChildren=true
   })
 }

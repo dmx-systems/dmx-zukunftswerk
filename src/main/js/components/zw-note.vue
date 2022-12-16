@@ -110,8 +110,7 @@ export default {
 
     save () {
       this.saving = true
-      this.topic.setViewProp('zukunftswerk.color', this.selectedColor)            // persistence
-      this.topic.children['zukunftswerk.color'] = {value: this.selectedColor}     // view
+      this.topic.setViewProp('zukunftswerk.color', this.selectedColor)
       let action, arg, msgBox
       if (this.isNew) {
         action = 'createNote'

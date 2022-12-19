@@ -457,6 +457,7 @@ const actions = {
   setRefDocument ({dispatch}, doc) {
     state.refDocument = doc
     if (doc) {
+      state.refTextblock = undefined
       dispatch('setPanelVisibility', true)
     }
   },
@@ -475,6 +476,7 @@ const actions = {
   setRefTextblock ({dispatch}, textblock) {
     state.refTextblock = textblock
     if (textblock) {
+      state.refDocument = undefined
       dispatch('setPanelVisibility', true)
     }
   },

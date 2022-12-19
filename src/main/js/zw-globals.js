@@ -23,10 +23,10 @@ export default {
   ITEM_COLORS: [
     'white',
     'rgb(238, 232, 234)',       // lavender
-    'rgb(248, 195, 213)',
-    'rgb(228, 214, 166)',
-    'rgb(162, 190, 168)',
-    'rgb(145, 187, 205)',
+    'rgb(248, 195, 213)',       // red
+    'rgb(228, 214, 166)',       // brown
+    'rgb(162, 190, 168)',       // green
+    'rgb(145, 187, 205)',       // blue
     'transparent'
   ],
   CANVAS_GRID: 20,              // 20x20 pixel = size of grid.png

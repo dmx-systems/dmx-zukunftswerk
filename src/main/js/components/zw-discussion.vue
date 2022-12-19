@@ -5,9 +5,14 @@
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-d-arrow-right" @click="close"></el-button>
       <zw-string class="heading">label.discussion</zw-string>
-      <div class="doc-filter" v-if="refDocument">
+      <!-- Comment filter -->
+      <div class="filter" v-if="refDocument" key="document-filter">
         <zw-string>label.document_filter</zw-string>
         <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
+      </div>
+      <div class="filter" v-if="refTextblock" key="textblock-filter">
+        <zw-string>label.textblock_filter</zw-string>
+        <zw-textblock-ref :topic="refTextblock" :closable="true"></zw-textblock-ref>
       </div>
       <!-- Comments -->
       <div v-if="noComments" class="secondary"><zw-string>label.no_comments</zw-string></div>
@@ -88,7 +93,8 @@ export default {
 
     filteredDiscussion () {
       return this.discussion?.filter(
-        comment => !this.refDocument || this.getDocumentId(comment) === this.refDocument.id
+        comment => (!this.refDocument  || this.getDocumentId(comment)  === this.refDocument.id) &&
+                   (!this.refTextblock || this.getTextblockId(comment) === this.refTextblock.id)
       )
     },
 
@@ -136,7 +142,8 @@ export default {
 
     panelVisibility () {this.scrollDown()},
     discussion ()      {this.scrollDown()},
-    refDocument ()     {this.scrollDown()}
+    refDocument ()     {this.scrollDown()},
+    refTextblock ()    {this.scrollDown()}
   },
 
   methods: {
@@ -234,6 +241,10 @@ export default {
 
     getDocumentId (comment) {
       return comment.children['zukunftswerk.document']?.id
+    },
+
+    getTextblockId (comment) {
+      return comment.children['zukunftswerk.textblock']?.id
     }
   },
 
@@ -286,12 +297,12 @@ export default {
   margin-bottom: 20px;
 }
 
-.zw-discussion .doc-filter {
+.zw-discussion .filter {
   margin-right: 10px;
   margin-bottom: 32px;
 }
 
-.zw-discussion .doc-filter .zw-string {
+.zw-discussion .filter .zw-string {
   font-size: 20px;
   line-height: 32px;
   margin-right: 6px;

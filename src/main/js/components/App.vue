@@ -38,11 +38,10 @@
   --field-spacing: 16px;                      /* vertical spacing between data fields */
 
   --header-color: black;
-  --background-color: #e6e6e6;                /* for panels and forms */
-  --doc-filter-color: #ffe880;
-  --primary-color: #ffd100;                   /* (yellow) */
-  --primary-color-light: #fff6cc;             /* (light yellow) */
-  --highlight-color: #409eff;                 /* matches Element UI --color-primary */
+  --background-color: #e6e6e6;                /* used for panels and forms */
+  --primary-color: #ffd100;                   /* used for doc-filter, comment-refs, login/legal pages (yellow) */
+  --primary-color-light: #fff6cc;             /* used for doc-filter, comment-refs, login/legal pages (light yellow) */
+  --highlight-color: #409eff;                 /* matches Element UI --color-primary (blue) */
   --highlight-color-2: #66b1ff;               /* matches Element UI --color-primary-light-2 */
   --highlight-color-9: #ecf5ff;               /* matches Element UI --color-primary-light-9 */
   --color-danger: #f56c6c;                    /* matches Element UI --color-danger */

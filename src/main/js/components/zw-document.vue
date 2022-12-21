@@ -318,11 +318,11 @@ export default {
 }
 
 .zw-document.ref-doc {
-  background-color: var(--doc-filter-color);
+  background-color: var(--primary-color);
 }
 
 .zw-document.ref-doc .discussion-button {
-  background-color: var(--doc-filter-color);
+  background-color: var(--primary-color);
 }
 
 .zw-document.info {

@@ -4,8 +4,8 @@
       <div class="discussion-button" :style="style">
         <el-button type="text" icon="el-icon-chat-round" @click="setRefTextblock"></el-button>
       </div>
-      <div class="left" v-html="textblock[lang1]"></div>
-      <div class="right" v-html="textblock[lang2]"></div>
+      <div class="text1" v-html="textblock[lang1]"></div>
+      <div class="text2" v-html="textblock[lang2]"></div>
     </template>
     <template v-else>
       <template v-if="isNew">
@@ -15,16 +15,17 @@
         </div>
       </template>
       <template v-else>
-        <div class="field">
-          <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang1}})</div>
-          <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
-        </div>
-        <div class="translate">
-          <el-button type="text" icon="el-icon-bottom" @click="doTranslate"></el-button>
-        </div>
-        <div class="field">
-          <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang2}})</div>
-          <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
+        <div class="texts">
+          <div class="field">
+            <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang1}})</div>
+            <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
+          </div>
+          <el-button class="translate" type="text" icon="el-icon-right" @click="doTranslate"></el-button>
+          <div class="field">
+            <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang2}})</div>
+            <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
+            </quill>
+          </div>
         </div>
       </template>
       <zw-color-selector v-model="selectedColor"></zw-color-selector>
@@ -197,22 +198,31 @@ export default {
   display: flex;
 }
 
-.zw-textblock.info > .left {
+.zw-textblock.info > .text1 {
   padding-right: 20px;
   border-right: 2px dashed #f6f6f6;
 }
 
-.zw-textblock.info > .right {
+.zw-textblock.info > .text2 {
   padding-left: 20px;
 }
 
-.zw-textblock.form .translate {
-  text-align: center;
-  margin-top: 12px;
+.zw-textblock.form .texts {
+  display: flex;
+  align-items: center;
 }
 
-.zw-textblock.form .translate .el-button {
+.zw-textblock.form .texts .field {
+  flex: 1 1 50%;
+}
+
+.zw-textblock.form .el-button.translate {
   font-size: 24px;
+  margin: 0 12px;
+}
+
+.zw-textblock.form .zw-color-selector {
+  margin-top: var(--field-spacing);
 }
 
 .zw-textblock.form .save-button {

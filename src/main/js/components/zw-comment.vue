@@ -27,15 +27,15 @@
     <zw-textblock-ref :topic="refTextblock"></zw-textblock-ref>
     <div class="columns">
       <template v-if="infoMode">
-        <div class="dmx-html-field info left" v-html="comment[lang1]"></div>
-        <div class="dmx-html-field info right" v-html="comment[lang2]"></div>
+        <div class="dmx-html-field info text1" v-html="comment[lang1]"></div>
+        <div class="dmx-html-field info text2" v-html="comment[lang2]"></div>
       </template>
       <template v-else>
-        <div class="dmx-html-field left">
+        <div class="dmx-html-field text1">
           <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
         </div>
         <el-button class="translate-button" type="text" icon="el-icon-right" @click="doTranslate"></el-button>
-        <div class="dmx-html-field right">
+        <div class="dmx-html-field text2">
           <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
         </div>
       </template>
@@ -308,27 +308,27 @@ export default {
   flex-basis: 50%;
 }
 
-.zw-comment .columns > .left {
+.zw-comment .columns > .text1 {
   border-right: 1px dashed #aaa;
 }
 
-.zw-comment.form .columns > .right {
+.zw-comment.form .columns > .text2 {
   border-left: 1px dashed #aaa;
 }
 
-.zw-comment.info .columns > .left {
+.zw-comment.info .columns > .text1 {
   padding-right: 15px;
 }
 
-.zw-comment.info .columns > .right {
+.zw-comment.info .columns > .text2 {
   padding-left: 15px;
 }
 
-.zw-comment .columns > .left .ql-editor {
+.zw-comment .columns > .text1 .ql-editor {
   padding: 0 15px 0 0 !important;
 }
 
-.zw-comment .columns > .right .ql-editor {
+.zw-comment .columns > .text2 .ql-editor {
   padding: 0 0 0 15px !important;
 }
 

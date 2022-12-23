@@ -1,5 +1,5 @@
 <template>
-  <div class="field zw-color-selector">
+  <div class="zw-color-selector field">
     <div class="field-label"><zw-string>label.color</zw-string></div>
     <el-dropdown size="medium" trigger="click" @command="setColor">
       <el-button type="text">

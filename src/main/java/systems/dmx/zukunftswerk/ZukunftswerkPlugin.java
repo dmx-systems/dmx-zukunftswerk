@@ -589,7 +589,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
     }
 
     private void enrichWithColor(Topic topic) {
-        Assoc assoc = tms.getTopicMapcontext(topicmapId(), topic.getId());
+        long topicmapId = topicmapId();
+        Assoc assoc = tms.getTopicMapcontext(topicmapId, topic.getId());
+        if (assoc == null) {
+            throw new RuntimeException(topic.getTypeUri() + " topic " + topic.getId() + " not in topicmap " +
+                topicmapId);
+        }
         if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
             topic.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
         }

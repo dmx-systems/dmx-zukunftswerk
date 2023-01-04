@@ -6,7 +6,7 @@ import adminStore from './admin'
 import errorHandler from '../error-handler'
 import zw from '../zw-globals'
 
-window.addEventListener('focus', updateWorkspaceCookie)
+window.addEventListener('focus', updateCookies)
 
 Vue.use(Vuex)
 
@@ -116,8 +116,9 @@ const actions = {
         throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)
       }
       state.workspace = workspace
-      updateWorkspaceCookie()
       updateWorkspaceState()
+      return updateCookies()
+    }).then(() => {
       fetchDiscussion()
       return fetchTopicmap()
     }).then(topicmap => {
@@ -649,16 +650,29 @@ function initUserState (username) {
     state.isTeam = false
     state.workspace = undefined
     state.topic = undefined
-    updateWorkspaceCookie()
+    updateCookies()
     return Promise.resolve()
   }
 }
 
-function updateWorkspaceCookie () {
+/**
+ * Updates "dmx_workspace_id" and "dmx_topicmap_id" cookies according to "workspace" state.
+ *
+ * @return  a promise, resolved once the cookies are updated.
+ */
+function updateCookies () {
   if (state.workspace) {
+    // 1) workspace cookie
     dmx.utils.setCookie('dmx_workspace_id', state.workspace.id)
+    // 2) topicmap cookie
+    return dmx.rpc.getAssignedTopics(state.workspace.id, 'dmx.topicmaps.topicmap').then(topics => {
+      // TODO: show warning if there are more than one topicmaps
+      const topicmapId = topics[0].id
+      dmx.utils.setCookie('dmx_topicmap_id', topicmapId)
+    })
   } else {
     dmx.utils.deleteCookie('dmx_workspace_id')
+    dmx.utils.deleteCookie('dmx_topicmap_id')
   }
 }
 
@@ -688,6 +702,11 @@ function fetchDiscussion () {
     )
     state.discussionLoading = false
   })
+}
+
+function fetchTopicmap () {
+  const topicmapId = dmx.utils.getCookie('dmx_topicmap_id')
+  return dmx.rpc.getTopicmap(topicmapId, true)      // includeChildren=true
 }
 
 // TODO: basically copied from admin.js
@@ -754,17 +773,6 @@ function initViewport () {
   state.zoom = viewport.zoom
 }
 
-// util
-
 function filerepoUrl (repoPath) {
   return '/filerepo/' + encodeURIComponent(repoPath)
-}
-
-function fetchTopicmap () {
-  return dmx.rpc.getAssignedTopics(state.workspace.id, 'dmx.topicmaps.topicmap').then(topics => {
-    // TODO: show warning if there are more than one topicmaps
-    const topicmapId = topics[0].id
-    dmx.utils.setCookie('dmx_topicmap_id', topicmapId)
-    return dmx.rpc.getTopicmap(topicmapId, true)      // includeChildren=true
-  })
 }

@@ -218,7 +218,7 @@ export default {
 
 .zw-textblock.form .el-button.translate {
   font-size: 24px;
-  margin: 0 12px;
+  margin: 0 8px;
 }
 
 .zw-textblock.form .zw-color-selector {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['zw-textblock', 'dmx-html-field', mode]" v-loading="saving" :style="style">
+  <div :class="['zw-textblock', 'dmx-html-field', {'filter': isFiltered}, mode]" v-loading="saving" :style="style">
     <template v-if="infoMode">
       <div class="discussion-button" :style="style">
         <el-button type="text" icon="el-icon-chat-round" @click="setRefTextblock"></el-button>
@@ -96,8 +96,12 @@ export default {
       return this.topic.id < 0
     },
 
-    lang () {
-      return this.$store.state.lang
+    isFiltered () {
+      return this.refTextblock?.id === this.topic.id
+    },
+
+    refTextblock () {
+      return this.$store.state.refTextblock
     },
 
     quillOptions () {
@@ -190,8 +194,16 @@ export default {
 
 <style>
 .zw-textblock {
-  padding: 12px;
-  background-color: var(--background-color);
+  padding: 6px;
+  border: var(--filter-border);
+}
+
+.zw-textblock.filter {
+  border-color: var(--primary-color);
+}
+
+.zw-textblock.filter .discussion-button {
+  border-color: var(--primary-color);
 }
 
 .zw-textblock.info {
@@ -205,6 +217,10 @@ export default {
 
 .zw-textblock.info > .text2 {
   padding-left: 20px;
+}
+
+.zw-textblock.form {
+  background-color: var(--background-color);
 }
 
 .zw-textblock.form .texts {
@@ -234,10 +250,13 @@ export default {
 .zw-textblock .discussion-button {
   position: absolute;
   top: 0;
-  right: -28px;
-  padding: 4px;
-  border-top-right-radius: 14px;
-  border-bottom-right-radius: 14px;
+  right: -34px;
+  padding: 2px 2px 2px 12px;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  border-top: var(--filter-border);
+  border-right: var(--filter-border);
+  border-bottom: var(--filter-border);
 }
 
 .zw-textblock .discussion-button .el-button {

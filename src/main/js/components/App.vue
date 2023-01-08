@@ -47,6 +47,7 @@
   --color-danger: #f56c6c;                    /* matches Element UI --color-danger */
   --border-color: #dcdfe6;                    /* matches Element UI --border-color-base */
   --border-color-lighter: #ebeef5;            /* matches Element UI --border-color-lighter */
+  --filter-border: 6px solid transparent;
   --glow-duration: 3s;                        /* corresponds to jumpTo() in zw-discussion.vue */
 }
 

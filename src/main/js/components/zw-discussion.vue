@@ -5,14 +5,16 @@
     <template v-else>
       <el-button class="close-button" type="text" icon="el-icon-d-arrow-right" @click="close"></el-button>
       <zw-string class="heading">label.discussion</zw-string>
-      <!-- Comment filter -->
-      <div class="filter" v-if="documentFilter" key="document-filter">
-        <zw-string>label.document_filter</zw-string>
-        <zw-document-ref :document="documentFilter" :closable="true"></zw-document-ref>
-      </div>
-      <div class="filter" v-if="textblockFilter" key="textblock-filter">
-        <zw-string>label.textblock_filter</zw-string>
-        <zw-textblock-ref :topic="textblockFilter" :closable="true"></zw-textblock-ref>
+      <!-- Filter -->
+      <div class="filter-container" v-if="documentFilter || textblockFilter">
+        <div class="filter" v-if="documentFilter" key="document-filter">
+          <zw-string>label.document_filter</zw-string>
+          <el-button class="close-button" type="text" icon="el-icon-close" @click="resetDocumentFilter"></el-button>
+        </div>
+        <div class="filter" v-if="textblockFilter" key="textblock-filter">
+          <zw-string>label.textblock_filter</zw-string>
+          <el-button class="close-button" type="text" icon="el-icon-close" @click="resetTextblockFilter"></el-button>
+        </div>
       </div>
       <!-- Comments -->
       <div v-if="noComments" class="secondary"><zw-string>label.no_comments</zw-string></div>
@@ -21,7 +23,7 @@
           @comment-ref-click="jumpTo">
         </zw-comment>
       </div>
-      <!-- New-Comment panel -->
+      <!-- New comment -->
       <div class="new-comment-container" v-if="isWritable" v-loading="submitting">
         <div class="new-comment">
           <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
@@ -154,6 +156,14 @@ export default {
 
     close () {
       this.$store.dispatch('setPanelVisibility', false)
+    },
+
+    resetDocumentFilter () {
+      this.$store.dispatch('setDocumentFilter', undefined)
+    },
+
+    resetTextblockFilter () {
+      this.$store.dispatch('setTextblockFilter', undefined)
     },
 
     createComment () {
@@ -297,15 +307,28 @@ export default {
   margin-bottom: 20px;
 }
 
-.zw-discussion .filter {
-  margin-right: 10px;
+.zw-discussion .filter-container {
   margin-bottom: 32px;
+  margin-right: 10px;
+}
+
+.zw-discussion .filter {
+  display: inline-block;
+  background-color: var(--primary-color);
+  padding: 5px 8px;
 }
 
 .zw-discussion .filter .zw-string {
+  font-size: 15px;
+}
+
+.zw-discussion .filter .close-button {
   font-size: 20px;
-  line-height: 32px;
-  margin-right: 6px;
+  margin-left: 6px;
+}
+
+.zw-discussion .filter .close-button > i {
+  vertical-align: text-bottom;
 }
 
 .zw-discussion .comments {

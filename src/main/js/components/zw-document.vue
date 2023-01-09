@@ -1,8 +1,8 @@
 <template>
-  <div :class="['zw-document', {'ref-doc': isRefDocument}, mode]" v-loading="isLoading">
+  <div :class="['zw-document', {'filter': isFiltered}, mode]" v-loading="isLoading">
     <template v-if="infoMode">
       <div class="discussion-button">
-        <el-button type="text" icon="el-icon-chat-round" @click="setRefDocument"></el-button>
+        <el-button type="text" icon="el-icon-chat-round" @click="setFilter"></el-button>
       </div>
       <div class="doc-name">{{docName}}</div>
       <pre v-if="isText">{{text}}</pre>
@@ -205,12 +205,12 @@ export default {
       return this.topic.id < 0
     },
 
-    isRefDocument () {
-      return this.refDocument?.id === this.topic.id
+    isFiltered () {
+      return this.documentFilter?.id === this.topic.id
     },
 
-    refDocument () {
-      return this.$store.state.refDocument
+    documentFilter () {
+      return this.$store.state.documentFilter
     }
   },
 
@@ -238,8 +238,8 @@ export default {
       return this.topic.children['zukunftswerk.document_name.' + lang]
     },
 
-    setRefDocument () {
-      this.$store.dispatch('setRefDocument', this.topic)
+    setFilter () {
+      this.$store.dispatch('setDocumentFilter', this.topic)
     },
 
     save () {
@@ -317,11 +317,11 @@ export default {
   background-color: var(--background-color);
 }
 
-.zw-document.ref-doc {
+.zw-document.filter {
   background-color: var(--primary-color);
 }
 
-.zw-document.ref-doc .discussion-button {
+.zw-document.filter .discussion-button {
   background-color: var(--primary-color);
 }
 

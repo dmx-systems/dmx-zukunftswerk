@@ -2,7 +2,7 @@
   <div :class="['zw-textblock', 'dmx-html-field', {'filter': isFiltered}, mode]" v-loading="saving" :style="style">
     <template v-if="infoMode">
       <div class="discussion-button" :style="style">
-        <el-button type="text" icon="el-icon-chat-round" @click="setRefTextblock"></el-button>
+        <el-button type="text" icon="el-icon-chat-round" @click="setFilter"></el-button>
       </div>
       <div class="text1" v-html="textblock[lang1]"></div>
       <div class="text2" v-html="textblock[lang2]"></div>
@@ -97,11 +97,11 @@ export default {
     },
 
     isFiltered () {
-      return this.refTextblock?.id === this.topic.id
+      return this.textblockFilter?.id === this.topic.id
     },
 
-    refTextblock () {
-      return this.$store.state.refTextblock
+    textblockFilter () {
+      return this.$store.state.textblockFilter
     },
 
     quillOptions () {
@@ -115,8 +115,8 @@ export default {
       this.$refs.quill.focus()
     },
 
-    setRefTextblock () {
-      this.$store.dispatch('setRefTextblock', this.topic)
+    setFilter () {
+      this.$store.dispatch('setTextblockFilter', this.topic)
     },
 
     save () {
@@ -252,8 +252,8 @@ export default {
   top: 0;
   right: -34px;
   padding: 2px 2px 2px 12px;
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
+  border-top-right-radius: 19px;
+  border-bottom-right-radius: 19px;
   border-top: var(--filter-border);
   border-right: var(--filter-border);
   border-bottom: var(--filter-border);

@@ -64,7 +64,7 @@ export default {
     },
 
     close () {
-      this.$store.dispatch('setRefTextblock', undefined)
+      this.$store.dispatch('setTextblockFilter', undefined)
     }
   }
 }

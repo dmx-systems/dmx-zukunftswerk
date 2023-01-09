@@ -6,13 +6,13 @@
       <el-button class="close-button" type="text" icon="el-icon-d-arrow-right" @click="close"></el-button>
       <zw-string class="heading">label.discussion</zw-string>
       <!-- Comment filter -->
-      <div class="filter" v-if="refDocument" key="document-filter">
+      <div class="filter" v-if="documentFilter" key="document-filter">
         <zw-string>label.document_filter</zw-string>
-        <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
+        <zw-document-ref :document="documentFilter" :closable="true"></zw-document-ref>
       </div>
-      <div class="filter" v-if="refTextblock" key="textblock-filter">
+      <div class="filter" v-if="textblockFilter" key="textblock-filter">
         <zw-string>label.textblock_filter</zw-string>
-        <zw-textblock-ref :topic="refTextblock" :closable="true"></zw-textblock-ref>
+        <zw-textblock-ref :topic="textblockFilter" :closable="true"></zw-textblock-ref>
       </div>
       <!-- Comments -->
       <div v-if="noComments" class="secondary"><zw-string>label.no_comments</zw-string></div>
@@ -26,8 +26,8 @@
         <div class="new-comment">
           <zw-comment-ref :comment="refComment" :closable="true" @click="jumpTo" @remove="removeCommentRef">
           </zw-comment-ref>
-          <zw-document-ref :document="refDocument" :closable="true"></zw-document-ref>
-          <zw-textblock-ref :topic="refTextblock" :closable="true"></zw-textblock-ref>
+          <zw-document-ref :document="documentFilter" :closable="true"></zw-document-ref>
+          <zw-textblock-ref :topic="textblockFilter" :closable="true"></zw-textblock-ref>
           <div class="editor-container dmx-html-field">
             <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
             <el-button class="attach-button" type="text" icon="el-icon-paperclip" :title="attachButtonTitle"
@@ -93,8 +93,8 @@ export default {
 
     filteredDiscussion () {
       return this.discussion?.filter(
-        comment => (!this.refDocument  || this.getDocumentId(comment)  === this.refDocument.id) &&
-                   (!this.refTextblock || this.getTextblockId(comment) === this.refTextblock.id)
+        comment => (!this.documentFilter  || this.getDocumentId(comment)  === this.documentFilter.id) &&
+                   (!this.textblockFilter || this.getTextblockId(comment) === this.textblockFilter.id)
       )
     },
 
@@ -104,18 +104,18 @@ export default {
 
     refTopicIds () {
       const ids = []
-      this.refComment   && ids.push(this.refComment.id)
-      this.refDocument  && ids.push(this.refDocument.id)
-      this.refTextblock && ids.push(this.refTextblock.id)
+      this.refComment && ids.push(this.refComment.id)
+      this.documentFilter  && ids.push(this.documentFilter.id)
+      this.textblockFilter && ids.push(this.textblockFilter.id)
       return ids
     },
 
-    refDocument () {
-      return this.$store.state.refDocument
+    documentFilter () {
+      return this.$store.state.documentFilter
     },
 
-    refTextblock () {
-      return this.$store.state.refTextblock
+    textblockFilter () {
+      return this.$store.state.textblockFilter
     },
 
     lang () {
@@ -142,8 +142,8 @@ export default {
 
     panelVisibility () {this.scrollDown()},
     discussion ()      {this.scrollDown()},
-    refDocument ()     {this.scrollDown()},
-    refTextblock ()    {this.scrollDown()}
+    documentFilter ()  {this.scrollDown()},
+    textblockFilter () {this.scrollDown()}
   },
 
   methods: {

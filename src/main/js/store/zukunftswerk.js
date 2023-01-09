@@ -49,8 +49,9 @@ const state = {
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
   discussionLoading: false,     // true while a discussion is loading
-  refDocument: undefined,       // document the new comment relates to (a Document topic, plain object)   // TODO: unify
-  refTextblock: undefined,      // textblock the new comment relates to (a Textblock topic, plain object) // TODO: unify
+  documentFilter: undefined,    // discussion is filtered by this document (a Document topic, plain object)
+  textblockFilter: undefined,   // discussion is filtered by this textblock (a Textblock topic, plain object)
+                                // Either one of both is set, or none. TODO: unify these 2
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc state
@@ -109,9 +110,9 @@ const actions = {
     if (!workspaceId) {
       throw Error(`${workspaceId} is not a workspace ID`)
     }
-    dispatch('deselect')                      // reset selection
-    dispatch('setRefDocument', undefined)     // reset doc-filter
-    dispatch('setRefTextblock', undefined)    // reset textblock-filter
+    dispatch('deselect')                        // reset selection
+    dispatch('setDocumentFilter', undefined)    // reset document-filter
+    dispatch('setTextblockFilter', undefined)   // reset textblock-filter
     dmx.rpc.getTopic(workspaceId, true).then(workspace => {           // includeChildren=true
       if (workspace.typeUri !== 'dmx.workspaces.workspace') {
         throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)
@@ -450,18 +451,7 @@ const actions = {
    */
   revealDocument ({dispatch}, doc) {
     dispatch('selectAndPan', state.topicmap.getTopic(doc.id))
-    dispatch('setRefDocument', doc)
-  },
-
-  /**
-   * @param   doc     optional: a Document topic (plain object)
-   */
-  setRefDocument ({dispatch}, doc) {
-    state.refDocument = doc
-    if (doc) {
-      state.refTextblock = undefined
-      dispatch('setPanelVisibility', true)
-    }
+    dispatch('setDocumentFilter', doc)
   },
 
   /**
@@ -469,16 +459,27 @@ const actions = {
    */
   revealTextblock ({dispatch}, textblock) {
     dispatch('selectAndPan', state.topicmap.getTopic(textblock.id))
-    dispatch('setRefTextblock', textblock)
+    dispatch('setTextblockFilter', textblock)
+  },
+
+  /**
+   * @param   doc     optional: a Document topic (plain object)
+   */
+  setDocumentFilter ({dispatch}, doc) {
+    state.documentFilter = doc
+    if (doc) {
+      state.textblockFilter = undefined
+      dispatch('setPanelVisibility', true)
+    }
   },
 
   /**
    * @param   textblock     optional: a Textblock topic (plain object)
    */
-  setRefTextblock ({dispatch}, textblock) {
-    state.refTextblock = textblock
+  setTextblockFilter ({dispatch}, textblock) {
+    state.textblockFilter = textblock
     if (textblock) {
-      state.refDocument = undefined
+      state.documentFilter = undefined
       dispatch('setPanelVisibility', true)
     }
   },

@@ -53,7 +53,7 @@ export default {
     },
 
     close () {
-      this.$store.dispatch('setRefDocument', undefined)
+      this.$store.dispatch('setDocumentFilter', undefined)
     }
   }
 }

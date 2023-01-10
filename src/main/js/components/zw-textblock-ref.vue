@@ -1,6 +1,6 @@
 <template>
-  <div class="zw-textblock-ref zw-comment-target-ref secondary" v-if="topic" :style="style" @click="reveal">
-    <span class="icon fa fa-fw fa-align-left"></span>
+  <div :class="['zw-textblock-ref', 'zw-comment-target-ref', {closable}]" v-if="topic" :style="style" @click="reveal">
+    <span class="icon fa fa-fw fa-align-left secondary"></span>
     <zw-truncate class="textblock label" :html="textblockHtml"></zw-truncate>
     <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="close"></el-button>
   </div>
@@ -75,6 +75,11 @@ export default {
   display: inline-block;
   padding: 6px;
   cursor: pointer;
+}
+
+.zw-textblock-ref.closable .icon,
+.zw-textblock-ref.closable .textblock {
+  color: black !important;
 }
 
 .zw-textblock-ref .close-button {

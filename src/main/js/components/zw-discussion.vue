@@ -136,10 +136,7 @@ export default {
   watch: {
 
     lang () {
-      if (this.panelVisibility) {
-        const str = zw.getString('label.new_comment')
-        document.querySelector('.zw-discussion .new-comment .ql-editor').setAttribute('data-placeholder', str)
-      }
+      this.$store.dispatch('updatePlaceholder')
     },
 
     panelVisibility () {this.scrollDown()},

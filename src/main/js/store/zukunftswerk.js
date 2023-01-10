@@ -471,6 +471,7 @@ const actions = {
       state.textblockFilter = undefined
       dispatch('setPanelVisibility', true)
     }
+    dispatch('updatePlaceholder')
   },
 
   /**
@@ -482,6 +483,18 @@ const actions = {
       state.documentFilter = undefined
       dispatch('setPanelVisibility', true)
     }
+    dispatch('updatePlaceholder')
+  },
+
+  updatePlaceholder () {
+      const editor = document.querySelector('.zw-discussion .new-comment .ql-editor')
+      // editor is not available
+      // 1) while app launch, updatePlaceholder() is called by setWorkspace()
+      // 2) when discussion panel is closed
+      if (editor) {
+        const suffix = state.documentFilter ? '_document' : state.textblockFilter ? '_textblock' : ''
+        editor.dataset.placeholder = zw.getString('label.new_comment' + suffix)
+      }
   },
 
   edit ({dispatch}, topic) {

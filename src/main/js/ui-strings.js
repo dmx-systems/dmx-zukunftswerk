@@ -134,8 +134,6 @@ export default {
   'action.translate.fr': 'Traduire',
   'action.set_zoom.de': 'Aktuellen Zoom-Wert speichern',
   'action.set_zoom.fr': 'Enregistrer la valeur actuelle du zoom',
-  'action.attach_files.de': 'Dateien anhängen',
-  'action.attach_files.fr': 'Joindre des fichiers',
   'action.add_workspace.de': 'Arbeitsbereich hinzufügen',
   'action.add_workspace.fr': 'Ajouter un espace de travail',
   'action.add_user.de': 'Benutzer hinzufügen',
@@ -158,6 +156,9 @@ export default {
   'action.reset_password.fr': 'Réinitialiser le mot de passe',
   'action.change_password.de': 'Passwort ändern',
   'action.change_password.fr': 'Modifier le mot de passe',
+
+  'tooltip.attach_files.de': 'Dateien anhängen',
+  'tooltip.attach_files.fr': 'Joindre des fichiers',
 
   'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',

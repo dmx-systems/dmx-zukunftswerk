@@ -7,7 +7,7 @@ import onHttpError from './error-handler'
 import messageHandler from './message-handler'
 import './element-ui'
 
-console.log('[ZW] 2023/01/10-2')
+console.log('[ZW] 2023/01/12')
 
 // 1) Init dmx library
 dmx.init({
@@ -23,7 +23,7 @@ dmx.init({
   onHttpError
 })
 
-// 2) Global component registrations (needed by several components)
+// 2) Global component registrations (used by several components)
 Vue.component('zw-language-switch', require('./components/zw-language-switch').default)
 Vue.component('zw-string',          require('./components/zw-string').default)
 Vue.component('zw-truncate',        require('./components/zw-truncate').default)

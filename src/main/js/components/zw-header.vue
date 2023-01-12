@@ -7,7 +7,7 @@
       <template v-else>
         <zw-string>label.shared_workspace</zw-string>:
         <el-dropdown size="medium" trigger="click" @command="setWorkspace">
-          <el-button type="text">
+          <el-button type="text" :title="selectTooltip">
             <span class="name">{{workspaceName}}</span><span class="el-icon-arrow-down el-icon--right"></span>
           </el-button>
           <el-dropdown-menu slot="dropdown">
@@ -67,6 +67,10 @@ export default {
 
     isAdmin () {
       return this.router.currentRoute.name === 'admin'
+    },
+
+    selectTooltip () {
+      return zw.getString('tooltip.select_workspace')
     },
 
     adminTooltip () {

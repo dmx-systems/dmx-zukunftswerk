@@ -95,7 +95,7 @@ export default {
     },
 
     fullscreenTooltip () {
-      return zw.getString('tooltip.fullscreen')
+      return zw.getString('tooltip.zoom_to_fit')
     },
 
     zoomInTooltip () {

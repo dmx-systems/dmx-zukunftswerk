@@ -12,7 +12,7 @@
         </span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
-        <el-button class="fa fa-reply" type="text" @click="reply"></el-button>
+        <el-button class="fa fa-reply" type="text" :title="replyTooltip" @click="reply"></el-button>
         <el-dropdown v-if="commentIsWritable" size="medium" trigger="click" @command="handle">
           <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
           <el-dropdown-menu slot="dropdown">
@@ -174,6 +174,10 @@ export default {
 
     quillOptions () {
       return zw.quillOptions2
+    },
+
+    replyTooltip () {
+      return zw.getString('tooltip.reply')
     }
   },
 

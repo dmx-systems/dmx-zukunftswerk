@@ -4,7 +4,7 @@
       <canvas ref="canvas"></canvas>
     </div>
     <div class="toolbar upper" :style="toolbarStyle">
-      <el-button type="text" :icon="fullscreenIcon" @click="toggleFullscreen"></el-button>
+      <el-button type="text" :icon="fullscreenIcon" :title="fullscreenTooltip" @click="toggleFullscreen"></el-button>
     </div>
     <div class="toolbar lower" v-if="pagerVisibility" :style="toolbarStyle">
       <el-button type="text" icon="el-icon-arrow-left" @click="prevPage"></el-button>
@@ -16,6 +16,7 @@
 
 <script>
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.js'
 pdfjs.GlobalWorkerOptions.workerSrc = '/systems.dmx.zukunftswerk/pdfjs/pdf.worker.js'
 
@@ -87,6 +88,10 @@ export default {
 
     fullscreenIcon () {
       return this.fullscreen ? 'el-icon-bottom-left' : 'el-icon-top-right'
+    },
+
+    fullscreenTooltip () {
+      return zw.getString(this.fullscreen ? 'tooltip.close_fullscreen' : 'tooltip.open_fullscreen')
     }
   },
 

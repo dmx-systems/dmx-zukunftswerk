@@ -1,9 +1,11 @@
 <template>
   <div :class="['zw-discussion', panelVisibility ? 'open' : 'close']">
-    <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-d-arrow-left" @click="open">
+    <el-button v-if="!panelVisibility" class="open-button" type="text" icon="el-icon-d-arrow-left" :title="openTooltip"
+      @click="open">
     </el-button>
     <template v-else>
-      <el-button class="close-button" type="text" icon="el-icon-d-arrow-right" @click="close"></el-button>
+      <el-button class="close-button" type="text" icon="el-icon-d-arrow-right" :title="closeTooltip" @click="close">
+      </el-button>
       <zw-string class="heading">label.discussion</zw-string>
       <!-- Filter -->
       <div class="filter-container" v-if="documentFilter || textblockFilter">
@@ -42,7 +44,8 @@
             </zw-attachment>
           </div>
         </div>
-        <el-button class="submit-button" type="text" icon="el-icon-s-promotion" size="medium" @click="createComment">
+        <el-button class="submit-button" type="text" icon="el-icon-s-promotion" size="medium" :title="submitTooltip"
+          @click="createComment">
         </el-button>
       </div>
     </template>
@@ -128,8 +131,20 @@ export default {
       return this.attachments.map(file => file.id)
     },
 
+    openTooltip () {
+      return zw.getString('tooltip.open_panel')
+    },
+
+    closeTooltip () {
+      return zw.getString('tooltip.close_panel')
+    },
+
     attachTooltip () {
       return zw.getString('tooltip.attach')
+    },
+
+    submitTooltip () {
+      return zw.getString('tooltip.submit')
     }
   },
 

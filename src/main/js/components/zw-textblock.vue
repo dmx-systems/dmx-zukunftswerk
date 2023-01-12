@@ -2,7 +2,7 @@
   <div :class="['zw-textblock', 'dmx-html-field', {'filter': isFiltered}, mode]" v-loading="saving" :style="style">
     <template v-if="infoMode">
       <div class="discussion-button" :style="style">
-        <el-button type="text" icon="el-icon-chat-round" @click="setFilter"></el-button>
+        <el-button type="text" icon="el-icon-chat-round" @click="setFilter" :title="discussTooltip"></el-button>
       </div>
       <div class="text1" v-html="textblock[lang1]"></div>
       <div class="text2" v-html="textblock[lang2]"></div>
@@ -20,7 +20,8 @@
             <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang1}})</div>
             <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
           </div>
-          <el-button class="translate" type="text" icon="el-icon-right" @click="doTranslate"></el-button>
+          <el-button class="translate" type="text" icon="el-icon-right" :title="translateTooltip" @click="doTranslate">
+          </el-button>
           <div class="field">
             <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang2}})</div>
             <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
@@ -106,6 +107,10 @@ export default {
 
     quillOptions () {
       return zw.quillOptions
+    },
+
+    discussTooltip () {
+      return zw.getString('tooltip.discuss')
     }
   },
 

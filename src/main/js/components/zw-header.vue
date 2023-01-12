@@ -1,6 +1,7 @@
 <template>
   <div class="zw-header">
     <img class="logo" :src="logo">
+    <!-- Workspace selector -->
     <div class="workspace">
       <zw-string v-if="isAdmin" class="name" key="admin">label.admin</zw-string>
       <template v-else>
@@ -20,13 +21,17 @@
         </el-dropdown>
       </template>
     </div>
-    <el-button class="admin-button fa fa-wrench" v-if="isTeam" type="text" @click="admin"></el-button>
+    <!-- Admin button -->
+    <el-button class="admin-button fa fa-wrench" v-if="isTeam" type="text" :title="adminTooltip" @click="admin">
+    </el-button>
     <zw-language-switch></zw-language-switch>
     <zw-user-menu></zw-user-menu>
   </div>
 </template>
 
 <script>
+import zw from '../zw-globals'
+
 export default {
 
   mixins: [
@@ -62,6 +67,10 @@ export default {
 
     isAdmin () {
       return this.router.currentRoute.name === 'admin'
+    },
+
+    adminTooltip () {
+      return zw.getString('tooltip.admin')
     }
   },
 

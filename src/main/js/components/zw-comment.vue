@@ -34,7 +34,9 @@
         <div class="dmx-html-field text1">
           <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
         </div>
-        <el-button class="translate-button" type="text" icon="el-icon-right" @click="doTranslate"></el-button>
+        <el-button class="translate-button" type="text" icon="el-icon-right" :title="translateTooltip"
+          @click="doTranslate">
+        </el-button>
         <div class="dmx-html-field text2">
           <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
         </div>

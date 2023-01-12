@@ -32,7 +32,7 @@
           <zw-textblock-ref :topic="textblockFilter" :closable="true"></zw-textblock-ref>
           <div class="editor-container dmx-html-field">
             <quill v-model="newComment" :options="quillOptions" ref="newComment" @quill-ready="focus"></quill>
-            <el-button class="attach-button" type="text" icon="el-icon-paperclip" :title="attachButtonTooltip"
+            <el-button class="attach-button" type="text" icon="el-icon-paperclip" :title="attachTooltip"
               @click="openUploadDialog">
             </el-button>
           </div>
@@ -128,8 +128,8 @@ export default {
       return this.attachments.map(file => file.id)
     },
 
-    attachButtonTooltip () {
-      return zw.getString('tooltip.attach_files')
+    attachTooltip () {
+      return zw.getString('tooltip.attach')
     }
   },
 

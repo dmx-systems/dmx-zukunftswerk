@@ -13,7 +13,7 @@
         <quill v-model="model[lang1].value" :options="quillOptions" @quill-ready="focus" ref="quill"></quill>
       </div>
       <div class="translate">
-        <el-button type="text" icon="el-icon-bottom" @click="doTranslate"></el-button>
+        <el-button type="text" icon="el-icon-bottom" :title="translateTooltip" @click="doTranslate"></el-button>
       </div>
       <div class="field">
         <div class="field-label"><zw-string>item.note</zw-string> ({{lang2}})</div>

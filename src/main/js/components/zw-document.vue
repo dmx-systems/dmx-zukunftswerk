@@ -2,7 +2,7 @@
   <div :class="['zw-document', {'filter': isFiltered}, mode]" v-loading="isLoading">
     <template v-if="infoMode">
       <div class="discussion-button">
-        <el-button type="text" icon="el-icon-chat-round" @click="setFilter"></el-button>
+        <el-button type="text" icon="el-icon-chat-round" @click="setFilter" :title="discussTooltip"></el-button>
       </div>
       <div class="doc-name">{{docName}}</div>
       <pre v-if="isText">{{text}}</pre>
@@ -18,7 +18,7 @@
       </div>
       <template  v-if="!isNew">
         <div class="translate">
-          <el-button type="text" icon="el-icon-bottom" @click="translate"></el-button>
+          <el-button type="text" icon="el-icon-bottom" :title="translateTooltip" @click="translate"></el-button>
         </div>
         <div class="field">
           <div class="field-label"><zw-string>label.document_name</zw-string> <span>({{lang2}})</span></div>
@@ -57,6 +57,7 @@
 
 <script>
 import dmx from 'dmx-api'
+import zw from '../zw-globals'
 
 export default {
 
@@ -211,6 +212,10 @@ export default {
 
     documentFilter () {
       return this.$store.state.documentFilter
+    },
+
+    discussTooltip () {
+      return zw.getString('tooltip.discuss')
     }
   },
 
@@ -259,7 +264,7 @@ export default {
         if (result === 'confirm') {
           arg.monolingual = true
           this.$store.dispatch(action, arg).catch(error => {
-            errorHandler(error)     // generic error handler
+            errorHandler(error)     // generic error handler ### FIXME?
           })
         }
       }).catch(result => {

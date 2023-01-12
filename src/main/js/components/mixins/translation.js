@@ -1,3 +1,5 @@
+import zw from '../../zw-globals'
+
 /**
  * Note: the host component is expected to hold
  * - topic        any topic which has an "Original Language" field (dmx.ViewTopic)
@@ -47,6 +49,10 @@ export default {
       } else if (this.origLang === 'fr') {
         return 'de'
       }
+    },
+
+    translateTooltip () {
+      return zw.getString('tooltip.translate')
     }
   },
 

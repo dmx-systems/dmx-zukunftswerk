@@ -2,7 +2,7 @@
   <div class="zw-canvas" :style="style" ref="canvas" @wheel="wheelZoom">
     <!-- Create menu -->
     <el-dropdown v-if="isTeam || isEditor" trigger="click" @command="handle">
-      <el-button class="add-button" type="text" icon="el-icon-circle-plus"></el-button>
+      <el-button class="add-button" type="text" icon="el-icon-circle-plus" :title="addTooltip"></el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="newDocument"><zw-string>item.document</zw-string></el-dropdown-item>
         <el-dropdown-item command="newNote"><zw-string>item.note</zw-string></el-dropdown-item>
@@ -13,10 +13,10 @@
     </el-dropdown>
     <!-- Toolbar -->
     <div class="button-panel">
-      <el-button type="text" icon="el-icon-s-home" @click="home"></el-button>
-      <el-button type="text" icon="el-icon-full-screen" @click="zoomToFit"></el-button>
-      <el-button type="text" icon="el-icon-zoom-in" @click="stepZoom(.1)"></el-button>
-      <el-button type="text" icon="el-icon-zoom-out" @click="stepZoom(-.1)"></el-button>
+      <el-button type="text" icon="el-icon-s-home" :title="homeTooltip" @click="home"></el-button>
+      <el-button type="text" icon="el-icon-full-screen" :title="fullscreenTooltip" @click="zoomToFit"></el-button>
+      <el-button type="text" icon="el-icon-zoom-in" :title="zoomInTooltip" @click="stepZoom(.1)"></el-button>
+      <el-button type="text" icon="el-icon-zoom-out" :title="zoomOutTooltip" @click="stepZoom(-.1)"></el-button>
       <zw-canvas-search></zw-canvas-search>
     </div>
     <!-- Canvas -->
@@ -84,6 +84,26 @@ export default {
 
     lang () {
       return this.$store.state.lang
+    },
+
+    addTooltip () {
+      return zw.getString('tooltip.add')
+    },
+
+    homeTooltip () {
+      return zw.getString('tooltip.home')
+    },
+
+    fullscreenTooltip () {
+      return zw.getString('tooltip.fullscreen')
+    },
+
+    zoomInTooltip () {
+      return zw.getString('tooltip.zoom_in')
+    },
+
+    zoomOutTooltip () {
+      return zw.getString('tooltip.zoom_out')
     }
   },
 

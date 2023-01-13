@@ -199,7 +199,7 @@ body.fixed {
 }
 
 .ql-container .ql-editor.ql-blank::before {
-  color: rgba(0, 0, 0, 0.4);                              /* Quill default is rgba(0, 0, 0, 0.6)
+  color: rgba(0, 0, 0, 0.4);                              /* Quill default is rgba(0, 0, 0, 0.6) */
 }
 
 .ql-container .ql-editor h1 {
@@ -224,11 +224,7 @@ body.fixed {
 }
 
 .ql-container .ql-tooltip {
-  width: 250px;         /* fixed toolbar width */
+  width: 354px;         /* fixed toolbar width */
   z-index: 2;           /* stack toolbar above adjacent detail panel fields and el-checkboxes (z-index 1) */
-}
-
-.ql-container .ql-tooltip .ql-toolbar .ql-formats:nth-child(4) {
-  margin-left: 12px;    /* margin for 2nd toolbar row */
 }
 </style>

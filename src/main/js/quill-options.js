@@ -3,11 +3,10 @@ export default {
   modules: {
     toolbar: {
       container: [
-        ['bold', 'italic', 'code'],
-        ['blockquote', 'code-block'],
+        ['bold', 'italic'],
         [{list: 'ordered'}, {list: 'bullet'}],
-        [{header: [1, 2, 3, false]}],
-        ['link', 'image', 'video']
+        ['link', 'image', 'video'],
+        [{header: [1, 2, 3, false]}]
       ]
     }
   }

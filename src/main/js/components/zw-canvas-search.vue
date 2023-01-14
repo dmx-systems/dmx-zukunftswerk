@@ -105,7 +105,7 @@ export default {
     },
 
     showMatch () {
-      this.$store.dispatch('selectAndPan', this.matches[this.matchIndex])
+      this.$store.dispatch('revealTopic', this.matches[this.matchIndex])
     }
   }
 }

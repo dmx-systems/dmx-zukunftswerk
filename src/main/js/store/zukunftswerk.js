@@ -41,6 +41,7 @@ const state = {
   zoom: 1,                      // canvas zoom (Number)                   // TODO: drop this, calculate instead?
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
                                 // canvas pan, panel resize)
+  transition: false,            // true while a pan/zoom transition is in progress
   fullscreen: false,            // if true the current document is rendered fullscreen
   pageNr: {de: {}, fr: {}},     // key: document topic ID, value: pageNr (Number)
 
@@ -125,7 +126,8 @@ const actions = {
       return fetchTopicmap()
     }).then(topicmap => {
       state.topicmap = topicmap
-      initViewport()
+      const viewport = zw.getViewport()
+      dispatch('setViewport', {pan: viewport.pan, zoom: viewport.zoom, transition: true})
     }).catch(error => {
       console.warn(`Workspace ${workspaceId} check failed`, error)
     })
@@ -192,25 +194,32 @@ const actions = {
     dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, topic.viewProps)
   },
 
-  selectAndPan ({dispatch}, topic) {
+  revealTopic ({dispatch}, topic) {
     dispatch('select', topic)     // programmatic selection
-    dispatch('setPan', {
-      x: -topic.pos.x * state.zoom + zw.CANVAS_BORDER,
-      y: -topic.pos.y * state.zoom + zw.CANVAS_BORDER
+    dispatch('setViewport', {
+      pan: {
+        x: -topic.pos.x * state.zoom + zw.CANVAS_BORDER,
+        y: -topic.pos.y * state.zoom + zw.CANVAS_BORDER
+      },
+      transition: true
     })
   },
 
-  // Note: pan/zoom state is not persisted. We have the Viewport topic instead.
-  setPan (_, pan) {
+  /**
+   * @param   zoom    optional
+   */
+  setViewport (_, {pan, zoom, transition = false}) {
+    // Note: pan/zoom state is not persisted. We have the Viewport topic instead.
     // TODO: update topicmap model?
     state.pan = pan
+    if (zoom) {
+      state.zoom = zoom
+    }
+    state.transition = transition
   },
 
-  // Note: pan/zoom state is not persisted. We have the Viewport topic instead.
-  setViewport (_, {pan, zoom}) {
-    // TODO: update topicmap model?
-    state.pan = pan
-    state.zoom = zoom
+  transitionEnd () {
+    state.transition = false
   },
 
   setPanelVisibility (_, visibility) {
@@ -450,7 +459,7 @@ const actions = {
    * @param   doc     a Document topic (plain object)
    */
   revealDocument ({dispatch}, doc) {
-    dispatch('selectAndPan', state.topicmap.getTopic(doc.id))
+    dispatch('revealTopic', state.topicmap.getTopic(doc.id))
     dispatch('setDocumentFilter', doc)
   },
 
@@ -458,7 +467,7 @@ const actions = {
    * @param   doc     a Textblock topic (plain object)
    */
   revealTextblock ({dispatch}, textblock) {
-    dispatch('selectAndPan', state.topicmap.getTopic(textblock.id))
+    dispatch('revealTopic', state.topicmap.getTopic(textblock.id))
     dispatch('setTextblockFilter', textblock)
   },
 
@@ -780,12 +789,6 @@ function replaceComment (comment) {
 
 function findCommentIndex (comment) {
   return state.discussion.findIndex(cmt => cmt.id === comment.id)
-}
-
-function initViewport () {
-  const viewport = zw.getViewport()
-  state.pan = viewport.pan
-  state.zoom = viewport.zoom
 }
 
 function filerepoUrl (repoPath) {

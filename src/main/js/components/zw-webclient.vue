@@ -44,9 +44,11 @@ export default {
     },
 
     mousemove (e) {
-      this.$store.dispatch('setPan', {
-        x: this.pan.x + e.clientX - this.panPos.x,
-        y: this.pan.y + e.clientY - this.panPos.y
+      this.$store.dispatch('setViewport', {
+        pan: {
+          x: this.pan.x + e.clientX - this.panPos.x,
+          y: this.pan.y + e.clientY - this.panPos.y
+        }
       })
       this.panPos.x = e.clientX
       this.panPos.y = e.clientY
@@ -78,9 +80,12 @@ export default {
       // console.log('tab', scrollTop)
       if (scrollTop > 0) {
         document.scrollingElement.scrollTop = 0     // reset browser auto-scroll
-        this.$store.dispatch('setPan', {            // ... and compensate with panning
-          x: this.pan.x,
-          y: this.pan.y - scrollTop
+        this.$store.dispatch('setViewport', {       // ... and compensate with panning
+          pan: {
+            x: this.pan.x,
+            y: this.pan.y - scrollTop
+          },
+          transition: true
         })
       }
     }

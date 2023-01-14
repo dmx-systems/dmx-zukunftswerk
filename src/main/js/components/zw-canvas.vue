@@ -20,7 +20,7 @@
       <zw-canvas-search></zw-canvas-search>
     </div>
     <!-- Canvas -->
-    <div class="content-layer" :style="zoomStyle">
+    <div :class="['content-layer', {transition}]" :style="zoomStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
     </div>
@@ -80,6 +80,10 @@ export default {
 
     newTopics () {
       return this.$store.state.newTopics
+    },
+
+    transition () {
+      return this.$store.state.transition
     },
 
     lang () {
@@ -188,7 +192,8 @@ export default {
       const viewport = zw.getViewport()
       this.$store.dispatch('setViewport', {
         pan: viewport.pan,
-        zoom: viewport.zoom
+        zoom: viewport.zoom,
+        transition: true
       })
     },
 
@@ -218,24 +223,35 @@ export default {
       const dy = (heightC / zoom - height) / 2
       const x = (dx - xMin) * zoom + zw.CANVAS_BORDER
       const y = (dy - yMin) * zoom + zw.CANVAS_BORDER
-      this.$store.dispatch('setViewport', {pan: {x, y}, zoom})
+      this.$store.dispatch('setViewport', {pan: {x, y}, zoom, transition: true})
     },
 
     stepZoom (delta) {
       const c = this.$refs.canvas
-      this.setZoom(this.zoom + delta, c.clientWidth / 2, c.clientHeight / 2)
+      this.setZoom(this.zoom + delta, c.clientWidth / 2, c.clientHeight / 2, true)
     },
 
     wheelZoom (e) {
       this.setZoom(this.zoom - .003 * e.deltaY, e.clientX, e.clientY - HEADER_HEIGHT)
     },
 
-    setZoom (zoom, cx, cy) {
+    setZoom (zoom, cx, cy, transition) {
       zoom = Math.min(Math.max(zoom, .2), 2)
       const zoomChange = zoom - this.zoom
       const px = (cx - this.pan.x) / this.zoom * zoomChange
       const py = (cy - this.pan.y) / this.zoom * zoomChange
-      this.$store.dispatch('setViewport', {pan: {x: this.pan.x - px, y: this.pan.y - py}, zoom})
+      this.$store.dispatch('setViewport', {
+        pan: {
+          x: this.pan.x - px,
+          y: this.pan.y - py
+        },
+        zoom,
+        transition
+      })
+    },
+
+    transitionend () {
+      this.$store.dispatch('transitionEnd')
     }
   },
 
@@ -292,5 +308,9 @@ function newSynId () {
 
 .zw-canvas .content-layer {
   width: 10000px;       /* avoid early line wrapping */
+}
+
+.zw-canvas .content-layer.transition {
+  transition: transform .5s;
 }
 </style>

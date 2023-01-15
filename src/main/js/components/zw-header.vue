@@ -3,7 +3,7 @@
     <img class="logo" :src="logo">
     <!-- Workspace selector -->
     <div class="workspace">
-      <zw-string v-if="isAdmin" class="name" key="admin">label.admin</zw-string>
+      <zw-string v-if="isAdminRoute" class="name" key="admin">label.admin</zw-string>
       <template v-else>
         <zw-string>label.shared_workspace</zw-string>:
         <el-dropdown size="medium" trigger="click" @command="setWorkspace">
@@ -14,7 +14,7 @@
             <el-dropdown-item v-for="workspace in workspaces" :command="workspace.id" :key="workspace.id">
               {{getWorkspaceName(workspace)}}
             </el-dropdown-item>
-            <el-dropdown-item v-if="isTeam && teamWorkspace" :command="teamWorkspace.id" :divided="divided">
+            <el-dropdown-item v-if="isTeam && teamWorkspace" :command="teamWorkspace.id" :divided="workspacesExist">
               {{getWorkspaceName(teamWorkspace)}}
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -41,7 +41,7 @@ export default {
 
   computed: {
 
-    divided () {
+    workspacesExist () {
       return this.workspaces.length > 0
     },
 
@@ -65,7 +65,7 @@ export default {
       return this.$store.state.routerModule.router
     },
 
-    isAdmin () {
+    isAdminRoute () {
       return this.router.currentRoute.name === 'admin'
     },
 

@@ -23,13 +23,13 @@ const state = {
   users: [],                    // all users in the system (array of plain Username topics)
   teamWorkspace: undefined,     // the "Team" Workspace topic (dmx.Topic); guaranteed inited once User state is ready
 
-  // User state
+  // User
   username: '',                 // username of current user (String), empty/undefined if not logged in
   workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics)
                                 // Note: the "Team" workspace is not included.
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
 
-  // Workspace state
+  // Workspace
   workspace: undefined,         // the selected workspace (dmx.Topic)
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
@@ -45,7 +45,7 @@ const state = {
   fullscreen: false,            // if true the current document is rendered fullscreen
   pageNr: {de: {}, fr: {}},     // key: document topic ID, value: pageNr (Number)
 
-  // Discussion Panel state
+  // Discussion Panel
   panelVisibility: true,        // discussion panel visibility (Boolean)
   panelX: 0.65 * width,         // x coordinate in pixel (Number)
   discussion: undefined,        // the comments displayed in discussion panel (array of dmx.RelatedTopic)
@@ -55,9 +55,9 @@ const state = {
                                 // Either one of both is set, or none. TODO: unify these 2
   downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
-  // Misc state
+  // Misc
   lang: undefined,              // UI language ('de'/'fr')
-  loginMessage: ''              // the status message shown besides Login button
+  loginMessage: ''              // the status message shown next to Login button
 }
 
 const actions = {
@@ -664,7 +664,7 @@ function initUserState (username) {
           state.isTeam = isWritable
         }),
       http.get('/zukunftswerk/workspaces').then(response => {
-        state.workspaces = response.data  // TODO: sort
+        state.workspaces = zw.sortWorkspaces(response.data)
       }),
       store.dispatch('fetchAllUsers')     // needed for accessing display names
     ])

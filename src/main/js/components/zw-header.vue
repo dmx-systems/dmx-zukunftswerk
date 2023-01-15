@@ -50,7 +50,7 @@ export default {
     },
 
     workspaces () {
-      return this.$store.state.workspaces
+      return this.$store.getters.sortedWorkspaces
     },
 
     isTeam () {

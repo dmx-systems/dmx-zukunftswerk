@@ -591,9 +591,16 @@ const actions = {
   }
 }
 
+const getters = {
+  sortedWorkspaces () {
+    return state.workspaces.sort((t1, t2) => workspaceName(t1).localeCompare(workspaceName(t2)))
+  }
+}
+
 const store = new Vuex.Store({
   state,
-  actions
+  actions,
+  getters
 })
 
 store.registerModule('admin', adminStore)
@@ -664,7 +671,7 @@ function initUserState (username) {
           state.isTeam = isWritable
         }),
       http.get('/zukunftswerk/workspaces').then(response => {
-        state.workspaces = zw.sortWorkspaces(response.data)
+        state.workspaces = response.data
       }),
       store.dispatch('fetchAllUsers')     // needed for accessing display names
     ])
@@ -715,6 +722,18 @@ function findWorkspace (id) {
     throw Error(`Workspace ${id} not found in ${state.workspaces} (${state.workspaces.length})`)
   }
   return workspace
+}
+
+function workspaceName (topic) {
+  const de = topic.children['dmx.workspaces.workspace_name#zukunftswerk.de']
+  const fr = topic.children['dmx.workspaces.workspace_name#zukunftswerk.fr']
+  if (de && fr) {
+    return topic.children['dmx.workspaces.workspace_name#zukunftswerk.' + store.state.lang].value
+  } else if (de) {
+    return de.value
+  } else {
+    return fr.value
+  }
 }
 
 function fetchDiscussion () {

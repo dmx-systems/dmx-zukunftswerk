@@ -45,7 +45,6 @@ export default {
   getString,
 
   findWorkspace,
-  sortWorkspaces,
 
   topicSort,
   canvasFilter,
@@ -119,22 +118,6 @@ function getString (key) {
  */
 function findWorkspace (id) {
   return store.state.workspaces.find(ws => ws.id === id)
-}
-
-function sortWorkspaces (topics) {
-  return topics.sort((t1, t2) => workspaceName(t1).localeCompare(workspaceName(t2)))
-}
-
-function workspaceName (topic) {
-  const de = topic.children['dmx.workspaces.workspace_name#zukunftswerk.de']
-  const fr = topic.children['dmx.workspaces.workspace_name#zukunftswerk.fr']
-  if (de && fr) {
-    return topic.children['dmx.workspaces.workspace_name#zukunftswerk.' + store.state.lang].value
-  } else if (de) {
-    return de.value
-  } else {
-    return fr.value
-  }
 }
 
 function topicSort (t1, t2) {

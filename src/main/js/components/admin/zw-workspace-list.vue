@@ -27,7 +27,7 @@ export default {
   computed: {
 
     workspaces () {
-      return this.$store.state.admin.workspaces
+      return this.$store.getters['admin/sortedWorkspaces']
     },
 
     noWorkspaces () {

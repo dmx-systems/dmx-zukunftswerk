@@ -593,7 +593,7 @@ const actions = {
 
 const getters = {
   sortedWorkspaces () {
-    return state.workspaces.sort((t1, t2) => workspaceName(t1).localeCompare(workspaceName(t2)))
+    return state.workspaces.sort((t1, t2) => zw.workspaceName(t1).localeCompare(zw.workspaceName(t2)))
   }
 }
 
@@ -722,18 +722,6 @@ function findWorkspace (id) {
     throw Error(`Workspace ${id} not found in ${state.workspaces} (${state.workspaces.length})`)
   }
   return workspace
-}
-
-function workspaceName (topic) {
-  const de = topic.children['dmx.workspaces.workspace_name#zukunftswerk.de']
-  const fr = topic.children['dmx.workspaces.workspace_name#zukunftswerk.fr']
-  if (de && fr) {
-    return topic.children['dmx.workspaces.workspace_name#zukunftswerk.' + store.state.lang].value
-  } else if (de) {
-    return de.value
-  } else {
-    return fr.value
-  }
 }
 
 function fetchDiscussion () {

@@ -234,10 +234,17 @@ const actions = {
   }
 }
 
+const getters = {
+  sortedWorkspaces () {
+    return state.workspaces.sort((t1, t2) => zw.workspaceName(t1).localeCompare(zw.workspaceName(t2)))
+  }
+}
+
 export default {
   namespaced: true,
   state,
-  actions
+  actions,
+  getters
 }
 
 // state helper

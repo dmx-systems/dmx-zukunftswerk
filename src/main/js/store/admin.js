@@ -102,7 +102,6 @@ const actions = {
     http.get('/zukunftswerk/admin/workspaces').then(response => {
       state.workspaces = dmx.utils.instantiateMany(response.data, dmx.Topic)
       state.workspaces.push(rootState.teamWorkspace)
-      state.workspaces.sort(zw.topicSort)
     })
   },
 
@@ -119,7 +118,7 @@ const actions = {
     const usernameTopic = zw.getUser(username)
     if (!usernameTopic.memberships) {
       return http.get(`/zukunftswerk/admin/user/${username}/workspaces`).then(response => {
-        const workspaces = response.data.sort(zw.topicSort)
+        const workspaces = response.data.sort(zw.topicSort)               // FIXME: sort bilingually
         Vue.set(usernameTopic, 'memberships', workspaces)                 // ad-hoc property is not reactive by default
       })
     }
@@ -153,7 +152,7 @@ const actions = {
         removeWorkspaceIds2: removeWorkspaceIds2.join(',')
       }
     }).then(response => {
-      username.memberships = response.data.sort(zw.topicSort)
+      username.memberships = response.data.sort(zw.topicSort)       // FIXME: sort bilingually
       collapseWorkspaces(dispatch)
     })
   },
@@ -163,7 +162,6 @@ const actions = {
       params: {nameDe, nameFr}
     }).then(response => {
       state.workspaces.push(new dmx.Topic(response.data))
-      state.workspaces.sort(zw.topicSort)
       // team members are invited automatically, so we need to reset the User area
       collapseUsers(rootState, dispatch)
     })
@@ -172,7 +170,6 @@ const actions = {
   updateWorkspace ({rootState, dispatch}, workspace) {
     return dmx.rpc.updateTopic(workspace).then(workspace => {
       replaceWorkspace(workspace, rootState)        // TODO: fetch memberships
-      state.workspaces.sort(zw.topicSort)
       collapseUsers(rootState, dispatch)
     })
   },

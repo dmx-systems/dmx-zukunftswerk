@@ -7,7 +7,8 @@ export default {
 
   computed: {
     workspaceName () {
-      return this.getWorkspaceName(this.workspace)
+      // Note: while app launch workspace is not yet known
+      return this.workspace && this.getWorkspaceName(this.workspace)
     }
   },
 

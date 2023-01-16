@@ -224,7 +224,7 @@ body.fixed {
 }
 
 .ql-container .ql-tooltip {
-  width: 354px;         /* fixed toolbar width */
+  width: 384px;         /* fixed toolbar width */
   z-index: 2;           /* stack toolbar above adjacent detail panel fields and el-checkboxes (z-index 1) */
 }
 </style>

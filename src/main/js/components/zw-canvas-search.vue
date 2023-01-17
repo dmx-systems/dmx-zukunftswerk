@@ -90,12 +90,14 @@ export default {
       // TODO: refactor
       const vm = document.querySelector(`.zw-canvas-item[data-id="${topic.id}"] .item-content`).__vue__
       switch (topic.typeUri) {
-      case 'zukunftswerk.note':
-        return vm.noteHtml
-      case 'zukunftswerk.label':
-        return vm.labelText
       case 'zukunftswerk.document':
         return vm.docName
+      case 'zukunftswerk.note':
+        return vm.noteHtml                          // FIXME: don't search in html tags
+      case 'zukunftswerk.textblock':
+        return vm.textblock.de + vm.textblock.fr    // FIXME: don't search in html tags
+      case 'zukunftswerk.label':
+        return vm.labelText
       }
     },
 

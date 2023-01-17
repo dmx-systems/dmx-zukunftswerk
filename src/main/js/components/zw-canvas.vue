@@ -19,7 +19,7 @@
       <el-button type="text" icon="el-icon-zoom-out" :title="zoomOutTooltip" @click="stepZoom(-.1)"></el-button>
       <zw-canvas-search></zw-canvas-search>
     </div>
-    <!-- Canvas -->
+    <!-- Content layer -->
     <div :class="['content-layer', {transition}]" :style="zoomStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>

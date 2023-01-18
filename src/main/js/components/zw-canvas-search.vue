@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
 export default {
@@ -93,9 +94,10 @@ export default {
       case 'zukunftswerk.document':
         return vm.docName
       case 'zukunftswerk.note':
-        return vm.noteHtml                          // FIXME: don't search in html tags
+        return dmx.utils.stripHtml(vm.noteHtml)
       case 'zukunftswerk.textblock':
-        return vm.textblock.de + vm.textblock.fr    // FIXME: don't search in html tags
+        return dmx.utils.stripHtml(vm.textblock.de) +
+               dmx.utils.stripHtml(vm.textblock.fr)
       case 'zukunftswerk.label':
         return vm.labelText
       }

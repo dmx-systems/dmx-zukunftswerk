@@ -86,7 +86,8 @@ export default {
 
     comment () {
       return {
-        // Note: in a monolingual comment "fr" is not defined
+        // Note: in a monolingual comment "fr" is not defined.
+        // "de" on the other is expected to be always defined, but ZW dev-data are corrupt.
         de: this.topic.children['zukunftswerk.comment.de']?.value,
         fr: this.topic.children['zukunftswerk.comment.fr']?.value
       }

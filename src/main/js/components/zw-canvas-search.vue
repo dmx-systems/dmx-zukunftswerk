@@ -28,6 +28,7 @@ export default {
     },
 
     matchInfo () {
+      // Note: match-info DOM is always rendered to reserve horizontal space
       if (this.searchTerm) {
         if (this.noMatch) {
           return '0'
@@ -70,7 +71,8 @@ export default {
       this.matches = []
       this.matchIndex = 0
       if (this.searchTerm) {
-        this.topicmap.topics.forEach(topic => {
+        // Note: the filter is needed as arbitrary topics could be revealed via DMX Webclient
+        this.topicmap.topics.filter(zw.canvasFilter).forEach(topic => {
           const text = this.itemText(topic)
           if (text) {
             // TODO: locale lower case?

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import http from 'axios'
 import dmx from 'dmx-api'
+import searchStore from './search'
 import adminStore from './admin'
 import errorHandler from '../error-handler'
 import zw from '../zw-globals'
@@ -27,21 +28,21 @@ const state = {
   username: '',                 // username of current user (String), empty/undefined if not logged in
   workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics)
                                 // Note: the "Team" workspace is not included.
-  isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
-
-  // Workspace
   workspace: undefined,         // the selected workspace (dmx.Topic)
-  topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
   isEditor: false,              // true if the current user is an editor of the selected workspace (Boolean)
+  isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
+
+  // Canvas
+  topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
-  newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
-  isEditActive: [],             // IDs of topics being edited (array)     // TODO: drop this, query model ID instead?
   pan: {x: 0, y: 0},            // canvas pan (in pixel)                  // TODO: drop this, calculate instead?
   zoom: 1,                      // canvas zoom (Number)                   // TODO: drop this, calculate instead?
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
                                 // canvas pan, panel resize)
   transition: false,            // true while a pan/zoom transition is in progress
+  newTopics: [],                // topics being created, not yet saved (array of dmx.ViewTopic)
+  isEditActive: [],             // IDs of topics being edited (array)     // TODO: drop this, query model ID instead?
   fullscreen: false,            // if true the current document is rendered fullscreen
   pageNr: {de: {}, fr: {}},     // key: document topic ID, value: pageNr (Number)
 
@@ -603,7 +604,8 @@ const store = new Vuex.Store({
   getters
 })
 
-store.registerModule('admin', adminStore)
+store.registerModule('search', searchStore)     // TODO: do static registration instead
+store.registerModule('admin', adminStore)       // TODO: do static registration instead
 initLang()
 
 export default store

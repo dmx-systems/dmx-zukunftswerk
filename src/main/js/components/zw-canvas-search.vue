@@ -1,25 +1,16 @@
 <template>
   <div class="zw-canvas-search">
     <el-input v-model="searchTerm" :placeholder="placeholder"></el-input>
-    <el-button type="text" icon="el-icon-arrow-left" :disabled="disPrev" @click="step(-1)"></el-button>
-    <el-button type="text" icon="el-icon-arrow-right" :disabled="disNext" @click="step(1)"></el-button>
+    <el-button type="text" icon="el-icon-arrow-left" :disabled="disPrev" @click="prevMatch"></el-button>
+    <el-button type="text" icon="el-icon-arrow-right" :disabled="disNext" @click="nextMatch"></el-button>
     <span :class="['match-info', {'no-match': noMatch}, 'secondary']">{{matchInfo}}</span>
   </div>
 </template>
 
 <script>
-import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
 export default {
-
-  data () {
-    return {
-      searchTerm: '',
-      matches: [],
-      matchIndex: 0
-    }
-  },
 
   computed: {
 
@@ -50,68 +41,32 @@ export default {
       return this.matchIndex == this.matches.length - 1 || this.noMatch
     },
 
-    topicmap () {
-      return this.$store.state.topicmap
+    searchTerm: {
+      get () {
+        return this.$store.state.search.searchTerm
+      },
+      set (searchTerm) {
+        this.$store.dispatch('search/search', searchTerm)
+      }
     },
 
-    lang () {
-      return this.$store.state.lang
-    }
-  },
+    matches () {
+      return this.$store.state.search.matches
+    },
 
-  watch: {
-    searchTerm () {
-      this.search()
+    matchIndex () {
+      return this.$store.state.search.matchIndex
     }
   },
 
   methods: {
 
-    search () {
-      this.matches = []
-      this.matchIndex = 0
-      if (this.searchTerm) {
-        // Note: the filter is needed as arbitrary topics could be revealed via DMX Webclient
-        this.topicmap.topics.filter(zw.canvasFilter).forEach(topic => {
-          const text = this.itemText(topic)
-          if (text) {
-            // TODO: locale lower case?
-            const i = text.toLowerCase().indexOf(this.searchTerm.toLowerCase())
-            if (i >= 0) {
-              this.matches.push(topic)
-            }
-          }
-        })
-        // console.log('search', this.searchTerm, this.matches.length)
-        if (this.matches.length) {
-          this.showMatch()
-        }
-      }
+    prevMatch () {
+      this.$store.dispatch('search/prevMatch')
     },
 
-    itemText (topic) {
-      // TODO: refactor
-      const vm = document.querySelector(`.zw-canvas-item[data-id="${topic.id}"] .item-content`).__vue__
-      switch (topic.typeUri) {
-      case 'zukunftswerk.document':
-        return vm.docName
-      case 'zukunftswerk.note':
-        return dmx.utils.stripHtml(vm.noteHtml)
-      case 'zukunftswerk.textblock':
-        return dmx.utils.stripHtml(vm.textblock.de) +
-               dmx.utils.stripHtml(vm.textblock.fr)
-      case 'zukunftswerk.label':
-        return vm.labelText
-      }
-    },
-
-    step (delta) {
-      this.matchIndex += delta
-      this.showMatch()
-    },
-
-    showMatch () {
-      this.$store.dispatch('revealTopic', this.matches[this.matchIndex])
+    nextMatch () {
+      this.$store.dispatch('search/nextMatch')
     }
   }
 }

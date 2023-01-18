@@ -87,7 +87,7 @@ export default {
     comment () {
       return {
         // Note: in a monolingual comment "fr" is not defined
-        de: this.topic.children['zukunftswerk.comment.de'].value,
+        de: this.topic.children['zukunftswerk.comment.de']?.value,
         fr: this.topic.children['zukunftswerk.comment.fr']?.value
       }
     },

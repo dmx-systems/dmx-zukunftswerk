@@ -50,6 +50,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
+    require('./mixins/highlight').default,
     require('./mixins/color-selector').default
   ],
 
@@ -79,8 +80,8 @@ export default {
 
     textblock () {
       return {
-        de: this.html('de'),
-        fr: this.html('fr')
+        de: this.highlight(this.topic, this.html('de'), true),
+        fr: this.highlight(this.topic, this.html('fr'), true)
       }
     },
 

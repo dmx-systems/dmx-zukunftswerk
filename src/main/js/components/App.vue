@@ -90,6 +90,10 @@ body.fixed {
   margin-top: var(--field-spacing);
 }
 
+.match {
+  border: 2px solid red;
+}
+
 /* Element UI Overrides */
 .el-button--text {
   padding: 0 !important;

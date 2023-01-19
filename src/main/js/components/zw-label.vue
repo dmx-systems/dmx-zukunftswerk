@@ -1,5 +1,5 @@
 <template>
-  <div v-if="infoMode" class="zw-label info">{{labelText}}</div>
+  <div v-if="infoMode" class="zw-label info" v-html="labelText"></div>
   <div v-else :class="['zw-label', 'form']" v-loading="saving">
     <template v-if="isNew">
       <div class="field-label"><zw-string>label.new_label</zw-string></div>
@@ -35,6 +35,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
+    require('./mixins/highlight').default,
     require('./mixins/cancel').default
   ],
 
@@ -87,7 +88,7 @@ export default {
     },
 
     labelText () {
-      return this.label[this.labelLang]
+      return this.highlight(this.topic, this.label[this.labelLang])
     },
 
     // TODO: factor out as a mixin? Copies in zw-note.vue, zw-document.vue, zw-textblock.vue

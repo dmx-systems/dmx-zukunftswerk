@@ -40,6 +40,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
+    require('./mixins/highlight').default,
     require('./mixins/color-selector').default
   ],
 
@@ -85,7 +86,7 @@ export default {
     },
 
     noteHtml () {
-      return this.note[this.noteLang]
+      return this.highlight(this.topic, this.note[this.noteLang], true)
     },
 
     // TODO: factor out as a mixin? Copies in zw-label.vue, zw-document.vue, zw-textblock.vue

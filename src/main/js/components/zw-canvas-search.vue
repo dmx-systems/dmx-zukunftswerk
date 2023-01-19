@@ -96,7 +96,7 @@ export default {
 
 .zw-canvas-search .match-info {
   display: inline-block;
-  width: 60px;
+  width: 62px;
   margin-left: 5px;
   vertical-align: super;
 }

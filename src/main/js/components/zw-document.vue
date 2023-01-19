@@ -4,7 +4,7 @@
       <div class="discussion-button">
         <el-button type="text" icon="el-icon-chat-round" @click="setFilter" :title="discussTooltip"></el-button>
       </div>
-      <div class="doc-name">{{docName}}</div>
+      <div class="doc-name" v-html="docName"></div>
       <pre v-if="isText">{{text}}</pre>
       <img v-if="isImage" :src="fileUrl" @loadstart="loading" @load="complete">
       <audio v-if="isAudio" :src="fileUrl" controls></audio>
@@ -65,6 +65,7 @@ export default {
     require('./mixins/mode').default,
     require('./mixins/doc-util').default,
     require('./mixins/translation').default,
+    require('./mixins/highlight').default,
     require('./mixins/cancel').default
   ],
 
@@ -122,23 +123,27 @@ export default {
 
   computed: {
 
-    docName () {
-      const de = this.docNames.de?.value
-      const fr = this.docNames.fr?.value
-      if (de && fr) {
-        return this.docNames[this.lang].value
-      } else if (de) {
-        return this.docNames.de.value
-      } else if (fr) {
-        return this.docNames.fr.value
+    docNames () {
+      return {
+        de: this.topic.children['zukunftswerk.document_name.de'],
+        fr: this.topic.children['zukunftswerk.document_name.fr']
       }
     },
 
-    docNames () {
-      return {
-        de: this.getDocName('de'),
-        fr: this.getDocName('fr')
+    docLang () {
+      const de = this.docNames.de?.value
+      const fr = this.docNames.fr?.value
+      if (de && fr) {
+        return this.lang
+      } else if (de) {
+        return 'de'
+      } else if (fr) {
+        return 'fr'
       }
+    },
+
+    docName () {
+      return this.highlight(this.topic, this.docNames[this.docLang]?.value)
     },
 
     docModel () {
@@ -237,10 +242,6 @@ export default {
           this.text = content
         })
       }
-    },
-
-    getDocName (lang) {
-      return this.topic.children['zukunftswerk.document_name.' + lang]
     },
 
     setFilter () {

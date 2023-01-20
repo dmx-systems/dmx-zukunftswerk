@@ -1,7 +1,7 @@
 <template>
   <div :class="['zw-textblock', 'dmx-html-field', {'filter': isFiltered}, mode]" v-loading="saving" :style="style">
     <template v-if="infoMode">
-      <div class="discussion-button" :style="style">
+      <div class="discussion-button" v-if="commentsEnabled" :style="style">
         <el-button type="text" icon="el-icon-chat-round" @click="setFilter" :title="discussTooltip"></el-button>
       </div>
       <div class="text1" v-html="textblock[lang1]"></div>
@@ -50,6 +50,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/translation').default,
+    require('./mixins/commentable').default,
     require('./mixins/highlight').default,
     require('./mixins/color-selector').default
   ],

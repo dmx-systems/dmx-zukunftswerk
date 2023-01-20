@@ -1,7 +1,7 @@
 <template>
   <div :class="['zw-document', {'filter': isFiltered}, mode]" v-loading="isLoading">
     <template v-if="infoMode">
-      <div class="discussion-button">
+      <div class="discussion-button" v-if="commentsEnabled">
         <el-button type="text" icon="el-icon-chat-round" @click="setFilter" :title="discussTooltip"></el-button>
       </div>
       <div class="doc-name" v-html="docName"></div>
@@ -65,6 +65,7 @@ export default {
     require('./mixins/mode').default,
     require('./mixins/doc-util').default,
     require('./mixins/translation').default,
+    require('./mixins/commentable').default,
     require('./mixins/highlight').default,
     require('./mixins/cancel').default
   ],

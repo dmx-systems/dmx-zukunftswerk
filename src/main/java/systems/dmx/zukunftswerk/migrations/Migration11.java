@@ -10,6 +10,7 @@ import systems.dmx.core.service.Migration;
 
 /**
  * Extends "Document" and "Textblock" by "Comments enabled" flag.
+ * Updates all instances.
  * <p>
  * Part of Zukunftswerk 1.6
  * Runs ALWAYS.

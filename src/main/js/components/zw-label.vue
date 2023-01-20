@@ -72,7 +72,7 @@ export default {
     label () {
       return {
         // Note: in a monolingual label "fr" is not defined
-        de: this.topic.children['zukunftswerk.label.de'].value,
+        de: this.topic.children['zukunftswerk.label.de']?.value,
         fr: this.topic.children['zukunftswerk.label.fr']?.value
       }
     },

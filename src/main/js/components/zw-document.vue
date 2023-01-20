@@ -143,6 +143,7 @@ export default {
     },
 
     docName () {
+      // Note: docLang is undefined if neiter "de" nor "fr" is filled
       return this.highlight(this.topic, this.docNames[this.docLang]?.value)
     },
 

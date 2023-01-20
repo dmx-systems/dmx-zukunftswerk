@@ -592,11 +592,8 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         long topicId = topic.getId();
         long topicmapId = topicmapId();
         Assoc assoc = tms.getTopicMapcontext(topicmapId, topicId);
-        if (assoc == null) {
-            throw new RuntimeException(topic.getTypeUri() + " topic " + topicId + " not found in topicmap " +
-                topicmapId);
-        }
-        if (assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
+        // Note: assoc can be null if requested by non-ZW application e.g. DMX Webclient
+        if (assoc != null && assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
             topic.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
         }
     }

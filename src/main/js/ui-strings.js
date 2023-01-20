@@ -177,6 +177,8 @@ export default {
   'tooltip.translate.fr': 'Traduire',
   'tooltip.attach.de': 'Dateien anhängen',
   'tooltip.attach.fr': 'Joindre des fichiers',
+  'tooltip.reset_filter.de': 'Filter entfernen',
+  'tooltip.reset_filter.fr': 'Supprimer le filtre',
   'tooltip.open_panel.de': 'Diskussion aufklappen',
   'tooltip.open_panel.fr': 'Ouvrir la discussion',
   'tooltip.close_panel.de': 'Diskussion zuklappen',

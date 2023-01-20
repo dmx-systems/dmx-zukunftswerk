@@ -2,11 +2,14 @@
   <div :class="['zw-textblock-ref', 'zw-comment-target-ref', {closable}]" v-if="topic" :style="style" @click="reveal">
     <span class="icon fa fa-fw fa-align-left secondary"></span>
     <zw-truncate class="textblock label" :html="textblockHtml"></zw-truncate>
-    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="close"></el-button>
+    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" :title="resetTooltip"
+      @click.stop="close"></el-button>
   </div>
 </template>
 
 <script>
+import zw from '../zw-globals'
+
 export default {
 
   mixins: [
@@ -46,6 +49,10 @@ export default {
 
     lang () {
       return this.$store.state.lang
+    },
+
+    resetTooltip () {
+      return zw.getString('tooltip.reset_filter')
     }
   },
 

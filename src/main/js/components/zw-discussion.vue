@@ -11,11 +11,15 @@
       <div class="filter-container" v-if="documentFilter || textblockFilter">
         <div class="filter" v-if="documentFilter" key="document-filter">
           <zw-string>label.document_filter</zw-string>
-          <el-button class="close-button" type="text" icon="el-icon-close" @click="resetDocumentFilter"></el-button>
+          <el-button class="close-button" type="text" icon="el-icon-close" :title="resetTooltip"
+            @click="resetDocumentFilter">
+          </el-button>
         </div>
         <div class="filter" v-if="textblockFilter" key="textblock-filter">
           <zw-string>label.textblock_filter</zw-string>
-          <el-button class="close-button" type="text" icon="el-icon-close" @click="resetTextblockFilter"></el-button>
+          <el-button class="close-button" type="text" icon="el-icon-close" :title="resetTooltip"
+            @click="resetTextblockFilter">
+          </el-button>
         </div>
       </div>
       <!-- Comments -->
@@ -145,6 +149,10 @@ export default {
 
     submitTooltip () {
       return zw.getString('tooltip.submit')
+    },
+
+    resetTooltip () {
+      return zw.getString('tooltip.reset_filter')
     }
   },
 

@@ -2,11 +2,15 @@
   <div :class="['zw-document-ref', 'zw-comment-target-ref', {closable}]" v-if="document" @click="reveal">
     <span class="icon fa fa-fw fa-file-o"></span>
     <span class="doc-name label">{{docName}}</span>
-    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="close"></el-button>
+    <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" :title="resetTooltip"
+      @click.stop="close">
+    </el-button>
   </div>
 </template>
 
 <script>
+import zw from '../zw-globals'
+
 export default {
 
   props: {
@@ -16,33 +20,30 @@ export default {
 
   computed: {
 
-    docLang () {
-      const docNames = this.docNames
-      if (docNames.de && docNames.fr) {
-        return this.lang
-      } else if (docNames.de) {
-        return 'de'
-      } else if (docNames.fr) {
-        return 'fr'
+    docNames () {
+      return {
+        de: this.document.children['zukunftswerk.document_name.de']?.value,
+        fr: this.document.children['zukunftswerk.document_name.fr']?.value
       }
     },
 
     docName () {
-      if (this.docLang) {
-        const name = this.docNames[this.docLang]
-        return name && name.value
-      }
-    },
-
-    docNames () {
-      return {
-        de: this.document.children['zukunftswerk.document_name.de'],
-        fr: this.document.children['zukunftswerk.document_name.fr']
+      const docNames = this.docNames
+      if (docNames.de && docNames.fr) {
+        return docNames[this.lang]
+      } else if (docNames.de) {
+        return docNames.de
+      } else if (docNames.fr) {
+        return docNames.fr
       }
     },
 
     lang () {
       return this.$store.state.lang
+    },
+
+    resetTooltip () {
+      return zw.getString('tooltip.reset_filter')
     }
   },
 

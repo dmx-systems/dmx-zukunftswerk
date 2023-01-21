@@ -1,5 +1,6 @@
 <template>
   <div :class="['zw-comment', mode]" :data-id="topic.id" v-loading="saving">
+    <!-- Heading -->
     <div class="heading">
       <div>
         <span class="creator" :title="emailAddress">{{displayName}}</span>
@@ -22,9 +23,11 @@
         </el-dropdown>
       </div>
     </div>
+    <!-- Refs -->
     <zw-comment-ref :comment="refComment" @click="commentRefClick"></zw-comment-ref>
     <zw-document-ref :document="refDocument"></zw-document-ref>
     <zw-textblock-ref :topic="refTextblock"></zw-textblock-ref>
+    <!-- Content -->
     <div class="columns">
       <template v-if="infoMode">
         <div class="dmx-html-field info text1" v-html="comment[lang1]"></div>
@@ -42,6 +45,7 @@
         </div>
       </template>
     </div>
+    <!-- Attachments -->
     <div class="attachments">
       <zw-attachment v-for="file in attachments" :file="file" :enabled="true" :key="file.id"></zw-attachment>
     </div>

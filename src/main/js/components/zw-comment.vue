@@ -5,12 +5,7 @@
       <div>
         <span class="creator" :title="emailAddress">{{displayName}}</span>
         <span class="date label">{{date}}</span>
-        <span class="edit-flag label">
-          (<zw-string>label.translation</zw-string>:
-             <zw-string v-if="automatic" key="automatic">label.automatic</zw-string><!--
-          --><zw-string v-if="edited" key="edited">label.edited</zw-string><!--
-          --><zw-string v-if="none" key="none">label.none</zw-string>)
-        </span>
+        <span class="edit-flag label">(<zw-string>label.translation</zw-string>: {{translationMode}})</span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
         <el-button class="fa fa-reply" type="text" :title="replyTooltip" @click="reply"></el-button>
@@ -137,10 +132,6 @@ export default {
       return this.isWritable && (this.username === this.creator || this.isTeam)
     },
 
-    lang () {
-      return this.$store.state.lang
-    },
-
     created () {
       return this.topic.children['dmx.timestamps.created'].value
     },
@@ -155,22 +146,6 @@ export default {
 
     emailAddress () {
       return zw.getShowEmailAddress(this.creator) && this.creator
-    },
-
-    automatic () {
-      return this.origLang && !this.editFlag
-    },
-
-    edited () {
-      return this.origLang && this.editFlag
-    },
-
-    none () {
-      return !this.origLang
-    },
-
-    editFlag () {
-      return this.topic.children['zukunftswerk.translation_edited']?.value
     },
 
     date () {

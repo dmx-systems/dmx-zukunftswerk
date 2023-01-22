@@ -45,13 +45,6 @@ export default {
     }
   },
 
-  data () {
-    return {
-      type: 'zukunftswerk.label',
-      saving: false                 // true while label is saved
-    }
-  },
-
   props: {
 
     topic: {                        // the Label topic to render (dmx.ViewTopic)
@@ -64,6 +57,13 @@ export default {
     mode: {                         // 'info'/'form'
       type: String,
       default: 'info'
+    }
+  },
+
+  data () {
+    return {
+      type: 'zukunftswerk.label',
+      saving: false                 // true while label is saved
     }
   },
 

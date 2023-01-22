@@ -44,13 +44,6 @@ export default {
     require('./mixins/color-selector').default
   ],
 
-  data () {
-    return {
-      type: 'zukunftswerk.note',
-      saving: false                   // true while note is saved
-    }
-  },
-
   props: {
 
     topic: {                          // the Note topic to render (dmx.ViewTopic)
@@ -63,6 +56,13 @@ export default {
     mode: {                           // 'info'/'form'
       type: String,
       default: 'info'
+    }
+  },
+
+  data () {
+    return {
+      type: 'zukunftswerk.note',
+      saving: false                   // true while note is saved
     }
   },
 

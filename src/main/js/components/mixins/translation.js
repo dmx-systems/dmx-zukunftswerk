@@ -37,6 +37,10 @@ export default {
       return this.translatedLang || 'fr'
     },
 
+    editFlag () {
+      return this.topic.children['zukunftswerk.translation_edited']?.value
+    },
+
     origLang () {
       // Note: a monolingual topic has no "Original Language", "origLang" is undefined then
       return this.topic.children['zukunftswerk.language#zukunftswerk.original_language']?.value
@@ -49,6 +53,25 @@ export default {
       } else if (this.origLang === 'fr') {
         return 'de'
       }
+    },
+
+    // 3 translation modes: "automatic", "edited", "none"
+
+    automatic () {
+      return this.origLang && !this.editFlag
+    },
+
+    edited () {
+      return this.origLang && this.editFlag
+    },
+
+    none () {
+      return !this.origLang
+    },
+
+    translationMode () {
+      const suffix = this.automatic ? 'automatic' : this.edited ? 'edited' : 'none'
+      return zw.getString('label.' + suffix)
     },
 
     translateTooltip () {

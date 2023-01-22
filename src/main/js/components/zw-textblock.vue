@@ -54,13 +54,6 @@ export default {
     require('./mixins/color-selector').default
   ],
 
-  data () {
-    return {
-      type: 'zukunftswerk.textblock',
-      saving: false                   // true while textblock is saved
-    }
-  },
-
   props: {
 
     topic: {                          // the Textblock topic to render (dmx.ViewTopic)
@@ -73,6 +66,13 @@ export default {
     mode: {                           // 'info'/'form'
       type: String,
       default: 'info'
+    }
+  },
+
+  data () {
+    return {
+      type: 'zukunftswerk.textblock',
+      saving: false                   // true while textblock is saved
     }
   },
 

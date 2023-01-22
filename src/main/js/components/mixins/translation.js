@@ -14,6 +14,7 @@ export default {
 
   data () {
     return {
+      translation: '',        // last translation result
       translating: false      // true while translation is in progress
     }
   },
@@ -37,8 +38,21 @@ export default {
       return this.translatedLang || 'fr'
     },
 
-    editFlag () {
+    translationEdited () {
       return this.topic.children['zukunftswerk.translation_edited']?.value
+    },
+
+    editFlag () {
+      const uri = `${this.type}.${this.lang2}`
+      if (this.translation) {
+        return this.translation !== this.topicBuffer.children[uri].value
+      } else {
+        if (this.translationEdited) {
+          return true
+        } else {
+          return this.topic.children[uri].value !== this.topicBuffer.children[uri].value
+        }
+      }
     },
 
     origLang () {
@@ -58,11 +72,11 @@ export default {
     // 3 translation modes: "automatic", "edited", "none"
 
     automatic () {
-      return this.origLang && !this.editFlag
+      return this.origLang && !this.translationEdited
     },
 
     edited () {
-      return this.origLang && this.editFlag
+      return this.origLang && this.translationEdited
     },
 
     none () {
@@ -86,6 +100,7 @@ export default {
       return this.$store.dispatch('translate', this.model[this.lang1].value).then(translation => {
         // TODO: process detected lang
         this.model[this.lang2].value = translation.text
+        this.translation = translation.text
         return translation
       }).catch(error => {
         return this.handleError(error, 'alert')

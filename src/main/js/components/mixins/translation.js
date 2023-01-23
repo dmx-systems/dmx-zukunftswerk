@@ -42,15 +42,18 @@ export default {
       return this.topic.children['zukunftswerk.translation_edited']?.value
     },
 
-    editFlag () {
+    editedFlag () {
       const uri = `${this.type}.${this.lang2}`
       if (this.translation) {
-        return this.translation !== this.topicBuffer.children[uri].value
+        // compare to last translation, if known
+        return this.topicBuffer.children[uri].value !== this.translation
       } else {
         if (this.translationEdited) {
+          // stay "dirty" if we're dirty already
           return true
         } else {
-          return this.topic.children[uri].value !== this.topicBuffer.children[uri].value
+          // compare to stored version
+          return this.topicBuffer.children[uri].value !== this.topic.children[uri].value
         }
       }
     },

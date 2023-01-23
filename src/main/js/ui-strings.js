@@ -59,6 +59,8 @@ export default {
   'label.file.fr': 'Fichier',
   'label.translation.de': 'Übersetzung',
   'label.translation.fr': 'Traduction',
+  'label.translation_edited.de': 'Übersetzung bearbeitet',
+  'label.translation_edited.fr': 'Traduction éditée',
   'label.automatic.de': 'automatisch',
   'label.automatic.fr': 'automatique',
   'label.edited.de': 'bearbeitet',

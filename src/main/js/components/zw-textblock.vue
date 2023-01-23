@@ -26,7 +26,9 @@
             <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang2}})</div>
             <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
             </quill>
-            <div v-if="editFlag" class="label">REDACTED</div><!-- TODO -->
+            <div :class="['edited-indicator', {edited: editedFlag}]">
+              <zw-string>label.translation_edited</zw-string>
+            </div>
           </div>
         </div>
       </template>
@@ -141,7 +143,7 @@ export default {
         action = 'updateAndStoreColor'
         arg = this.topic
         // transfer edit buffer to topic model
-        this.topic.children['zukunftswerk.translation_edited'] = {value: this.editFlag}
+        this.topic.children['zukunftswerk.translation_edited'] = {value: this.editedFlag}
         this.setText('de')
         this.setText('fr')
       }
@@ -244,10 +246,6 @@ export default {
   align-self: center;
   font-size: 24px;
   margin: 0 8px;
-}
-
-.zw-textblock.form .zw-color-selector {
-  margin-top: var(--field-spacing);
 }
 
 .zw-textblock.form .save-button {

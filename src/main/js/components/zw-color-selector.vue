@@ -20,17 +20,17 @@ import zw from '../zw-globals'
 
 export default {
 
-  data () {
-    return {
-      color: this.value,              // selected color
-      colors: zw.ITEM_COLORS          // all colors
-    }
-  },
-
   props: {
     value: {                          // initial color
       type: String,
       required: true
+    }
+  },
+
+  data () {
+    return {
+      color: this.value,              // selected color
+      colors: zw.ITEM_COLORS          // all colors
     }
   },
 

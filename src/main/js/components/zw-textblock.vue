@@ -26,6 +26,9 @@
             <div class="field-label"><zw-string>item.textblock</zw-string> ({{lang2}})</div>
             <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating">
             </quill>
+            <div :class="['edited-indicator', {edited: editedFlag}]">
+              <zw-string>label.translation_edited</zw-string>
+            </div>
           </div>
         </div>
       </template>
@@ -54,13 +57,6 @@ export default {
     require('./mixins/color-selector').default
   ],
 
-  data () {
-    return {
-      type: 'zukunftswerk.textblock',
-      saving: false                   // true while textblock is saved
-    }
-  },
-
   props: {
 
     topic: {                          // the Textblock topic to render (dmx.ViewTopic)
@@ -73,6 +69,13 @@ export default {
     mode: {                           // 'info'/'form'
       type: String,
       default: 'info'
+    }
+  },
+
+  data () {
+    return {
+      type: 'zukunftswerk.textblock',
+      saving: false                   // true while textblock is saved
     }
   },
 
@@ -140,6 +143,7 @@ export default {
         action = 'updateAndStoreColor'
         arg = this.topic
         // transfer edit buffer to topic model
+        this.topic.children['zukunftswerk.translation_edited'] = {value: this.editedFlag}
         this.setText('de')
         this.setText('fr')
       }
@@ -231,7 +235,7 @@ export default {
 
 .zw-textblock.form .texts {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .zw-textblock.form .texts .field {
@@ -239,12 +243,9 @@ export default {
 }
 
 .zw-textblock.form .el-button.translate {
+  align-self: center;
   font-size: 24px;
   margin: 0 8px;
-}
-
-.zw-textblock.form .zw-color-selector {
-  margin-top: var(--field-spacing);
 }
 
 .zw-textblock.form .save-button {

@@ -14,6 +14,7 @@ export default {
 
   data () {
     return {
+      translation: '',        // last translation result
       translating: false      // true while translation is in progress
     }
   },
@@ -37,6 +38,26 @@ export default {
       return this.translatedLang || 'fr'
     },
 
+    translationEdited () {
+      return this.topic.children['zukunftswerk.translation_edited']?.value
+    },
+
+    editedFlag () {
+      const uri = `${this.type}.${this.lang2}`
+      if (this.translation) {
+        // compare to last translation, if known
+        return this.topicBuffer.children[uri].value !== this.translation
+      } else {
+        if (this.translationEdited) {
+          // stay "dirty" if we're dirty already
+          return true
+        } else {
+          // compare to stored version
+          return this.topicBuffer.children[uri].value !== this.topic.children[uri].value
+        }
+      }
+    },
+
     origLang () {
       // Note: a monolingual topic has no "Original Language", "origLang" is undefined then
       return this.topic.children['zukunftswerk.language#zukunftswerk.original_language']?.value
@@ -51,6 +72,25 @@ export default {
       }
     },
 
+    // 3 translation modes: "automatic", "edited", "none"
+
+    automatic () {
+      return this.origLang && !this.translationEdited
+    },
+
+    edited () {
+      return this.origLang && this.translationEdited
+    },
+
+    none () {
+      return !this.origLang
+    },
+
+    translationMode () {
+      const suffix = this.automatic ? 'automatic' : this.edited ? 'edited' : 'none'
+      return zw.getString('label.' + suffix)
+    },
+
     translateTooltip () {
       return zw.getString('tooltip.translate')
     }
@@ -63,6 +103,7 @@ export default {
       return this.$store.dispatch('translate', this.model[this.lang1].value).then(translation => {
         // TODO: process detected lang
         this.model[this.lang2].value = translation.text
+        this.translation = translation.text
         return translation
       }).catch(error => {
         return this.handleError(error, 'alert')

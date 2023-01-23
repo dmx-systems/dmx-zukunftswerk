@@ -23,6 +23,7 @@
         <div class="field">
           <div class="field-label"><zw-string>label.document_name</zw-string> <span>({{lang2}})</span></div>
           <el-input v-model="docModel.names[lang2].value"></el-input>
+          <div :class="['edited-indicator', {edited: editedFlag}]"><zw-string>label.translation_edited</zw-string></div>
         </div>
       </template>
       <div class="field">
@@ -56,6 +57,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
@@ -251,14 +253,22 @@ export default {
 
     save () {
       this.loading()
-      let action, msgBox
-      const arg = {topic: this.topic}
+      let action, arg, msgBox
       if (this.isNew) {
         action = 'createDocument'
+        arg = {topic: this.topic}
         msgBox = 'confirm'
       } else {
-        action = 'updateDocument'
-        arg.docModel = this.docModel
+        action = 'update'
+        arg = this.topic
+        // transfer edit buffer to topic model
+        this.topic.children['zukunftswerk.translation_edited'] = {value: this.editedFlag}
+        Vue.set(this.topic.children, 'zukunftswerk.document_name.de', this.docModel.names.de)
+        Vue.set(this.topic.children, 'zukunftswerk.document_name.fr', this.docModel.names.fr)
+        this.topic.children['dmx.files.file#zukunftswerk.de'] = this.docModel.paths.de.value ? this.docModel.files.de :
+          undefined
+        this.topic.children['dmx.files.file#zukunftswerk.fr'] = this.docModel.paths.fr.value ? this.docModel.files.fr :
+          undefined
       }
       this.$store.dispatch(action, arg).catch(error => {
         return this.handleError(error, msgBox)

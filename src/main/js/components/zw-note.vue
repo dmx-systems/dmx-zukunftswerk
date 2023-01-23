@@ -18,6 +18,7 @@
       <div class="field">
         <div class="field-label"><zw-string>item.note</zw-string> ({{lang2}})</div>
         <quill v-model="model[lang2].value" :options="quillOptions" ref="translation" v-loading="translating"></quill>
+        <div :class="['edited-indicator', {edited: editedFlag}]"><zw-string>label.translation_edited</zw-string></div>
       </div>
     </template>
     <zw-color-selector v-model="selectedColor"></zw-color-selector>
@@ -116,14 +117,13 @@ export default {
       let action, arg, msgBox
       if (this.isNew) {
         action = 'createNote'
-        arg = {
-          topic: this.topic
-        }
+        arg = {topic: this.topic}
         msgBox = 'confirm'
       } else {
         action = 'updateAndStoreColor'
         arg = this.topic
         // transfer edit buffer to topic model
+        this.topic.children['zukunftswerk.translation_edited'] = {value: this.editedFlag}
         this.setNote('de')
         this.setNote('fr')
       }

@@ -314,16 +314,6 @@ const actions = {
     })
   },
 
-  updateDocument ({dispatch}, {topic, docModel}) {
-    // Transfer edit buffer to topic model ### TODO: refactor
-    Vue.set(topic.children, 'zukunftswerk.document_name.de', docModel.names.de)
-    Vue.set(topic.children, 'zukunftswerk.document_name.fr', docModel.names.fr)
-    topic.children['dmx.files.file#zukunftswerk.de'] = docModel.paths.de.value ? docModel.files.de : undefined
-    topic.children['dmx.files.file#zukunftswerk.fr'] = docModel.paths.fr.value ? docModel.files.fr : undefined
-    //
-    dispatch('update', topic)
-  },
-
   /**
    * @param   topic         a dmx.ViewTopic of type "Note"
    * @param   monolingual   Optional: if truish a monolingual note is created (no auto-translation)

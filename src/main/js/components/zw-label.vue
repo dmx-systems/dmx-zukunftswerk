@@ -16,6 +16,7 @@
       <div class="field">
         <div class="field-label"><zw-string>item.label</zw-string> ({{lang2}})</div>
         <el-input v-model="model[lang2].value" v-loading="translating"></el-input>
+        <div :class="['edited-indicator', {edited: editedFlag}]"><zw-string>label.translation_edited</zw-string></div>
       </div>
     </template>
     <el-button class="save-button" type="primary" size="medium" @click="save">
@@ -116,6 +117,7 @@ export default {
         action = 'update'
         arg = this.topic
         // transfer edit buffer to topic model
+        this.topic.children['zukunftswerk.translation_edited'] = {value: this.editedFlag}
         this.setText('de')
         this.setText('fr')
       }

@@ -135,9 +135,7 @@ export default {
       let action, arg, msgBox
       if (this.isNew) {
         action = 'createTextblock'
-        arg = {
-          topic: this.topic
-        }
+        arg = {topic: this.topic}
         msgBox = 'confirm'
       } else {
         action = 'updateAndStoreColor'

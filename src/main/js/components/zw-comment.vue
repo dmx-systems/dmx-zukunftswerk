@@ -5,7 +5,12 @@
       <div>
         <span class="creator" :title="emailAddress">{{displayName}}</span>
         <span class="date label">{{date}}</span>
-        <span class="edit-flag label">(<zw-string>label.translation</zw-string>: {{translationMode}})</span>
+        <span class="edit-flag label" v-if="infoMode" key="edit-flag">
+          (<zw-string>label.translation</zw-string>: {{translationMode}})
+        </span>
+        <span :class="['edited-indicator', {edited: editedFlag}]" v-else key="edit-indicator">
+          <zw-string>label.translation_edited</zw-string>
+        </span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
         <el-button class="fa fa-reply" type="text" :title="replyTooltip" @click="reply"></el-button>
@@ -169,10 +174,11 @@ export default {
 
     save () {
       this.saving = true
-      this.$store.dispatch('updateComment', {
-        commentId: this.topic.id,
-        commentModel: this.model
-      }).then(() => {
+      // transfer edit buffer to topic model
+      this.topic.children['zukunftswerk.translation_edited'] = {value: this.editedFlag}
+      this.topic.children['zukunftswerk.comment.de'] = this.model.de
+      this.topic.children['zukunftswerk.comment.fr'] = this.model.fr
+      this.$store.dispatch('updateComment', this.topic).then(() => {
         this.mode = 'info'
         this.saving = false
       })
@@ -257,7 +263,8 @@ export default {
 }
 
 .zw-comment .heading .date,
-.zw-comment .heading .edit-flag {
+.zw-comment .heading .edit-flag,
+.zw-comment .heading .edited-indicator {
   margin-left: 12px;
 }
 
@@ -321,6 +328,11 @@ export default {
 .zw-comment .columns > .translate-button {
   font-size: 18px;
   margin: 0 6px;
+}
+
+.zw-comment .edited-indicator {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .zw-comment .columns.glow {

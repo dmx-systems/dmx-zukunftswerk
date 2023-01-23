@@ -352,9 +352,7 @@ const actions = {
    * @param   topic   a dmx.ViewTopic
    */
   update (_, topic) {
-    return dmx.rpc.updateTopic(topic).then(directives => {
-      removeEditActive(topic)
-    })
+    return dmx.rpc.updateTopic(topic).then(removeEditActive)
   },
 
   /**
@@ -389,14 +387,8 @@ const actions = {
   /**
    * @param   comment   a dmx.Topic
    */
-  updateComment (_, {commentId, commentModel}) {
-    dmx.rpc.updateTopic({
-      id: commentId,
-      children: {
-        'zukunftswerk.comment.de': commentModel.de,
-        'zukunftswerk.comment.fr': commentModel.fr
-      }
-    }).then(replaceComment)
+  updateComment (_, comment) {
+    dmx.rpc.updateTopic(comment).then(replaceComment)
   },
 
   addComment (_, comment) {

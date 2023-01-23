@@ -97,7 +97,6 @@ body.fixed {
 .edited-indicator {
   display: inline-block;
   visibility: hidden;
-  margin-top: 3px;
   padding: 2px 8px;
   font-size: var(--secondary-font-size);
   color:     var(--secondary-color);

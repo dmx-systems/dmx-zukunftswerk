@@ -53,7 +53,7 @@ export default {
           return true
         } else {
           // compare to stored version
-          return this.topicBuffer.children[uri].value !== this.topic.children[uri].value
+          return this.topicBuffer.children[uri].value !== this.topic.children[uri].value    // FIXME: monolingual
         }
       }
     },

@@ -61,7 +61,6 @@ import java.util.stream.Collectors;
 @Produces("application/json")
 public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, TopicmapCustomizer,
                                                                                         PostCreateAssoc,
-                                                                                        PostUpdateTopic,
                                                                                         PreDeleteAssoc,
                                                                                         PreSendTopic {
 
@@ -131,23 +130,6 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
             // Note: when a user looses Team status we don't know in which ZW workspaces she stays.
             // We leave all memberships intact.
         });
-    }
-
-    /**
-     * Sets "Translation Edited" flag once auto-translated text is edited.
-     */
-    @Override
-    public void postUpdateTopic(Topic topic, ChangeReport report, TopicModel updateModel) {
-        if (topic.getTypeUri().equals(COMMENT)) {
-            String origLang = topic.getChildTopics().getString(LANGUAGE + "#" + ORIGINAL_LANGUAGE, null);
-            // Note: a monolingual comment has no "Original Language"
-            if (origLang != null) {
-                List<Change> changes = report.getChanges(COMMENT + "." + targetLang(origLang));
-                if (changes != null) {
-                    topic.update(mf.newChildTopicsModel().set(TRANSLATION_EDITED, true));
-                }
-            }
-        }
     }
 
     /**

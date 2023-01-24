@@ -157,6 +157,25 @@ export default {
       return new Date(this.created).toLocaleString()
     },
 
+    translationMode () {
+      const suffix = this.automatic ? 'automatic' : this.edited ? 'edited' : 'none'
+      return zw.getString('label.' + suffix)
+    },
+
+    // 3 translation modes: "automatic", "edited", "none"
+
+    automatic () {
+      return this.origLang && !this.translationEdited
+    },
+
+    edited () {
+      return this.origLang && this.translationEdited
+    },
+
+    none () {
+      return !this.origLang
+    },
+
     quillOptions () {
       return zw.quillOptions2
     },

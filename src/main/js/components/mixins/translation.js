@@ -38,23 +38,25 @@ export default {
       return this.translatedLang || 'fr'
     },
 
+    // persisted "edited" flag
     translationEdited () {
       return this.topic.children['zukunftswerk.translation_edited']?.value
     },
 
+    // new "edited" flag (computed dynamically while typing)
     editedFlag () {
       const uri = `${this.type}.${this.lang2}`
-      if (this.translation) {
-        // compare to last translation, if known
-        return this.topicBuffer.children[uri].value !== this.translation
+      const buffer = this.topicBuffer.children[uri].value
+      if (!buffer || buffer === '<p><br></p>') {
+        return false                                          // regard empty buffer as non-edited
+      } else if (this.translation) {
+        return buffer !== this.translation                    // compare buffer to last translation, if known
+      } else if (this.translationEdited) {
+        return true                                           // stay "dirty" if we're dirty already
+      } else if (this.topic.children[uri]) {
+        return buffer !== this.topic.children[uri].value      // compare buffer to stored value, if exists
       } else {
-        if (this.translationEdited) {
-          // stay "dirty" if we're dirty already
-          return true
-        } else {
-          // compare to stored version
-          return this.topicBuffer.children[uri].value !== this.topic.children[uri].value    // FIXME: monolingual
-        }
+        return true
       }
     },
 
@@ -70,25 +72,6 @@ export default {
       } else if (this.origLang === 'fr') {
         return 'de'
       }
-    },
-
-    // 3 translation modes: "automatic", "edited", "none"
-
-    automatic () {
-      return this.origLang && !this.translationEdited
-    },
-
-    edited () {
-      return this.origLang && this.translationEdited
-    },
-
-    none () {
-      return !this.origLang
-    },
-
-    translationMode () {
-      const suffix = this.automatic ? 'automatic' : this.edited ? 'edited' : 'none'
-      return zw.getString('label.' + suffix)
     },
 
     translateTooltip () {

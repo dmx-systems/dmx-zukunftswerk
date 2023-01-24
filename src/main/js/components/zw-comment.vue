@@ -5,11 +5,8 @@
       <div>
         <span class="creator" :title="emailAddress">{{displayName}}</span>
         <span class="date label">{{date}}</span>
-        <span class="edit-flag label" v-if="infoMode" key="edit-flag">
-          (<zw-string>label.translation</zw-string>: {{translationMode}})
-        </span>
-        <span :class="['edited-indicator', {edited: editedFlag}]" v-else key="edit-indicator">
-          <zw-string>label.translation_edited</zw-string>
+        <span :class="['translation-info', 'label', translationMode]">
+          (<zw-string>label.translation</zw-string>: {{translationInfo}})
         </span>
       </div>
       <div class="button-panel" v-if="buttonPanelVisibility">
@@ -61,6 +58,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import zw from '../zw-globals'
 
 export default {
@@ -158,22 +156,25 @@ export default {
     },
 
     translationMode () {
-      const suffix = this.automatic ? 'automatic' : this.edited ? 'edited' : 'none'
-      return zw.getString('label.' + suffix)
+      if (this.infoMode) {
+        const topic = this.topic.children['zukunftswerk.comment.' + this.lang2]
+        if (!topic || topic.value === '<p><br></p>') {
+          return 'none'
+        } else {
+          return this.translationEdited ? 'edited' : 'automatic'
+        }
+      } else {
+        const buffer = this.model[this.lang2].value
+        if (!buffer || buffer === '<p><br></p>') {
+          return 'none'
+        } else {
+          return this.editedFlag ? 'edited' : 'automatic'
+        }
+      }
     },
 
-    // 3 translation modes: "automatic", "edited", "none"
-
-    automatic () {
-      return this.origLang && !this.translationEdited
-    },
-
-    edited () {
-      return this.origLang && this.translationEdited
-    },
-
-    none () {
-      return !this.origLang
+    translationInfo () {
+      return zw.getString('label.' + this.translationMode)
     },
 
     quillOptions () {
@@ -218,9 +219,11 @@ export default {
     edit () {
       this.mode = 'form'
       this.topicBuffer = this.topic.clone()
-      // Note: in a monolingual comment "fr" is not defined   // TODO: use newFormModel()? See zw-canvas-item edit()
+      // Note 1: in a monolingual comment "fr" is not defined. We meed it as editor model.
+      // Note 2: we can't use newFormModel() as Comment is a recursive type definition.
+      // Note 3: we need Vue.set() as topic clone is put into state already.
       if (!this.topicBuffer.children['zukunftswerk.comment.fr']) {
-        this.topicBuffer.children['zukunftswerk.comment.fr'] = {value: ""}
+        Vue.set(this.topicBuffer.children, 'zukunftswerk.comment.fr', {value: ''})
       }
       this.$nextTick(() => {
         this.$store.dispatch('jumpToComment', {
@@ -282,9 +285,12 @@ export default {
 }
 
 .zw-comment .heading .date,
-.zw-comment .heading .edit-flag,
-.zw-comment .heading .edited-indicator {
+.zw-comment .heading .translation-info {
   margin-left: 12px;
+}
+
+.zw-comment.form .heading .translation-info.edited {
+  background-color: var(--primary-color-light);
 }
 
 .zw-comment .heading .button-panel {
@@ -347,11 +353,6 @@ export default {
 .zw-comment .columns > .translate-button {
   font-size: 18px;
   margin: 0 6px;
-}
-
-.zw-comment .edited-indicator {
-  padding-top: 0;
-  padding-bottom: 0;
 }
 
 .zw-comment .columns.glow {

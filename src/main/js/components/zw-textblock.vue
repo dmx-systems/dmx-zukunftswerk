@@ -246,10 +246,6 @@ export default {
   margin: 0 8px;
 }
 
-.zw-textblock.form .edited-indicator {
-  margin-top: 3px;
-}
-
 .zw-textblock.form .save-button {
   margin-top: var(--field-spacing);
 }

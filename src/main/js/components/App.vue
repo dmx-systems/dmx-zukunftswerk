@@ -62,7 +62,7 @@ body {
   word-break: break-word;   /* FIXME: long attachment names (discussion panel) still don't break */
   /* overflow-wrap: break-word; */
   font-family: var(--primary-font-family);
-  font-size:   var(--primary-font-size);
+  font-size: var(--primary-font-size);
 }
 
 body.fixed {
@@ -77,12 +77,12 @@ body.fixed {
 
 .label {
   font-size: var(--secondary-font-size) !important;
-  color:     var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
 }
 
 .field-label {
   font-size: var(--secondary-font-size) !important;
-  color:     var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
   margin-bottom: 3px !important;
 }
 
@@ -97,9 +97,10 @@ body.fixed {
 .edited-indicator {
   display: inline-block;
   visibility: hidden;
+  margin-top: 3px;
   padding: 2px 8px;
   font-size: var(--secondary-font-size);
-  color:     var(--secondary-color);
+  color: var(--secondary-color);
   background-color: var(--primary-color-light);
 }
 

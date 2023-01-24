@@ -170,10 +170,6 @@ export default {
   font-size: 24px;
 }
 
-.zw-label.form .edited-indicator {
-  margin-top: 3px;
-}
-
 .zw-label.form .save-button {
   margin-top: var(--field-spacing);
 }

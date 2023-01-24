@@ -46,7 +46,7 @@ export default {
     // new "edited" flag (computed dynamically while typing)
     editedFlag () {
       const uri = `${this.type}.${this.lang2}`
-      const buffer = this.topicBuffer.children[uri].value
+      const buffer = this.model[this.lang2].value
       if (!buffer || buffer === '<p><br></p>') {
         return false                                          // regard empty buffer as non-edited
       } else if (this.translation) {

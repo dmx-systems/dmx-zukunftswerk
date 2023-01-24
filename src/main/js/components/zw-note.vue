@@ -200,10 +200,6 @@ export default {
   font-size: 24px;
 }
 
-.zw-note.form .edited-indicator {
-  margin-top: 3px;
-}
-
 .zw-note.form .save-button {
   margin-top: var(--field-spacing);
 }

@@ -175,7 +175,7 @@ export default {
   'tooltip.submit.fr': 'Envoyer l\'article de discussion',
   'tooltip.reply.de': 'Antworten',
   'tooltip.reply.fr': 'Répondre',
-  'tooltip.translate.de': 'Übersetzen',
+  'tooltip.translate.de': 'Text übersetzen',
   'tooltip.translate.fr': 'Traduire',
   'tooltip.attach.de': 'Dateien anhängen',
   'tooltip.attach.fr': 'Joindre des fichiers',

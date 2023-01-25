@@ -139,13 +139,12 @@ const actions = {
    */
   select ({dispatch}, topic) {
     dispatch('deselect')
-    // console.log('select', topic.id)
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.add('active')
+    dispatch('updateControlBox', {topicId: topic.id})
   },
 
   deselect () {
-    // console.log('deselect', state.topic?.id)
     if (state.topic) {
       document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
       state.topic = undefined

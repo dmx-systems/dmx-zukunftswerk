@@ -29,7 +29,7 @@ export default message => {
       if (topic) {
         topic.setPosition(message.args.pos)
         if (zw.canvasFilter(topic)) {
-          store.dispatch('updateControlBox', {topicId: topic.id})
+          store.dispatch('updateControlBox', topic.id)
         }
       }
     }

@@ -141,7 +141,7 @@ const actions = {
     dispatch('deselect')
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.add('active')
-    dispatch('updateControlBox', {topicId: topic.id})
+    dispatch('updateControlBox', topic.id)
   },
 
   deselect () {
@@ -523,11 +523,11 @@ const actions = {
   /**
    * Precondition: the given topic is visible on canvas.
    */
-  updateControlBox (_, {topicId, delay = 0}) {
-    // Note: $nextTick() instead shows strange result
+  updateControlBox (_, topicId) {
+    // Note: Vue.nextTick() instead shows strange result
     setTimeout(() => {
       document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()
-    }, delay)
+    })
   },
 
   updateUserProfile ({rootState}, userProfile) {

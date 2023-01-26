@@ -296,8 +296,8 @@ export default {
     },
 
     complete () {
-      // console.log('complete')
       this.isLoading = false
+      this.$store.dispatch('updateControlBox', this.topic.id)
     },
 
     createSuccessHandler (lang) {

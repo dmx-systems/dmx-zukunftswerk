@@ -112,7 +112,6 @@ export default {
       }).promise.then(pdf => {
         this.pdf = pdf
         this.$store.dispatch('initPageNr', this.topic.id)
-        this.$emit('complete')
       })
     },
 
@@ -127,10 +126,11 @@ export default {
         const canvas = this.$refs.canvas
         canvas.width = viewport.width
         canvas.height = viewport.height
+        this.$emit('complete')    // we must not wait for actual rendering
         return page.render({
           canvasContext: canvas.getContext('2d'),
           viewport
-        }).promise
+        }).promise                // promise is not used
       })
     },
 

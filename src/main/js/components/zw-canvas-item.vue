@@ -145,7 +145,7 @@ export default {
 
   watch: {
     mode () {
-      this.$store.dispatch('updateControlBox', {topicId: this.topic.id, delay: 300})
+      this.$store.dispatch('updateControlBox', {topicId: this.topic.id, delay: 600})
     }
   },
 

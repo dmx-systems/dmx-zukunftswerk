@@ -115,7 +115,7 @@ export default {
     lang () {
       if (this.selectedTopic) {
           // FIXME: proper synchronization with pfd/images loading (documents)
-          this.$store.dispatch('updateControlBox', {topicId: this.selectedTopic.id, delay: 300})
+          this.$store.dispatch('updateControlBox', {topicId: this.selectedTopic.id, delay: 600})
       }
     }
   },

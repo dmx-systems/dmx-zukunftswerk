@@ -111,14 +111,6 @@ export default {
     }
   },
 
-  watch: {
-    lang () {
-      if (this.selectedTopic) {
-          this.$store.dispatch('updateControlBox', this.selectedTopic.id)
-      }
-    }
-  },
-
   methods: {
 
     mode (topic) {

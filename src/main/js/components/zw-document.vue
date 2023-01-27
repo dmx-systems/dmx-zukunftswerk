@@ -87,6 +87,10 @@ export default {
     }
   },
 
+  updated () {
+    this.$store.dispatch('updateControlBox', this.topic.id)
+  },
+
   props: {
 
     topic: {                        // the Document topic to render (dmx.ViewTopic)

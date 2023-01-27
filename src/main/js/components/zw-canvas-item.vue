@@ -143,12 +143,6 @@ export default {
     }
   },
 
-  watch: {
-    mode () {
-      this.$store.dispatch('updateControlBox', this.topic.id)
-    }
-  },
-
   methods: {
 
     select (e) {

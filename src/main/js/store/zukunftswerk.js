@@ -141,7 +141,6 @@ const actions = {
     dispatch('deselect')
     state.topic = topic
     document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.add('active')
-    dispatch('updateControlBox', topic.id)
   },
 
   deselect () {

@@ -57,6 +57,10 @@ export default {
     require('./mixins/color-selector').default
   ],
 
+  updated () {
+    this.$store.dispatch('updateControlBox', this.topic.id)
+  },
+
   props: {
 
     topic: {                          // the Textblock topic to render (dmx.ViewTopic)
@@ -237,7 +241,7 @@ export default {
 }
 
 .zw-textblock.form .texts .field {
-  flex: 1 1 50%;
+  flex-basis: 44%;
 }
 
 .zw-textblock.form .el-button.translate {

@@ -45,6 +45,10 @@ export default {
     require('./mixins/color-selector').default
   ],
 
+  updated () {
+    this.$store.dispatch('updateControlBox', this.topic.id)
+  },
+
   props: {
 
     topic: {                          // the Note topic to render (dmx.ViewTopic)

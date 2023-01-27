@@ -46,6 +46,10 @@ export default {
     }
   },
 
+  updated () {
+    this.$store.dispatch('updateControlBox', this.topic.id)
+  },
+
   props: {
 
     topic: {                        // the Label topic to render (dmx.ViewTopic)

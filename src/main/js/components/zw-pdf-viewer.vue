@@ -117,6 +117,7 @@ export default {
 
     renderPage () {
       // console.log('renderPage', this.pageNr)
+      this.$emit('loading')
       return this.pdf.getPage(this.pageNr).then(page => {
         let viewport = page.getViewport({scale: 1})
         if (this.fullscreen) {
@@ -126,11 +127,13 @@ export default {
         const canvas = this.$refs.canvas
         canvas.width = viewport.width
         canvas.height = viewport.height
-        this.$emit('complete')    // we must not wait for actual rendering
+        this.$store.dispatch('updateControlBox', this.topic.id)
         return page.render({
           canvasContext: canvas.getContext('2d'),
           viewport
-        }).promise                // promise is not used
+        }).promise.then(() => {
+          this.$emit('complete')
+        })
       })
     },
 

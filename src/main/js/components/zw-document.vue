@@ -301,7 +301,6 @@ export default {
 
     complete () {
       this.isLoading = false
-      this.$store.dispatch('updateControlBox', this.topic.id)
     },
 
     createSuccessHandler (lang) {

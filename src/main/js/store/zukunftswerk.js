@@ -35,7 +35,8 @@ const state = {
 
   // Canvas
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
-  topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
+  topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected   // TODO: drop
+  selection: [],                // the selected topics (array of topic IDs)
   pan: {x: 0, y: 0},            // canvas pan (in pixel)                  // TODO: drop this, calculate instead?
   zoom: 1,                      // canvas zoom (Number)                   // TODO: drop this, calculate instead?
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
@@ -139,14 +140,14 @@ const actions = {
    */
   select ({dispatch}, topic) {
     dispatch('deselect')
-    state.topic = topic
-    document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.add('active')
+    state.topic = topic                                                                                       // TODO
+    state.selection = [topic]
   },
 
   deselect () {
-    if (state.topic) {
-      document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
-      state.topic = undefined
+    if (state.selection.length) {
+      state.topic = undefined                                                                                 // TODO
+      state.selection = []
     }
   },
 
@@ -525,7 +526,7 @@ const actions = {
   updateControlBox (_, topicId) {
     // Note: Vue.nextTick() instead shows strange result
     setTimeout(() => {
-      document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()
+      // document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()  // TODO
     })
   },
 

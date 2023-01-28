@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import Moveable from 'moveable'
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
@@ -28,14 +27,6 @@ export default {
     require('./mixins/dragging').default,
     require('./mixins/editable').default
   ],
-
-  mounted () {
-    this.moveable = this.newMovable()
-  },
-
-  destroyed () {
-    this.moveable.destroy()
-  },
 
   props: {
 
@@ -66,7 +57,6 @@ export default {
       //
       // Misc
       topicBuffer: undefined,   // The edit buffer, available only in edit mode (dmx.ViewTopic)
-      moveable: undefined,      // The Moveable instance
       dragMode: undefined,      // While a drag is in progress: one of 'dragging', 'resizing', 'rotating'.
                                 // Also used to detect if an actual drag happened after mousedown. If not we don't
                                 // dispatch any "drag" action at all. We must never dispatch "dragStart" w/o a
@@ -239,15 +229,11 @@ export default {
         this.dragMode = dragMode
         this.dragStart()
       }
-      document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')     // TODO: DRY
     },
 
     dragEnd () {
       this.dragStop()
       this.dragMode = undefined
-      this.$nextTick(() => {
-        document.querySelector(`.moveable-control-box.target-${this.topic.id}`).classList.add('active')   // TODO: DRY
-      })
     },
 
     storePos () {
@@ -313,14 +299,6 @@ export default {
 <style>
 .zw-canvas-item {
   position: absolute;
-}
-
-.moveable-control-box {
-  display: none !important;
-}
-
-.moveable-control-box.active {
-  display: block !important;
 }
 
 .zw-canvas-item.zw-arrow {

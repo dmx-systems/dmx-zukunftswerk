@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Moveable from 'moveable'
+import Moveable from 'moveable'     // TODO
 import zw from '../zw-globals'
 
 let moveable      // Moveable instance of selected arrow

@@ -23,6 +23,10 @@
     <div :class="['content-layer', {transition}]" :style="zoomStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
+      <vue-moveable :target="target" :draggable="true" :resizable="true" :rotatable="true" :origin="false"
+        :renderDirections="['e']" @drag="onDrag" @dragEnd="onDragEnd" @resize="onResize" @resizeEnd="onResizeEnd"
+        @rotate="onRotate" @rotateEnd="onRotateEnd">
+      </vue-moveable>
     </div>
     <zw-arrow-handles></zw-arrow-handles>
   </div>
@@ -76,6 +80,14 @@ export default {
 
     topics () {
       return this.topicmap?.topics.filter(zw.canvasFilter) || []
+    },
+
+    selection () {
+      return this.$store.state.selection
+    },
+
+    target () {
+      return this.selection.map(topic => `.zw-canvas-item[data-id="${topic.id}"]`)
     },
 
     newTopics () {
@@ -243,10 +255,81 @@ export default {
 
     transitionend () {
       this.$store.dispatch('transitionEnd')
+    },
+
+    // Dragging
+
+    onDrag ({target, left, top}) {
+      // console.log('onDrag', target)
+      this.onMove(target, left, top)
+    },
+
+    onDragEnd ({target}) {
+      // console.log('onDragEnd')
+      this.storePos(this.findTopic(target))
+    },
+
+    onResize ({target, width}) {
+      // console.log('onResize', width)
+      // Note: snap-to-grid while resize is in progress did not work as expected (the mouse is no longer over the
+      // component when width is changed programmatically?). Workaround is to snap only on resize-end.
+      this.setWidth(target, width)
+    },
+
+    onResizeEnd ({target}) {
+      // console.log('onResizeEnd')
+      // snap to grid
+      const topic = this.findTopic(target)
+      const width = Math.round(topic.getViewProp('dmx.topicmaps.width') / zw.CANVAS_GRID) * zw.CANVAS_GRID
+      this.setWidth(target, width)
+      this.storeSize(topic)
+    },
+
+    onRotate ({target, rotate}) {
+      const angle = Math.round(rotate / 5) * 5          // rotate in 5 deg steps
+      target.style.transform = `rotate(${angle}deg)`;   // view update not strictly required but improves rendering
+      this.findTopic(target).setViewProp('zukunftswerk.angle', angle)     // update model
+    },
+
+    onRotateEnd ({target}) {
+      // console.log('onRotateEnd')
+      this.storeAngle(this.findTopic(target))
+    },
+
+    onMove (target, x, y) {
+      // update client state
+      this.findTopic(target).setPosition({
+        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,     // snap to grid
+        y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
+      })
+    },
+
+    setWidth (target, width) {
+      // Note: for width measurement "moveable" relies on an up-to-date *view*.
+      // In contrast updating the *model* (view props) updates the view asynchronously.
+      target.style.width = `${width}px`                                   // update view
+      this.findTopic(target).setViewProp('dmx.topicmaps.width', width)    // update model
+    },
+
+    storePos (topic) {
+      this.$store.dispatch('storeTopicPos', topic)
+    },
+
+    storeSize (topic) {
+      this.$store.dispatch('storeTopicSize', topic)
+    },
+
+    storeAngle (topic) {
+      this.$store.dispatch('storeTopicAngle', topic)
+    },
+
+    findTopic (target) {
+      return this.selection.find(topic => topic.id == target.dataset.id)    // Note: dataset values are strings
     }
   },
 
   components: {
+    'vue-moveable': require('vue-moveable').default,
     'zw-canvas-item': require('./zw-canvas-item').default,
     'zw-canvas-search': require('./zw-canvas-search').default,
     'zw-arrow-handles': require('./zw-arrow-handles').default

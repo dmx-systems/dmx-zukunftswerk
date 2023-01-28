@@ -139,16 +139,11 @@ const actions = {
    * @param   topic   must not be null/undefined
    */
   select ({dispatch}, topic) {
-    dispatch('deselect')
-    state.topic = topic                                                                                       // TODO
     state.selection = [topic]
   },
 
   deselect () {
-    if (state.selection.length) {
-      state.topic = undefined                                                                                 // TODO
-      state.selection = []
-    }
+    state.selection = []
   },
 
   storeTopicPos (_, topic) {
@@ -496,7 +491,7 @@ const actions = {
   delete ({dispatch}, topic) {
     dispatch('select', topic)     // programmatic selection
     zw.confirmDeletion().then(() => {
-      state.topic = undefined
+      dispatch('deselect')
       state.topicmap.removeTopic(topic.id)        // update client state
       dmx.rpc.deleteTopic(topic.id)               // update server state
     }).catch(() => {})            // suppress unhandled rejection on cancel
@@ -663,7 +658,7 @@ function initUserState (username) {
     state.workspaces = []
     state.isTeam = false
     state.workspace = undefined
-    state.topic = undefined
+    store.dispatch('deselect')
     updateCookies()
     return Promise.resolve()
   }

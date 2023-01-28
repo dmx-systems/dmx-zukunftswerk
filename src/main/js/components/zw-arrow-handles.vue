@@ -15,6 +15,7 @@ export default {
 
   mixins: [
     require('./mixins/editable').default,
+    require('./mixins/selection').default,
     require('./mixins/zoom').default
   ],
 
@@ -40,23 +41,19 @@ export default {
   computed: {
 
     visible () {
-      return this.editable && this.topic?.typeUri === 'zukunftswerk.arrow'
-    },
-
-    topic () {
-      return this.$store.state.topic
+      return this.editable && this.selectedTopic?.typeUri === 'zukunftswerk.arrow'
     },
 
     pos () {
-      return this.topic.pos
+      return this.selectedTopic.pos
     },
 
     width () {
-      return this.topic.viewProps['dmx.topicmaps.width']
+      return this.selectedTopic.viewProps['dmx.topicmaps.width']
     },
 
     angle () {
-      return this.topic.viewProps['zukunftswerk.angle'] || 0
+      return this.selectedTopic.viewProps['zukunftswerk.angle'] || 0
     },
 
     newWidth () {
@@ -69,9 +66,9 @@ export default {
   },
 
   watch: {
-    topic () {
+    selectedTopic () {
       if (this.visible) {
-        moveable = document.querySelector(`.zw-arrow[data-id="${this.topic.id}"]`).__vue__.moveable
+        moveable = document.querySelector(`.zw-arrow[data-id="${this.selectedTopic.id}"]`).__vue__.moveable
         this.updateHandles()
       }
     }
@@ -102,11 +99,11 @@ export default {
         // update model
         this[`h${nr}`].x = Math.round(left / zw.ARROW_GRID) * zw.ARROW_GRID
         this[`h${nr}`].y = Math.round(top / zw.ARROW_GRID) * zw.ARROW_GRID
-        this.topic.setViewProp('dmx.topicmaps.width', this.newWidth)
-        this.topic.setViewProp('zukunftswerk.angle', this.newAngle)
+        this.selectedTopic.setViewProp('dmx.topicmaps.width', this.newWidth)
+        this.selectedTopic.setViewProp('zukunftswerk.angle', this.newAngle)
         // position correction
         const newPos = this[`h${nr}`]
-        this.topic.setPosition({
+        this.selectedTopic.setPosition({
           x: this.pos.x + (newPos.x - oldPos.x - this.newWidth + oldWidth) / 2,
           y: this.pos.y + (newPos.y - oldPos.y) / 2
         })
@@ -115,7 +112,7 @@ export default {
           moveable.updateTarget()
         })
       }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
-        this.$store.dispatch('storeArrowHandles', this.topic)
+        this.$store.dispatch('storeArrowHandles', this.selectedTopic)
       })
       //
       return _moveable

@@ -11,13 +11,14 @@
 export default {
 
   mixins: [
-    require('./mixins/doc-util').default
+    require('./mixins/doc-util').default,
+    require('./mixins/selection').default
   ],
 
   computed: {
 
     topic () {
-      return this.$store.state.topic
+      return this.selectedTopic
     },
 
     fullscreen () {

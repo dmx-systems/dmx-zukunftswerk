@@ -17,11 +17,6 @@ import zw from '../zw-globals'
 
 export default {
 
-  mixins: [
-    require('./mixins/selection').default,
-    require('./mixins/dragging').default
-  ],
-
   created () {
     // console.log('zw-arrow', this.topic.pos, this.pos, this.size)
     this.$emit('custom-class', 'zw-arrow')

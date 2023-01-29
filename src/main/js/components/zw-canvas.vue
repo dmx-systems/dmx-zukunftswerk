@@ -1,7 +1,7 @@
 <template>
   <div class="zw-canvas" :style="style" ref="canvas" @wheel="wheelZoom">
     <!-- Create menu -->
-    <el-dropdown v-if="isTeam || isEditor" trigger="click" @command="handle">
+    <el-dropdown v-if="editable" trigger="click" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus" :title="addTooltip"></el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="newDocument"><zw-string>item.document</zw-string></el-dropdown-item>
@@ -23,9 +23,9 @@
     <div :class="['content-layer', {transition}]" :style="zoomStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
-      <vue-moveable :target="target" :draggable="true" :resizable="true" :rotatable="true" :origin="false"
-        :renderDirections="['e']" @drag="onDrag" @dragEnd="onDragEnd" @resize="onResize" @resizeEnd="onResizeEnd"
-        @rotate="onRotate" @rotateEnd="onRotateEnd">
+      <vue-moveable :target="target" :draggable="draggable" :resizable="resizable" :rotatable="rotatable"
+        :origin="false" :renderDirections="['e']" @drag="onDrag" @dragEnd="onDragEnd" @resize="onResize"
+        @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
       </vue-moveable>
     </div>
     <zw-arrow-handles></zw-arrow-handles>
@@ -36,6 +36,22 @@
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
 
+const DEFAULT = {
+  resizeStyle: 'x',
+  rotateEnabled: true
+}
+
+const CONFIG = {
+  'zukunftswerk.arrow': {
+    resizeStyle: 'none',
+    rotateEnabled: false
+  },
+  'zukunftswerk.viewport': {
+    resizeStyle: 'none',
+    rotateEnabled: false
+  }
+}
+
 let HEADER_HEIGHT
 let synId = -1          // generator for temporary synthetic topic IDs, needed for topics not yet saved, counts down
 
@@ -43,7 +59,8 @@ export default {
 
   mixins: [
     require('./mixins/zoom').default,
-    require('./mixins/selection').default
+    require('./mixins/selection').default,
+    require('./mixins/editable').default
   ],
 
   mounted () {
@@ -66,14 +83,6 @@ export default {
       }
     },
 
-    isTeam () {
-      return this.$store.state.isTeam
-    },
-
-    isEditor () {
-      return this.$store.state.isEditor
-    },
-
     topicmap () {
       return this.$store.state.topicmap
     },
@@ -82,12 +91,28 @@ export default {
       return this.topicmap?.topics.filter(zw.canvasFilter) || []
     },
 
-    selection () {
-      return this.$store.state.selection
-    },
-
     target () {
       return this.selection.map(topic => `.zw-canvas-item[data-id="${topic.id}"]`)
+    },
+
+    draggable () {
+      return this.editable
+    },
+
+    resizable () {
+      return this.editable && this.resizeStyle !== 'none'
+    },
+
+    rotatable () {
+      return this.editable && this.rotateEnabled
+    },
+
+    resizeStyle () {
+      return this.config('resizeStyle')
+    },
+
+    rotateEnabled () {
+      return this.config('rotateEnabled')
     },
 
     newTopics () {
@@ -325,6 +350,12 @@ export default {
 
     findTopic (target) {
       return this.selection.find(topic => topic.id == target.dataset.id)    // Note: dataset values are strings
+    },
+
+    config (prop) {
+      const c = CONFIG[this.selectedTopic?.typeUri]
+      const config = c && c[prop]
+      return config !== undefined ? config : DEFAULT[prop]
     }
   },
 

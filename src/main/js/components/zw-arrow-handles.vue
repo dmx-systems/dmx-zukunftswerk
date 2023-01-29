@@ -1,15 +1,16 @@
 <template>
   <div class="zw-arrow-handles" v-show="visible" :style="zoomStyle">
-    <div class="handle" :style="{top: `${h1.y}px`, left: `${h1.x}px`}" ref="h1"></div>
-    <div class="handle" :style="{top: `${h2.y}px`, left: `${h2.x}px`}" ref="h2"></div>
+    <div class="handle h1" :style="{top: `${h1.y}px`, left: `${h1.x}px`}"></div>
+    <div class="handle h2" :style="{top: `${h2.y}px`, left: `${h2.x}px`}"></div>
+    <vue-moveable :target="target1" :draggable="true" :origin="false" @drag="onDrag1" @dragEnd="onDragEnd1">
+    </vue-moveable>
+    <vue-moveable :target="target2" :draggable="true" :origin="false" @drag="onDrag2" @dragEnd="onDragEnd2">
+    </vue-moveable>
   </div>
 </template>
 
 <script>
-import Moveable from 'moveable'     // TODO
 import zw from '../zw-globals'
-
-let moveable      // Moveable instance of selected arrow
 
 export default {
 
@@ -20,40 +21,43 @@ export default {
   ],
 
   mounted () {
-    this.m1 = this.newMovable(1, this.$refs.h1)
-    this.m2 = this.newMovable(2, this.$refs.h2)
-  },
-
-  destroyed () {
-    this.m1.destroy()
-    this.m2.destroy()
+    this.moveable = document.querySelector(`.zw-canvas .content-layer .moveable-control-box`).__vue__
   },
 
   data () {
     return {
+      target1: '.zw-arrow-handles .h1',
+      target2: '.zw-arrow-handles .h2',
+      onDrag1: this.dragHandler(1),
+      onDrag2: this.dragHandler(2),
+      onDragEnd1: this.dragEndHandler(1),
+      onDragEnd2: this.dragEndHandler(2),
       h1: {x: 0, y: 0},
       h2: {x: 0, y: 0},
-      m1: undefined,      // The Moveable instance, initialized on mount
-      m2: undefined       // The Moveable instance, initialized on mount
+      moveable: undefined,
     }
   },
 
   computed: {
 
     visible () {
-      return this.editable && this.selectedTopic?.typeUri === 'zukunftswerk.arrow'
+      return this.editable && this.topic?.typeUri === 'zukunftswerk.arrow'
+    },
+
+    topic () {
+      return this.selectedTopic
     },
 
     pos () {
-      return this.selectedTopic.pos
+      return this.topic.pos
     },
 
     width () {
-      return this.selectedTopic.viewProps['dmx.topicmaps.width']
+      return this.topic.viewProps['dmx.topicmaps.width']
     },
 
     angle () {
-      return this.selectedTopic.viewProps['zukunftswerk.angle'] || 0
+      return this.topic.viewProps['zukunftswerk.angle'] || 0
     },
 
     newWidth () {
@@ -66,9 +70,8 @@ export default {
   },
 
   watch: {
-    selectedTopic () {
+    topic () {
       if (this.visible) {
-        moveable = document.querySelector(`.zw-arrow[data-id="${this.selectedTopic.id}"]`).__vue__.moveable
         this.updateHandles()
       }
     }
@@ -76,18 +79,8 @@ export default {
 
   methods: {
 
-    newMovable (nr, target) {
-      const _moveable = new Moveable(this.$el, {
-        target,
-        draggable: true,
-        resizable: false,
-        rotatable: false,
-        origin: false
-      })
-      /* draggable */
-      _moveable.on("dragStart", ({target, clientX, clientY}) => {
-        // this.select()     // programmatic selection
-      }).on("drag", ({
+    dragHandler (nr) {
+      return ({
         target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
       }) => {
         // store old model
@@ -99,23 +92,25 @@ export default {
         // update model
         this[`h${nr}`].x = Math.round(left / zw.ARROW_GRID) * zw.ARROW_GRID
         this[`h${nr}`].y = Math.round(top / zw.ARROW_GRID) * zw.ARROW_GRID
-        this.selectedTopic.setViewProp('dmx.topicmaps.width', this.newWidth)
-        this.selectedTopic.setViewProp('zukunftswerk.angle', this.newAngle)
+        this.topic.setViewProp('dmx.topicmaps.width', this.newWidth)
+        this.topic.setViewProp('zukunftswerk.angle', this.newAngle)
         // position correction
         const newPos = this[`h${nr}`]
-        this.selectedTopic.setPosition({
+        this.topic.setPosition({
           x: this.pos.x + (newPos.x - oldPos.x - this.newWidth + oldWidth) / 2,
           y: this.pos.y + (newPos.y - oldPos.y) / 2
         })
         // update view
         this.$nextTick(() => {
-          moveable.updateTarget()
+          this.moveable.updateTarget()
         })
-      }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
-        this.$store.dispatch('storeArrowHandles', this.selectedTopic)
-      })
-      //
-      return _moveable
+      }
+    },
+
+    dragEndHandler (nr) {
+      return ({target, isDrag, clientX, clientY}) => {
+        this.$store.dispatch('storeArrowHandles', this.topic)
+      }
     },
 
     updateHandles () {
@@ -149,5 +144,9 @@ export default {
   margin-left: -7px;
   z-index: 10;
   cursor: move;
+}
+
+.zw-arrow-handles .moveable-control-box {
+  display: none !important;
 }
 </style>

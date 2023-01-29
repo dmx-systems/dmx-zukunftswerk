@@ -24,6 +24,7 @@ dmx.init({
 })
 
 // 2) Global component registrations (used by several components)
+Vue.component('vue-moveable',       require('vue-moveable').default)
 Vue.component('zw-language-switch', require('./components/zw-language-switch').default)
 Vue.component('zw-string',          require('./components/zw-string').default)
 Vue.component('zw-truncate',        require('./components/zw-truncate').default)

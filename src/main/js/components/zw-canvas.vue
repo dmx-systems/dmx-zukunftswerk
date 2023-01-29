@@ -329,7 +329,6 @@ export default {
   },
 
   components: {
-    'vue-moveable': require('vue-moveable').default,
     'zw-canvas-item': require('./zw-canvas-item').default,
     'zw-canvas-search': require('./zw-canvas-search').default,
     'zw-arrow-handles': require('./zw-arrow-handles').default

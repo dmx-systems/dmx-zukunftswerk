@@ -24,8 +24,8 @@
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
       <vue-moveable :target="target" :draggable="draggable" :resizable="resizable" :rotatable="rotatable"
-        :origin="false" :renderDirections="['e']" @drag="onDrag" @dragEnd="onDragEnd" @resize="onResize"
-        @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
+        :origin="false" :renderDirections="['e']" @dragStart="onDragStart" @drag="onDrag" @dragEnd="onDragEnd"
+        @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
       </vue-moveable>
     </div>
     <zw-arrow-handles></zw-arrow-handles>
@@ -35,22 +35,6 @@
 <script>
 import dmx from 'dmx-api'
 import zw from '../zw-globals'
-
-const DEFAULT = {
-  resizeStyle: 'x',
-  rotateEnabled: true
-}
-
-const CONFIG = {
-  'zukunftswerk.arrow': {
-    resizeStyle: 'none',
-    rotateEnabled: false
-  },
-  'zukunftswerk.viewport': {
-    resizeStyle: 'none',
-    rotateEnabled: false
-  }
-}
 
 let HEADER_HEIGHT
 let synId = -1          // generator for temporary synthetic topic IDs, needed for topics not yet saved, counts down
@@ -65,6 +49,28 @@ export default {
 
   mounted () {
     HEADER_HEIGHT = document.querySelector('.zw-header').clientHeight
+  },
+
+  data () {
+    return {
+      DEFAULT: {
+        resizeStyle: 'x',
+        rotateEnabled: true,
+        moveHandler: this.moveHandler
+      },
+      CONFIG: {
+        'zukunftswerk.arrow': {
+          resizeStyle: 'none',
+          rotateEnabled: false,
+          moveHandler: this.arrowMoveHandler
+        },
+        'zukunftswerk.viewport': {
+          resizeStyle: 'none',
+          rotateEnabled: false
+        }
+      },
+      dragStartPos: undefined   // TODO: needed? Operate on event "delta" instead?
+    }
   },
 
   computed: {
@@ -284,9 +290,13 @@ export default {
 
     // Dragging
 
+    onDragStart ({target}) {
+      this.dragStartPos = this.findTopic(target).pos
+    },
+
     onDrag ({target, left, top}) {
       // console.log('onDrag', target)
-      this.onMove(target, left, top)
+      this.config('moveHandler')(target, left, top)
     },
 
     onDragEnd ({target}) {
@@ -321,12 +331,22 @@ export default {
       this.storeAngle(this.findTopic(target))
     },
 
-    onMove (target, x, y) {
+    moveHandler (target, x, y) {
       // update client state
       this.findTopic(target).setPosition({
         x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,     // snap to grid
         y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
       })
+    },
+
+    arrowMoveHandler (target, x, y) {
+      // snap to grid
+      const p = this.dragStartPos
+      this.findTopic(target).setPosition({                                    // update model
+        x: p.x + Math.round((x - p.x) / zw.CANVAS_GRID) * zw.CANVAS_GRID,
+        y: p.y + Math.round((y - p.y) / zw.CANVAS_GRID) * zw.CANVAS_GRID
+      })
+      document.querySelector('.zw-arrow-handles').__vue__.updateHandles()     // update view
     },
 
     setWidth (target, width) {
@@ -353,9 +373,9 @@ export default {
     },
 
     config (prop) {
-      const c = CONFIG[this.selectedTopic?.typeUri]
+      const c = this.CONFIG[this.selectedTopic?.typeUri]
       const config = c && c[prop]
-      return config !== undefined ? config : DEFAULT[prop]
+      return config !== undefined ? config : this.DEFAULT[prop]
     }
   },
 

@@ -21,10 +21,8 @@ export default {
     // console.log('zw-arrow', this.topic.pos, this.pos, this.size)
     this.$emit('custom-class', 'zw-arrow')
     this.$emit('edit-enabled', false)
-    this.$emit('rotate-enabled', false)
     this.$emit('resize-style', 'none')
     this.$emit('get-size', () => this.size)
-    // this.$emit('move-handler', this.onMove)
   },
 
   props: {

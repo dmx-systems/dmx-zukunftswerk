@@ -3,8 +3,7 @@
       :style="style" @mousedown="select">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
-      @rotate-enabled="setRotateEnabled" @resize-style="setResizeStyle" @get-size="setGetSizeHandler"
-      @move-handler="setMoveHandler" @mousedown.native="mousedown">
+      @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @mousedown.native="mousedown">
     </component>
     <div class="button-panel" v-if="infoMode">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
@@ -50,10 +49,8 @@ export default {
         {action: 'action.delete', handler: this.deleteItem}
       ],
       editEnabled: true,        // Edit button visibility (Boolean)
-      rotateEnabled: true,      // Rotate handle visibility (Boolean)
       resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
       getSize: undefined,       // Custom get-size function (Function)
-      moveHandler: this.onMove, // Handler to react on item moves (Function)
       //
       // Misc
       topicBuffer: undefined,   // The edit buffer, available only in edit mode (dmx.ViewTopic)
@@ -101,14 +98,6 @@ export default {
 
     draggable () {
       return this.editable
-    },
-
-    resizable () {
-      return this.editable && this.resizeStyle !== 'none'
-    },
-
-    rotatable () {
-      return this.editable && this.rotateEnabled
     },
 
     handles () {
@@ -159,6 +148,7 @@ export default {
       })
     },
 
+    // TODO: drop, not in use anymore
     newMovable () {
       const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
         className: `target-${this.topic.id}`,   // Note: (data-)attributes are not supported, so we use a class instead
@@ -268,20 +258,12 @@ export default {
       this.editEnabled = enabled
     },
 
-    setRotateEnabled (enabled) {
-      this.rotateEnabled = enabled
-    },
-
     setResizeStyle (style) {
       this.resizeStyle = style
     },
 
     setGetSizeHandler (handler) {
       this.getSize = handler
-    },
-
-    setMoveHandler (handler) {
-      this.moveHandler = handler
     }
   },
 

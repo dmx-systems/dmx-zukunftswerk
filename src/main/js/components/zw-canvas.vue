@@ -23,13 +23,14 @@
     <div :class="['content-layer', {transition}]" :style="zoomStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
-      <vue-moveable :target="target" :draggable="draggable" :resizable="resizable" :rotatable="rotatable"
-        :origin="false" :renderDirections="['e']" @dragStart="onDragStart" @drag="onDrag" @dragEnd="onDragEnd"
-        @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
+      <vue-moveable ref="moveable" :target="targets" :draggable="draggable" :resizable="resizable"
+        :rotatable="rotatable" :origin="false" :renderDirections="['e']" @clickGroup="onClickGroup"
+        @dragGroup="onDragGroup" @dragStart="onDragStart" @drag="onDrag" @dragEnd="onDragEnd" @resize="onResize"
+        @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
       </vue-moveable>
     </div>
-    <vue-selecto :selectable-targets="['.content-layer .zw-canvas-item']" toggle-continue-select="shift"
-      @select="onSelect">
+    <vue-selecto ref="selecto" :selectable-targets="['.content-layer .zw-canvas-item']" :selectFromInside="false"
+      toggle-continue-select="shift" @dragStart="onDragSelectStart" @select="onSelect" @selectEnd="onSelectEnd">
     </vue-selecto>
     <zw-arrow-handles></zw-arrow-handles>
   </div>
@@ -100,8 +101,8 @@ export default {
       return this.topicmap?.topics.filter(zw.canvasFilter) || []
     },
 
-    target () {
-      return this.selection.map(topic => `.zw-canvas-item[data-id="${topic.id}"]`)
+    targets () {
+      return this.selection.map(topic => document.querySelector(`.zw-canvas-item[data-id="${topic.id}"]`))
     },
 
     draggable () {
@@ -291,17 +292,38 @@ export default {
       this.$store.dispatch('transitionEnd')
     },
 
-    // Selecting
+    // "selecto" event handling
+
+    // TODO: not needed if "selectFromInside"=false?
+    onDragSelectStart (e) {
+      const target = e.inputEvent.target
+      console.log('onDragSelectStart', target.tagName, target.classList, this.$refs.moveable.isMoveableElement(target),
+        this.targets.some(t => t === target), this.targets.some(t => t.contains(target)))
+      if (this.$refs.moveable.isMoveableElement(target) || this.targets.some(t => t === target || t.contains(target))) {
+        console.log('stop')
+        e.stop()
+      }
+    },
 
     onSelect (e) {
-      console.log('added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
+      console.log('onSelect added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
       this.$store.dispatch('updateSelection', {
         addTopics: e.added.map(el => el.__vue__.topic),
         removeTopicIds: e.removed.map(el => Number(el.dataset.id))
       })
     },
 
-    // Dragging
+    onSelectEnd (e) {
+      console.log('onSelectEnd', e.isDragStart)
+      if (e.isDragStart) {
+        e.inputEvent.preventDefault()
+        setTimeout(() => {
+          this.$refs.moveable.dragStart(e.inputEvent)
+        })
+      }
+    },
+
+    // "moveable" event handling
 
     onDragStart ({target}) {
       this.dragStartPos = this.findTopic(target).pos
@@ -315,6 +337,18 @@ export default {
     onDragEnd ({target}) {
       // console.log('onDragEnd')
       this.storePos(this.findTopic(target))
+    },
+
+    onClickGroup (e) {
+      console.log('onClickGroup')
+      this.$refs.selecto.clickTarget(e.inputEvent, e.inputTarget)
+    },
+
+    onDragGroup ({events}) {
+      console.log('onDragGroup')
+      events.forEach(e => {
+        this.config('moveHandler')(e.target, e.left, e.top)       // TODO
+      })
     },
 
     onResize ({target, width}) {

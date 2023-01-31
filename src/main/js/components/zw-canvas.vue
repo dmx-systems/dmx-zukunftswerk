@@ -28,6 +28,9 @@
         @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
       </vue-moveable>
     </div>
+    <vue-selecto :selectable-targets="['.content-layer .zw-canvas-item']" toggle-continue-select="shift"
+      @select="onSelect">
+    </vue-selecto>
     <zw-arrow-handles></zw-arrow-handles>
   </div>
 </template>
@@ -288,6 +291,16 @@ export default {
       this.$store.dispatch('transitionEnd')
     },
 
+    // Selecting
+
+    onSelect (e) {
+      console.log('added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
+      this.$store.dispatch('updateSelection', {
+        addTopics: e.added.map(el => el.__vue__.topic),
+        removeTopicIds: e.removed.map(el => Number(el.dataset.id))
+      })
+    },
+
     // Dragging
 
     onDragStart ({target}) {
@@ -382,7 +395,8 @@ export default {
   components: {
     'zw-canvas-item': require('./zw-canvas-item').default,
     'zw-canvas-search': require('./zw-canvas-search').default,
-    'zw-arrow-handles': require('./zw-arrow-handles').default
+    'zw-arrow-handles': require('./zw-arrow-handles').default,
+    'vue-selecto': require('vue-selecto').default
   }
 }
 

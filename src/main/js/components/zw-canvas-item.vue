@@ -1,6 +1,6 @@
 <template>
   <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]" :data-id="topic.id"
-      :style="style" @mousedown="select">
+      :style="style">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
       @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @mousedown.native="mousedown">
@@ -123,10 +123,6 @@ export default {
   },
 
   methods: {
-
-    select (e) {
-      this.$store.dispatch('select', this.topic)
-    },
 
     edit () {
       // "allChildren" is required to keep the file's "Media Type". Note: Media Type is required for file rendering,

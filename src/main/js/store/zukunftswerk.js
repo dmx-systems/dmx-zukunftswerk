@@ -135,6 +135,11 @@ const actions = {
     })
   },
 
+  updateSelection (_, {addTopics, removeTopicIds}) {
+    state.selection = state.selection.filter(topic => !removeTopicIds.includes(topic.id))
+    state.selection.push(...addTopics)
+  },
+
   /**
    * @param   topic   must not be null/undefined
    */

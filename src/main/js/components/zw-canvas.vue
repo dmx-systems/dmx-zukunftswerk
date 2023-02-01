@@ -25,8 +25,8 @@
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
       <vue-moveable ref="moveable" :target="targets" :draggable="draggable" :resizable="resizable"
         :rotatable="rotatable" :origin="false" :renderDirections="['e']" @clickGroup="onClickGroup"
-        @dragGroup="onDragGroup" @dragStart="onDragStart" @drag="onDrag" @dragEnd="onDragEnd" @resize="onResize"
-        @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
+        @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup" @dragStart="onDragStart" @drag="onDrag"
+        @dragEnd="onDragEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
       </vue-moveable>
     </div>
     <vue-selecto ref="selecto" :selectable-targets="['.content-layer .zw-canvas-item']" :selectFromInside="false"
@@ -73,7 +73,8 @@ export default {
           rotateEnabled: false
         }
       },
-      dragStartPos: undefined   // TODO: needed? Operate on event "delta" instead?
+      dragStartPos: undefined,        // object with x/y props TODO: needed? Operate on event "delta" instead?
+      dragGroupStartPos: undefined    // object, key: topicId, value: object with x/y props
     }
   },
 
@@ -118,11 +119,11 @@ export default {
     },
 
     resizeStyle () {
-      return this.config('resizeStyle')
+      return this.selectedTopic ? this.config('resizeStyle') : 'none'       // 'none' is group config
     },
 
     rotateEnabled () {
-      return this.config('rotateEnabled')
+      return this.selectedTopic ? this.config('rotateEnabled') : false      // false is group config
     },
 
     newTopics () {
@@ -296,19 +297,20 @@ export default {
 
     onDragSelectStart (e) {
       const target = e.inputEvent.target
-      console.log('onDragSelectStart', target.tagName, target.classList, this.$refs.moveable.isMoveableElement(target),
-        this.targets.some(t => t === target), this.targets.some(t => t.contains(target)))
+      // console.log('onDragSelectStart', target.tagName, target.classList,
+      //   this.$refs.moveable.isMoveableElement(target),
+      //   this.targets.some(t => t === target), this.targets.some(t => t.contains(target)))
       if (this.$refs.moveable.isMoveableElement(target) || this.targets.some(t => t === target || t.contains(target))) {
-        console.log('stop')
+        // console.log('stop')
         e.stop()
       } else {
-        console.log(e.inputEvent.target.classList.contains('zw-canvas'), e.inputEvent.shiftKey, e)
+        // console.log(e.inputEvent.target.classList.contains('zw-canvas'), e.inputEvent.shiftKey, e)
         if (e.inputEvent.target.classList.contains('zw-canvas')) {
           if (e.inputEvent.shiftKey) {
-            console.log('canvas stopPropagation')
+            // console.log('canvas stopPropagation')
             e.inputEvent.stopPropagation()
           } else {
-            console.log('canvas preventDrag')
+            // console.log('canvas preventDrag')
             e.preventDrag()
           }
         }
@@ -316,7 +318,7 @@ export default {
     },
 
     onSelect (e) {
-      console.log('onSelect added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
+      // console.log('onSelect added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
       this.$store.dispatch('updateSelection', {
         addTopics: e.added.map(el => el.__vue__.topic),
         removeTopicIds: e.removed.map(el => Number(el.dataset.id))
@@ -324,7 +326,7 @@ export default {
     },
 
     onSelectEnd (e) {
-      console.log('onSelectEnd', e.isDragStart)
+      // console.log('onSelectEnd', e.isDragStart)
       if (e.isDragStart) {
         e.inputEvent.preventDefault()
         setTimeout(() => {
@@ -339,9 +341,9 @@ export default {
       this.dragStartPos = this.findTopic(target).pos
     },
 
-    onDrag ({target, left, top}) {
-      // console.log('onDrag', target)
-      this.config('moveHandler')(target, left, top)
+    onDrag (e) {
+      // console.log('onDrag', e.target)
+      this.config('moveHandler')(this.findTopic(e.target), e.left, e.top)
     },
 
     onDragEnd ({target}) {
@@ -349,16 +351,29 @@ export default {
       this.storePos(this.findTopic(target))
     },
 
-    onClickGroup (e) {
-      console.log('onClickGroup')
-      this.$refs.selecto.clickTarget(e.inputEvent, e.inputTarget)
+    onDragGroupStart (e) {
+      // console.log('onDragGroupStart')
+      const p = {}
+      e.targets.forEach(el => {
+        const topic = this.findTopic(el)
+        p[topic.id] = topic.pos
+      })
+      this.dragGroupStartPos = p
     },
 
-    onDragGroup ({events}) {
-      console.log('onDragGroup')
-      events.forEach(e => {
-        this.config('moveHandler')(e.target, e.left, e.top)       // TODO
+    onDragGroup (e) {
+      // console.log('onDragGroup', e.left, e.top, e)
+      e.targets.forEach(el => {
+        // console.log(el.dataset.id)
+        const topic = this.findTopic(el)
+        const pos = this.dragGroupStartPos[topic.id]
+        this.config('moveHandler', topic)(topic, pos.x + e.left, pos.y + e.top)
       })
+    },
+
+    onClickGroup (e) {
+      // console.log('onClickGroup')
+      this.$refs.selecto.clickTarget(e.inputEvent, e.inputTarget)
     },
 
     onResize ({target, width}) {
@@ -388,29 +403,32 @@ export default {
       this.storeAngle(this.findTopic(target))
     },
 
-    moveHandler (target, x, y) {
-      // update client state
-      this.findTopic(target).setPosition({
-        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,     // snap to grid
+    moveHandler (topic, x, y) {
+      topic.setPosition({                                                     // update model
+        // snap to grid
+        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,
         y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
       })
     },
 
-    arrowMoveHandler (target, x, y) {
-      // snap to grid
+    arrowMoveHandler (topic, x, y) {
       const p = this.dragStartPos
-      this.findTopic(target).setPosition({                                    // update model
+      topic.setPosition({                                                     // update model
+        // snap to grid
         x: p.x + Math.round((x - p.x) / zw.CANVAS_GRID) * zw.CANVAS_GRID,
         y: p.y + Math.round((y - p.y) / zw.CANVAS_GRID) * zw.CANVAS_GRID
       })
-      document.querySelector('.zw-arrow-handles').__vue__.updateHandles()     // update view
+      const vm = document.querySelector('.zw-arrow-handles').__vue__          // update view
+      if (vm.visible) {
+        vm.updateHandles()
+      }
     },
 
     setWidth (target, width) {
       // Note: for width measurement "moveable" relies on an up-to-date *view*.
       // In contrast updating the *model* (view props) updates the view asynchronously.
-      target.style.width = `${width}px`                                   // update view
-      this.findTopic(target).setViewProp('dmx.topicmaps.width', width)    // update model
+      this.findTopic(target).setViewProp('dmx.topicmaps.width', width)        // update model
+      target.style.width = `${width}px`                                       // update view
     },
 
     storePos (topic) {
@@ -425,12 +443,12 @@ export default {
       this.$store.dispatch('storeTopicAngle', topic)
     },
 
-    findTopic (target) {
-      return this.selection.find(topic => topic.id == target.dataset.id)    // Note: dataset values are strings
+    findTopic (el) {
+      return this.selection.find(topic => topic.id == el.dataset.id)    // Note: dataset values are strings
     },
 
-    config (prop) {
-      const c = this.CONFIG[this.selectedTopic?.typeUri]
+    config (prop, topic = this.selectedTopic) {
+      const c = this.CONFIG[topic.typeUri]
       const config = c && c[prop]
       return config !== undefined ? config : this.DEFAULT[prop]
     }

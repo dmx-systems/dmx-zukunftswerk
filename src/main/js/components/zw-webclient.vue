@@ -67,8 +67,8 @@ export default {
           // console.log('stopPanning')
           this.isPanning = false
           this.dragStop()
-        } else {
-          this.$store.dispatch('deselect')
+        // } else {
+        //   this.$store.dispatch('deselect')       // Deselection is handled by "selecto" module (TODO)
         }
         this.panPos = undefined
       }

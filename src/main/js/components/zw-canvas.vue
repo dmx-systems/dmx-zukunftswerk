@@ -294,7 +294,6 @@ export default {
 
     // "selecto" event handling
 
-    // TODO: not needed if "selectFromInside"=false?
     onDragSelectStart (e) {
       const target = e.inputEvent.target
       console.log('onDragSelectStart', target.tagName, target.classList, this.$refs.moveable.isMoveableElement(target),
@@ -302,6 +301,17 @@ export default {
       if (this.$refs.moveable.isMoveableElement(target) || this.targets.some(t => t === target || t.contains(target))) {
         console.log('stop')
         e.stop()
+      } else {
+        console.log(e.inputEvent.target.classList.contains('zw-canvas'), e.inputEvent.shiftKey, e)
+        if (e.inputEvent.target.classList.contains('zw-canvas')) {
+          if (e.inputEvent.shiftKey) {
+            console.log('canvas stopPropagation')
+            e.inputEvent.stopPropagation()
+          } else {
+            console.log('canvas preventDrag')
+            e.preventDrag()
+          }
+        }
       }
     },
 

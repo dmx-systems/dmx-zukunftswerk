@@ -318,7 +318,7 @@ export default {
     },
 
     onSelect (e) {
-      // console.log('onSelect added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
+      console.log('onSelect added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
       this.$store.dispatch('updateSelection', {
         addTopics: e.added.map(el => el.__vue__.topic),
         removeTopicIds: e.removed.map(el => Number(el.dataset.id))

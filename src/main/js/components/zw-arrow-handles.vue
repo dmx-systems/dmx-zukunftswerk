@@ -2,9 +2,11 @@
   <div class="zw-arrow-handles" v-show="visible" :style="zoomStyle">
     <div class="handle h1" :style="{top: `${h1.y}px`, left: `${h1.x}px`}"></div>
     <div class="handle h2" :style="{top: `${h2.y}px`, left: `${h2.x}px`}"></div>
-    <vue-moveable :target="target1" :draggable="true" :origin="false" @drag="onDrag1" @dragEnd="onDragEnd1">
+    <vue-moveable target=".zw-arrow-handles .h1" :draggable="true" :origin="false" @dragStart="onDragStart"
+      @drag="onDrag1" @dragEnd="onDragEnd">
     </vue-moveable>
-    <vue-moveable :target="target2" :draggable="true" :origin="false" @drag="onDrag2" @dragEnd="onDragEnd2">
+    <vue-moveable target=".zw-arrow-handles .h2" :draggable="true" :origin="false" @dragStart="onDragStart"
+      @drag="onDrag2" @dragEnd="onDragEnd">
     </vue-moveable>
   </div>
 </template>
@@ -26,14 +28,10 @@ export default {
 
   data () {
     return {
-      target1: '.zw-arrow-handles .h1',
-      target2: '.zw-arrow-handles .h2',
-      onDrag1: this.dragHandler(1),
-      onDrag2: this.dragHandler(2),
-      onDragEnd1: this.dragEndHandler(1),
-      onDragEnd2: this.dragEndHandler(2),
       h1: {x: 0, y: 0},
       h2: {x: 0, y: 0},
+      onDrag1: this.dragHandler(1),
+      onDrag2: this.dragHandler(2),
       moveable: undefined,
     }
   },
@@ -79,6 +77,15 @@ export default {
 
   methods: {
 
+    onDragStart (e) {
+      console.log('onDragStart', e)
+      e.inputEvent.stopPropagation()      // prevent "selecto" from removing the selection
+    },
+
+    onDragEnd () {
+      this.$store.dispatch('storeArrowHandles', this.topic)
+    },
+
     dragHandler (nr) {
       return ({
         target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
@@ -104,12 +111,6 @@ export default {
         this.$nextTick(() => {
           this.moveable.updateTarget()
         })
-      }
-    },
-
-    dragEndHandler (nr) {
-      return ({target, isDrag, clientX, clientY}) => {
-        this.$store.dispatch('storeArrowHandles', this.topic)
       }
     },
 

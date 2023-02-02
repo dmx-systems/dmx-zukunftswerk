@@ -297,20 +297,13 @@ export default {
 
     onDragSelectStart (e) {
       const target = e.inputEvent.target
-      // console.log('onDragSelectStart', target.tagName, target.classList,
-      //   this.$refs.moveable.isMoveableElement(target),
-      //   this.targets.some(t => t === target), this.targets.some(t => t.contains(target)))
       if (this.$refs.moveable.isMoveableElement(target) || this.targets.some(t => t === target || t.contains(target))) {
-        // console.log('stop')
         e.stop()
       } else {
-        // console.log(e.inputEvent.target.classList.contains('zw-canvas'), e.inputEvent.shiftKey, e)
         if (e.inputEvent.target.classList.contains('zw-canvas')) {
           if (e.inputEvent.shiftKey) {
-            // console.log('canvas stopPropagation')
             e.inputEvent.stopPropagation()
           } else {
-            // console.log('canvas preventDrag')
             e.preventDrag()
           }
         }
@@ -318,7 +311,6 @@ export default {
     },
 
     onSelect (e) {
-      console.log('onSelect added', e.added.map(el => el.dataset.id), 'removed', e.removed.map(el => el.dataset.id))
       this.$store.dispatch('updateSelection', {
         addTopics: e.added.map(el => el.__vue__.topic),
         removeTopicIds: e.removed.map(el => Number(el.dataset.id))
@@ -326,7 +318,6 @@ export default {
     },
 
     onSelectEnd (e) {
-      // console.log('onSelectEnd', e.isDragStart)
       if (e.isDragStart) {
         e.inputEvent.preventDefault()
         setTimeout(() => {
@@ -342,17 +333,14 @@ export default {
     },
 
     onDrag (e) {
-      // console.log('onDrag', e.target)
       this.config('moveHandler')(this.findTopic(e.target), e.left, e.top)
     },
 
     onDragEnd ({target}) {
-      // console.log('onDragEnd')
       this.storePos(this.findTopic(target))
     },
 
     onDragGroupStart (e) {
-      // console.log('onDragGroupStart')
       const p = {}
       e.targets.forEach(el => {
         const topic = this.findTopic(el)
@@ -362,9 +350,7 @@ export default {
     },
 
     onDragGroup (e) {
-      // console.log('onDragGroup', e.left, e.top, e)
       e.targets.forEach(el => {
-        // console.log(el.dataset.id)
         const topic = this.findTopic(el)
         const pos = this.dragGroupStartPos[topic.id]
         this.config('moveHandler', topic)(topic, pos.x + e.left, pos.y + e.top)
@@ -372,19 +358,16 @@ export default {
     },
 
     onClickGroup (e) {
-      // console.log('onClickGroup')
       this.$refs.selecto.clickTarget(e.inputEvent, e.inputTarget)
     },
 
     onResize ({target, width}) {
-      // console.log('onResize', width)
       // Note: snap-to-grid while resize is in progress did not work as expected (the mouse is no longer over the
       // component when width is changed programmatically?). Workaround is to snap only on resize-end.
       this.setWidth(target, width)
     },
 
     onResizeEnd ({target}) {
-      // console.log('onResizeEnd')
       // snap to grid
       const topic = this.findTopic(target)
       const width = Math.round(topic.getViewProp('dmx.topicmaps.width') / zw.CANVAS_GRID) * zw.CANVAS_GRID
@@ -399,7 +382,6 @@ export default {
     },
 
     onRotateEnd ({target}) {
-      // console.log('onRotateEnd')
       this.storeAngle(this.findTopic(target))
     },
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['zw-canvas-item', customClass, mode, dragMode, {selected: isSelected, draggable}]" :data-id="topic.id"
+  <div :class="['zw-canvas-item', customClass, mode, {selected: isSelected, draggable}]" :data-id="topic.id"
       :style="style">
     <component class="item-content" :is="topic.typeUri" :topic="topic" :topic-buffer="topicBuffer" :mode="mode"
       @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
@@ -23,7 +23,6 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/selection').default,
-    require('./mixins/dragging').default,
     require('./mixins/editable').default
   ],
 
@@ -42,6 +41,7 @@ export default {
 
   data () {
     return {
+      topicBuffer: undefined,   // The edit buffer, available only in edit mode (dmx.ViewTopic)
       // Default configuration, can be (partially) supplied by child component
       customClass: undefined,   // Custom class (String)
       actions: [                // Actions appearing in the button panel
@@ -50,15 +50,7 @@ export default {
       ],
       editEnabled: true,        // Edit button visibility (Boolean)
       resizeStyle: 'x',         // 'x'/'xy'/'none' (String)
-      getSize: undefined,       // Custom get-size function (Function)
-      //
-      // Misc
-      topicBuffer: undefined,   // The edit buffer, available only in edit mode (dmx.ViewTopic)
-      dragMode: undefined,      // While a drag is in progress: one of 'dragging', 'resizing', 'rotating'.
-                                // Also used to detect if an actual drag happened after mousedown. If not we don't
-                                // dispatch any "drag" action at all. We must never dispatch "dragStart" w/o a
-                                // corresponding "dragStop".
-      dragStartPos: undefined
+      getSize: undefined        // Custom get-size function (Function)
     }
   },
 
@@ -100,13 +92,6 @@ export default {
       return this.editable
     },
 
-    handles () {
-      switch (this.resizeStyle) {
-        case 'x':  return ['e']
-        case 'xy': return ['e', 's', 'se']
-      }
-    },
-
     buttonStyle () {
       return {
         'font-size': `${14 / this.zoom}px`      // "14" matches --primary-font-size (see App.vue)
@@ -136,102 +121,13 @@ export default {
       this.$store.dispatch('delete', this.topic)
     },
 
-    onMove (x, y) {
-      // update client state
-      this.topic.setPosition({
-        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,     // snap to grid
-        y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
-      })
-    },
-
-    // TODO: drop, not in use anymore
-    newMovable () {
-      const moveable = new Moveable(document.querySelector('.zw-canvas .content-layer'), {
-        className: `target-${this.topic.id}`,   // Note: (data-)attributes are not supported, so we use a class instead
-        target: this.$el,
-        draggable: this.draggable,
-        resizable: this.resizable,
-        rotatable: this.rotatable,
-        origin: false
-      })
-      moveable.renderDirections = this.handles
-      /* draggable */
-      moveable.on('dragStart', () => {
-        this.dragStartPos = this.topic.pos
-      }).on('drag', ({left, top}) => {
-        this.dragging('dragging')
-        this.moveHandler(left, top, this.dragStartPos)     // update client state
-      }).on('dragEnd', () => {
-        this.dragEnd()
-        this.storePos()
-      })
-      /* resizable */
-      moveable.on('resize', ({target, width, height}) => {
-        this.dragging('resizing')
-        // Note: snap-to-grid while resize is in progress did not work as expected (the mouse is no longer over the
-        // component when width is changed programmatically?). Workaround is to snap only on resize-end.
-        this.setWidth(target, width)
-        // this.topic.setViewProp('dmx.topicmaps.height', height)                 // FIXME: 'auto'
-        // this.$el.style.height = `${this.h}${this.h !== 'auto' ? 'px' : ''}`    // FIXME?
-      }).on('resizeEnd', ({target}) => {
-        this.dragEnd()
-        // snap to grid
-        const width = Math.round(this.topic.getViewProp('dmx.topicmaps.width') / zw.CANVAS_GRID) * zw.CANVAS_GRID
-        this.setWidth(target, width)
-        this.storeSize()
-      });
-      /* rotatable */
-      moveable.on('rotate', ({target, rotate}) => {
-        this.dragging('rotating')
-        const angle = Math.round(rotate / 5) * 5      // rotate in 5 deg steps
-        target.style.transform = `rotate(${angle}deg)`;
-        this.topic.setViewProp('zukunftswerk.angle', angle)
-      }).on('rotateEnd', () => {
-        this.dragEnd()
-        this.storeAngle()
-      });
-      //
-      return moveable
-    },
-
-    setWidth (target, width) {
-      // Note: for width measurement "moveable" relies on an up-to-date *view*.
-      // In contrast updating the *model* (view props) updates the view asynchronously.
-      target.style.width = `${width}px`                       // update view
-      this.topic.setViewProp('dmx.topicmaps.width', width)    // update model
-    },
-
     mousedown (e) {
       const inInput = e.target.tagName === 'INPUT'
       const inQuill = e.target.closest('.ql-container')
-      // FIXME: handle el-upload fields?
+      // TODO: handle el-upload fields as well
       if (inInput || inQuill) {
-        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag                 // TODO: drop?
+        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag
       }
-    },
-
-    dragging (dragMode) {
-      if (!this.dragMode) {
-        this.dragMode = dragMode
-        this.dragStart()
-      }
-    },
-
-    dragEnd () {
-      this.dragStop()
-      this.dragMode = undefined
-    },
-
-    storePos () {
-      this.$store.dispatch('storeTopicPos', this.topic)
-    },
-
-    storeSize () {
-      this.$store.dispatch('storeTopicSize', this.topic)
-    },
-
-    storeAngle () {
-      this.$store.dispatch('storeTopicAngle', this.topic)
     },
 
     buttonVisibility (action) {
@@ -293,15 +189,6 @@ export default {
 
 .zw-canvas-item.draggable {
   cursor: grab;
-}
-
-.zw-canvas-item.dragging {
-  cursor: grabbing;
-}
-
-.zw-canvas-item.dragging .item-content,
-.zw-canvas-item.resizing .item-content {
-  pointer-events: none;                     /* Prevent interaction with PDF renderer while dragging/resizing */
 }
 
 .zw-canvas-item .button-panel {

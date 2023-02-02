@@ -78,7 +78,6 @@ export default {
   methods: {
 
     onDragStart (e) {
-      console.log('onDragStart', e)
       e.inputEvent.stopPropagation()      // prevent "selecto" from removing the selection
     },
 

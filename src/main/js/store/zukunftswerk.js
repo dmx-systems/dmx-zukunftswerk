@@ -135,20 +135,35 @@ const actions = {
     })
   },
 
+  /**
+   * Updates the application's selection state according to an *interactive* selection.
+   */
   updateSelection (_, {addTopics, removeTopicIds}) {
     state.selection = state.selection.filter(topic => !removeTopicIds.includes(topic.id))
     state.selection.push(...addTopics)
   },
 
   /**
+   * Selects a topic *programmatically*.
+   *
    * @param   topic   must not be null/undefined
    */
   select ({dispatch}, topic) {
     state.selection = [topic]
+    // update "Selecto" component's internal selection state
+    const target = document.querySelector(`.zw-canvas-item[data-id="${topic.id}"]`)
+    document.querySelector('.zw-canvas .selecto-selection').__vue__.setSelectedTargets([target])
   },
 
+  /**
+   * Removes the selection *programmatically*.
+   * Note: *interactive* (de)selection is handled by "Selecto" component, resulting in `updateSelection()`.
+   */
   deselect () {
     state.selection = []
+    // update "Selecto" component's internal selection state
+    // Note: while app initialization components are not yet available, `deselect()` is dispacthed by `setWorkspace()`
+    document.querySelector('.zw-canvas .selecto-selection')?.__vue__.setSelectedTargets([])
   },
 
   storeTopicPos (_, topic) {
@@ -480,7 +495,7 @@ const actions = {
   updatePlaceholder () {
       const editor = document.querySelector('.zw-discussion .new-comment .ql-editor')
       // editor is not available
-      // 1) while app launch, updatePlaceholder() is called by setWorkspace()
+      // 1) while app launch, updatePlaceholder() is called by setWorkspace()     // TODO: revise
       // 2) when discussion panel is closed
       if (editor) {
         const suffix = state.documentFilter ? '_document' : state.textblockFilter ? '_textblock' : ''

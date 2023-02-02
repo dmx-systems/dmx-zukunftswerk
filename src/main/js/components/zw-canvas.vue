@@ -293,7 +293,7 @@ export default {
       this.$store.dispatch('transitionEnd')
     },
 
-    // "selecto" event handling
+    // "Selecto" event handling
 
     onDragSelectStart (e) {
       const target = e.inputEvent.target
@@ -326,7 +326,7 @@ export default {
       }
     },
 
-    // "moveable" event handling
+    // "Moveable" event handling
 
     onDragStart ({target}) {
       this.dragStartPos = this.findTopic(target).pos

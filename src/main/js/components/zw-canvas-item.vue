@@ -126,7 +126,7 @@ export default {
       const inQuill = e.target.closest('.ql-container')
       // TODO: handle el-upload fields as well
       if (inInput || inQuill) {
-        e.stopPropagation()     // prevent vue-draggable-resizable from initiating a drag
+        e.stopPropagation()     // prevent vue-moveable from initiating a drag
       }
     },
 

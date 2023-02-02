@@ -523,10 +523,10 @@ const actions = {
   /**
    * Precondition: the given topic is visible on canvas.
    */
-  updateControlBox (_, topicId) {
+  updateControlBox () {
     // Note: Vue.nextTick() instead shows strange result
     setTimeout(() => {
-      // document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()  // TODO
+      document.querySelector('.zw-canvas .content-layer .moveable-control-box').__vue__.updateTarget()
     })
   },
 

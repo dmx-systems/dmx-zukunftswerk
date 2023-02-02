@@ -22,17 +22,12 @@ export default {
     require('./mixins/zoom').default
   ],
 
-  mounted () {
-    this.moveable = document.querySelector(`.zw-canvas .content-layer .moveable-control-box`).__vue__
-  },
-
   data () {
     return {
       h1: {x: 0, y: 0},
       h2: {x: 0, y: 0},
       onDrag1: this.dragHandler(1),
-      onDrag2: this.dragHandler(2),
-      moveable: undefined,
+      onDrag2: this.dragHandler(2)
     }
   },
 
@@ -107,9 +102,7 @@ export default {
           y: this.pos.y + (newPos.y - oldPos.y) / 2
         })
         // update view
-        this.$nextTick(() => {
-          this.moveable.updateTarget()
-        })
+        this.$store.dispatch('updateControlBox')
       }
     },
 

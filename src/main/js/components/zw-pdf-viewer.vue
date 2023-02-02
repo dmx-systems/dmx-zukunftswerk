@@ -127,7 +127,7 @@ export default {
         const canvas = this.$refs.canvas
         canvas.width = viewport.width
         canvas.height = viewport.height
-        this.$store.dispatch('updateControlBox', this.topic.id)
+        this.$store.dispatch('updateControlBox')
         return page.render({
           canvasContext: canvas.getContext('2d'),
           viewport

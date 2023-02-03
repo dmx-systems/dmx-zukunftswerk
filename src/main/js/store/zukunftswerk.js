@@ -172,6 +172,10 @@ const actions = {
     }
   },
 
+  storeTopicCoords (_, topicCoords) {
+    dmx.rpc.setTopicPositions(state.topicmap.id, topicCoords)               // update server state
+  },
+
   storeTopicSize (_, topic) {
     if (topic.id >= 0) {
       dmx.rpc.setTopicViewProps(state.topicmap.id, topic.id, {

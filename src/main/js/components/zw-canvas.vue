@@ -24,9 +24,10 @@
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
       <vue-moveable ref="moveable" :target="targets" :draggable="draggable" :resizable="resizable"
-        :rotatable="rotatable" :origin="false" :renderDirections="['e']" @clickGroup="onClickGroup"
-        @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup" @dragStart="onDragStart" @drag="onDrag"
-        @dragEnd="onDragEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd">
+        :rotatable="rotatable" :origin="false" :renderDirections="['e']" @dragStart="onDragStart" @drag="onDrag"
+        @dragEnd="onDragEnd" @clickGroup="onClickGroup" @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup"
+        @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
+        @rotateEnd="onRotateEnd">
       </vue-moveable>
     </div>
     <vue-selecto ref="selecto" :selectable-targets="['.content-layer .zw-canvas-item']" :selectFromInside="false"
@@ -328,16 +329,20 @@ export default {
 
     // "Moveable" event handling
 
-    onDragStart ({target}) {
-      this.dragStartPos = this.findTopic(target).pos
+    onDragStart (e) {
+      this.dragStartPos = this.findTopic(e.target).pos
     },
 
     onDrag (e) {
       this.config('moveHandler')(this.findTopic(e.target), e.left, e.top)
     },
 
-    onDragEnd ({target}) {
-      this.storePos(this.findTopic(target))
+    onDragEnd (e) {
+      this.$store.dispatch('storeTopicPos', this.findTopic(e.target))
+    },
+
+    onClickGroup (e) {
+      this.$refs.selecto.clickTarget(e.inputEvent, e.inputTarget)
     },
 
     onDragGroupStart (e) {
@@ -357,14 +362,23 @@ export default {
       })
     },
 
-    onClickGroup (e) {
-      this.$refs.selecto.clickTarget(e.inputEvent, e.inputTarget)
+    onDragGroupEnd (e) {
+      const topicCoords = e.targets.map(el => {
+        const topic = this.findTopic(el)
+        const pos = topic.pos
+        return {
+          topicId: topic.id,
+          x: pos.x,
+          y: pos.y
+        }
+      })
+      this.$store.dispatch('storeTopicCoords', topicCoords)
     },
 
-    onResize ({target, width}) {
+    onResize (e) {
       // Note: snap-to-grid while resize is in progress did not work as expected (the mouse is no longer over the
       // component when width is changed programmatically?). Workaround is to snap only on resize-end.
-      this.setWidth(target, width)
+      this.setWidth(e.target, e.width)
     },
 
     onResizeEnd ({target}) {
@@ -372,7 +386,7 @@ export default {
       const topic = this.findTopic(target)
       const width = Math.round(topic.getViewProp('dmx.topicmaps.width') / zw.CANVAS_GRID) * zw.CANVAS_GRID
       this.setWidth(target, width)
-      this.storeSize(topic)
+      this.$store.dispatch('storeTopicSize', topic)
     },
 
     onRotate ({target, rotate}) {
@@ -381,12 +395,12 @@ export default {
       this.findTopic(target).setViewProp('zukunftswerk.angle', angle)     // update model
     },
 
-    onRotateEnd ({target}) {
-      this.storeAngle(this.findTopic(target))
+    onRotateEnd (e) {
+      this.$store.dispatch('storeTopicAngle', this.findTopic(e.target))
     },
 
     moveHandler (topic, x, y) {
-      topic.setPosition({                                                     // update model
+      topic.setPosition({                                                 // update model
         // snap to grid
         x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,
         y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
@@ -395,12 +409,12 @@ export default {
 
     arrowMoveHandler (topic, x, y) {
       const p = this.dragStartPos
-      topic.setPosition({                                                     // update model
+      topic.setPosition({                                                 // update model
         // snap to grid
         x: p.x + Math.round((x - p.x) / zw.CANVAS_GRID) * zw.CANVAS_GRID,
         y: p.y + Math.round((y - p.y) / zw.CANVAS_GRID) * zw.CANVAS_GRID
       })
-      const vm = document.querySelector('.zw-arrow-handles').__vue__          // update view
+      const vm = document.querySelector('.zw-arrow-handles').__vue__      // update view
       if (vm.visible) {
         vm.updateHandles()
       }
@@ -409,24 +423,12 @@ export default {
     setWidth (target, width) {
       // Note: for width measurement "moveable" relies on an up-to-date *view*.
       // In contrast updating the *model* (view props) updates the view asynchronously.
-      this.findTopic(target).setViewProp('dmx.topicmaps.width', width)        // update model
-      target.style.width = `${width}px`                                       // update view
-    },
-
-    storePos (topic) {
-      this.$store.dispatch('storeTopicPos', topic)
-    },
-
-    storeSize (topic) {
-      this.$store.dispatch('storeTopicSize', topic)
-    },
-
-    storeAngle (topic) {
-      this.$store.dispatch('storeTopicAngle', topic)
+      this.findTopic(target).setViewProp('dmx.topicmaps.width', width)    // update model
+      target.style.width = `${width}px`                                   // update view
     },
 
     findTopic (el) {
-      return this.selection.find(topic => topic.id == el.dataset.id)    // Note: dataset values are strings
+      return this.selection.find(topic => topic.id == el.dataset.id)      // Note: dataset values are strings
     },
 
     config (prop, topic = this.selectedTopic) {

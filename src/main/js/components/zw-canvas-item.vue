@@ -5,7 +5,7 @@
       @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
       @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @mousedown.native="mousedown">
     </component>
-    <div class="button-panel" v-if="infoMode">
+    <div class="item-toolbar" v-if="infoMode">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
           :key="action.action" @click="action.handler" @mousedown.native.stop>
         <zw-string>{{action.action}}</zw-string>
@@ -191,12 +191,12 @@ export default {
   cursor: grab;
 }
 
-.zw-canvas-item .button-panel {
+.zw-canvas-item .item-toolbar {
   position: absolute;
   visibility: hidden;
 }
 
-.zw-canvas-item:hover .button-panel {
+.zw-canvas-item:hover .item-toolbar {
   visibility: visible;
 }
 </style>

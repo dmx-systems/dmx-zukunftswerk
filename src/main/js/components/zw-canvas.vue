@@ -1,7 +1,7 @@
 <template>
   <div class="zw-canvas" :style="style" ref="canvas" @wheel="wheelZoom">
-    <!-- Create menu -->
-    <el-dropdown v-if="editable" trigger="click" @command="handle">
+    <!-- Add menu -->
+    <el-dropdown class="add-menu" v-if="editable" trigger="click" @command="handle">
       <el-button class="add-button" type="text" icon="el-icon-circle-plus" :title="addTooltip"></el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="newDocument"><zw-string>item.document</zw-string></el-dropdown-item>
@@ -12,7 +12,7 @@
       </el-dropdown-menu>
     </el-dropdown>
     <!-- Toolbar -->
-    <div class="button-panel">
+    <div class="canvas-toolbar">
       <el-button type="text" icon="el-icon-s-home" :title="homeTooltip" @click="home"></el-button>
       <el-button type="text" icon="el-icon-full-screen" :title="fullscreenTooltip" @click="zoomToFit"></el-button>
       <el-button type="text" icon="el-icon-zoom-in" :title="zoomInTooltip" @click="stepZoom(.1)"></el-button>
@@ -464,29 +464,29 @@ function newSynId () {
   overflow: hidden;
 }
 
-.zw-canvas > .el-dropdown {
+.zw-canvas .add-menu {
   position: absolute;   /* don't consume canvas space */
 }
 
-.zw-canvas > .el-dropdown .add-button {
+.zw-canvas .add-menu .add-button {
   position: relative;   /* only positioned elements have a z-index; "absolute" would displace dropdown menu */
   z-index: 1;           /* place button above canvas items */
   font-size: 24px;
   margin: 8px;
 }
 
-.zw-canvas > .button-panel {
+.zw-canvas .canvas-toolbar {
   position: absolute;
   top: 4px;
   right: 16px;
-  z-index: 1;           /* place zoom buttons above canvas items */
+  z-index: 1;           /* place buttons above canvas items */
 }
 
-.zw-canvas > .button-panel .el-button {
+.zw-canvas .canvas-toolbar .el-button {
   font-size: 24px;
 }
 
-.zw-canvas > .button-panel .zw-canvas-search {
+.zw-canvas .canvas-toolbar .zw-canvas-search {
   margin-left: 15px;
 }
 

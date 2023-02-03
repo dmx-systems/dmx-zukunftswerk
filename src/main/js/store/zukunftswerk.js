@@ -35,7 +35,8 @@ const state = {
 
   // Canvas
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
-  topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected
+  topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected   // TODO: drop
+  selection: [],                // the selected topics (array of topic IDs)
   pan: {x: 0, y: 0},            // canvas pan (in pixel)                  // TODO: drop this, calculate instead?
   zoom: 1,                      // canvas zoom (Number)                   // TODO: drop this, calculate instead?
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
@@ -135,25 +136,44 @@ const actions = {
   },
 
   /**
+   * Updates the application's selection state according to an *interactive* selection.
+   */
+  updateSelection (_, {addTopics, removeTopicIds}) {
+    state.selection = state.selection.filter(topic => !removeTopicIds.includes(topic.id))
+    state.selection.push(...addTopics)
+  },
+
+  /**
+   * Selects a topic *programmatically*.
+   *
    * @param   topic   must not be null/undefined
    */
   select ({dispatch}, topic) {
-    dispatch('deselect')
-    state.topic = topic
-    document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.add('active')
+    state.selection = [topic]
+    // update "Selecto" component's internal selection state
+    const target = document.querySelector(`.zw-canvas-item[data-id="${topic.id}"]`)
+    document.querySelector('.zw-canvas .selecto-selection').__vue__.setSelectedTargets([target])
   },
 
+  /**
+   * Removes the selection *programmatically*.
+   * Note: *interactive* (de)selection is handled by "Selecto" component, resulting in `updateSelection()`.
+   */
   deselect () {
-    if (state.topic) {
-      document.querySelector(`.moveable-control-box.target-${state.topic.id}`).classList.remove('active')
-      state.topic = undefined
-    }
+    state.selection = []
+    // update "Selecto" component's internal selection state
+    // Note: while app initialization components are not yet available, `deselect()` is dispacthed by `setWorkspace()`
+    document.querySelector('.zw-canvas .selecto-selection')?.__vue__.setSelectedTargets([])
   },
 
   storeTopicPos (_, topic) {
     if (topic.id >= 0) {
       dmx.rpc.setTopicPosition(state.topicmap.id, topic.id, topic.pos)      // update server state
     }
+  },
+
+  storeTopicCoords (_, topicCoords) {
+    dmx.rpc.setTopicPositions(state.topicmap.id, topicCoords)               // update server state
   },
 
   storeTopicSize (_, topic) {
@@ -479,7 +499,7 @@ const actions = {
   updatePlaceholder () {
       const editor = document.querySelector('.zw-discussion .new-comment .ql-editor')
       // editor is not available
-      // 1) while app launch, updatePlaceholder() is called by setWorkspace()
+      // 1) while app launch, updatePlaceholder() is called by setWorkspace()     // TODO: revise
       // 2) when discussion panel is closed
       if (editor) {
         const suffix = state.documentFilter ? '_document' : state.textblockFilter ? '_textblock' : ''
@@ -495,7 +515,7 @@ const actions = {
   delete ({dispatch}, topic) {
     dispatch('select', topic)     // programmatic selection
     zw.confirmDeletion().then(() => {
-      state.topic = undefined
+      dispatch('deselect')
       state.topicmap.removeTopic(topic.id)        // update client state
       dmx.rpc.deleteTopic(topic.id)               // update server state
     }).catch(() => {})            // suppress unhandled rejection on cancel
@@ -522,10 +542,10 @@ const actions = {
   /**
    * Precondition: the given topic is visible on canvas.
    */
-  updateControlBox (_, topicId) {
+  updateControlBox () {
     // Note: Vue.nextTick() instead shows strange result
     setTimeout(() => {
-      document.querySelector(`.zw-canvas-item[data-id="${topicId}"]`).__vue__.moveable.updateTarget()
+      document.querySelector('.zw-canvas .content-layer .moveable-control-box').__vue__.updateTarget()
     })
   },
 
@@ -662,7 +682,7 @@ function initUserState (username) {
     state.workspaces = []
     state.isTeam = false
     state.workspace = undefined
-    state.topic = undefined
+    store.dispatch('deselect')
     updateCookies()
     return Promise.resolve()
   }

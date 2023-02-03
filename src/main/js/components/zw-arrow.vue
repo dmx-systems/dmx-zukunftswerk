@@ -17,19 +17,12 @@ import zw from '../zw-globals'
 
 export default {
 
-  mixins: [
-    require('./mixins/selection').default,
-    require('./mixins/dragging').default
-  ],
-
   created () {
     // console.log('zw-arrow', this.topic.pos, this.pos, this.size)
     this.$emit('custom-class', 'zw-arrow')
     this.$emit('edit-enabled', false)
-    this.$emit('rotate-enabled', false)
     this.$emit('resize-style', 'none')
     this.$emit('get-size', () => this.size)
-    this.$emit('move-handler', this.onMove)
   },
 
   props: {
@@ -50,17 +43,6 @@ export default {
         w: this.topic.viewProps['dmx.topicmaps.width'],
         h: 2 * zw.CANVAS_GRID - 2
       }
-    }
-  },
-
-  methods: {
-    onMove (x, y, startPos) {
-      // snap to grid
-      this.topic.setPosition({                                                // update model
-        x: startPos.x + Math.round((x - startPos.x) / zw.ARROW_GRID) * zw.ARROW_GRID,
-        y: startPos.y + Math.round((y - startPos.y) / zw.ARROW_GRID) * zw.ARROW_GRID
-      })
-      document.querySelector('.zw-arrow-handles').__vue__.updateHandles()     // update view
     }
   }
 }

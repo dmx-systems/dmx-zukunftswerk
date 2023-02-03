@@ -1,39 +1,33 @@
 <template>
   <div class="zw-arrow-handles" v-show="visible" :style="zoomStyle">
-    <div class="handle" :style="{top: `${h1.y}px`, left: `${h1.x}px`}" ref="h1"></div>
-    <div class="handle" :style="{top: `${h2.y}px`, left: `${h2.x}px`}" ref="h2"></div>
+    <div class="handle h1" :style="{top: `${h1.y}px`, left: `${h1.x}px`}"></div>
+    <div class="handle h2" :style="{top: `${h2.y}px`, left: `${h2.x}px`}"></div>
+    <vue-moveable target=".zw-arrow-handles .h1" :draggable="true" :origin="false" @dragStart="onDragStart"
+      @drag="onDrag1" @dragEnd="onDragEnd">
+    </vue-moveable>
+    <vue-moveable target=".zw-arrow-handles .h2" :draggable="true" :origin="false" @dragStart="onDragStart"
+      @drag="onDrag2" @dragEnd="onDragEnd">
+    </vue-moveable>
   </div>
 </template>
 
 <script>
-import Moveable from 'moveable'
 import zw from '../zw-globals'
-
-let moveable      // Moveable instance of selected arrow
 
 export default {
 
   mixins: [
     require('./mixins/editable').default,
+    require('./mixins/selection').default,
     require('./mixins/zoom').default
   ],
-
-  mounted () {
-    this.m1 = this.newMovable(1, this.$refs.h1)
-    this.m2 = this.newMovable(2, this.$refs.h2)
-  },
-
-  destroyed () {
-    this.m1.destroy()
-    this.m2.destroy()
-  },
 
   data () {
     return {
       h1: {x: 0, y: 0},
       h2: {x: 0, y: 0},
-      m1: undefined,      // The Moveable instance, initialized on mount
-      m2: undefined       // The Moveable instance, initialized on mount
+      onDrag1: this.dragHandler(1),
+      onDrag2: this.dragHandler(2)
     }
   },
 
@@ -44,7 +38,7 @@ export default {
     },
 
     topic () {
-      return this.$store.state.topic
+      return this.selectedTopic
     },
 
     pos () {
@@ -71,7 +65,6 @@ export default {
   watch: {
     topic () {
       if (this.visible) {
-        moveable = document.querySelector(`.zw-arrow[data-id="${this.topic.id}"]`).__vue__.moveable
         this.updateHandles()
       }
     }
@@ -79,18 +72,16 @@ export default {
 
   methods: {
 
-    newMovable (nr, target) {
-      const _moveable = new Moveable(this.$el, {
-        target,
-        draggable: true,
-        resizable: false,
-        rotatable: false,
-        origin: false
-      })
-      /* draggable */
-      _moveable.on("dragStart", ({target, clientX, clientY}) => {
-        // this.select()     // programmatic selection
-      }).on("drag", ({
+    onDragStart (e) {
+      e.inputEvent.stopPropagation()      // prevent "selecto" from removing the selection
+    },
+
+    onDragEnd () {
+      this.$store.dispatch('storeArrowHandles', this.topic)
+    },
+
+    dragHandler (nr) {
+      return ({
         target, transform, left, top, right, bottom, beforeDelta, beforeDist, delta, dist, clientX, clientY
       }) => {
         // store old model
@@ -100,8 +91,8 @@ export default {
         }
         const oldWidth = this.newWidth
         // update model
-        this[`h${nr}`].x = Math.round(left / zw.ARROW_GRID) * zw.ARROW_GRID
-        this[`h${nr}`].y = Math.round(top / zw.ARROW_GRID) * zw.ARROW_GRID
+        this[`h${nr}`].x = Math.round(left / zw.CANVAS_GRID) * zw.CANVAS_GRID
+        this[`h${nr}`].y = Math.round(top / zw.CANVAS_GRID) * zw.CANVAS_GRID
         this.topic.setViewProp('dmx.topicmaps.width', this.newWidth)
         this.topic.setViewProp('zukunftswerk.angle', this.newAngle)
         // position correction
@@ -111,14 +102,8 @@ export default {
           y: this.pos.y + (newPos.y - oldPos.y) / 2
         })
         // update view
-        this.$nextTick(() => {
-          moveable.updateTarget()
-        })
-      }).on("dragEnd", ({target, isDrag, clientX, clientY}) => {
-        this.$store.dispatch('storeArrowHandles', this.topic)
-      })
-      //
-      return _moveable
+        this.$store.dispatch('updateControlBox')
+      }
     },
 
     updateHandles () {
@@ -152,5 +137,9 @@ export default {
   margin-left: -7px;
   z-index: 10;
   cursor: move;
+}
+
+.zw-arrow-handles .moveable-control-box {
+  display: none !important;
 }
 </style>

@@ -33,7 +33,6 @@ export default {
   methods: {
 
     mousedown (e) {
-      // console.log('mousedown', e.target, e.target.classList.contains('zw-canvas'))
       if (e.target.classList.contains('zw-canvas')) {
         this.$el.addEventListener('mousemove', this.mousemove)
         this.panPos = {
@@ -59,16 +58,12 @@ export default {
     },
 
     mouseup (e) {
-      // console.log('mouseup', e.target, this.panPos)
       if (this.panPos) {
         this.$el.removeEventListener('mousemove', this.mousemove)
         if (this.isPanning) {
           // stop panning
-          // console.log('stopPanning')
           this.isPanning = false
           this.dragStop()
-        } else {
-          this.$store.dispatch('deselect')
         }
         this.panPos = undefined
       }
@@ -77,7 +72,6 @@ export default {
     tab () {
       // auto-pan canvas when focus outside viewport while tabbing
       const scrollTop = document.scrollingElement.scrollTop
-      // console.log('tab', scrollTop)
       if (scrollTop > 0) {
         document.scrollingElement.scrollTop = 0     // reset browser auto-scroll
         this.$store.dispatch('setViewport', {       // ... and compensate with panning

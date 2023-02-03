@@ -1,16 +1,34 @@
-/**
- * Note: the host component is expected to hold "topic": the topic to render.
- */
 export default {
 
   computed: {
 
+    /**
+     * Note: only callable by components which hold a "topic" property.
+     */
     isSelected () {
-      return this.selectedTopic?.id === this.topic.id
+      return this.selection.find(topic => topic.id === this.topic.id)
     },
 
     selectedTopic () {
-      return this.$store.state.topic
+      if (this.isSingleSelection) {
+        return this.selection[0]
+      }
+    },
+
+    selection () {
+      return this.$store.state.selection
+    },
+
+    isEmptySelection () {
+      return this.selection.length === 0
+    },
+
+    isSingleSelection () {
+      return this.selection.length === 1
+    },
+
+    isMultiSelection () {
+      return this.selection.length > 1
     }
   }
 }

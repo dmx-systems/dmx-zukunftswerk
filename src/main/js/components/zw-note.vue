@@ -46,7 +46,7 @@ export default {
   ],
 
   updated () {
-    this.$store.dispatch('updateControlBox', this.topic.id)
+    this.$store.dispatch('updateControlBox')
   },
 
   props: {

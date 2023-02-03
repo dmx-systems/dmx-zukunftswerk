@@ -17,10 +17,7 @@ export default message => {
     break
   case 'addTopicToTopicmap':
     if (message.args.topicmapId === topicmap.id) {
-      const topic = message.args.viewTopic
-      if (zw.canvasFilter(topic)) {
-        topicmap.addTopic(new dmx.ViewTopic(topic))
-      }
+      topicmap.addTopic(new dmx.ViewTopic(message.args.viewTopic))
     }
     break
   case 'setTopicPosition':
@@ -28,9 +25,7 @@ export default message => {
       const topic = topicmap.getTopicIfExists(message.args.topicId)
       if (topic) {
         topic.setPosition(message.args.pos)
-        if (zw.canvasFilter(topic)) {
-          store.dispatch('updateControlBox', topic.id)
-        }
+        store.dispatch('updateControlBox')
       }
     }
     break

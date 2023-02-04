@@ -29,6 +29,7 @@
         @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
         @rotateEnd="onRotateEnd">
       </vue-moveable>
+      <div class="group-toolbar" v-if="isMultiSelection" :style="groupToolbarStyle">Group Toolbar</div>
     </div>
     <vue-selecto ref="selecto" :selectable-targets="['.content-layer .zw-canvas-item']" :selectFromInside="false"
       toggle-continue-select="shift" @dragStart="onDragSelectStart" @select="onSelect" @selectEnd="onSelectEnd">
@@ -74,8 +75,9 @@ export default {
           rotateEnabled: false
         }
       },
-      dragStartPos: undefined,        // object with x/y props TODO: needed? Operate on event "delta" instead?
-      dragGroupStartPos: undefined    // object, key: topicId, value: object with x/y props
+      dragStartPos: undefined,          // object with x/y props TODO: needed? Operate on event "delta" instead?
+      dragGroupStartPos: undefined,     // object, key: topicId, value: object with x/y props
+      groupToolbarPos: {x: 0, y: 0}     // object with x/y props
     }
   },
 
@@ -85,6 +87,13 @@ export default {
       return {
         'background-position': `${this.bgPos.x}px ${this.bgPos.y}px`,
         'background-size': `${zw.CANVAS_GRID * this.zoom}px`
+      }
+    },
+
+    groupToolbarStyle () {
+      return {
+        left: this.groupToolbarPos.x + 'px',
+        top: this.groupToolbarPos.y + 'px'
       }
     },
 
@@ -346,15 +355,29 @@ export default {
     },
 
     onDragGroupStart (e) {
+      // console.log('onDragGroupStart', e)
+      // remembers start positions
       const p = {}
       e.targets.forEach(el => {
         const topic = this.findTopic(el)
         p[topic.id] = topic.pos
       })
       this.dragGroupStartPos = p
+      // position toolbar position
+      // this.$nextTick(() => {
+      // setTimeout(() => {
+        const controlBox = document.querySelector('.zw-canvas .content-layer .moveable-control-box')
+        const moveableArea = document.querySelector('.zw-canvas .content-layer .moveable-control-box .moveable-area')
+        const match = controlBox.style.transform.match(/translate3d\((-?[0-9]+)px, (-?[0-9]+)px, 0px\)/)
+        console.log(controlBox.style.transform, Number(match[1]), Number(match[2]))
+        console.log(moveableArea.clientHeight)
+        this.groupToolbarPos.x = Number(match[1])
+        this.groupToolbarPos.y = Number(match[2]) + moveableArea.clientHeight
+      // })
     },
 
     onDragGroup (e) {
+      console.log('onDragGroup')
       e.targets.forEach(el => {
         const topic = this.findTopic(el)
         const pos = this.dragGroupStartPos[topic.id]
@@ -496,5 +519,9 @@ function newSynId () {
 
 .zw-canvas .content-layer.transition {
   transition: transform .5s;
+}
+
+.zw-canvas .content-layer .group-toolbar {
+  position: absolute;
 }
 </style>

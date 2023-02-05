@@ -23,7 +23,8 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/selection').default,
-    require('./mixins/editable').default
+    require('./mixins/editable').default,
+    require('./mixins/zoom').default
   ],
 
   props: {
@@ -92,18 +93,8 @@ export default {
       return this.editable
     },
 
-    buttonStyle () {
-      return {
-        'font-size': `${14 / this.zoom}px`      // "14" matches --primary-font-size (see App.vue)
-      }
-    },
-
     topicmap () {
       return this.$store.state.topicmap
-    },
-
-    zoom () {
-      return this.$store.state.zoom
     }
   },
 

@@ -2,15 +2,10 @@ export default {
 
   computed: {
 
-    zoomStyle () {
+    buttonStyle () {
       return {
-        'transform': `translate(${this.pan.x}px, ${this.pan.y}px) scale(${this.zoom})`,
-        'transform-origin': 'top left'
+        'font-size': `${14 / this.zoom}px`      // "14" matches --primary-font-size (see App.vue)
       }
-    },
-
-    pan () {
-      return this.$store.state.pan
     },
 
     zoom () {

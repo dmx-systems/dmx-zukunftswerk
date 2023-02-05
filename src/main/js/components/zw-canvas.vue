@@ -20,16 +20,18 @@
       <zw-canvas-search></zw-canvas-search>
     </div>
     <!-- Content layer -->
-    <div :class="['content-layer', {transition}]" :style="zoomStyle" @transitionend="transitionend">
+    <div :class="['content-layer', {transition}]" :style="viewportStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
       <vue-moveable ref="moveable" :target="targets" :draggable="draggable" :resizable="resizable"
         :rotatable="rotatable" :origin="false" :renderDirections="['e']" @dragStart="onDragStart" @drag="onDrag"
         @dragEnd="onDragEnd" @clickGroup="onClickGroup" @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup"
         @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
-        @rotateEnd="onRotateEnd">
+        @rotateEnd="onRotateEnd" @mouseenter.native="onEnter" @mouseleave.native="onLeave">
       </vue-moveable>
-      <div class="group-toolbar" v-if="isMultiSelection" :style="groupToolbarStyle">Group Toolbar</div>
+      <div class="group-toolbar" v-if="isMultiSelection && groupToolbarVisibility" :style="groupToolbarStyle">
+        <el-button type="text" :style="buttonStyle">Delete Multi</el-button><!-- TODO -->
+      </div>
     </div>
     <vue-selecto ref="selecto" :selectable-targets="['.content-layer .zw-canvas-item']" :selectFromInside="false"
       toggle-continue-select="shift" @dragStart="onDragSelectStart" @select="onSelect" @selectEnd="onSelectEnd">
@@ -48,9 +50,10 @@ let synId = -1          // generator for temporary synthetic topic IDs, needed f
 export default {
 
   mixins: [
-    require('./mixins/zoom').default,
+    require('./mixins/viewport').default,
     require('./mixins/selection').default,
-    require('./mixins/editable').default
+    require('./mixins/editable').default,
+    require('./mixins/zoom').default
   ],
 
   mounted () {
@@ -77,6 +80,7 @@ export default {
       },
       dragStartPos: undefined,          // object with x/y props TODO: needed? Operate on event "delta" instead?
       dragGroupStartPos: undefined,     // object, key: topicId, value: object with x/y props
+      groupToolbarVisibility: false,
       groupToolbarPos: {x: 0, y: 0}     // object with x/y props
     }
   },
@@ -363,17 +367,8 @@ export default {
         p[topic.id] = topic.pos
       })
       this.dragGroupStartPos = p
-      // position toolbar position
-      // this.$nextTick(() => {
-      // setTimeout(() => {
-        const controlBox = document.querySelector('.zw-canvas .content-layer .moveable-control-box')
-        const moveableArea = document.querySelector('.zw-canvas .content-layer .moveable-control-box .moveable-area')
-        const match = controlBox.style.transform.match(/translate3d\((-?[0-9]+)px, (-?[0-9]+)px, 0px\)/)
-        console.log(controlBox.style.transform, Number(match[1]), Number(match[2]))
-        console.log(moveableArea.clientHeight)
-        this.groupToolbarPos.x = Number(match[1])
-        this.groupToolbarPos.y = Number(match[2]) + moveableArea.clientHeight
-      // })
+      // position toolbar
+      this.updateGroupToolbar()
     },
 
     onDragGroup (e) {
@@ -382,6 +377,8 @@ export default {
         const topic = this.findTopic(el)
         const pos = this.dragGroupStartPos[topic.id]
         this.config('moveHandler', topic)(topic, pos.x + e.left, pos.y + e.top)
+        // position toolbar
+        this.updateGroupToolbar()
       })
     },
 
@@ -422,6 +419,14 @@ export default {
       this.$store.dispatch('storeTopicAngle', this.findTopic(e.target))
     },
 
+    onEnter () {
+      this.groupToolbarVisibility = true
+    },
+
+    onLeave () {
+      this.groupToolbarVisibility = false
+    },
+
     moveHandler (topic, x, y) {
       topic.setPosition({                                                 // update model
         // snap to grid
@@ -448,6 +453,16 @@ export default {
       // In contrast updating the *model* (view props) updates the view asynchronously.
       this.findTopic(target).setViewProp('dmx.topicmaps.width', width)    // update model
       target.style.width = `${width}px`                                   // update view
+    },
+
+    updateGroupToolbar () {
+      const controlBox = document.querySelector('.zw-canvas .content-layer .moveable-control-box')
+      const moveableArea = document.querySelector('.zw-canvas .content-layer .moveable-control-box .moveable-area')
+      const match = controlBox.style.transform.match(/translate3d\((-?[0-9]+)px, (-?[0-9]+)px, 0px\)/)
+      console.log(controlBox.style.transform, Number(match[1]), Number(match[2]))
+      console.log(moveableArea.clientHeight)
+      this.groupToolbarPos.x = Number(match[1])
+      this.groupToolbarPos.y = Number(match[2]) + moveableArea.clientHeight
     },
 
     findTopic (el) {

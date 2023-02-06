@@ -431,12 +431,12 @@ export default {
     },
 
     onEnter () {
-      console.log('onEnter')
+      // console.log('onEnter')
       this.groupToolbarVisibility = true
     },
 
     onLeave () {
-      console.log('onLeave')
+      // console.log('onLeave')
       this.groupToolbarVisibility = false
     },
 
@@ -472,8 +472,8 @@ export default {
       const controlBox = document.querySelector('.zw-canvas .content-layer .moveable-control-box')
       const moveableArea = document.querySelector('.zw-canvas .content-layer .moveable-control-box .moveable-area')
       const match = controlBox.style.transform.match(/translate3d\((-?[0-9.]+)px, (-?[0-9.]+)px, 0px\)/)
-      console.log(controlBox.style.transform, match)
-      console.log(Number(match[1]), Number(match[2]), moveableArea.clientHeight)
+      // console.log(controlBox.style.transform, match)
+      // console.log(Number(match[1]), Number(match[2]), moveableArea.clientHeight)
       this.groupToolbarPos.x = Number(match[1])
       this.groupToolbarPos.y = Number(match[2]) + moveableArea.clientHeight
     },

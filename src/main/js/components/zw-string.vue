@@ -16,19 +16,11 @@ export default {
   computed: {
 
     string () {
-      const str = zw.getString(this.key)
-      return this.value ? this.substitute(str, this.value) : str
+      return zw.getString(this.key, this.value)
     },
 
     key () {
       return this.$slots.default[0].text
-    }
-  },
-
-  methods: {
-    substitute (str, value) {
-      const i = str.indexOf('${}')
-      return str.substring(0, i) + value + str.substring(i + 3)
     }
   }
 }

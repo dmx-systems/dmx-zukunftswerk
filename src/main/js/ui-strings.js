@@ -200,6 +200,8 @@ export default {
 
   'warning.delete.de': 'Sie sind im Begriff dieses Objekt zu löschen',
   'warning.delete.fr': 'Vous êtes sur le point de supprimer cet objet',
+  'warning.delete_many.de': 'Sie sind im Begriff ${} Objekte zu löschen',
+  'warning.delete_many.fr': 'Vous êtes sur le point de supprimer des ${} objets',
   'warning.delete_comment.de': 'Sie sind im Begriff diesen Kommentar zu löschen',
   'warning.delete_comment.fr': 'Vous êtes sur le point de supprimer ce commentaire',
   'warning.delete_workspace.de': 'Sie sind im Begriff diesen Arbeitsbereich zu löschen',

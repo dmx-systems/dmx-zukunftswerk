@@ -29,8 +29,11 @@
         @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
         @rotateEnd="onRotateEnd" @mouseenter.native="onEnter" @mouseleave.native="onLeave">
       </vue-moveable>
-      <div class="group-toolbar" v-if="isMultiSelection && groupToolbarVisibility" :style="groupToolbarStyle">
-        <el-button type="text" :style="buttonStyle">Delete Multi</el-button><!-- TODO -->
+      <div class="group-toolbar" v-show="isMultiSelection && groupToolbarVisibility" :style="groupToolbarStyle"
+          @mouseenter="onEnter" @mouseleave="onLeave">
+        <el-button type="text" :style="buttonStyle" @click="deleteMany" @mousedown.native.stop>
+          <zw-string :value="deleteCount">action.delete_many</zw-string>
+        </el-button>
       </div>
     </div>
     <vue-selecto ref="selecto" :selectable-targets="['.content-layer .zw-canvas-item']" :selectFromInside="false"
@@ -118,6 +121,10 @@ export default {
 
     targets () {
       return this.selection.map(topic => document.querySelector(`.zw-canvas-item[data-id="${topic.id}"]`))
+    },
+
+    deleteCount () {
+      return this.selection.length
     },
 
     draggable () {
@@ -303,6 +310,10 @@ export default {
       })
     },
 
+    deleteMany () {
+      this.$store.dispatch('deleteMany', this.selection.map(topic => topic.id))
+    },
+
     transitionend () {
       this.$store.dispatch('transitionEnd')
     },
@@ -420,10 +431,12 @@ export default {
     },
 
     onEnter () {
+      console.log('onEnter')
       this.groupToolbarVisibility = true
     },
 
     onLeave () {
+      console.log('onLeave')
       this.groupToolbarVisibility = false
     },
 
@@ -458,9 +471,9 @@ export default {
     updateGroupToolbar () {
       const controlBox = document.querySelector('.zw-canvas .content-layer .moveable-control-box')
       const moveableArea = document.querySelector('.zw-canvas .content-layer .moveable-control-box .moveable-area')
-      const match = controlBox.style.transform.match(/translate3d\((-?[0-9]+)px, (-?[0-9]+)px, 0px\)/)
-      console.log(controlBox.style.transform, Number(match[1]), Number(match[2]))
-      console.log(moveableArea.clientHeight)
+      const match = controlBox.style.transform.match(/translate3d\((-?[0-9.]+)px, (-?[0-9.]+)px, 0px\)/)
+      console.log(controlBox.style.transform, match)
+      console.log(Number(match[1]), Number(match[2]), moveableArea.clientHeight)
       this.groupToolbarPos.x = Number(match[1])
       this.groupToolbarPos.y = Number(match[2]) + moveableArea.clientHeight
     },

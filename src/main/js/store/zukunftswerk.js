@@ -516,26 +516,35 @@ const actions = {
     dispatch('select', topic)     // programmatic selection
     zw.confirmDeletion().then(() => {
       dispatch('deselect')
-      state.topicmap.removeTopic(topic.id)        // update client state
-      dmx.rpc.deleteTopic(topic.id)               // update server state
+      state.topicmap.removeTopic(topic.id)          // update client state
+      dmx.rpc.deleteTopic(topic.id)                 // update server state
     }).catch(() => {})            // suppress unhandled rejection on cancel
+  },
+
+  deleteMany ({dispatch}, topicIds) {
+    dispatch('deselect')
+    topicIds.forEach(topicId => {
+      state.topicmap.removeTopic(topicId)           // update client state
+    })
+    dmx.rpc.deleteMulti({topicIds, assocIds: []})   // update server state
+    // TODO: confirmation dialog
   },
 
   deleteComment (_, comment) {
     zw.confirmDeletion('warning.delete_comment').then(() => {
-      removeComment(comment)                      // update client state
-      dmx.rpc.deleteTopic(comment.id)             // update server state
+      removeComment(comment)                        // update client state
+      dmx.rpc.deleteTopic(comment.id)               // update server state
     }).catch(() => {})            // suppress unhandled rejection on cancel
   },
 
   cancel ({dispatch}, topic) {
     if (topic.id < 0) {
       // abort creation
-      removeNewTopic(topic)                       // update client state
+      removeNewTopic(topic)                         // update client state
       dispatch('deselect')
     } else {
       // abort update
-      removeEditActive(topic)                     // update client state
+      removeEditActive(topic)                       // update client state
     }
   },
 
@@ -553,8 +562,8 @@ const actions = {
     return http.put(`/zukunftswerk/user_profile`, undefined, {
       params: userProfile
     }).then(() => {
-      updateUserProfile(userProfile)              // update client state
-      // rootState.users.sort(zw.topicSort)       // TODO: sort by display name (email address at the moment)
+      updateUserProfile(userProfile)                // update client state
+      // rootState.users.sort(zw.topicSort)         // TODO: sort by display name (email address at the moment)
     })
   },
 

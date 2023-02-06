@@ -130,6 +130,8 @@ export default {
   'action.edit.fr': 'Éditer',
   'action.delete.de': 'Löschen',
   'action.delete.fr': 'Supprimer',
+  'action.delete_many.de': '${} Objekte löschen',
+  'action.delete_many.fr': 'Supprimer ${} objets',
   'action.download.de': 'Download',
   'action.download.fr': 'Télécharger',
   'action.translate.de': 'Übersetzen',

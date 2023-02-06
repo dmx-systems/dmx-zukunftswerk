@@ -1,5 +1,5 @@
 <template>
-  <div class="zw-arrow-handles" v-show="visible" :style="zoomStyle">
+  <div class="zw-arrow-handles" v-show="visible" :style="viewportStyle">
     <div class="handle h1" :style="{top: `${h1.y}px`, left: `${h1.x}px`}"></div>
     <div class="handle h2" :style="{top: `${h2.y}px`, left: `${h2.x}px`}"></div>
     <vue-moveable target=".zw-arrow-handles .h1" :draggable="true" :origin="false" @dragStart="onDragStart"
@@ -17,9 +17,9 @@ import zw from '../zw-globals'
 export default {
 
   mixins: [
-    require('./mixins/editable').default,
+    require('./mixins/viewport').default,
     require('./mixins/selection').default,
-    require('./mixins/zoom').default
+    require('./mixins/editable').default
   ],
 
   data () {

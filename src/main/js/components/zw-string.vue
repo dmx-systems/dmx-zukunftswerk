@@ -1,6 +1,6 @@
 <template>
-  <div v-if="html" class="zw-string" v-html="string"></div>
-  <span v-else class="zw-string">{{string}}</span>
+  <div class="zw-string" v-if="html" v-html="string"></div>
+  <span class="zw-string" v-else>{{string}}</span>
 </template>
 
 <script>
@@ -9,13 +9,14 @@ import zw from '../zw-globals'
 export default {
 
   props: {
-    html: Boolean
+    html: Boolean,
+    value: Number
   },
 
   computed: {
 
     string () {
-      return zw.getString(this.key)
+      return zw.getString(this.key, this.value)
     },
 
     key () {

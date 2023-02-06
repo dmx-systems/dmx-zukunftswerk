@@ -106,8 +106,14 @@ function getUser (username) {
   return store.state.users.find(user => user.value === _username)
 }
 
-function getString (key) {
-  return uiStrings[`${key}.${store.state.lang}`]
+function getString (key, value) {
+  const str = uiStrings[`${key}.${store.state.lang}`]
+  return value ? substitute(str, value) : str
+}
+
+function substitute (str, value) {
+  const i = str.indexOf('${}')
+  return str.substring(0, i) + value + str.substring(i + 3)
 }
 
 /**
@@ -145,8 +151,8 @@ function canvasFilter (topic) {
          topic.typeUri === 'zukunftswerk.viewport' && (store.state.isTeam || store.state.isEditor)
 }
 
-function confirmDeletion (textKey = 'warning.delete') {
-  return Vue.prototype.$confirm(getString(textKey), {
+function confirmDeletion (textKey = 'warning.delete', value) {
+  return Vue.prototype.$confirm(getString(textKey, value), {
     type: 'warning',
     title: getString('label.warning'),
     confirmButtonText: getString('action.delete'),

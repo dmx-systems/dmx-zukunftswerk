@@ -269,6 +269,7 @@ const actions = {
     if (!fullscreen) {
       Vue.nextTick(() => {
         document.querySelector('.zw-resizer').__vue__.resize()
+        store.dispatch('select', state.selection[0])      // sync Selecto state/view with app state
       })
     }
   },
@@ -551,6 +552,9 @@ const actions = {
    * Precondition: the given topic is visible on canvas.
    */
   updateControlBox () {
+    // Note: in some cases the view is already up-to-date (e.g. when dispatched from updated() live-cycle hook), in
+    // others it is not (e.g. when dispatched from message-handler (setTopicPosition)). So we *always* wait for the
+    // next event cycle (setTimeout).
     // Note: Vue.nextTick() instead shows strange result
     setTimeout(() => {
       document.querySelector('.zw-canvas .content-layer .moveable-control-box').__vue__.updateTarget()

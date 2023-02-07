@@ -117,23 +117,24 @@ export default {
 
     renderPage () {
       // console.log('renderPage', this.pageNr)
+      const canvas = this.$refs.canvas
       this.$emit('loading')
-      return this.pdf.getPage(this.pageNr).then(page => {
+      this.pdf.getPage(this.pageNr).then(page => {
         let viewport = page.getViewport({scale: 1})
         if (this.fullscreen) {
-          const scale = this.panelX / viewport.width
-          viewport = page.getViewport({scale})
+          viewport = page.getViewport({scale: this.panelX / viewport.width})
         }
-        const canvas = this.$refs.canvas
         canvas.width = viewport.width
         canvas.height = viewport.height
-        this.$store.dispatch('updateControlBox')
+        if (!this.fullscreen) {                         // in fullscreen mode control box is not on screen
+          this.$store.dispatch('updateControlBox')      // sync control box once canvas size is known
+        }
         return page.render({
           canvasContext: canvas.getContext('2d'),
           viewport
-        }).promise.then(() => {
-          this.$emit('complete')
-        })
+        }).promise
+      }).then(() => {
+        this.$emit('complete')
       })
     },
 

@@ -37,7 +37,8 @@
       </div>
     </div>
     <vue-selecto ref="selecto" :selectable-targets="['.content-layer .zw-canvas-item']" :selectFromInside="false"
-      toggle-continue-select="shift" @dragStart="onDragSelectStart" @select="onSelect" @selectEnd="onSelectEnd">
+      toggle-continue-select="shift" hitRate="0" @dragStart="onDragSelectStart" @select="onSelect"
+      @selectEnd="onSelectEnd">
     </vue-selecto>
     <zw-arrow-handles></zw-arrow-handles>
   </div>

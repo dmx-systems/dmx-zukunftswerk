@@ -112,8 +112,9 @@ export default {
       this.saving = true
       let action, arg, msgBox
       if (this.isNew) {
-        action = 'createLabel'
+        action = 'createTopic'
         arg = {
+          type: 'label',
           topic: this.topic
         }
         msgBox = 'confirm'

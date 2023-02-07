@@ -36,7 +36,7 @@ const state = {
   // Canvas
   topicmap: undefined,          // the topicmap displayed on canvas (dmx.Topicmap)
   topic: undefined,             // the selected topic (dmx.ViewTopic), undefined if nothing is selected   // TODO: drop
-  selection: [],                // the selected topics (array of topic IDs)
+  selection: [],                // the selected topics (array of dmx.ViewTopic)
   pan: {x: 0, y: 0},            // canvas pan (in pixel)                  // TODO: drop this, calculate instead?
   zoom: 1,                      // canvas zoom (Number)                   // TODO: drop this, calculate instead?
   isDragging: false,            // true while any of the 4 dragging actions is in progress (item move, item resize,
@@ -145,8 +145,9 @@ const actions = {
 
   /**
    * Selects a topic *programmatically*.
+   * Precondition: the topic is in DOM already.
    *
-   * @param   topic   must not be null/undefined
+   * @param   topic   a dmx.ViewTopic
    */
   select ({dispatch}, topic) {
     state.selection = [topic]
@@ -298,7 +299,7 @@ const actions = {
   },
 
   /**
-   * @param   topic         a dmx.ViewTopic
+   * @param   topic   a dmx.ViewTopic
    */
   newTopic ({dispatch}, topic) {
     state.newTopics.push(topic)
@@ -313,10 +314,36 @@ const actions = {
   },
 
   /**
+   * @param   type          'note'/'textblock'/'label'
+   * @param   topic         a dmx.ViewTopic of the respective type.
+   *                        Its "value" is used for topic creation (not its "children").
+   * @param   monolingual   Optional: if truish a monolingual topic is created (no auto-translation)
+   */
+  createTopic ({dispatch}, {type, topic, monolingual}) {
+    let p
+    if (monolingual)  {
+      // Note: a monolingual note/textblock/label is stored in "de". "fr" and "Original Language" are not set.
+      p = dmx.rpc.createTopic({
+        typeUri: `zukunftswerk.${type}`,
+        children: {
+          [`zukunftswerk.${type}.de`]: topic.value
+        }
+      })
+    } else {
+      // suppress standard HTTP error handler
+      p = dmx.rpc._http.post(`/zukunftswerk/${type}`, topic.value).then(response => response.data)
+    }
+    return p.then(_topic => {
+      addTopicToTopicmap(topic, _topic, dispatch)
+      removeNewTopic(topic)
+    })
+  },
+
+  /**
    * @param   topic         a dmx.ViewTopic of type "Document"
    * @param   monolingual   Optional: if truish a monolingual document is created (no auto-translation)
    */
-  createDocument (_, {topic, monolingual}) {
+  createDocument ({dispatch}, {topic, monolingual}) {
     let p
     if (monolingual)  {
       // Note: a monolingual document name is stored in "de". "fr" and "Original Language" are not set.
@@ -328,33 +355,18 @@ const actions = {
       p = dmx.rpc._http.post('/zukunftswerk/document', docName, {params: {fileId}}).then(response => response.data)
     }
     return p.then(_topic => {
-      addTopicToTopicmap(topic, _topic)
+      addTopicToTopicmap(topic, _topic, dispatch)
       removeNewTopic(topic)
     })
   },
 
   /**
-   * @param   topic         a dmx.ViewTopic of type "Note"
-   * @param   monolingual   Optional: if truish a monolingual note is created (no auto-translation)
+   * @param   topic   a dmx.ViewTopic
    */
-  createNote (_, {topic, monolingual}) {
-    return create('note', topic, monolingual)
-  },
-
-  /**
-   * @param   topic         a dmx.ViewTopic of type "Textblock"
-   * @param   monolingual   Optional: if truish a monolingual textblock is created (no auto-translation)
-   */
-  createTextblock (_, {topic, monolingual}) {
-    return create('textblock', topic, monolingual)
-  },
-
-  /**
-   * @param   topic         a dmx.ViewTopic of type "Label"
-   * @param   monolingual   Optional: if truish a monolingual label is created (no auto-translation)
-   */
-  createLabel (_, {topic, monolingual}) {
-    return create('label', topic, monolingual)
+  createArrow ({dispatch}, topic) {
+    return dmx.rpc.createTopic(topic).then(_topic => {
+      addTopicToTopicmap(topic, _topic, dispatch)
+    })
   },
 
   /**
@@ -372,15 +384,6 @@ const actions = {
    */
   update (_, topic) {
     return dmx.rpc.updateTopic(topic).then(removeEditActive)
-  },
-
-  /**
-   * @param   topic   a dmx.ViewTopic
-   */
-  createArrow (_, topic) {
-    return dmx.rpc.createTopic(topic).then(_topic => {
-      addTopicToTopicmap(topic, _topic)
-    })
   },
 
   /**
@@ -624,34 +627,6 @@ initLang()
 
 export default store
 
-// action helper
-
-/**
- * @param   type    'note'/'textblock'/'label'
- * @param   topic   a dmx.ViewTopic of the respective type. Its "value" is used for topic creation (not its "children").
- */
-function create (type, topic, monolingual) {
-  let p
-  if (monolingual)  {
-    // Note: a monolingual note/textblock/label is stored in "de". "fr" and "Original Language" are not set.
-    p = dmx.rpc.createTopic({
-      typeUri: `zukunftswerk.${type}`,
-      children: {
-        [`zukunftswerk.${type}.de`]: topic.value
-      }
-    })
-  } else {
-    // suppress standard HTTP error handler
-    p = dmx.rpc._http.post(`/zukunftswerk/${type}`, topic.value).then(response => response.data)
-  }
-  return p.then(_topic => {
-    addTopicToTopicmap(topic, _topic)
-    removeNewTopic(topic)
-  })
-}
-
-// state helper
-
 function initLang () {
   let lang
   const langC = dmx.utils.getCookie('zw_lang')
@@ -770,12 +745,15 @@ function updateUserProfile(userProfile) {
  * Transfers "id", "value", and "children" from the given topic to the given viewTopic and adds the viewTopic
  * to the topicmap. Updates both, client state and server state.
  */
-function addTopicToTopicmap (viewTopic, topic) {
+function addTopicToTopicmap (viewTopic, topic, dispatch) {
   viewTopic.id       = topic.id
   viewTopic.value    = topic.value
   viewTopic.children = {...viewTopic.children, ...topic.children}   // merge to keep synthetic child values (color)
   state.topicmap.addTopic(viewTopic)                                                // update client state
   dmx.rpc.addTopicToTopicmap(state.topicmap.id, topic.id, viewTopic.viewProps)      // update server state
+  Vue.nextTick(() => {
+    dispatch('select', viewTopic)     // programmatic selection
+  })
 }
 
 function removeNewTopic (topic) {

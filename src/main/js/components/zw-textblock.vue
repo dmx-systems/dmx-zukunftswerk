@@ -138,8 +138,8 @@ export default {
       this.topic.children['zukunftswerk.color'] = {value: this.selectedColor}     // view
       let action, arg, msgBox
       if (this.isNew) {
-        action = 'createTextblock'
-        arg = {topic: this.topic}
+        action = 'createTopic'
+        arg = {type: 'textblock', topic: this.topic}
         msgBox = 'confirm'
       } else {
         action = 'updateAndStoreColor'

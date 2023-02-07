@@ -269,7 +269,7 @@ const actions = {
     if (!fullscreen) {
       Vue.nextTick(() => {
         document.querySelector('.zw-resizer').__vue__.resize()
-        store.dispatch('select', state.selection[0])      // sync Selecto state/view with app state
+        store.dispatch('select', state.selection[0])      // sync Selecto model/view with app state
       })
     }
   },
@@ -525,7 +525,9 @@ const actions = {
   deleteMany ({dispatch}, topicIds) {
     zw.confirmDeletion('warning.delete_many', topicIds.length).then(() => {
       dispatch('deselect')
-      topicIds.forEach(state.topicmap.removeTopic)    // update client state
+      topicIds.forEach(id => {                        // update client state
+        state.topicmap.removeTopic(id)
+      })
       dmx.rpc.deleteMulti({topicIds, assocIds: []})   // update server state
     }).catch(() => {})            // suppress unhandled rejection on cancel
   },

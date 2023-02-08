@@ -185,6 +185,8 @@ export default {
 .zw-canvas-item .item-toolbar {
   position: absolute;
   visibility: hidden;
+  padding-top: 4px;
+  padding-bottom: 12px;
 }
 
 .zw-canvas-item:hover .item-toolbar {

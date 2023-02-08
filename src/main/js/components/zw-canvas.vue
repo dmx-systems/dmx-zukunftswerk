@@ -341,6 +341,9 @@ export default {
         addTopics: e.added.map(el => el.__vue__.topic),
         removeTopicIds: e.removed.map(el => Number(el.dataset.id))
       })
+      setTimeout(() => {
+        this.positionGroupToolbar()
+      }, 50)
     },
 
     onSelectEnd (e) {
@@ -371,7 +374,6 @@ export default {
     },
 
     onDragGroupStart (e) {
-      // console.log('onDragGroupStart', e)
       // remembers start positions
       const p = {}
       e.targets.forEach(el => {
@@ -379,18 +381,14 @@ export default {
         p[topic.id] = topic.pos
       })
       this.dragGroupStartPos = p
-      // position toolbar
-      this.updateGroupToolbar()
     },
 
     onDragGroup (e) {
-      console.log('onDragGroup')
       e.targets.forEach(el => {
         const topic = this.findTopic(el)
         const pos = this.dragGroupStartPos[topic.id]
         this.config('moveHandler', topic)(topic, pos.x + e.left, pos.y + e.top)
-        // position toolbar
-        this.updateGroupToolbar()
+        this.positionGroupToolbar()
       })
     },
 
@@ -432,12 +430,10 @@ export default {
     },
 
     onEnter () {
-      // console.log('onEnter')
       this.groupToolbarVisibility = true
     },
 
     onLeave () {
-      // console.log('onLeave')
       this.groupToolbarVisibility = false
     },
 
@@ -469,14 +465,15 @@ export default {
       target.style.width = `${width}px`                                   // update view
     },
 
-    updateGroupToolbar () {
-      const controlBox = document.querySelector('.zw-canvas .content-layer .moveable-control-box')
-      const moveableArea = document.querySelector('.zw-canvas .content-layer .moveable-control-box .moveable-area')
-      const match = controlBox.style.transform.match(/translate3d\((-?[0-9.]+)px, (-?[0-9.]+)px, 0px\)/)
-      // console.log(controlBox.style.transform, match)
-      // console.log(Number(match[1]), Number(match[2]), moveableArea.clientHeight)
-      this.groupToolbarPos.x = Number(match[1])
-      this.groupToolbarPos.y = Number(match[2]) + moveableArea.clientHeight
+    positionGroupToolbar () {
+      const selector = '.zw-canvas .content-layer .moveable-control-box'
+      const moveableArea = document.querySelector(`${selector} .moveable-area`)
+      if (moveableArea) {
+        const controlBox = document.querySelector(selector)
+        const match = controlBox.style.transform.match(/translate3d\((-?[0-9.]+)px, (-?[0-9.]+)px, 0px\)/)
+        this.groupToolbarPos.x = Number(match[1])
+        this.groupToolbarPos.y = Number(match[2]) + moveableArea.clientHeight
+      }
     },
 
     findTopic (el) {

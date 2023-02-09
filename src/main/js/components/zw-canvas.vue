@@ -29,7 +29,7 @@
         @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
         @rotateEnd="onRotateEnd" @mouseenter.native="onEnter" @mouseleave.native="onLeave">
       </vue-moveable>
-      <div class="group-toolbar" v-show="isMultiSelection && groupToolbarHovered && editable" :style="groupToolbarStyle"
+      <div class="group-toolbar" v-show="isMultiSelection && groupToolbarHover && editable" :style="groupToolbarStyle"
           @mouseenter="onEnter" @mouseleave="onLeave">
         <el-button type="text" :style="buttonStyle" @click="deleteMany" @mousedown.native.stop>
           <zw-string :value="deleteCount">action.delete_many</zw-string>
@@ -84,7 +84,7 @@ export default {
       },
       dragStartPos: undefined,          // object with x/y props TODO: needed? Operate on event "delta" instead?
       dragGroupStartPos: undefined,     // object, key: topicId, value: object with x/y props
-      groupToolbarHovered: false,
+      groupToolbarHover: false,
       groupToolbarPos: {x: 0, y: 0}     // object with x/y props
     }
   },
@@ -430,11 +430,11 @@ export default {
     },
 
     onEnter () {
-      this.groupToolbarHovered = true
+      this.groupToolbarHover = true
     },
 
     onLeave () {
-      this.groupToolbarHovered = false
+      this.groupToolbarHover = false
     },
 
     moveHandler (topic, x, y) {
@@ -549,5 +549,7 @@ function newSynId () {
 
 .zw-canvas .content-layer .group-toolbar {
   position: absolute;
+  padding-top: 4px;
+  padding-bottom: 12px;
 }
 </style>

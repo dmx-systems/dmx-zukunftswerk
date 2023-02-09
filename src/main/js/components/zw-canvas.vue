@@ -67,6 +67,7 @@ export default {
   data () {
     return {
       DEFAULT: {
+        deleteEnabled: true,
         resizeStyle: 'x',
         rotateEnabled: true,
         moveHandler: this.moveHandler
@@ -78,6 +79,7 @@ export default {
           moveHandler: this.arrowMoveHandler
         },
         'zukunftswerk.viewport': {
+          deleteEnabled: false,
           resizeStyle: 'none',
           rotateEnabled: false
         }
@@ -125,7 +127,7 @@ export default {
     },
 
     deleteCount () {
-      return this.selection.length
+      return this.selection.filter(this.deleteEnabledFilter).length
     },
 
     draggable () {
@@ -312,7 +314,11 @@ export default {
     },
 
     deleteMany () {
-      this.$store.dispatch('deleteMany', this.selection.map(topic => topic.id))
+      this.$store.dispatch('deleteMany', this.selection.filter(this.deleteEnabledFilter).map(topic => topic.id))
+    },
+
+    deleteEnabledFilter (topic) {
+      return this.config('deleteEnabled', topic)
     },
 
     transitionend () {

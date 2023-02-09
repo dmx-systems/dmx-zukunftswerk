@@ -29,7 +29,7 @@
         @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
         @rotateEnd="onRotateEnd" @mouseenter.native="onEnter" @mouseleave.native="onLeave">
       </vue-moveable>
-      <div class="group-toolbar" v-show="isMultiSelection && groupToolbarVisibility" :style="groupToolbarStyle"
+      <div class="group-toolbar" v-show="isMultiSelection && groupToolbarHovered && editable" :style="groupToolbarStyle"
           @mouseenter="onEnter" @mouseleave="onLeave">
         <el-button type="text" :style="buttonStyle" @click="deleteMany" @mousedown.native.stop>
           <zw-string :value="deleteCount">action.delete_many</zw-string>
@@ -84,7 +84,7 @@ export default {
       },
       dragStartPos: undefined,          // object with x/y props TODO: needed? Operate on event "delta" instead?
       dragGroupStartPos: undefined,     // object, key: topicId, value: object with x/y props
-      groupToolbarVisibility: false,
+      groupToolbarHovered: false,
       groupToolbarPos: {x: 0, y: 0}     // object with x/y props
     }
   },
@@ -141,11 +141,11 @@ export default {
     },
 
     resizeStyle () {
-      return this.selectedTopic ? this.config('resizeStyle') : 'none'       // 'none' is group config
+      return this.selectedTopic ? this.config('resizeStyle') : 'none'       // 'none' is group default
     },
 
     rotateEnabled () {
-      return this.selectedTopic ? this.config('rotateEnabled') : false      // false is group config
+      return this.selectedTopic ? this.config('rotateEnabled') : false      // false is group default
     },
 
     newTopics () {
@@ -430,11 +430,11 @@ export default {
     },
 
     onEnter () {
-      this.groupToolbarVisibility = true
+      this.groupToolbarHovered = true
     },
 
     onLeave () {
-      this.groupToolbarVisibility = false
+      this.groupToolbarHovered = false
     },
 
     moveHandler (topic, x, y) {

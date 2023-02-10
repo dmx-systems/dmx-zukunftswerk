@@ -23,12 +23,11 @@
     <div :class="['content-layer', {transition}]" :style="viewportStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
-      <vue-moveable ref="moveable" :class-name="className" :target="targets" :draggable="draggable"
-        :resizable="resizable" :rotatable="rotatable" :origin="false" :render-directions="['e']"
-        @dragStart="onDragStart" @drag="onDrag" @dragEnd="onDragEnd" @clickGroup="onClickGroup"
-        @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup" @dragGroupEnd="onDragGroupEnd"
-        @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd"
-        @mouseenter.native="onEnter" @mouseleave.native="onLeave">
+      <vue-moveable ref="moveable" :target="targets" :draggable="draggable" :resizable="resizable"
+        :rotatable="rotatable" :origin="false" :render-directions="['e']" @dragStart="onDragStart" @drag="onDrag"
+        @dragEnd="onDragEnd" @clickGroup="onClickGroup" @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup"
+        @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
+        @rotateEnd="onRotateEnd" @mouseenter.native="onEnter" @mouseleave.native="onLeave">
       </vue-moveable>
       <div class="group-toolbar" v-show="isMultiSelection && groupToolbarHover && editable" :style="groupToolbarStyle"
           @mouseenter="onEnter" @mouseleave="onLeave">
@@ -121,10 +120,6 @@ export default {
 
     topics () {
       return this.topicmap?.topics.filter(zw.canvasFilter) || []
-    },
-
-    className () {
-      return this.draggable ? 'draggable' : ''
     },
 
     targets () {
@@ -564,7 +559,7 @@ function newSynId () {
   padding-bottom: 12px;
 }
 
-.zw-canvas .content-layer .moveable-control-box.draggable .moveable-area {
+.zw-canvas .content-layer .moveable-control-box[data-able-draggable] .moveable-area {
   cursor: grab;
 }
 </style>

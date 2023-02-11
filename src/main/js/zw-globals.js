@@ -78,7 +78,7 @@ function getViewport() {
   } else {
     // fallback
     const topicmap = store.state.topicmap
-    console.warn(`Viewport topic missing in Topicmap ${topicmap.id}`)
+    console.warn(`[ZW] Viewport topic missing in Topicmap ${topicmap.id}`)
     return {
       pan: {
         x: topicmap.panX,

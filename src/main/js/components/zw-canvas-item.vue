@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       topicBuffer: undefined,   // The edit buffer, available only in edit mode (dmx.ViewTopic)
-      // Default configuration, can be (partially) supplied by child component
+      // Default configuration, can be (partially) supplied by child component      TODO: move config to canvas
       customClass: undefined,   // Custom class (String)
       actions: [                // Actions appearing in the button panel
         {action: 'action.edit',   handler: this.edit},

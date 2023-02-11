@@ -29,7 +29,7 @@
         @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
         @rotateEnd="onRotateEnd" @mouseenter.native="onEnter" @mouseleave.native="onLeave">
       </vue-moveable>
-      <div class="group-toolbar" v-show="isMultiSelection && groupToolbarHover && editable" :style="groupToolbarStyle"
+      <div class="group-toolbar" v-show="isMultiSelection && groupHover && editable" :style="groupToolbarStyle"
           @mouseenter="onEnter" @mouseleave="onLeave">
         <el-button type="text" :style="buttonStyle" @click="deleteMany" @mousedown.native.stop>
           <zw-string :value="deleteCount">action.delete_many</zw-string>
@@ -84,10 +84,9 @@ export default {
           rotateEnabled: false
         }
       },
-      dragStartPos: undefined,          // object with x/y props TODO: needed? Operate on event "delta" instead?
-      dragGroupStartPos: undefined,     // object, key: topicId, value: object with x/y props
-      groupToolbarHover: false,
-      groupToolbarPos: {x: 0, y: 0}     // object with x/y props
+      dragStartPos: undefined,          // object, key: topicId, value: object with x/y props
+      groupToolbarPos: {x: 0, y: 0},    // object with x/y props
+      groupHover: false                 // true while group is hovered
     }
   },
 
@@ -364,11 +363,12 @@ export default {
     // "Moveable" event handling
 
     onDragStart (e) {
-      this.dragStartPos = this.findTopic(e.target).pos
+      const topic = this.findTopic(e.target)
+      this.dragStartPos = {[topic.id]: topic.pos}
     },
 
     onDrag (e) {
-      this.config('moveHandler')(this.findTopic(e.target), e.left, e.top)
+      this.config('moveHandler')(this.findTopic(e.target), e.dist[0], e.dist[1])
     },
 
     onDragEnd (e) {
@@ -386,14 +386,13 @@ export default {
         const topic = this.findTopic(el)
         p[topic.id] = topic.pos
       })
-      this.dragGroupStartPos = p
+      this.dragStartPos = p
     },
 
     onDragGroup (e) {
       e.targets.forEach(el => {
         const topic = this.findTopic(el)
-        const pos = this.dragGroupStartPos[topic.id]
-        this.config('moveHandler', topic)(topic, pos.x + e.left, pos.y + e.top)
+        this.config('moveHandler', topic)(topic, e.dist[0], e.dist[1])
         this.positionGroupToolbar()
       })
     },
@@ -436,28 +435,24 @@ export default {
     },
 
     onEnter () {
-      this.groupToolbarHover = true
+      this.groupHover = true
     },
 
     onLeave () {
-      this.groupToolbarHover = false
+      this.groupHover = false
     },
 
-    moveHandler (topic, x, y) {
+    moveHandler (topic, dx, dy) {
+      const p = this.dragStartPos[topic.id]
       topic.setPosition({                                                 // update model
         // snap to grid
-        x: Math.round(x / zw.CANVAS_GRID) * zw.CANVAS_GRID,
-        y: Math.round(y / zw.CANVAS_GRID) * zw.CANVAS_GRID
+        x: p.x + Math.round(dx / zw.CANVAS_GRID) * zw.CANVAS_GRID,
+        y: p.y + Math.round(dy / zw.CANVAS_GRID) * zw.CANVAS_GRID
       })
     },
 
-    arrowMoveHandler (topic, x, y) {
-      const p = this.dragStartPos
-      topic.setPosition({                                                 // update model
-        // snap to grid
-        x: p.x + Math.round((x - p.x) / zw.CANVAS_GRID) * zw.CANVAS_GRID,
-        y: p.y + Math.round((y - p.y) / zw.CANVAS_GRID) * zw.CANVAS_GRID
-      })
+    arrowMoveHandler (topic, dx, dy) {
+      this.moveHandler(topic, dx, dy)
       const vm = document.querySelector('.zw-arrow-handles').__vue__      // update view
       if (vm.visible) {
         vm.updateHandles()

@@ -23,11 +23,12 @@
     <div :class="['content-layer', {transition}]" :style="viewportStyle" @transitionend="transitionend">
       <zw-canvas-item v-for="topic in topics" :topic="topic" :mode="mode(topic)" :key="topic.id"></zw-canvas-item>
       <zw-canvas-item v-for="topic in newTopics" :topic="topic" mode="form" :key="topic.id"></zw-canvas-item>
-      <vue-moveable ref="moveable" :target="targets" :draggable="draggable" :resizable="resizable"
-        :rotatable="rotatable" :origin="false" :render-directions="['e']" @dragStart="onDragStart" @drag="onDrag"
-        @dragEnd="onDragEnd" @clickGroup="onClickGroup" @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup"
-        @dragGroupEnd="onDragGroupEnd" @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate"
-        @rotateEnd="onRotateEnd" @mouseenter.native="onEnter" @mouseleave.native="onLeave">
+      <vue-moveable ref="moveable" view-container=".content-layer" :target="targets" :draggable="draggable"
+        :resizable="resizable" :rotatable="rotatable" :origin="false" :render-directions="['e']"
+        @dragStart="onDragStart" @drag="onDrag" @dragEnd="onDragEnd" @clickGroup="onClickGroup"
+        @dragGroupStart="onDragGroupStart" @dragGroup="onDragGroup" @dragGroupEnd="onDragGroupEnd"
+        @resize="onResize" @resizeEnd="onResizeEnd" @rotate="onRotate" @rotateEnd="onRotateEnd"
+        @mouseenter.native="onEnter" @mouseleave.native="onLeave">
       </vue-moveable>
       <div class="group-toolbar" v-show="isMultiSelection && groupHover && editable" :style="groupToolbarStyle"
           @mouseenter="onEnter" @mouseleave="onLeave">
@@ -556,5 +557,10 @@ function newSynId () {
 
 .zw-canvas .content-layer .moveable-control-box[data-able-draggable] .moveable-area {
   cursor: grab;
+}
+
+.zw-canvas .content-layer.moveable-view-dragging .zw-canvas-item,
+.zw-canvas .content-layer.moveable-view-dragging .moveable-control-box .moveable-area {
+  cursor: grabbing;
 }
 </style>

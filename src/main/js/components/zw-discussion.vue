@@ -23,7 +23,7 @@
         </div>
       </div>
       <!-- Comments -->
-      <div v-if="noComments" class="secondary"><zw-string>label.no_comments</zw-string></div>
+      <div v-if="noComments" class="secondary"><zw-string html>label.no_comments</zw-string></div>
       <div v-else class="comments" v-loading="discussionLoading">
         <zw-comment v-for="comment in filteredDiscussion" :topic="comment" :key="comment.id" @reply="reply"
           @comment-ref-click="jumpTo">
@@ -76,8 +76,8 @@ export default {
       uploadDialogVisible: false,     // upload dialog visibility (for comment attachments)
       submitting: false,              // true while submitting new comment
       quillOptions: {                 // options for new-comment quill editor
-        placeholder: zw.getString('label.new_comment'),     // FIXME: once Quill instance is created
-        ...zw.quillOptions2                                 // ... placeholder is not lang-reactive
+        placeholder: zw.getString('label.new_comment'),
+        ...zw.quillOptions2
       }
     }
   },

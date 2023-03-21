@@ -5,10 +5,11 @@
       @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
       @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @mousedown.native="mousedown">
     </component>
+    <div class="lock-icon el-icon-lock" v-if="locked"></div>
     <div class="item-toolbar" v-if="infoMode">
       <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
           :key="action.action" @click="action.handler" @mousedown.native.stop>
-        <zw-string>{{action.action}}</zw-string>
+        {{actionLabel(action.action)}}
       </el-button>
     </div>
   </div>
@@ -47,6 +48,7 @@ export default {
       customClass: undefined,   // Custom class (String)
       actions: [                // Actions appearing in the button panel
         {action: 'action.edit',   handler: this.edit},
+        {action: 'action.lock',   handler: this.lock},
         {action: 'action.delete', handler: this.deleteItem}
       ],
       editEnabled: true,        // Edit button visibility (Boolean)
@@ -89,6 +91,10 @@ export default {
       return this.topic.viewProps['zukunftswerk.angle'] || 0
     },
 
+    locked () {
+      return this.topic.children['zukunftswerk.locked']?.value
+    },
+
     draggable () {
       return this.editable
     },
@@ -107,6 +113,10 @@ export default {
       this.$store.dispatch('edit', this.topic)
     },
 
+    lock () {
+      this.$store.dispatch('lock', this.topic)
+    },
+
     // Note: can't be named "delete"
     deleteItem () {
       this.$store.dispatch('delete', this.topic)
@@ -123,6 +133,11 @@ export default {
 
     buttonVisibility (action) {
       return (this.editable || action.enabledForReadOnly) && (action.action !== 'action.edit' || this.editEnabled)
+    },
+
+    actionLabel (action) {
+      const key = action === 'action.lock' && this.locked ? 'action.unlock' : action
+      return zw.getString(key)
     },
 
     setCustomClass (classname) {
@@ -191,5 +206,11 @@ export default {
 
 .zw-canvas-item:hover .item-toolbar {
   visibility: visible;
+}
+
+.zw-canvas-item .lock-icon {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
 }
 </style>

@@ -515,6 +515,14 @@ const actions = {
     state.isEditActive.push(topic.id)
   },
 
+  lock (_, topic) {
+    if (!topic.children['zukunftswerk.locked']) {
+      Vue.set(topic.children, 'zukunftswerk.locked', {})
+    }
+    const locked = topic.children['zukunftswerk.locked'].value
+    Vue.set(topic.children['zukunftswerk.locked'], 'value', !locked)
+  },
+
   delete ({dispatch}, topic) {
     dispatch('select', topic)     // programmatic selection
     zw.confirmDeletion().then(() => {

@@ -10,7 +10,7 @@ import systems.dmx.core.service.Migration;
 
 /**
  * Creates "Locked" flag and adds it to "Document"/"Note"/"Textblock"/"Label"/"Arrow".
- * Changes "Arrow" data type "Text" -> "Entity"
+ * Changes "Arrow" data type "Text" -> "Entity".
  * <p>
  * Part of Zukunftswerk 1.6
  * Runs ALWAYS.

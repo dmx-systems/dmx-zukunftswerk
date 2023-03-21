@@ -48,7 +48,7 @@ export default {
       customClass: undefined,   // Custom class (String)
       actions: [                // Actions appearing in the button panel
         {action: 'action.edit',   handler: this.edit},
-        {action: 'action.lock',   handler: this.lock},
+        {action: 'action.lock',   handler: this.toggleLock},
         {action: 'action.delete', handler: this.deleteItem}
       ],
       editEnabled: true,        // Edit button visibility (Boolean)
@@ -113,8 +113,8 @@ export default {
       this.$store.dispatch('edit', this.topic)
     },
 
-    lock () {
-      this.$store.dispatch('lock', this.topic)
+    toggleLock () {
+      this.$store.dispatch('toggleLock', this.topic)
     },
 
     // Note: can't be named "delete"

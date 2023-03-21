@@ -515,12 +515,20 @@ const actions = {
     state.isEditActive.push(topic.id)
   },
 
-  lock (_, topic) {
+  toggleLock (_, topic) {
+    // update client state
     if (!topic.children['zukunftswerk.locked']) {
       Vue.set(topic.children, 'zukunftswerk.locked', {})
     }
-    const locked = topic.children['zukunftswerk.locked'].value
-    Vue.set(topic.children['zukunftswerk.locked'], 'value', !locked)
+    const locked = !topic.children['zukunftswerk.locked'].value
+    Vue.set(topic.children['zukunftswerk.locked'], 'value', locked)
+    // update server state
+    dmx.rpc.updateTopic({
+      id: topic.id,
+      children: {
+        'zukunftswerk.locked': locked
+      }
+    })
   },
 
   delete ({dispatch}, topic) {

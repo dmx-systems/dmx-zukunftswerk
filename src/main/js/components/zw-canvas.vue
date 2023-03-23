@@ -131,7 +131,8 @@ export default {
     },
 
     editableSelection () {
-      return this.editable && this.selection.every(topic => !topic.children['zukunftswerk.locked']?.value)
+      return this.isTeam || this.isEditor &&
+        this.selection.every(topic => !topic.children['zukunftswerk.locked']?.value)
     },
 
     draggable () {

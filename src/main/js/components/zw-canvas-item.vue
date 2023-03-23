@@ -96,7 +96,7 @@ export default {
     },
 
     editable () {
-      return this.isEditor && !this.locked || this.isTeam
+      return this.isTeam || this.isEditor && !this.locked
     },
 
     draggable () {

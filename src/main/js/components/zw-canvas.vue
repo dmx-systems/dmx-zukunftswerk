@@ -127,19 +127,23 @@ export default {
     },
 
     deleteCount () {
-      return this.selection.filter(this.deleteEnabledFilter).length
+      return this.selection.filter(this.deleteManyFilter).length
+    },
+
+    editableSelection () {
+      return this.editable && this.selection.every(topic => !topic.children['zukunftswerk.locked']?.value)
     },
 
     draggable () {
-      return this.editable
+      return this.editableSelection
     },
 
     resizable () {
-      return this.editable && this.resizeStyle !== 'none'
+      return this.editableSelection && this.resizeStyle !== 'none'
     },
 
     rotatable () {
-      return this.editable && this.rotateEnabled
+      return this.editableSelection && this.rotateEnabled
     },
 
     resizeStyle () {
@@ -314,11 +318,11 @@ export default {
     },
 
     deleteMany () {
-      this.$store.dispatch('deleteMany', this.selection.filter(this.deleteEnabledFilter).map(topic => topic.id))
+      this.$store.dispatch('deleteMany', this.selection.filter(this.deleteManyFilter).map(topic => topic.id))
     },
 
-    deleteEnabledFilter (topic) {
-      return this.config('deleteEnabled', topic)
+    deleteManyFilter (topic) {
+      return this.config('deleteEnabled', topic) && !topic.children['zukunftswerk.locked']?.value
     },
 
     transitionend () {

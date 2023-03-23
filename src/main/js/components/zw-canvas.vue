@@ -323,7 +323,7 @@ export default {
     },
 
     deleteManyFilter (topic) {
-      return this.config('deleteEnabled', topic) && !topic.children['zukunftswerk.locked']?.value
+      return this.config('deleteEnabled', topic) && (this.isTeam || !topic.children['zukunftswerk.locked']?.value)
     },
 
     transitionend () {

@@ -5,10 +5,11 @@
       @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
       @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @mousedown.native="mousedown">
     </component>
+    <div class="lock-icon el-icon-lock" v-if="locked"></div>
     <div class="item-toolbar" v-if="infoMode">
-      <el-button v-for="action in actions" v-if="buttonVisibility(action)" type="text" :style="buttonStyle"
+      <el-button v-for="action in actions" v-if="isActionAvailable(action)" type="text" :style="buttonStyle"
           :key="action.action" @click="action.handler" @mousedown.native.stop>
-        <zw-string>{{action.action}}</zw-string>
+        {{actionLabel(action.action)}}
       </el-button>
     </div>
   </div>
@@ -23,7 +24,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/selection').default,
-    require('./mixins/editable').default,
+    // require('./mixins/editable').default,
     require('./mixins/zoom').default
   ],
 
@@ -47,6 +48,7 @@ export default {
       customClass: undefined,   // Custom class (String)
       actions: [                // Actions appearing in the button panel
         {action: 'action.edit',   handler: this.edit},
+        {action: 'action.lock',   handler: this.toggleLock},
         {action: 'action.delete', handler: this.deleteItem}
       ],
       editEnabled: true,        // Edit button visibility (Boolean)
@@ -89,8 +91,24 @@ export default {
       return this.topic.viewProps['zukunftswerk.angle'] || 0
     },
 
+    locked () {
+      return this.topic.children['zukunftswerk.locked']?.value
+    },
+
+    editable () {
+      return this.isEditor && !this.locked || this.isTeam
+    },
+
     draggable () {
       return this.editable
+    },
+
+    isEditor () {
+      return this.$store.state.isEditor
+    },
+
+    isTeam () {
+      return this.$store.state.isTeam
     },
 
     topicmap () {
@@ -107,6 +125,10 @@ export default {
       this.$store.dispatch('edit', this.topic)
     },
 
+    toggleLock () {
+      this.$store.dispatch('toggleLock', this.topic)
+    },
+
     // Note: can't be named "delete"
     deleteItem () {
       this.$store.dispatch('delete', this.topic)
@@ -121,8 +143,14 @@ export default {
       }
     },
 
-    buttonVisibility (action) {
+    isActionAvailable (action) {
       return (this.editable || action.enabledForReadOnly) && (action.action !== 'action.edit' || this.editEnabled)
+                                                          && (action.action !== 'action.lock' || this.isTeam)
+    },
+
+    actionLabel (action) {
+      const key = action === 'action.lock' && this.locked ? 'action.unlock' : action
+      return zw.getString(key)
     },
 
     setCustomClass (classname) {
@@ -191,5 +219,11 @@ export default {
 
 .zw-canvas-item:hover .item-toolbar {
   visibility: visible;
+}
+
+.zw-canvas-item .lock-icon {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
 }
 </style>

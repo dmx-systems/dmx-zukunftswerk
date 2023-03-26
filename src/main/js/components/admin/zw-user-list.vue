@@ -1,6 +1,7 @@
 <template>
   <div class="zw-user-list">
     <div class="heading"><zw-string>label.admin_users</zw-string></div>
+    <div class="active"><zw-string>label.active</zw-string></div>
     <div class="scroll-container">
       <el-collapse v-model="expandedUsernames">
         <zw-user-item v-for="user in users" :user="user" :key="user.id"></zw-user-item>
@@ -46,3 +47,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.zw-user-list > .active {
+  margin-left: 75%;
+  margin-bottom: 6px;
+}
+</style>

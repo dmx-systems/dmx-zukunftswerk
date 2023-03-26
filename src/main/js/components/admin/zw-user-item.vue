@@ -2,6 +2,7 @@
   <el-collapse-item :class="['zw-user-item', {'zw-selected': selected}]" :name="user.value">
     <div class="user" slot="title">
       <div class="name"><span class="fa fa-fw fa-user"></span> {{displayName}} ({{user.value}})</div>
+      <div class="active"><span :class="['fa', active ? 'fa-check' : 'fa-minus']"></span></div>
       <el-dropdown size="medium" trigger="click" @command="handle" @click.native.stop>
         <el-button type="text" class="fa fa-fw fa-ellipsis-v"></el-button>
         <el-dropdown-menu slot="dropdown">
@@ -50,6 +51,10 @@ export default {
       return this.activeUser?.id === this.user.id
     },
 
+    active () {
+      return this.user.children['zukunftswerk.user_active']?.value
+    },
+
     displayName () {
       return zw.getDisplayName(this.user.value)
     }
@@ -86,5 +91,9 @@ export default {
 
 .zw-user-item .user .name {
   flex-grow: 1;
+}
+
+.zw-user-item .user .active {
+  margin-right: 60px;
 }
 </style>

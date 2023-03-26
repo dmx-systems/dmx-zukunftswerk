@@ -34,9 +34,9 @@ public class Constants {
     public static final String DE                       = "zukunftswerk.de";
     public static final String FR                       = "zukunftswerk.fr";
 
-    // Props (Note, Textblock)
-    public static final String ZW_COLOR                 = "zukunftswerk.color"; // Note: COLOR is already used by
-                                                          // Webclient module, but as type URI; here we have a prop URI
-    // Props (Document, Note, Textblock, Label, Arrow)
-    public static final String ANGLE                    = "zukunftswerk.angle";
+    // DB Props
+    public static final String ZW_COLOR    = "zukunftswerk.color";  // Note, Textblock (String)
+        // Note: COLOR is already used by Webclient module, but as type URI; here we have a prop URI
+    public static final String ANGLE       = "zukunftswerk.angle";  // Document, Note, Textblock, Label, Arrow (Integer)
+    public static final String USER_ACTIVE = "zukunftswerk.user_active";   // Username (Boolean)
 }

@@ -9,6 +9,7 @@ import static systems.dmx.workspaces.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.accesscontrol.AccessControlService;
+import systems.dmx.accesscontrol.event.PostLoginUser;
 import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
@@ -28,6 +29,7 @@ import systems.dmx.core.service.event.PostCreateAssoc;
 import systems.dmx.core.service.event.PostUpdateTopic;
 import systems.dmx.core.service.event.PreDeleteAssoc;
 import systems.dmx.core.service.event.PreSendTopic;
+import systems.dmx.core.storage.spi.DMXTransaction;
 import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
@@ -62,7 +64,8 @@ import java.util.stream.Collectors;
 public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, TopicmapCustomizer,
                                                                                         PostCreateAssoc,
                                                                                         PreDeleteAssoc,
-                                                                                        PreSendTopic {
+                                                                                        PreSendTopic,
+                                                                                        PostLoginUser {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
@@ -177,6 +180,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                     assoc.getChildTopics().getModel().set(EDITOR, isEditor);
                 }
             }
+        }
+    }
+
+    @Override
+    public void postLoginUser(String username) {
+        DMXTransaction tx = dmx.beginTx();
+        try {
+            acs.getUsernameTopic(username).setProperty(USER_ACTIVE, true, false);       // addToIndex=false
+            tx.success();
+        } finally {
+            tx.finish();
         }
     }
 

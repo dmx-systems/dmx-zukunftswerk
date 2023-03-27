@@ -15,11 +15,11 @@ const state = {
 
   workspaces: [],                     // all ZW shared workspaces + the "Team" workspace (array of Workspace dmx.Topics)
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
-  activeWorkspace: undefined,         // (plain Workspace topic)
+  activeWorkspace: undefined,         // (plain Workspace topic) TODO: rename "selectedWorkspace"?
 
   // Note: "users" is found in root state (see zukunftswerk.js) as it also holds the user display names
   expandedUsernames: [],              // usernames of the users that are expanded (array of String)
-  activeUser: undefined               // (plain Username topic)
+  activeUser: undefined               // (plain Username topic) TODO: rename "selectedUser"?
 }
 
 const actions = {

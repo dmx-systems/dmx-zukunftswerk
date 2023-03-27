@@ -9,6 +9,7 @@ import static systems.dmx.workspaces.Constants.*;
 import static systems.dmx.zukunftswerk.Constants.*;
 
 import systems.dmx.accesscontrol.AccessControlService;
+import systems.dmx.accesscontrol.event.PostLoginUser;
 import systems.dmx.core.Assoc;
 import systems.dmx.core.RelatedTopic;
 import systems.dmx.core.Topic;
@@ -28,6 +29,7 @@ import systems.dmx.core.service.event.PostCreateAssoc;
 import systems.dmx.core.service.event.PostUpdateTopic;
 import systems.dmx.core.service.event.PreDeleteAssoc;
 import systems.dmx.core.service.event.PreSendTopic;
+import systems.dmx.core.storage.spi.DMXTransaction;
 import systems.dmx.core.util.DMXUtils;
 import systems.dmx.core.util.IdList;
 import systems.dmx.deepl.DeepLService;
@@ -62,7 +64,8 @@ import java.util.stream.Collectors;
 public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkService, TopicmapCustomizer,
                                                                                         PostCreateAssoc,
                                                                                         PreDeleteAssoc,
-                                                                                        PreSendTopic {
+                                                                                        PreSendTopic,
+                                                                                        PostLoginUser {
 
     // ---------------------------------------------------------------------------------------------- Instance Variables
 
@@ -138,7 +141,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
      *   - Comment-Refs by "Creator"
      *   - Textblock-Refs by "Color"
      * - Worksapces by "Owner"
-     * - Usernames by "Display Name" and "Show Email Address" flag
+     * - Usernames by "Display Name", "Show Email Address" flag, and "User Active" flag
      * - Memberships by "Editor" flag
      */
     @Override
@@ -164,6 +167,7 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                 topics.set(DISPLAY_NAME, displayName);
             }
             topics.set(SHOW_EMAIL_ADDRESS, getShowEmailAddress(username));
+            enrichWithUserActive(topic);
         }
         // Note: in a Related Username Topic w/ a Membership *both* are enriched
         if (topic instanceof RelatedTopic) {
@@ -176,6 +180,17 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
                     assoc.getChildTopics().getModel().set(EDITOR, isEditor);
                 }
             }
+        }
+    }
+
+    @Override
+    public void postLoginUser(String username) {
+        DMXTransaction tx = dmx.beginTx();
+        try {
+            acs.getUsernameTopic(username).setProperty(USER_ACTIVE, true, false);       // addToIndex=false
+            tx.success();
+        } finally {
+            tx.finish();
         }
     }
 
@@ -577,6 +592,12 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         // Note: assoc can be null if requested by non-ZW application e.g. DMX Webclient
         if (assoc != null && assoc.hasProperty(ZW_COLOR)) {      // Color is an optional view prop
             topic.getChildTopics().getModel().set(ZW_COLOR, assoc.getProperty(ZW_COLOR));
+        }
+    }
+
+    private void enrichWithUserActive(Topic username) {
+        if (username.hasProperty(USER_ACTIVE)) {      // "User Active" is an optional DB prop
+            username.getChildTopics().getModel().set(USER_ACTIVE, username.getProperty(USER_ACTIVE));
         }
     }
 

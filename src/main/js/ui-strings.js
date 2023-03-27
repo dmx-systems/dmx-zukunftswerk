@@ -97,6 +97,8 @@ export default {
   'label.owner.fr': 'Propriétaire',
   'label.user.de': 'Benutzer',
   'label.user.fr': 'Utilisateur',
+  'label.active.de': 'Aktiv',
+  'label.active.fr': 'Actif',
   'label.member.de': 'Mitglied',
   'label.member.fr': 'Membre',
   'label.editor.de': 'Editor',

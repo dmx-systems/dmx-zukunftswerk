@@ -8,10 +8,10 @@
           <td><zw-string>label.member</zw-string></td>
           <td><zw-string>label.editor</zw-string></td>
         </tr>
-        <tr v-for="(workspace, i) in workspaces">
-          <td>{{getWorkspaceName(workspace)}}</td>
-          <td><el-checkbox v-model="model1[i]"></el-checkbox></td>
-          <td><el-checkbox v-model="model2[i]" :disabled="!model1[i]"></el-checkbox></td>
+        <tr v-for="ws in workspaces">
+          <td>{{getWorkspaceName(ws)}}</td>
+          <td><el-checkbox v-model="model1[ws.id]"></el-checkbox></td>
+          <td><el-checkbox v-model="model2[ws.id]" :disabled="!model1[ws.id]"></el-checkbox></td>
         </tr>
       </table>
     </div>
@@ -40,15 +40,15 @@ export default {
 
   data () {
     return {
-      model1: [],      // column1 checkbox model: a flag for every workspace, true=member
-      model2: []       // column2 checkbox model: a flag for every workspace, true=editor
+      model1: {},     // checkbox model (column 1): workspace ID -> flag (true=member)
+      model2: {}      // checkbox model (column 2): workspace ID -> flag (true=editor)
     }
   },
 
   computed: {
 
     workspaces () {
-      return this.$store.state.admin.workspaces
+      return this.$store.getters['admin/sortedWorkspaces']
     },
 
     activeUser () {
@@ -70,31 +70,37 @@ export default {
 
     initModel () {
       Promise.all([
-        this.$store.dispatch('admin/fetchAllZWWorkspaces'),
+        this.$store.dispatch('admin/fetchAllZWWorkspaces'),     // TODO (optimization): don't refetch on user selection
         this.$store.dispatch('admin/fetchZWWorkspacesOfUser', this.activeUser.value)
       ]).then(() => {
-        this.model1 = this.workspaces.map(workspace => this.isMember(workspace))
-        this.model2 = this.workspaces.map(workspace => this.isEditor(workspace))
+        this.model1 = this.workspaces.reduce((model, ws) => {model[ws.id] = this.isMember(ws); return model}, {})
+        this.model2 = this.workspaces.reduce((model, ws) => {model[ws.id] = this.isEditor(ws); return model}, {})
       })
     },
 
     isMember (workspace) {
-      return this.findUser(workspace) !== undefined
+      return this.findWorkspace(workspace) !== undefined
     },
 
     isEditor (workspace) {
-      return this.findUser(workspace)?.assoc.children['zukunftswerk.editor']?.value
+      return this.findWorkspace(workspace)?.assoc.children['zukunftswerk.editor']?.value
     },
 
-    findUser (workspace) {
+    /**
+     * Finds the given workspace among the selected user's workspaces.
+     *
+     * @return  The found workspace; its "assoc" property holds the respective Membership association.
+     *          If the selected user is not a member of the given workspace undefined is returned.
+     */
+    findWorkspace (workspace) {
       return this.memberships?.find(ws => ws.id === workspace.id)
     },
 
     updateMemberships () {
-      let i = 0; const addWorkspaceIds1    = this.workspaces.filter(ws =>  this.model1[i++]).map(ws => ws.id)
-          i = 0; const removeWorkspaceIds1 = this.workspaces.filter(ws => !this.model1[i++]).map(ws => ws.id)
-          i = 0; const addWorkspaceIds2    = this.workspaces.filter(ws =>  this.model2[i++]).map(ws => ws.id)
-          i = 0; const removeWorkspaceIds2 = this.workspaces.filter(ws => !this.model2[i++]).map(ws => ws.id)
+      const addWorkspaceIds1    = this.workspaces.filter(ws =>  this.model1[ws.id]).map(ws => ws.id)
+      const removeWorkspaceIds1 = this.workspaces.filter(ws => !this.model1[ws.id]).map(ws => ws.id)
+      const addWorkspaceIds2    = this.workspaces.filter(ws =>  this.model2[ws.id]).map(ws => ws.id)
+      const removeWorkspaceIds2 = this.workspaces.filter(ws => !this.model2[ws.id]).map(ws => ws.id)
       this.$emit('loading')
       this.$store.dispatch('admin/updateUserMemberships', {
         addWorkspaceIds1, removeWorkspaceIds1, addWorkspaceIds2, removeWorkspaceIds2

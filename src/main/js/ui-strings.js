@@ -91,7 +91,7 @@ export default {
   'label.edit_memberships.fr': 'Gérer les membres',
   'label.edit_affiliations.de': 'Mitgliedschaften verwalten',
   'label.edit_affiliations.fr': 'Gérer les affiliations',
-  'label.workspace.de': 'Workspace',
+  'label.workspace.de': 'Arbeitsbereich',
   'label.workspace.fr': 'Espace de travail',
   'label.owner.de': 'Eigentümer',
   'label.owner.fr': 'Propriétaire',

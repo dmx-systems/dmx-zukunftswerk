@@ -176,7 +176,7 @@ const actions = {
 
   deleteWorkspace (_, workspaceId) {
     return zw.confirmDeletion('warning.delete_workspace').then(() => {
-      return dmx.rpc.deleteTopic(workspaceId)       // update server state
+      dmx.rpc.deleteWorkspace(workspaceId)          // update server state
     }).then(() => {
       removeWorkspace(workspaceId)                  // update client state
       // TODO: collapse?

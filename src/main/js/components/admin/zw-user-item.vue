@@ -91,6 +91,10 @@ export default {
 
 .zw-user-item .user .name {
   flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 30px;
 }
 
 .zw-user-item .user .active {

@@ -5,7 +5,7 @@
       @custom-class="setCustomClass" @action="addAction" @actions="setActions" @edit-enabled="setEditEnabled"
       @resize-style="setResizeStyle" @get-size="setGetSizeHandler" @mousedown.native="mousedown">
     </component>
-    <div class="lock-icon el-icon-lock" v-if="locked"></div>
+    <div class="lock-icon el-icon-lock" v-if="showLock"></div>
     <div class="item-toolbar" v-if="infoMode">
       <el-button v-for="action in actions" v-if="isActionAvailable(action)" type="text" :style="buttonStyle"
           :key="action.action" @click="action.handler" @mousedown.native.stop>
@@ -24,7 +24,7 @@ export default {
   mixins: [
     require('./mixins/mode').default,
     require('./mixins/selection').default,
-    // require('./mixins/editable').default,
+    require('./mixins/editable').default,
     require('./mixins/zoom').default
   ],
 
@@ -95,20 +95,16 @@ export default {
       return this.topic.children['zukunftswerk.locked']?.value
     },
 
-    editable () {
+    showLock () {
+      return this.editable && this.locked
+    },
+
+    isEditableItem () {
       return this.isTeam || this.isEditor && !this.locked
     },
 
     draggable () {
-      return this.editable
-    },
-
-    isEditor () {
-      return this.$store.state.isEditor
-    },
-
-    isTeam () {
-      return this.$store.state.isTeam
+      return this.isEditableItem
     },
 
     topicmap () {
@@ -144,8 +140,8 @@ export default {
     },
 
     isActionAvailable (action) {
-      return (this.editable || action.enabledForReadOnly) && (action.action !== 'action.edit' || this.editEnabled)
-                                                          && (action.action !== 'action.lock' || this.isTeam)
+      return (this.isEditableItem || action.enabledForReadOnly) && (action.action !== 'action.edit' || this.editEnabled)
+                                                                && (action.action !== 'action.lock' || this.isTeam)
     },
 
     actionLabel (action) {

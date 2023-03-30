@@ -60,10 +60,6 @@ export default {
 
     owner () {
       return this.workspace.children['dmx.accesscontrol.owner'].value
-    },
-
-    username () {
-      return this.$store.state.username
     }
   },
 

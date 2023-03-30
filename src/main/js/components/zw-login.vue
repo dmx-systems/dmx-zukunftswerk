@@ -1,7 +1,6 @@
 <template>
   <div class="zw-login">
     <zw-language-switch></zw-language-switch>
-    <div class="stamp" :style="stampStyle">beta</div>
     <img :src="logo">
     <div class="login-form">
       <div class="welcome">
@@ -77,12 +76,6 @@ export default {
       return this.$store.state.loginMessage
     },
 
-    stampStyle () {
-      return {
-        left: this.lang === 'de' ? '402px' : '460px'
-      }
-    },
-
     lang () {
       return this.$store.state.lang
     }
@@ -146,16 +139,6 @@ export default {
   position: absolute;
   top: 16px;
   right: 16px;
-}
-
-.zw-login .stamp {
-  position: absolute;
-  top: 201px;
-  font-size: 14px;
-  font-weight: bold;
-  padding: 1px 10px;
-  transform: rotate(-25deg);
-  background-color: var(--primary-color);
 }
 
 .zw-login img {

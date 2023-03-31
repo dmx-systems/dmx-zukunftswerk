@@ -26,9 +26,9 @@ const state = {
 
   // User
   username: '',                 // username of current user (String), empty/undefined if not logged in
-  workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics)
-                                // Note: the "Team" workspace is not included.
-  workspace: undefined,         // the selected workspace (dmx.Topic)
+  workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics),
+                                // "assoc" prop holds current user's Membership. "Team" workspace is not included.
+  workspace: undefined,         // the selected workspace (dmx.Topic, w/o "assoc" prop)
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
   isEditor: false,              // true if the current user is an editor of the selected workspace (Boolean)
   isTeam: false,                // true if the "Team" workspace is writable by the current user (Boolean)
@@ -93,6 +93,12 @@ const actions = {
   logout () {
     DEV && console.log('[ZW] Logout', state.username)
     return dmx.rpc.logout().then(initUserState)
+  },
+
+  fetchZWWorkspaces () {
+    return http.get('/zukunftswerk/workspaces').then(response => {
+      state.workspaces = response.data
+    })
   },
 
   fetchAllUsers () {
@@ -676,9 +682,7 @@ function initUserState (username) {
           state.username = username
           state.isTeam = isWritable
         }),
-      http.get('/zukunftswerk/workspaces').then(response => {
-        state.workspaces = response.data
-      }),
+      store.dispatch('fetchZWWorkspaces'),
       store.dispatch('fetchAllUsers')     // needed for accessing display names
     ])
   } else {            // Logout

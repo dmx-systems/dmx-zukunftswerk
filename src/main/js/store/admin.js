@@ -13,7 +13,7 @@ const state = {
   formMode: undefined,                // 'create'/'update' (String), relevant only for secondary panel forms
   editBuffer: undefined,
 
-  workspaces: [],                     // all ZW shared workspaces + the "Team" workspace (array of Workspace dmx.Topics)
+  workspaces: [],                     // all ZW shared workspaces + the "Team" workspace (dmx.Topics, clone() is needed)
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
   activeWorkspace: undefined,         // (plain Workspace topic) TODO: rename "selectedWorkspace"?
 
@@ -161,9 +161,10 @@ const actions = {
     return http.post('/zukunftswerk/admin/workspace', undefined, {
       params: {nameDe, nameFr}
     }).then(response => {
-      state.workspaces.push(new dmx.Topic(response.data))
-      // team members are invited automatically, so we need to reset the User area
-      collapseUsers(rootState, dispatch)
+      // update client state
+      state.workspaces.push(new dmx.Topic(response.data))       // admin area: add to workspace list
+      collapseUsers(rootState, dispatch)                        // admin area: force refetching user's memberships
+      dispatch('fetchZWWorkspaces', undefined, {root: true})    // workspace area: add to workspace selector
     })
   },
 

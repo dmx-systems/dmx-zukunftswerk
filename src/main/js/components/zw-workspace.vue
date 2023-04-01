@@ -39,5 +39,7 @@ export default {
   display: flex;
   flex-grow: 1;
   min-height: 0;
+  word-break: break-word;   /* FIXME: long attachment names (discussion panel) still don't break */
+                            /* TODO: "break-word" is deprecated
 }
 </style>

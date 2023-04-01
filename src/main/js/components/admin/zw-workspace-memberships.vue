@@ -4,9 +4,9 @@
     <div class="scroll-container">
       <table>
         <tr>
-          <td><zw-string>label.user</zw-string></td>
-          <td><zw-string>label.member</zw-string></td>
-          <td><zw-string>label.editor</zw-string></td>
+          <th><zw-string>label.user</zw-string></th>
+          <th><zw-string>label.member</zw-string></th>
+          <th><zw-string>label.editor</zw-string></th>
         </tr>
         <tr v-for="(user, i) in users">
           <td>{{user.value}}</td>
@@ -120,5 +120,16 @@ export default {
 
 .zw-workspace-memberships table {
   width: 100%;
+}
+
+.zw-workspace-memberships table > tr > th {
+  text-align: unset;        /* browser style is "center" */
+  padding-bottom: 5px;
+  padding-right: 20px;
+}
+
+.zw-workspace-memberships table > tr > td {
+  word-break: break-all;    /* break long usernames */
+  padding-right: 20px;
 }
 </style>

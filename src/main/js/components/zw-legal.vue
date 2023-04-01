@@ -104,10 +104,6 @@ export default {
   margin-bottom: 2em;
 }
 
-.zw-legal.privacy_policy table th {
-  word-break: initial;
-}
-
 .zw-legal.privacy_policy table td {
   border: 1px solid #bfbfbf;
   padding: 10px;
@@ -115,7 +111,6 @@ export default {
 
 .zw-legal.privacy_policy table td p {
   text-align: initial;
-  word-break: initial;
 }
 
 .zw-legal.privacy_policy ul > li {

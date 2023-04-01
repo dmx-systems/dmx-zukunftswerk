@@ -124,6 +124,7 @@ export default {
   display: flex;
   flex-direction: column;
   flex-basis: 50%;
+  min-width: 0;
   padding: 35px;
 }
 

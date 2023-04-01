@@ -28,6 +28,7 @@ const state = {
   username: '',                 // username of current user (String), empty/undefined if not logged in
   workspaces: [],               // ZW shared workspaces of the current user (array of plain Workspace topics),
                                 // "assoc" prop holds current user's Membership. "Team" workspace is not included.
+                                // Array is unsorted; a sorted array is available by the "sortedWorkspaces" getter.
   workspace: undefined,         // the selected workspace (dmx.Topic, w/o "assoc" prop)
   isWritable: false,            // true if the workspace is writable by the current user (Boolean)
   isEditor: false,              // true if the current user is an editor of the selected workspace (Boolean)

@@ -118,6 +118,10 @@ export default {
     renderPage () {
       // console.log('renderPage', this.pageNr)
       const canvas = this.$refs.canvas
+      if (!canvas) {      // TODO: why does this happen?
+        console.warn('zw-pdf-viewer: no canvas')
+        return
+      }
       this.$emit('loading')
       this.pdf.getPage(this.pageNr).then(page => {
         let viewport = page.getViewport({scale: 1})

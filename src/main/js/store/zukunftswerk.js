@@ -692,7 +692,6 @@ function initUserState (username) {
     state.isTeam = false
     state.workspace = undefined
     store.dispatch('deselect')
-    updateCookies()
     return Promise.resolve()
   }
 }
@@ -712,9 +711,6 @@ function updateCookies () {
       const topicmapId = topics[0].id
       dmx.utils.setCookie('dmx_topicmap_id', topicmapId)
     })
-  } else {
-    dmx.utils.deleteCookie('dmx_workspace_id')
-    dmx.utils.deleteCookie('dmx_topicmap_id')
   }
 }
 

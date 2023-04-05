@@ -10,7 +10,7 @@
           <el-button type="text" :title="selectTooltip">
             <span class="name">{{workspaceName}}</span><span class="el-icon-arrow-down el-icon--right"></span>
           </el-button>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu class="zw-workspace-selector" slot="dropdown">
             <el-dropdown-item v-for="workspace in workspaces" :command="workspace.id" :key="workspace.id">
               {{getWorkspaceName(workspace)}}
             </el-dropdown-item>
@@ -124,5 +124,12 @@ export default {
 
 .zw-header .zw-user-menu {
   margin-left: 20px;
+}
+
+/* dropdown menus are body mounted */
+body > .el-dropdown-menu.zw-workspace-selector {
+  overflow: auto;
+  max-height: calc(100% - 68px);
+  white-space: nowrap;
 }
 </style>

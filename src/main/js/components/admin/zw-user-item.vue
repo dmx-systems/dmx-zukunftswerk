@@ -18,7 +18,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <div v-for="workspace in user.memberships">
+    <div v-for="workspace in memberships">
       <span class="fa fa-fw fa-list"></span>
       {{getWorkspaceName(workspace)}}
     </div>
@@ -57,6 +57,10 @@ export default {
 
     displayName () {
       return zw.getDisplayName(this.user.value)
+    },
+
+    memberships () {
+      return this.$store.getters.sortedMemberships[this.user.value]
     }
   },
 

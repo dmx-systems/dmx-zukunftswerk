@@ -21,7 +21,10 @@ const width = window.innerWidth
 const state = {
 
   ready,                        // a promise, resolved once User state is initialized
-  users: [],                    // all users in the system (array of plain Username topics)
+  users: [],                    // all users in the system (array of plain Username topics, sorted by username=email
+                                // address). "memberships" prop holds respective user's Workspaces (array), initialized
+                                // on-demand on a per-user basis, unsorted; a sorted per-user Workspaces array is
+                                // available by the "sortedMemberships" getter (object).
   teamWorkspace: undefined,     // the "Team" Workspace topic (dmx.Topic); guaranteed inited once User state is ready
 
   // User
@@ -632,8 +635,19 @@ const actions = {
 }
 
 const getters = {
+
   sortedWorkspaces () {
-    return state.workspaces.sort((t1, t2) => zw.workspaceName(t1).localeCompare(zw.workspaceName(t2)))
+    return state.workspaces.sort((w1, w2) => zw.workspaceName(w1).localeCompare(zw.workspaceName(w2)))
+  },
+
+  sortedMemberships () {
+    return state.users.reduce((memberships, user) => {
+      if (user.memberships) {
+        const workspaces = user.memberships.sort((w1, w2) => zw.workspaceName(w1).localeCompare(zw.workspaceName(w2)))
+        memberships[user.value] = workspaces
+      }
+      return memberships
+    }, {})
   }
 }
 

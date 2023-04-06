@@ -118,7 +118,7 @@ const actions = {
     const usernameTopic = zw.getUser(username)
     if (!usernameTopic.memberships) {
       return http.get(`/zukunftswerk/admin/user/${username}/workspaces`).then(response => {
-        const workspaces = response.data.sort(zw.topicSort)               // FIXME: sort bilingually
+        const workspaces = response.data
         Vue.set(usernameTopic, 'memberships', workspaces)                 // ad-hoc property is not reactive by default
       })
     }
@@ -142,9 +142,9 @@ const actions = {
   },
 
   updateUserMemberships ({dispatch}, {addWorkspaceIds1, removeWorkspaceIds1, addWorkspaceIds2, removeWorkspaceIds2}) {
-    const username = state.activeUser
-    dispatch('expandUser', username.value)
-    return http.put(`/zukunftswerk/admin/user/${username.value}`, undefined, {
+    const user = state.activeUser
+    dispatch('expandUser', user.value)
+    return http.put(`/zukunftswerk/admin/user/${user.value}`, undefined, {
       params: {
         addWorkspaceIds1: addWorkspaceIds1.join(','),
         removeWorkspaceIds1: removeWorkspaceIds1.join(','),
@@ -152,7 +152,7 @@ const actions = {
         removeWorkspaceIds2: removeWorkspaceIds2.join(',')
       }
     }).then(response => {
-      username.memberships = response.data.sort(zw.topicSort)       // FIXME: sort bilingually
+      user.memberships = response.data.sort(zw.topicSort)       // FIXME: sort bilingually
       collapseWorkspaces(dispatch)
     })
   },
@@ -234,7 +234,7 @@ const actions = {
 
 const getters = {
   sortedWorkspaces () {
-    return state.workspaces.sort((t1, t2) => zw.workspaceName(t1).localeCompare(zw.workspaceName(t2)))
+    return state.workspaces.sort((w1, w2) => zw.workspaceName(w1).localeCompare(zw.workspaceName(w2)))
   }
 }
 
@@ -302,8 +302,8 @@ function collapseWorkspaces (dispatch) {
 }
 
 function collapseUsers (rootState, dispatch) {
-  rootState.users.forEach(username => {
-    delete username.memberships                 // force refetch once needed
+  rootState.users.forEach(user => {
+    delete user.memberships                     // force refetch once needed
     dispatch('setExpandedUsernames', [])        // TODO: don't collapse but refetch later on when needed
   })
 }

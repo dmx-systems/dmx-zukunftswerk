@@ -43,10 +43,11 @@ export default {
   getUser,
   getString,
 
+  topicSort,
+  workspaceSort,
   findWorkspace,
   workspaceName,
 
-  topicSort,
   canvasFilter,
   confirmDeletion,
 
@@ -116,6 +117,14 @@ function substitute (str, value) {
   return str.substring(0, i) + value + str.substring(i + 3)
 }
 
+function topicSort (t1, t2) {
+  return t1.value.localeCompare(t2.value)
+}
+
+function workspaceSort (w1, w2) {
+  return workspaceName(w1).localeCompare(workspaceName(w2))
+}
+
 /**
  * Finds the given workspace among the current user's workspaces.
  *
@@ -136,10 +145,6 @@ function workspaceName (topic) {
   } else {
     return fr.value
   }
-}
-
-function topicSort (t1, t2) {
-  return t1.value.localeCompare(t2.value)
 }
 
 function canvasFilter (topic) {

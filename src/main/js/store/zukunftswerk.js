@@ -637,13 +637,13 @@ const actions = {
 const getters = {
 
   sortedWorkspaces () {
-    return state.workspaces.sort((w1, w2) => zw.workspaceName(w1).localeCompare(zw.workspaceName(w2)))
+    return state.workspaces.sort(zw.workspaceSort)
   },
 
   sortedMemberships () {
     return state.users.reduce((memberships, user) => {
       if (user.memberships) {
-        const workspaces = user.memberships.sort((w1, w2) => zw.workspaceName(w1).localeCompare(zw.workspaceName(w2)))
+        const workspaces = user.memberships.sort(zw.workspaceSort)
         memberships[user.value] = workspaces
       }
       return memberships

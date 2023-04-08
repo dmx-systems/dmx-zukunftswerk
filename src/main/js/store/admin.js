@@ -152,7 +152,7 @@ const actions = {
         removeWorkspaceIds2: removeWorkspaceIds2.join(',')
       }
     }).then(response => {
-      user.memberships = response.data.sort(zw.topicSort)       // FIXME: sort bilingually
+      user.memberships = response.data
       collapseWorkspaces(dispatch)
     })
   },
@@ -234,7 +234,7 @@ const actions = {
 
 const getters = {
   sortedWorkspaces () {
-    return state.workspaces.sort((w1, w2) => zw.workspaceName(w1).localeCompare(zw.workspaceName(w2)))
+    return state.workspaces.sort(zw.workspaceSort)
   }
 }
 

@@ -99,10 +99,12 @@ const actions = {
   },
 
   fetchAllZWWorkspaces ({rootState}) {
-    http.get('/zukunftswerk/admin/workspaces').then(response => {
-      state.workspaces = dmx.utils.instantiateMany(response.data, dmx.Topic)
-      state.workspaces.push(rootState.teamWorkspace)
-    })
+    if (!state.workspaces.length) {
+      return http.get('/zukunftswerk/admin/workspaces').then(response => {
+        state.workspaces = dmx.utils.instantiateMany(response.data, dmx.Topic)
+        state.workspaces.push(rootState.teamWorkspace)
+      })
+    }
   },
 
   fetchWorkspaceMemberships (_, workspaceId) {

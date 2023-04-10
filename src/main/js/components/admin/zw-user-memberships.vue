@@ -70,7 +70,7 @@ export default {
 
     initModel () {
       Promise.all([
-        this.$store.dispatch('admin/fetchAllZWWorkspaces'),     // TODO (optimization): don't refetch on user selection
+        this.$store.dispatch('admin/fetchAllZWWorkspaces'),
         this.$store.dispatch('admin/fetchUserMemberships', this.selectedUser.value)
       ]).then(() => {
         this.model1 = this.workspaces.reduce((model, ws) => {model[ws.id] = this.isMember(ws); return model}, {})

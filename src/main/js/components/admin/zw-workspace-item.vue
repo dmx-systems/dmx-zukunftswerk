@@ -46,12 +46,12 @@ export default {
 
   computed: {
 
-    activeWorkspace () {
-      return this.$store.state.admin.activeWorkspace
+    selectedWorkspace () {
+      return this.$store.state.admin.selectedWorkspace
     },
 
     selected () {
-      return this.activeWorkspace?.id === this.workspace.id
+      return this.selectedWorkspace?.id === this.workspace.id
     },
 
     displayNames () {
@@ -78,12 +78,12 @@ export default {
     },
 
     delete () {
-      this.$store.dispatch('admin/setActiveWorkspace', this.workspace)
+      this.$store.dispatch('admin/setSelectedWorkspace', this.workspace)
       this.$store.dispatch('admin/deleteWorkspace', this.workspace.id)
     },
 
     editMemberships () {
-      this.$store.dispatch('admin/setActiveWorkspace', this.workspace)
+      this.$store.dispatch('admin/setSelectedWorkspace', this.workspace)
       this.$store.dispatch('admin/setSecondaryPanel', 'zw-workspace-memberships')
     }
   }

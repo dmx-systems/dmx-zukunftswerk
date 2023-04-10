@@ -29,7 +29,7 @@ export default {
 
   created () {
     if (this.isUpdate) {
-      const username = this.activeUser.value
+      const username = this.selectedUser.value
       this.model.emailAddress = username
       this.model.displayName = zw.getDisplayName(username)
     }
@@ -62,8 +62,8 @@ export default {
       return this.$store.state.admin.formMode
     },
 
-    activeUser () {
-      return this.$store.state.admin.activeUser
+    selectedUser () {
+      return this.$store.state.admin.selectedUser
     }
   },
 

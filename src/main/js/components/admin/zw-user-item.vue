@@ -43,12 +43,12 @@ export default {
 
   computed: {
 
-    activeUser () {
-      return this.$store.state.admin.activeUser
+    selectedUser () {
+      return this.$store.state.admin.selectedUser
     },
 
     selected () {
-      return this.activeUser?.id === this.user.id
+      return this.selectedUser?.id === this.user.id
     },
 
     active () {
@@ -75,12 +75,12 @@ export default {
     },
 
     delete () {
-      this.$store.dispatch('admin/setActiveUser', this.user)
+      this.$store.dispatch('admin/setSelectedUser', this.user)
       this.$store.dispatch('admin/deleteUser', this.user)
     },
 
     editAffiliations () {
-      this.$store.dispatch('admin/setActiveUser', this.user)
+      this.$store.dispatch('admin/setSelectedUser', this.user)
       this.$store.dispatch('admin/setSecondaryPanel', 'zw-user-memberships')
     }
   }

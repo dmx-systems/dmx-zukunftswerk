@@ -51,17 +51,17 @@ export default {
       return this.$store.getters['admin/sortedWorkspaces']
     },
 
-    activeUser () {
-      return this.$store.state.admin.activeUser
+    selectedUser () {
+      return this.$store.state.admin.selectedUser
     },
 
     memberships () {
-      return this.activeUser.memberships
+      return this.selectedUser.memberships
     }
   },
 
   watch: {
-    activeUser () {
+    selectedUser () {
       this.initModel()
     }
   },
@@ -71,7 +71,7 @@ export default {
     initModel () {
       Promise.all([
         this.$store.dispatch('admin/fetchAllZWWorkspaces'),     // TODO (optimization): don't refetch on user selection
-        this.$store.dispatch('admin/fetchZWWorkspacesOfUser', this.activeUser.value)
+        this.$store.dispatch('admin/fetchUserMemberships', this.selectedUser.value)
       ]).then(() => {
         this.model1 = this.workspaces.reduce((model, ws) => {model[ws.id] = this.isMember(ws); return model}, {})
         this.model2 = this.workspaces.reduce((model, ws) => {model[ws.id] = this.isEditor(ws); return model}, {})

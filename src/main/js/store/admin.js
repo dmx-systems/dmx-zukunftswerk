@@ -15,11 +15,11 @@ const state = {
 
   workspaces: [],                     // all ZW shared workspaces + the "Team" workspace (dmx.Topics, clone() is needed)
   expandedWorkspaceIds: [],           // IDs of the workspaces that are expanded
-  activeWorkspace: undefined,         // (plain Workspace topic) TODO: rename "selectedWorkspace"?
+  selectedWorkspace: undefined,       // (plain Workspace topic)
 
   // Note: "users" is found in root state (see zukunftswerk.js) as it also holds the user display names
   expandedUsernames: [],              // usernames of the users that are expanded (array of String)
-  activeUser: undefined               // (plain Username topic) TODO: rename "selectedUser"?
+  selectedUser: undefined             // (plain Username topic)
 }
 
 const actions = {
@@ -29,7 +29,7 @@ const actions = {
     if (workspace) {
       state.formMode = 'update'
       state.editBuffer = type.newFormModel(workspace.clone())
-      dispatch('setActiveWorkspace', workspace)
+      dispatch('setSelectedWorkspace', workspace)
     } else {
       state.formMode = 'create'
       state.editBuffer = type.newFormModel()
@@ -41,7 +41,7 @@ const actions = {
   showUserForm ({dispatch}, user) {
     if (user) {
       state.formMode = 'update'
-      dispatch('setActiveUser', user)
+      dispatch('setSelectedUser', user)
     } else {
       state.formMode = 'create'
     }
@@ -50,7 +50,7 @@ const actions = {
 
   setPrimaryPanel (_, panel) {
     state.primaryPanel = panel
-    if (panel === 'zw-workspace-list' && state.activeWorkspace) {
+    if (panel === 'zw-workspace-list' && state.selectedWorkspace) {
       state.secondaryPanel = 'zw-workspace-memberships'
     } else {
       state.secondaryPanel = undefined
@@ -60,25 +60,25 @@ const actions = {
   setSecondaryPanel (_, panel) {
     state.secondaryPanel = panel
     /* if (panel === 'zw-workspace-form' || !panel) {
-      state.activeWorkspace = undefined
+      state.selectedWorkspace = undefined
     } */    // TODO
   },
 
-  setActiveWorkspace (_, workspace) {
-    state.activeWorkspace = workspace
+  setSelectedWorkspace (_, workspace) {
+    state.selectedWorkspace = workspace
   },
 
   setExpandedWorkspaceIds ({dispatch}, workspaceIds) {
     state.expandedWorkspaceIds = workspaceIds
     workspaceIds.forEach(id => {
-      dispatch('fetchMemberships', id)
+      dispatch('fetchWorkspaceMemberships', id)
     })
   },
 
   setExpandedUsernames ({dispatch}, usernames) {
     state.expandedUsernames = usernames
     usernames.forEach(username => {
-      dispatch('fetchZWWorkspacesOfUser', username)
+      dispatch('fetchUserMemberships', username)
     })
   },
 
@@ -94,8 +94,8 @@ const actions = {
     }
   },
 
-  setActiveUser (_, user) {
-    state.activeUser = user
+  setSelectedUser (_, user) {
+    state.selectedUser = user
   },
 
   fetchAllZWWorkspaces ({rootState}) {
@@ -105,7 +105,7 @@ const actions = {
     })
   },
 
-  fetchMemberships (_, workspaceId) {
+  fetchWorkspaceMemberships (_, workspaceId) {
     const workspace = findWorkspace(workspaceId)
     if (!workspace.memberships) {
       return dmx.rpc.getMemberships(workspaceId).then(users => {
@@ -114,7 +114,7 @@ const actions = {
     }
   },
 
-  fetchZWWorkspacesOfUser (_, username) {
+  fetchUserMemberships (_, username) {
     const usernameTopic = zw.getUser(username)
     if (!usernameTopic.memberships) {
       return http.get(`/zukunftswerk/admin/user/${username}/workspaces`).then(response => {
@@ -125,7 +125,7 @@ const actions = {
   },
 
   updateWorkspaceMemberships ({rootState, dispatch}, {addUserIds1, removeUserIds1, addUserIds2, removeUserIds2}) {
-    const workspace = state.activeWorkspace
+    const workspace = state.selectedWorkspace
     dispatch('expandWorkspace', workspace.id)
     return http.put(`/zukunftswerk/admin/workspace/${workspace.id}`, undefined, {
       params: {
@@ -142,7 +142,7 @@ const actions = {
   },
 
   updateUserMemberships ({dispatch}, {addWorkspaceIds1, removeWorkspaceIds1, addWorkspaceIds2, removeWorkspaceIds2}) {
-    const user = state.activeUser
+    const user = state.selectedUser
     dispatch('expandUser', user.value)
     return http.put(`/zukunftswerk/admin/user/${user.value}`, undefined, {
       params: {

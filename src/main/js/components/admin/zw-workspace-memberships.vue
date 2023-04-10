@@ -50,17 +50,17 @@ export default {
       return this.$store.state.users
     },
 
-    activeWorkspace () {
-      return this.$store.state.admin.activeWorkspace
+    selectedWorkspace () {
+      return this.$store.state.admin.selectedWorkspace
     },
 
     memberships () {
-      return this.activeWorkspace.memberships
+      return this.selectedWorkspace.memberships
     }
   },
 
   watch: {
-    activeWorkspace () {
+    selectedWorkspace () {
       this.initModel()
     }
   },
@@ -70,7 +70,7 @@ export default {
     initModel () {
       Promise.all([
         this.$store.dispatch('fetchAllUsers'),
-        this.$store.dispatch('admin/fetchMemberships', this.activeWorkspace.id)
+        this.$store.dispatch('admin/fetchWorkspaceMemberships', this.selectedWorkspace.id)
       ]).then(() => {
         this.model1 = this.users.map(user => this.isMember(user))
         this.model2 = this.users.map(user => this.isEditor(user))

@@ -2,6 +2,7 @@
   <div :class="['zw-webclient', {dragging: isDragging}]" @mousedown="mousedown" @mouseup="mouseup" @keyup.tab="tab">
     <zw-header></zw-header>
     <router-view></router-view>
+    <iframe class="zw-download-iframe"></iframe>
   </div>
 </template>
 
@@ -100,5 +101,9 @@ export default {
 
 .zw-webclient.dragging {
   user-select: none;
+}
+
+.zw-webclient .zw-download-iframe {
+  display: none;
 }
 </style>

@@ -58,7 +58,6 @@ const state = {
   documentFilter: undefined,    // discussion is filtered by this document (a Document topic, plain object)
   textblockFilter: undefined,   // discussion is filtered by this textblock (a Textblock topic, plain object)
                                 // Either one of both is set, or none. TODO: unify these 2
-  downloadUrl: undefined,       // URL of previously downloaded comment attachment
 
   // Misc
   lang: undefined,              // UI language ('de'/'fr')
@@ -622,7 +621,8 @@ const actions = {
   },
 
   downloadFile (_, repoPath) {
-    state.downloadUrl = filerepoUrl(repoPath) + '?download'
+    const url = filerepoUrl(repoPath) + '?download'
+    document.querySelector('.zw-download-iframe').contentWindow.location.assign(url)
   },
 
   getFileContent (_, repoPath) {

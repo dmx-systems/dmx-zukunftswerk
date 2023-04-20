@@ -54,7 +54,6 @@
       </div>
     </template>
     <zw-upload-dialog :visible="uploadDialogVisible" @attach="attach" @close="closeUploadDialog"></zw-upload-dialog>
-    <zw-download-iframe></zw-download-iframe>
   </div>
 </template>
 
@@ -281,7 +280,6 @@ export default {
   components: {
     'zw-comment':         require('./zw-comment').default,
     'zw-upload-dialog':   require('./zw-upload-dialog').default,
-    'zw-download-iframe': require('./zw-download-iframe').default,
     quill: () => ({
       component: import('vue-quill-minimum' /* webpackChunkName: "vue-quill-minimum" */),
       loading: require('./zw-spinner')

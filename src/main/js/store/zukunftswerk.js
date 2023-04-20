@@ -623,14 +623,10 @@ const actions = {
 
   downloadFile (_, repoPath) {
     state.downloadUrl = filerepoUrl(repoPath) + '?download'
-    setTimeout(() => {
-      state.downloadUrl = undefined     // reset required for downloading the same file twice
-    }, 5000)
   },
 
   getFileContent (_, repoPath) {
-    return http.get(filerepoUrl(repoPath))
-      .then(response => response.data)
+    return http.get(filerepoUrl(repoPath)).then(response => response.data)
   }
 }
 

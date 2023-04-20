@@ -625,7 +625,7 @@ const actions = {
     state.downloadUrl = filerepoUrl(repoPath) + '?download'
     setTimeout(() => {
       state.downloadUrl = undefined     // reset required for downloading the same file twice
-    }, 1000)
+    }, 5000)
   },
 
   getFileContent (_, repoPath) {

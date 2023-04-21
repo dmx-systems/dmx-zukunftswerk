@@ -50,7 +50,7 @@ export default {
 
 <style>
 .zw-user-list > .active {
-  margin-left: calc(92% - 102px);
+  margin-left: calc(92% - 114px);
   margin-bottom: 6px;
 }
 </style>

@@ -82,6 +82,10 @@ export default {
   margin-bottom: 24px;
 }
 
+.zw-legal.imprint h4 {
+  margin-bottom: 0;
+}
+
 .zw-legal.privacy_policy h2 {
   font-size: 20px;
   line-height: normal;

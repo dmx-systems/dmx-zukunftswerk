@@ -140,10 +140,8 @@ function workspaceName (topic) {
   const fr = topic.children['dmx.workspaces.workspace_name#zukunftswerk.fr']
   if (de && fr) {
     return topic.children['dmx.workspaces.workspace_name#zukunftswerk.' + store.state.lang].value
-  } else if (de) {
-    return de.value
   } else {
-    return fr.value
+    return de?.value || fr?.value || '?'
   }
 }
 

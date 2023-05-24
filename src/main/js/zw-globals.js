@@ -103,8 +103,9 @@ function getShowEmailAddress (username) {
 }
 
 function getUser (username) {
-  const _username = username.toLowerCase()
-  return store.state.users.find(user => user.value === _username)
+  // TODO: better use localeCompare() or regex (or toUpperCase()) instead of toLowerCase()?
+  // https://stackoverflow.com/questions/2140627/how-to-do-case-insensitive-string-comparison
+  return store.state.users.find(user => user.value.toLowerCase() === username.toLowerCase())
 }
 
 function getString (key, value) {

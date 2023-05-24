@@ -98,8 +98,8 @@ class EmailDigests {
                         acs.enrichWithUserInfo(comment);
                     });
                     comments.sort((c1, c2) -> {
-                        long d = c1.getModel().getChildTopics().getLong(MODIFIED)       // synthetic, so operate on model
-                               - c2.getModel().getChildTopics().getLong(MODIFIED);      // synthetic, so operate on model
+                        long d = c1.getModel().getChildTopics().getLong(MODIFIED)      // synthetic, so operate on model
+                               - c2.getModel().getChildTopics().getLong(MODIFIED);     // synthetic, so operate on model
                         return d < 0 ? -1 : d == 0 ? 0 : 1;
                     });
                     comments.forEach(comment -> {

@@ -64,7 +64,7 @@ export default {
   'label.automatic.de': 'automatisch',
   'label.automatic.fr': 'automatique',
   'label.edited.de': 'bearbeitet',
-  'label.edited.fr': 'édité',
+  'label.edited.fr': 'éditée',
   'label.none.de': 'keine',
   'label.none.fr': 'pas de',
   'label.new_comment.de': 'Neuer Beitrag',

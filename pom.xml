@@ -22,7 +22,7 @@
         <dependency>
             <groupId>systems.dmx</groupId>
             <artifactId>dmx-deepl</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>systems.dmx</groupId>

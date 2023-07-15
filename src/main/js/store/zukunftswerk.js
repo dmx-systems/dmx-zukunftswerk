@@ -124,6 +124,7 @@ const actions = {
     dispatch('deselect')                        // reset selection
     dispatch('setDocumentFilter', undefined)    // reset document-filter
     dispatch('setTextblockFilter', undefined)   // reset textblock-filter
+    dispatch('search/search', '')               // reset search
     dmx.rpc.getTopic(workspaceId, true).then(workspace => {           // includeChildren=true
       if (workspace.typeUri !== 'dmx.workspaces.workspace') {
         throw Error(`${workspaceId} is not a workspace (but a ${workspace.typeUri})`)

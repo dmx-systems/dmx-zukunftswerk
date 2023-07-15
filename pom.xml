@@ -47,7 +47,7 @@
         <dependency>
             <groupId>systems.dmx</groupId>
             <artifactId>dmx-sign-up</artifactId>
-            <version>2.0.2-SNAPSHOT</version>
+            <version>2.1.0</version>
         </dependency>
     </dependencies>
 

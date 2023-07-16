@@ -1,9 +1,17 @@
 # DMX Zukunftswerk
 
-The "Zukunftswerk Collaboration Platform" provides a shared media canvas for commenting on documents.
-Bilingually. With DeepL integration.
+Zukunftswerk is a platform for bilingual collaboration. It provides shared workspaces for handling and commenting
+on various kinds of content objects (documents, notes, textblocks). Content objects are freely placed on a workspace "canvas", and can be decorated by headings and arrows. Every user input is automatically translated on-the-fly by the means of the
+[DeepL](https://www.deepl.com) service.
 
-Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-systems/dmx-platform).
+The canvas is synchronized between collaborating users. There are 3 user roles: *administrators* (create workspaces and user accounts, manage menberships), *editors* (edit content objects and arrange the canvas), and *users* (browsing canvas content).
+
+The Zukunftswerk application is developed by contract with the
+[Deutsch-Französisches Zukunftswerk](https://df-zukunftswerk.eu).
+The Zukunftswerk UI is fixed to German/French languages. A generalized version of this application, with configurable
+languages, is available as project "[Linqa](https://github.com/dmx-systems/dmx-linqa)".
+
+Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-systems/dmx-platform). Both, Zukunftswerk and Linqa are Open Source software.
 
 ## Version History
 
@@ -14,6 +22,7 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
     * Manual-translate button is always visible (documents, notes, headings, and comments)
     * PDFs remember selected page when fullscreen is switched on/off
     * Note and heading forms have a gray background
+    * Image data-URLs are not send to the DeepL service (improved in DeepL plugin)
     * Discussion panel shows a spinner while loading
     * Admin area:
         * The respective workspace owners are displayed
@@ -48,7 +57,7 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
         * Item rotation is restricted to steps of 5 degrees, so resetting to 0 is easy
         * New "reset zoom" button sets the zoom back to "normal" (1)
     * Chat panel: scroll comment's OK/Cancel buttons into view when clicking Edit
-    * Impressum/privacy policy: clicking the ZW logo returns to home page
+    * Imprint/privacy policy: clicking the ZW logo returns to home page
     * Updated texts for the password-reset workflow
 * Fixes:
     * Canvas:

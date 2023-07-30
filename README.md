@@ -1,8 +1,6 @@
 # DMX Zukunftswerk
 
-Zukunftswerk is a platform for bilingual collaboration. It provides shared workspaces for handling and commenting
-on various kinds of content objects (documents, notes, textblocks). Content objects are freely placed on a workspace "canvas", and can be decorated by headings and arrows. Every user input is automatically translated on-the-fly by the means of the
-[DeepL](https://www.deepl.com) service.
+Zukunftswerk is a platform for bilingual collaboration. Zukunftswerk provides shared workspaces for handling and commenting on various kinds of content objects (documents, notes, textblocks). Content objects are freely placed on a workspace "canvas", and can be further decorated by heading and arrow elements. Every user input is automatically translated on-the-fly by the means of the [DeepL](https://www.deepl.com) service.
 
 The canvas is synchronized between collaborating users. There are 3 user roles: *administrators* (create workspaces and user accounts, manage menberships), *editors* (edit content objects and arrange the canvas), and *users* (browsing canvas content).
 
@@ -11,7 +9,7 @@ The Zukunftswerk application is developed by contract with the
 The Zukunftswerk UI is fixed to German/French languages. A generalized version of this application, with configurable
 languages, is available as project "[Linqa](https://github.com/dmx-systems/dmx-linqa)".
 
-Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-systems/dmx-platform). Both, Zukunftswerk and Linqa are Open Source software.
+Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-systems/dmx-platform). Both, Zukunftswerk and Linqa are Open Source software under the GNU AGPL license.
 
 ## Version History
 

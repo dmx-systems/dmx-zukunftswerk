@@ -1,7 +1,7 @@
 <template>
   <div class="zw-comment-ref zw-comment-target-ref" v-if="comment" @click="click">
     <div class="creator label">{{displayName}}</div>
-    <zw-truncate class="comment label" :html="html[lang]"></zw-truncate>
+    <zw-truncate class="comment label" :html="commentHtml"></zw-truncate>
     <el-button class="close-button" v-if="closable" type="text" icon="el-icon-close" @click.stop="remove"></el-button>
   </div>
 </template>
@@ -18,10 +18,21 @@ export default {
 
   computed: {
 
-    html () {
+    topicHtml () {
       return {
-        de: this.comment.children['zukunftswerk.comment.de'].value,
-        fr: this.comment.children['zukunftswerk.comment.fr'].value      // FIXME: empty case, monolingual case
+        de: this.html('de'),
+        fr: this.html('fr')
+      }
+    },
+
+    commentHtml () {
+      const topicHtml = this.topicHtml
+      if (topicHtml.de && topicHtml.fr) {
+        return topicHtml[this.lang]
+      } else if (topicHtml.de) {
+        return topicHtml.de
+      } else if (topicHtml.fr) {
+        return topicHtml.fr
       }
     },
 
@@ -39,6 +50,14 @@ export default {
   },
 
   methods: {
+
+    html (lang) {
+      // Note: in a monolingual comment "fr" is not defined
+      const html = this.comment.children['zukunftswerk.comment.' + lang]?.value
+      if (html !== '<p><br></p>') {
+        return html
+      }
+    },
 
     click () {
       this.$emit('click', this.comment)

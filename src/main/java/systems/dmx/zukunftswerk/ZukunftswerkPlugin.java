@@ -129,9 +129,13 @@ public class ZukunftswerkPlugin extends PluginActivator implements ZukunftswerkS
         processTeamMembership(assoc, username -> {
             // Delete "System" membership
             logger.info("### Removing \"System\" membership from user \"" + username + "\"");
-            acs.getMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId()).delete();
+            Assoc systemMembership = acs.getMembership(username, dmx.getPrivilegedAccess().getSystemWorkspaceId());
+            // Note: in case of a delete-user operation the "System" membership might have been deleted already (null)
+            if (systemMembership != null) {
+                systemMembership.delete();
+            }
             // Note: when a user looses Team status we don't know in which ZW workspaces she stays.
-            // We leave all memberships intact.
+            // We leave all memberships intact (no bulkUpdateMemberships() here).
         });
     }
 

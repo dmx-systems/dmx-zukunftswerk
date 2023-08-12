@@ -95,13 +95,17 @@ function getViewportTopic() {
 }
 
 function getDisplayName (username) {
-  return getUser(username).children['dmx.signup.display_name']?.value || '?'
+  return getUser(username)?.children['dmx.signup.display_name']?.value || '?'
 }
 
 function getShowEmailAddress (username) {
-  return getUser(username).children['zukunftswerk.show_email_address'].value
+  return getUser(username)?.children['zukunftswerk.show_email_address'].value
 }
 
+/**
+ * Returns Username topic corresponding to given username (case-insensitive).
+ * If no such user exists undefined is returned. The latter happens if that user has been deleted.
+ */
 function getUser (username) {
   // TODO: better use localeCompare() or regex (or toUpperCase()) instead of toLowerCase()?
   // https://stackoverflow.com/questions/2140627/how-to-do-case-insensitive-string-comparison

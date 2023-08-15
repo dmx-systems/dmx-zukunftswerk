@@ -13,9 +13,13 @@ Zukunftswerk is an application for the [DMX platform](https://github.com/dmx-sys
 
 ## Version History
 
+**1.6.2** -- Aug 15, 2023
+
+* Fix: there was a bug that prevented the deletion of an user in a certain situation
+
 **1.6.1** -- Aug 1, 2023
 
-* Fixes: replying to untranslatable comment shows proper comment reference
+* Fix: replying to untranslatable comment shows proper comment reference
 
 **1.6** -- Jul 16, 2023
 
